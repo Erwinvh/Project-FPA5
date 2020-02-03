@@ -53,14 +53,15 @@ public class Planner implements Serializable {
 
     /**
      * overloaded function to create and add a show
-     * @param beginTime
-     * @param endTime
-     * @param artists
-     * @param name
-     * @param stage
-     * @param description
-     * @param genre
-     * @param expectedPopularity
+     *
+     * @param beginTime the time the show begins
+     * @param endTime the time the show ends
+     * @param artists an array list of all the artists that contribute to the show
+     * @param name name of the show
+     * @param stage Which stage the show is performed
+     * @param description special information
+     * @param genre genre of the music performed
+     * @param expectedPopularity how many visitors are expected
      */
     public void addShow(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
         addShow(new Show(beginTime,endTime,artists,name,stage,description,genre,expectedPopularity));
