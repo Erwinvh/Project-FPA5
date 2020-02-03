@@ -2,10 +2,7 @@ package PlannerData;
 
 import Enumerators.Genres;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -18,6 +15,8 @@ public class Planner implements Serializable {
     private transient ArrayList<Stage> stages;
     private transient ArrayList<Artist> artists;
     private transient ArrayList<Genres> genres;
+
+    private final String saveFileName = "Planner.txt";
 
     public Planner() {
         this.shows = new ArrayList<>();
