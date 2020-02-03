@@ -1,14 +1,11 @@
 package PlannerData;
 
-import Enumerators.Genres;
-
-import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Planner {
+public class Planner implements Serializable {
     private ArrayList<Show> shows;
-    private ArrayList<Stage> stages;
-    private ArrayList<Artist> artists;
+    private transient ArrayList<Stage> stages;
+    private transient ArrayList<Artist> artists;
     private ArrayList<Genres> genres;
 
     public Planner() {
@@ -62,5 +59,13 @@ public class Planner {
         addShow(new Show(beginTime,endTime,artists,name,stage,description,genre,expectedPopularity));
     }
 
-
+    public void savePlanner(){
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("Planner.txt"));
+            objectOutputStream.writeObject(shows);
+            objectOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
