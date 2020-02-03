@@ -13,9 +13,9 @@ public class GUI extends Application {
         ScheduleTab scheduleTab = new ScheduleTab();
         SimulatorTab simulatorTab = new SimulatorTab();
         SettingsTab settingsTab = new SettingsTab();
-        
+        VisualTab visualTab = new VisualTab();
 
-        tabPane.getTabs().addAll(scheduleTab.getScheduleTab(), simulatorTab.getSimulatorTab(), settingsTab.getSettingsTab());
+        tabPane.getTabs().addAll(scheduleTab.getScheduleTab(), visualTab.getVisualTab(), simulatorTab.getSimulatorTab(), settingsTab.getSettingsTab());
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         Scene scene = new Scene(tabPane);
