@@ -5,6 +5,7 @@ import Enumerators.Genres;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class Planner implements Serializable {
     private ArrayList<Show> shows;
     private transient ArrayList<Stage> stages;
     private transient ArrayList<Artist> artists;
-    private ArrayList<Genres> genres;
+    private transient ArrayList<Genres> genres;
 
     public Planner() {
         this.shows = new ArrayList<>();
