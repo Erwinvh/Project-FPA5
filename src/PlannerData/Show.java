@@ -27,20 +27,37 @@ public class Show {
 		this.artists = artists;
 	}
 
-	public Show(LocalTime beginTime, LocalTime endTime, Stage stage, ArrayList<Artist> artists, int expectedPopularity){
-		this.expectedPopularity = expectedPopularity;
-		this.beginTime = beginTime;
-		this.endTime = endTime;
-		this.stage = stage;
-		this.artists = artists;
+	public Show(LocalTime beginTime, LocalTime endTime, Artist artist, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
+		this(beginTime,endTime,new ArrayList<>(),name,stage,description,genre,expectedPopularity);
+		this.artists.add(artist);
+	}
+
+	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, Stage stage, int expectedPopularity){
+		this(beginTime,endTime,artists,"",stage,"",new ArrayList<>(), expectedPopularity);
 		this.name = this.artists.get(0).getName();
 		this.description = "";
 
 		ArrayList<Genres> genres = new ArrayList<>();
 		for(Artist artist : this.artists){
-			if(!genres.contains(artist.getGenre()))
-			genres.add(artist.getGenre());
+			if(!this.genre.contains(artist.getGenre())){
+				this.genre.add(artist.getGenre());
+			}
 		}
+	}
+
+	public Show(LocalTime beginTime, LocalTime endTime, Stage stage, Artist artist, int expectedPopularity){
+		this(beginTime,endTime, new ArrayList<>(),stage, expectedPopularity);
+		this.artists.add(artist);
+	}
+
+	public Show(LocalTime beginTime, LocalTime endTime, Stage stage, ArrayList<Artist> artists, String name,String description, Genres genre, int expectedPopularity){
+		this(beginTime,endTime,artists,name,stage,description,new ArrayList<>(), expectedPopularity);
+		this.genre.add(genre);
+	}
+
+	public Show(LocalTime beginTime, LocalTime endTime,Stage stage, Artist artist, String name , String description, Genres genre, int expectedPopularity){
+		this(beginTime,endTime,artist,name,stage,description,new ArrayList<>(),expectedPopularity);
+		this.genre.add(genre);
 	}
 
 	public int getExpectedPopularity() {
