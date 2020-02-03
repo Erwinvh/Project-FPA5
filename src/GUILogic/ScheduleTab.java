@@ -1,10 +1,12 @@
 package GUILogic;
 
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class ScheduleTab {
     private Tab scheduleTab;
@@ -60,10 +62,44 @@ public class ScheduleTab {
 
         HBox Controls = new HBox();
 
-        Controls.getChildren().add(new Button("Add"));
-        Controls.getChildren().add(new Button("Edit"));
-        Controls.getChildren().add(new Button("Delete"));
-        Controls.setSpacing(10);
+        Button addButton = new Button("Add");
+        addButton.setOnAction(event -> {
+            Stage adderStage = new Stage();
+
+            Label addingNew = new Label("Add a new show");
+
+            Scene adderScene = new Scene(addingNew);
+            adderStage.setScene(adderScene);
+            adderStage.show();
+
+        });
+        Button editButton = new Button("Edit");
+        editButton.setOnAction(event -> {
+            Stage editStage = new Stage();
+
+            Label editingThis = new Label("Edit this show");
+
+            Scene editScene = new Scene(editingThis);
+            editStage.setScene(editScene);
+            editStage.show();
+
+        });
+        Button deleteButton = new Button("Delete");
+        deleteButton.setOnAction(event -> {
+            Stage deleteStage = new Stage();
+
+            Label deleteThis = new Label("delete this show");
+
+            Scene deleteScene = new Scene(deleteThis);
+            deleteStage.setScene(deleteScene);
+            deleteStage.show();
+
+        });
+
+        Controls.getChildren().add(addButton);
+        Controls.getChildren().add(editButton);
+        Controls.getChildren().add(deleteButton);
+        Controls.setSpacing(20);
 
         VBox base = new VBox();
 
