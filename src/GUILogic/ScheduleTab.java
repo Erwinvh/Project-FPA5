@@ -24,7 +24,7 @@ public class ScheduleTab {
         HBox baseLayer = new HBox();
         baseLayer.setSpacing(10);
 
-        table.setEditable(false);
+        this.table.setEditable(false);
 
         TableColumn beginTimeCol = new TableColumn("Begin time");
         beginTimeCol.setPrefWidth(100);
@@ -38,8 +38,9 @@ public class ScheduleTab {
         genreCol.setPrefWidth(100);
         TableColumn popularityCol = new TableColumn("Popularity");
         popularityCol.setPrefWidth(100);
+        this.table.setPrefWidth(735);
 
-        table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
+        this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
 
         VBox description = new VBox();
 
@@ -54,7 +55,7 @@ public class ScheduleTab {
 
         description.getChildren().add(artistDescription);
 
-        baseLayer.getChildren().add(table);
+        baseLayer.getChildren().add(this.table);
         baseLayer.getChildren().add(description);
 
         HBox Controls = new HBox();
