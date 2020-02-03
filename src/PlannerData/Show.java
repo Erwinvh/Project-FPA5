@@ -1,22 +1,21 @@
 package PlannerData;
 
 import Enumerators.Genres;
-
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Show {
 
 	private int expectedPopularity;
-	private LocalDateTime beginTime;
-	private LocalDateTime endTime;
+	private LocalTime beginTime;
+	private LocalTime endTime;
 	private String name;
 	private String description;
 	private Stage stage;
 	private ArrayList<Genres> genre;
 	private ArrayList<Artist> artists;
 
-	public Show(int expectedPopularity, LocalDateTime beginTime, LocalDateTime endTime, String name, String description, Stage stage, ArrayList<Genres> genre, ArrayList<Artist> artists) {
+	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
 		this.expectedPopularity = expectedPopularity;
 		this.beginTime = beginTime;
 		this.endTime = endTime;
@@ -27,15 +26,19 @@ public class Show {
 		this.artists = artists;
 	}
 
+	public Show(int expectedPopularity, LocalTime beginTime, LocalTime endTime, Stage stage, ArrayList<Artist> artists){
+
+	}
+
 	public int getExpectedPopularity() {
 		return expectedPopularity;
 	}
 
-	public LocalDateTime getBeginTime() {
+	public LocalTime getBeginTime() {
 		return beginTime;
 	}
 
-	public LocalDateTime getEndTime() {
+	public LocalTime getEndTime() {
 		return endTime;
 	}
 
@@ -59,17 +62,10 @@ public class Show {
 		return artists;
 	}
 
-	public LocalDateTime getDuration() {
-		int minutes = this.endTime.getMinute() - this.beginTime.getMinute();
-		if (minutes < 0){
-			minutes += 60;
-		}
-
-		int hours = this.endTime.getHour() - this.beginTime.getHour();
-
-		
-
-		LocalDateTime duration =
+	public LocalTime getDuration() {
+		LocalTime duration = endTime.minusMinutes(beginTime.getMinute());
+		duration = endTime.minusHours(beginTime.getHour());
+		return duration;
 	}
 
 }
