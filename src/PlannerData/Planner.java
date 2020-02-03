@@ -6,9 +6,6 @@ import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-/**
- *
- */
 public class Planner implements Serializable {
 
     private ArrayList<Show> shows;
@@ -29,12 +26,15 @@ public class Planner implements Serializable {
             if (!file.exists()) {
                 file.createNewFile();
             } else {
-                FileInputStream fileInputStream = new FileInputStream(saveFileName);
-                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-                if (objectInputStream.readObject() instanceof ArrayList) {
+                FileInputStream fileInputStream = new FileInputStream(saveFileName);
+                if (fileInputStream.available() > 1){
+                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
                     shows = (ArrayList<Show>) objectInputStream.readObject();
                 }
+
+
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
@@ -67,7 +67,7 @@ public class Planner implements Serializable {
      * @param shows array list of shows which are objects where data about the show is stored
      */
     public void addShow(ArrayList<Show> shows) {
-        for (Show show : shows){
+        for (Show show : shows) {
             addShow(show);
         }
     }
@@ -85,10 +85,10 @@ public class Planner implements Serializable {
      * @param expectedPopularity how many visitors are expected
      */
     public void addShow(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
-        addShow(new Show(beginTime,endTime,artists,name,stage,description,genre,expectedPopularity));
+        addShow(new Show(beginTime, endTime, artists, name, stage, description, genre, expectedPopularity));
     }
 
-    public void savePlanner(){
+    public void savePlanner() {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
             objectOutputStream.writeObject(shows);
@@ -96,5 +96,16 @@ public class Planner implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Planner{" +
+                "shows=" + shows +
+                ", stages=" + stages +
+                ", artists=" + artists +
+                ", genres=" + genres +
+                ", saveFileName='" + saveFileName + '\'' +
+                '}';
     }
 }
