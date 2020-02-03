@@ -1,9 +1,6 @@
 package PlannerData;
 
 import Enumerators.Genres;
-
-import java.awt.*;
-
 import javafx.scene.image.Image;
 
 public class Artist {
