@@ -1,10 +1,6 @@
 package GUILogic;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -47,15 +43,21 @@ public class ScheduleTab {
 
         VBox description = new VBox();
 
-        description.getChildren().add(new ImageView(new Image("file:PersonImageBase.jpg")));
-        description.getChildren().add(new TextField());
+        Image baseImage = new Image("file:Resources/PersonImageBase.jpg");
+        ImageView Artistpicture = new ImageView(baseImage);
+        Artistpicture.setFitHeight(200);
+        Artistpicture.setFitWidth(200);
+//        Artistpicture.setScaleY(0.5);
+        description.getChildren().add(Artistpicture);
+        TextArea artistDescription = new TextArea("Description of artist 1");
+        artistDescription.setEditable(false);
+
+        description.getChildren().add(artistDescription);
 
         baseLayer.getChildren().add(table);
         baseLayer.getChildren().add(description);
 
         HBox Controls = new HBox();
-
-
 
         Controls.getChildren().add(new Button("Add"));
         Controls.getChildren().add(new Button("Edit"));

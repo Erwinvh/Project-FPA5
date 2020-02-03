@@ -3,7 +3,9 @@ package PlannerData;
 import Enumerators.Genres;
 import javafx.scene.image.Image;
 
-public class Artist {
+import java.io.Serializable;
+
+public class Artist implements Serializable {
 
 	private String name;
 	private Genres genre;

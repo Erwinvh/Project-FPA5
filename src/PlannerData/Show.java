@@ -2,10 +2,11 @@ package PlannerData;
 
 import Enumerators.Genres;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Show {
+public class Show implements Serializable {
 
 	private int expectedPopularity;
 	private LocalTime beginTime;
