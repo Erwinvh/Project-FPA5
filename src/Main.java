@@ -27,7 +27,7 @@ public class Main {
         stages.add(new Stage(300, "Improvisation stage"));
         stages.add(new Stage(100, "Single stage"));
 
-        Show show = new Show(LocalTime.now(), LocalTime.now(), artists, stages.get(0), 100);
+        Show show = new Show(LocalTime.now(), LocalTime.now().plusHours(1), artists, stages.get(0), 100);
         planner.addShow(show);
         planner.savePlanner();
         System.out.println(planner.toString());

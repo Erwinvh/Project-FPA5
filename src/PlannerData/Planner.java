@@ -113,4 +113,16 @@ public class Planner implements Serializable {
     public ArrayList<Show> getShows(){
         return this.shows;
     }
+
+    public ArrayList<Stage> getStages() {
+        return stages;
+    }
+
+    public ArrayList<Artist> getArtists() {
+        return artists;
+    }
+
+    public ArrayList<Genres> getGenres() {
+        return genres;
+    }
 }
