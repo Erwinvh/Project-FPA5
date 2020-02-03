@@ -8,11 +8,6 @@ import javafx.stage.Stage;
 public class GUI extends Application {
 
     @Override
-    public int hashCode() {
-        return 5;
-    }
-
-    @Override
     public void start(Stage primaryStage) throws Exception {
         TabPane tabPane = new TabPane();
         ScheduleTab scheduleTab = new ScheduleTab();
