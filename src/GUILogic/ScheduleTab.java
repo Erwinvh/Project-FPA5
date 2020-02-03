@@ -1,8 +1,11 @@
 package GUILogic;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -18,7 +21,6 @@ public class ScheduleTab {
     public Tab getScheduleTab() {
         return scheduleTab;
     }
-
 
     public void layout1(){
 
@@ -42,18 +44,28 @@ public class ScheduleTab {
 
         table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
 
+        VBox description = new VBox();
+
+        description.getChildren().add(new Image("file:PersonImageBase.jpg"));
+        description.getChildren().add(new TextField());
+
         baseLayer.getChildren().add(table);
-        baseLayer.getChildren().add(new javafx.scene.control.TextField());
+        baseLayer.getChildren().add(description);
 
         HBox Controls = new HBox();
 
+
+
         Controls.getChildren().add(new Button("Add"));
+        Controls.getChildren().add(new Button("Edit"));
+        Controls.getChildren().add(new Button("Delete"));
+        Controls.setSpacing(10);
 
         VBox base = new VBox();
 
         base.getChildren().add(baseLayer);
         base.getChildren().add(Controls);
 
-        this.scheduleTab.setContent(table);
+        this.scheduleTab.setContent(base);
     }
 }
