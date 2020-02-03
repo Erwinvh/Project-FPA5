@@ -33,8 +33,6 @@ public class Planner implements Serializable {
 
                     shows = (ArrayList<Show>) objectInputStream.readObject();
                 }
-
-
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
