@@ -7,10 +7,6 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 
-    public static void main(String[] args) {
-        launch(GUI.class);
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         TabPane tabPane = new TabPane();
