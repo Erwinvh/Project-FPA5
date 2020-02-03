@@ -1,16 +1,21 @@
 package PlannerData;
 
+import Enumerators.Genres;
+
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Planner {
     private ArrayList<Show> shows;
     private ArrayList<Stage> stages;
     private ArrayList<Artist> artists;
+    private ArrayList<Genres> genres;
 
     public Planner() {
         this.shows = new ArrayList<>();
         this.stages = new ArrayList<>();
         this.artists = new ArrayList<>();
+        this.genres = new ArrayList<>();
     }
 
     /**
@@ -34,20 +39,27 @@ public class Planner {
     /**
      * overloaded function to add an list of shows
      *
-     * @param show array list of shows which are objects where data about the show is stored
+     * @param shows array list of shows which are objects where data about the show is stored
      */
-    public void addShow(ArrayList<Show> show) {
-        this.shows.addAll(show);
-        //TODO add the stage and artist
+    public void addShow(ArrayList<Show> shows) {
+        for (Show show : shows){
+            addShow(show);
+        }
     }
 
     /**
-     * TODO
+     * overloaded function to create and add a show
+     * @param beginTime
+     * @param endTime
+     * @param artists
+     * @param name
+     * @param stage
+     * @param description
+     * @param genre
+     * @param expectedPopularity
      */
-    public void addShow(/*TODO add contructor from show*/) {
-        Show show = new Show(/*TODO*/);
-        this.shows.add(show);
-        //TODO add the stage and artist
+    public void addShow(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
+        addShow(new Show(beginTime,endTime,artists,name,stage,description,genre,expectedPopularity));
     }
 
 
