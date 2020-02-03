@@ -109,4 +109,8 @@ public class Planner implements Serializable {
                 ", saveFileName='" + saveFileName + '\'' +
                 '}';
     }
+
+    public ArrayList<Show> getShows(){
+        return this.shows;
+    }
 }
