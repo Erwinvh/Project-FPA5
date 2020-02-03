@@ -55,6 +55,6 @@ public class ScheduleTab {
         base.getChildren().add(baseLayer);
         base.getChildren().add(Controls);
 
-        this.scheduleTab.setContent(table);
+        this.scheduleTab.setContent(base);
     }
 }
