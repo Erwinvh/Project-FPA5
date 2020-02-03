@@ -6,6 +6,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -46,7 +47,7 @@ public class ScheduleTab {
 
         VBox description = new VBox();
 
-        description.getChildren().add(new Image("file:PersonImageBase.jpg"));
+        description.getChildren().add(new ImageView(new Image("file:PersonImageBase.jpg")));
         description.getChildren().add(new TextField());
 
         baseLayer.getChildren().add(table);
