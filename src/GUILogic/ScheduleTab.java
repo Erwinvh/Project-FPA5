@@ -12,6 +12,7 @@ public class ScheduleTab {
 
     public ScheduleTab() {
         this.scheduleTab = new Tab("Schedule");
+        layout1();
     }
 
     public Tab getScheduleTab() {
@@ -20,8 +21,6 @@ public class ScheduleTab {
 
 
     public void layout1(){
-
-
 
         HBox baseLayer = new HBox();
         baseLayer.setSpacing(10);
