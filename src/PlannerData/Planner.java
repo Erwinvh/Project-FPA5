@@ -58,6 +58,9 @@ public class Planner implements Serializable {
                     this.artists.add(artist);
                 }
             }
+            if (this.genres.contains(show.getGenre())){
+                this.genres.addAll(show.getGenre());
+            }
         }
     }
 
