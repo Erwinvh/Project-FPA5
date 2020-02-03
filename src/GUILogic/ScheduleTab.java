@@ -55,8 +55,6 @@ public class ScheduleTab {
 
         HBox Controls = new HBox();
 
-
-
         Controls.getChildren().add(new Button("Add"));
         Controls.getChildren().add(new Button("Edit"));
         Controls.getChildren().add(new Button("Delete"));
