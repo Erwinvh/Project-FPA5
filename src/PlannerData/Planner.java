@@ -9,7 +9,11 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class Planner implements Serializable {
+
     private ArrayList<Show> shows;
     private transient ArrayList<Stage> stages;
     private transient ArrayList<Artist> artists;
@@ -20,6 +24,23 @@ public class Planner implements Serializable {
         this.stages = new ArrayList<>();
         this.artists = new ArrayList<>();
         this.genres = new ArrayList<>();
+
+        try {
+            File file = new File(saveFileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            } else {
+                FileInputStream fileInputStream = new FileInputStream(saveFileName);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+                if (objectInputStream.readObject() instanceof ArrayList) {
+                    shows = (ArrayList<Show>) objectInputStream.readObject();
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -28,20 +49,21 @@ public class Planner implements Serializable {
      * @param show object where data about the show is stored
      */
     public void addShow(Show show) {
-        this.shows.add(show);
-        //TODO add the stage and artist
-        if (!this.stages.contains(show.getStage())) {
-            this.stages.add(show.getStage());
-        }
-        for (Artist artist : show.getArtists()) {
-            if (!this.artists.contains(artist)) {
-                this.artists.add(artist);
+        if (!this.shows.contains(show)) {
+            this.shows.add(show);
+            if (!this.stages.contains(show.getStage())) {
+                this.stages.add(show.getStage());
+            }
+            for (Artist artist : show.getArtists()) {
+                if (!this.artists.contains(artist)) {
+                    this.artists.add(artist);
+                }
             }
         }
     }
 
     /**
-     * overloaded function to add an list of shows
+     * overloaded function to add a list of shows
      *
      * @param shows array list of shows which are objects where data about the show is stored
      */
@@ -54,13 +76,13 @@ public class Planner implements Serializable {
     /**
      * overloaded function to create and add a show
      *
-     * @param beginTime the time the show begins
-     * @param endTime the time the show ends
-     * @param artists an array list of all the artists that contribute to the show
-     * @param name name of the show
-     * @param stage Which stage the show is performed
-     * @param description special information
-     * @param genre genre of the music performed
+     * @param beginTime          the time the show begins
+     * @param endTime            the time the show ends
+     * @param artists            an array list of all the artists that contribute to the show
+     * @param name               name of the show
+     * @param stage              Which stage the show is performed
+     * @param description        special information
+     * @param genre              genre of the music performed
      * @param expectedPopularity how many visitors are expected
      */
     public void addShow(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
@@ -69,7 +91,7 @@ public class Planner implements Serializable {
 
     public void savePlanner(){
         try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("Planner.txt"));
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
             objectOutputStream.writeObject(shows);
             objectOutputStream.close();
         } catch (IOException e) {
