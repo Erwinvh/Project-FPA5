@@ -25,6 +25,7 @@ public class ScheduleTab {
 
         HBox baseLayer = new HBox();
         baseLayer.setSpacing(10);
+        //hoi ralf is dit  binnen?
 
         this.table.setEditable(false);
 
