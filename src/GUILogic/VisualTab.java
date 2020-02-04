@@ -36,9 +36,8 @@ public class VisualTab {
         return visualTab;
     }
 
-       public void drawLayout(FXGraphics2D graphics) {
-        ArrayList<String> stages = new ArrayList<>(); // needs to be getter
-        stages.addAll(Arrays.asList("Rik", "Arne", "Lars", "Veel te lange naam", "Henk", "Peter"));
+    public void drawLayout(FXGraphics2D graphics) {
+        ArrayList<Stage> stages = this.planner.getStages();
         this.amountOfColumns = stages.size();
 
         graphics.draw(new Line2D.Double(0, 50, 960, 50));
