@@ -45,7 +45,8 @@ public class VisualTab {
 
         for (int i = 0; i < this.amountOfColumns; i++) {
             graphics.draw(new Line2D.Double((900/amountOfColumns) * (1 + i) + 60,0 , (900/amountOfColumns) * (1 + i) + 60, 540));
-            graphics.drawString(stages.get(i).getName(), (int)((900/amountOfColumns) * (i + 0.1) + 60), 30);
+//            graphics.drawString(stages.get(i).getName(), (int)((900/amountOfColumns) * (i + 0.1) + 60), 30);
+            //dit werkt niet^
         }
 
 
