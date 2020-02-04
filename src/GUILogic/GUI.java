@@ -10,7 +10,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         TabPane tabPane = new TabPane();
-        ScheduleTab scheduleTab = new ScheduleTab(primaryStage);
+        ScheduleTab scheduleTab = new ScheduleTab();
         SimulatorTab simulatorTab = new SimulatorTab();
         SettingsTab settingsTab = new SettingsTab();
         VisualTab visualTab = new VisualTab();
