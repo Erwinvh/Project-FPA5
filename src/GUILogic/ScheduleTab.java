@@ -34,7 +34,11 @@ public class ScheduleTab {
         return scheduleTab;
     }
 
-    public void table(){
+    public void layout1(){
+
+        HBox baseLayer = new HBox();
+        baseLayer.setSpacing(10);
+
         this.table.setEditable(false);
 
         TableColumn beginTimeCol = new TableColumn("Begin time");
