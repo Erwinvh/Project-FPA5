@@ -2,6 +2,7 @@ package GUILogic;
 
 import PlannerData.Artist;
 import PlannerData.Planner;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,12 +11,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jdk.internal.util.xml.impl.Input;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -136,22 +140,29 @@ public class ScheduleTab {
 
         Label addingNew = new Label("what show do you want to add?");
         structure.setTop(addingNew);
-        Label information = new Label("info dump");
 
-        VBox inputID = new VBox();
-        inputID.getChildren().add(new Label("Begin time:"));
-        inputID.getChildren().add(new Label("End time:"));
-        inputID.getChildren().add(new Label("Stage:"));
-        inputID.getChildren().add(new Label("Genre:"));
-        inputID.getChildren().add(new Label("popularity:"));
-        inputID.getChildren().add(new Label("Artists:"));
-        inputID.setSpacing(10);
+        GridPane inputStructure = new GridPane();
+        inputStructure.setHgap(10);
+        inputStructure.setVgap(10);
+        inputStructure.add(new Label("Begin time:"),1,1);
+        inputStructure.add(new Label("End time:"),1,2);
+        ComboBox beginUur = uurBox();
+        ComboBox eindUur = uurBox();
+        inputStructure.add(beginUur,2,1);
+        inputStructure.add(eindUur,2,2);
+        ComboBox beginMinuut = minuutBox();
+        ComboBox eindMinuut = minuutBox();
+        inputStructure.add(beginMinuut,3,1);
+        inputStructure.add(eindMinuut,3,2);
+        inputStructure.add(new Label("Stage:"),1,3);
+        inputStructure.add(new Label("Genre:"),1,4);
+        inputStructure.add(new Label("Popularity:"),1,5);
+        inputStructure.add(new Label("Artists:"),1,6);
 
-        VBox inputFields = new VBox();
-        TextField beginTime = new TextField();
-        TextField endTime = new TextField();
         ComboBox stage = StageBox();
+        inputStructure.add(stage,2,3);
         ComboBox genre = genreBox();
+        inputStructure.add(genre,2,4);
         Slider popularity = new Slider();
         popularity.setMin(0);
         popularity.setMax(100);
@@ -161,21 +172,27 @@ public class ScheduleTab {
         popularity.setMajorTickUnit(50);
         popularity.setMinorTickCount(5);
         popularity.setBlockIncrement(10);
+        inputStructure.add(popularity,2,5);
+        Label PopularityLabel = new Label("");
+        popularity.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(
+                    ObservableValue<? extends Number> observableValue,
+                    Number oldValue,
+                    Number newValue) {
+                PopularityLabel.textProperty().setValue(
+                        String.valueOf(newValue.intValue()));
+            }
+        });
+
+        PopularityLabel.textProperty().setValue("0");
+
+inputStructure.add(PopularityLabel,3,5);
         ComboBox artists = artistBox();
+        inputStructure.add(artists,2,6);
 
-        inputFields.getChildren().add(beginTime);
-        inputFields.getChildren().add(endTime);
-        inputFields.getChildren().add(stage);
-        inputFields.getChildren().add(genre);
-        inputFields.getChildren().add(popularity);
-        inputFields.getChildren().add(artists);
-
-
-        HBox inputsystem = new HBox();
-        inputsystem.getChildren().add(inputID);
-        inputsystem.getChildren().add(inputFields);
-
-        structure.setCenter(inputsystem);
+        structure.setCenter(inputStructure);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
@@ -185,6 +202,8 @@ public class ScheduleTab {
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
+        choice.setAlignment(Pos.CENTER);
+        choice.setSpacing(20);
         structure.setBottom(choice);
 
         Scene adderScene = new Scene(structure);
@@ -198,45 +217,58 @@ public class ScheduleTab {
         Label editingThis = new Label("Edit this show:");
         structure.setTop(editingThis);
 
-        VBox inputID = new VBox();
-        inputID.getChildren().add(new Label("Begin time:"));
-        inputID.getChildren().add(new Label("End time:"));
-        inputID.getChildren().add(new Label("Stage:"));
-        inputID.getChildren().add(new Label("Genre:"));
-        inputID.getChildren().add(new Label("popularity:"));
-        inputID.getChildren().add(new Label("Artists:"));
-        inputID.setSpacing(10);
+        GridPane inputStructure = new GridPane();
+        inputStructure.setHgap(10);
+        inputStructure.setVgap(10);
+        inputStructure.add(new Label("Begin time:"),1,1);
+        inputStructure.add(new Label("End time:"),1,2);
+        ComboBox beginUur = uurBox();
+        ComboBox eindUur = uurBox();
+        inputStructure.add(beginUur,2,1);
+        inputStructure.add(eindUur,2,2);
+        ComboBox beginMinuut = minuutBox();
+        ComboBox eindMinuut = minuutBox();
+        inputStructure.add(beginMinuut,3,1);
+        inputStructure.add(eindMinuut,3,2);
+        inputStructure.add(new Label("Stage:"),1,3);
+        inputStructure.add(new Label("Genre:"),1,4);
+        inputStructure.add(new Label("Popularity:"),1,5);
+        inputStructure.add(new Label("Artists:"),1,6);
 
-        VBox inputFields = new VBox();
-        TextField beginTime = new TextField();
-        TextField endTime = new TextField();
         ComboBox stage = StageBox();
+        inputStructure.add(stage,2,3);
         ComboBox genre = genreBox();
+        inputStructure.add(genre,2,4);
         Slider popularity = new Slider();
         popularity.setMin(0);
         popularity.setMax(100);
-        popularity.setValue(40);
+        popularity.setValue(0);
         popularity.setShowTickLabels(true);
         popularity.setShowTickMarks(true);
         popularity.setMajorTickUnit(50);
         popularity.setMinorTickCount(5);
         popularity.setBlockIncrement(10);
-        beginTime.setText(this.selected);
-        endTime.setText(this.selected);
+        inputStructure.add(popularity,2,5);
+        Label PopularityLabel = new Label("");
+        popularity.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(
+                    ObservableValue<? extends Number> observableValue,
+                    Number oldValue,
+                    Number newValue) {
+                PopularityLabel.textProperty().setValue(
+                        String.valueOf(newValue.intValue()));
+            }
+        });
+
+        PopularityLabel.textProperty().setValue("0");
+
+        inputStructure.add(PopularityLabel,3,5);
         ComboBox artists = artistBox();
+        inputStructure.add(artists,2,6);
 
-        inputFields.getChildren().add(beginTime);
-        inputFields.getChildren().add(endTime);
-        inputFields.getChildren().add(stage);
-        inputFields.getChildren().add(genre);
-        inputFields.getChildren().add(popularity);
-        inputFields.getChildren().add(artists);
-
-        HBox inputsystem = new HBox();
-        inputsystem.getChildren().add(inputID);
-        inputsystem.getChildren().add(inputFields);
-
-        structure.setCenter(inputsystem);
+        structure.setCenter(inputStructure);
 
         HBox choice = new HBox();
 
@@ -248,6 +280,8 @@ public class ScheduleTab {
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
+        choice.setAlignment(Pos.CENTER);
+        choice.setSpacing(20);
         structure.setBottom(choice);
 
         Scene editScene = new Scene(structure);
@@ -360,6 +394,8 @@ public class ScheduleTab {
         });
         confirm.setStyle("-fx-background-color: #228B22; ");
         choice.getChildren().add(confirm);
+        choice.setAlignment(Pos.CENTER);
+        choice.setSpacing(20);
 
         newArtistList.getChildren().add(artistDescription);
         newArtistList.getChildren().add(choice);
@@ -402,7 +438,30 @@ public class ScheduleTab {
         return comboBox;
     }
 
-
+public ComboBox uurBox (){
+        ComboBox uurBox = new ComboBox();
+    for (int i=0; i<=23; i++){
+        if (i<10){
+            uurBox.getItems().add("0"+i);
+        }
+        else {
+            uurBox.getItems().add(""+i);
+        }
+    }
+    return uurBox;
+}
+    public ComboBox minuutBox (){
+        ComboBox minuutBox = new ComboBox();
+        for (int i=0; i<=55; i+=5){
+            if (i<10){
+                minuutBox.getItems().add("0"+i);
+            }
+            else {
+                minuutBox.getItems().add(""+i);
+            }
+        }
+        return minuutBox;
+    }
 
 
 }
