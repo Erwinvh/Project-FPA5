@@ -1,6 +1,10 @@
 package GUILogic;
 
+import PlannerData.Artist;
 import PlannerData.Planner;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -8,9 +12,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jdk.internal.util.xml.impl.Input;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ScheduleTab {
@@ -64,8 +71,6 @@ public class ScheduleTab {
         this.errorlist.add("this is an error");
     }
 
-
-
     public void desciption(){
         Image baseImage = new Image("file:Resources/PersonImageBase.jpg");
         ImageView Artistpicture = new ImageView(baseImage);
@@ -103,6 +108,7 @@ public class ScheduleTab {
         this.cancel.setOnAction(event -> {
             this.popUp.close();
         });
+        this.cancel.setStyle("-fx-background-color: FF0000; ");
     }
 
     public void Controls(){
@@ -144,15 +150,26 @@ public class ScheduleTab {
         VBox inputFields = new VBox();
         TextField beginTime = new TextField();
         TextField endTime = new TextField();
-        TextField stage = new TextField();
-        TextField genre = new TextField();
-        TextField popularity = new TextField();
+        ComboBox stage = StageBox();
+        ComboBox genre = genreBox();
+        Slider popularity = new Slider();
+        popularity.setMin(0);
+        popularity.setMax(100);
+        popularity.setValue(0);
+        popularity.setShowTickLabels(true);
+        popularity.setShowTickMarks(true);
+        popularity.setMajorTickUnit(50);
+        popularity.setMinorTickCount(5);
+        popularity.setBlockIncrement(10);
+        ComboBox artists = artistBox();
 
         inputFields.getChildren().add(beginTime);
         inputFields.getChildren().add(endTime);
         inputFields.getChildren().add(stage);
         inputFields.getChildren().add(genre);
         inputFields.getChildren().add(popularity);
+        inputFields.getChildren().add(artists);
+
 
         HBox inputsystem = new HBox();
         inputsystem.getChildren().add(inputID);
@@ -162,8 +179,9 @@ public class ScheduleTab {
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
-            errorWindow();
+            artistAddWindow();
         });
+        submit.setStyle("-fx-background-color: #228B22; ");
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
@@ -192,20 +210,27 @@ public class ScheduleTab {
         VBox inputFields = new VBox();
         TextField beginTime = new TextField();
         TextField endTime = new TextField();
-        TextField stage = new TextField();
-        TextField genre = new TextField();
-        TextField popularity = new TextField();
+        ComboBox stage = StageBox();
+        ComboBox genre = genreBox();
+        Slider popularity = new Slider();
+        popularity.setMin(0);
+        popularity.setMax(100);
+        popularity.setValue(40);
+        popularity.setShowTickLabels(true);
+        popularity.setShowTickMarks(true);
+        popularity.setMajorTickUnit(50);
+        popularity.setMinorTickCount(5);
+        popularity.setBlockIncrement(10);
         beginTime.setText(this.selected);
         endTime.setText(this.selected);
-        stage.setText(this.selected);
-        genre.setText(this.selected);
-        popularity.setText(this.selected);
+        ComboBox artists = artistBox();
 
         inputFields.getChildren().add(beginTime);
         inputFields.getChildren().add(endTime);
         inputFields.getChildren().add(stage);
         inputFields.getChildren().add(genre);
         inputFields.getChildren().add(popularity);
+        inputFields.getChildren().add(artists);
 
         HBox inputsystem = new HBox();
         inputsystem.getChildren().add(inputID);
@@ -219,6 +244,7 @@ public class ScheduleTab {
         submit.setOnAction(event -> {
             this.popUp.close();
         });
+        submit.setStyle("-fx-background-color: #228B22; ");
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
@@ -242,12 +268,16 @@ public class ScheduleTab {
 
         HBox choice = new HBox();
 
-        Button confirm = new Button("Yes");
+        Button confirm = new Button("Confirm");
+        confirm.setStyle("-fx-background-color: #228B22; ");
         confirm.setOnAction(event -> {
             this.popUp.close();
         });
+
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(confirm);
+        choice.setAlignment(Pos.CENTER);
+        choice.setSpacing(20);
 
         structure.setBottom(choice);
         Scene deleteScene = new Scene(structure);
@@ -300,24 +330,79 @@ public class ScheduleTab {
 
         //genre
 
-        newArtistList.getChildren().add(artistDescription);
+//        newArtistList.getChildren().add(artistDescription);
 
 //        private Image image;
+//        FileChooser imageChooser = new FileChooser();
+//        imageChooser.getExtensionFilters().addAll(
+//                new FileChooser.ExtensionFilter("jpg Files", "*.jpg")
+//                ,new FileChooser.ExtensionFilter("png Files", "*.png")
+//        );
+//        Button openButton = new Button("Choose Image");
+//
+//        openButton.setOnAction(event -> {
+//                        File selectedFile = imageChooser.showOpenDialog(this.popUp);
+//
+//                });
 
 
 
         HBox choice = new HBox();
-        choice.getChildren().add(this.cancel);
+        Button stop = new Button("Cancel");
+        stop.setOnAction(event -> {
+            artistAddWindow.close();
+        });
+        stop.setStyle("-fx-background-color: FF0000; ");
+        choice.getChildren().add(stop);
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
             this.popUp.close();
         });
+        confirm.setStyle("-fx-background-color: #228B22; ");
         choice.getChildren().add(confirm);
 
         newArtistList.getChildren().add(artistDescription);
         newArtistList.getChildren().add(choice);
         Scene artistAddScene = new Scene(newArtistList);
+        artistAddWindow.setScene(artistAddScene);
         artistAddWindow.show();
     }
+
+    public ComboBox genreBox (){
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().add("None");
+//        for (Planner.genre genre:Planner) {
+//            comboBox.getItems().add(genre);
+//        }
+        return comboBox;
+    }
+
+    public ComboBox StageBox (){
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().add("None");
+
+        return comboBox;
+    }
+
+    public ComboBox artistBox(){
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().add("None");
+        comboBox.getItems().add("Add new Artist");
+
+        comboBox.setOnAction(event -> {
+            if (comboBox.getValue().equals("Add new Artist")){
+                artistAddWindow();
+            }
+        });
+
+
+
+
+
+        return comboBox;
+    }
+
+
+
 
 }
