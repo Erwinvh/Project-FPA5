@@ -3,6 +3,7 @@
     secondary-color: #A857FF;
     third-color: #C6DEC6;
     fourth-color: #542B80;
+    selected-color: #B570FF;
 }
 
 .root {
@@ -37,6 +38,10 @@
 
 .tab-pane *.tab-header-area *.tab-header-background {
     -fx-background-color: main-color;
+}
+
+.tab:selected{
+    -fx-background-color: selected-color;
 }
 
 

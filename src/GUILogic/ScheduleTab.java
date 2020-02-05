@@ -5,6 +5,7 @@ import PlannerData.Planner;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -116,7 +117,6 @@ public class ScheduleTab {
         this.cancel.setOnAction(event -> {
             this.popUp.close();
         });
-        this.cancel.setStyle("-fx-background-color: FF0000; ");
     }
 
     public void Controls(){
@@ -137,6 +137,7 @@ public class ScheduleTab {
         this.controls.getChildren().add(editButton);
         this.controls.getChildren().add(deleteButton);
         this.controls.setSpacing(20);
+        this.controls.setPadding(new Insets(10));
     }
 
     public void additionWindow(){
@@ -202,7 +203,6 @@ inputStructure.add(PopularityLabel,3,5);
         submit.setOnAction(event -> {
             artistAddWindow();
         });
-        submit.setStyle("-fx-background-color: #228B22; ");
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
@@ -281,7 +281,6 @@ inputStructure.add(PopularityLabel,3,5);
         submit.setOnAction(event -> {
             this.popUp.close();
         });
-        submit.setStyle("-fx-background-color: #228B22; ");
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
@@ -290,7 +289,7 @@ inputStructure.add(PopularityLabel,3,5);
         structure.setBottom(choice);
 
         Scene editScene = new Scene(structure);
-        editScene.getStylesheets().add("Main-StyleSheet.css");
+        editScene.getStylesheets().add("Window-StyleSheet.css");
         this.popUp.setScene(editScene);
         this.popUp.show();
     }
@@ -309,7 +308,6 @@ inputStructure.add(PopularityLabel,3,5);
         HBox choice = new HBox();
 
         Button confirm = new Button("Confirm");
-        confirm.setStyle("-fx-background-color: #228B22; ");
         confirm.setOnAction(event -> {
             this.popUp.close();
         });
@@ -321,7 +319,7 @@ inputStructure.add(PopularityLabel,3,5);
 
         structure.setBottom(choice);
         Scene deleteScene = new Scene(structure);
-        deleteScene.getStylesheets().add("Main-StyleSheet.css");
+        deleteScene.getStylesheets().add("Window-StyleSheet.css");
         this.popUp.setScene(deleteScene);
         this.popUp.show();
     }
@@ -393,13 +391,11 @@ inputStructure.add(PopularityLabel,3,5);
         stop.setOnAction(event -> {
             artistAddWindow.close();
         });
-        stop.setStyle("-fx-background-color: FF0000; ");
         choice.getChildren().add(stop);
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
             this.popUp.close();
         });
-        confirm.setStyle("-fx-background-color: #228B22; ");
         choice.getChildren().add(confirm);
         choice.setAlignment(Pos.CENTER);
         choice.setSpacing(20);
