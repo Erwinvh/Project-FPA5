@@ -1,5 +1,6 @@
 package GUILogic;
 
+import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import javafx.beans.value.ObservableValue;
@@ -356,7 +357,7 @@ inputStructure.add(PopularityLabel,3,5);
     public void artistAddWindow(){
         Stage artistAddWindow = new Stage();
         artistAddWindow.setWidth(200);
-        artistAddWindow.setHeight(250);
+        artistAddWindow.setHeight(400);
         artistAddWindow.initOwner(this.popUp);
         artistAddWindow.initModality(Modality.WINDOW_MODAL);
 
@@ -364,14 +365,32 @@ inputStructure.add(PopularityLabel,3,5);
         TextField artistName = new TextField();
 
         TextArea artistDescription = new TextArea();
-
+        Label ArtistNameLabel = new Label("Artist name:");
+        newArtistList.getChildren().add(ArtistNameLabel);
         newArtistList.getChildren().add(artistName);
 
         //genre
+        Label ArtistGenreLabel = new Label("Artist's Genres:");
+        newArtistList.getChildren().add(ArtistGenreLabel);
+        GridPane Genres = new GridPane();
+        Genres.setHgap(10);
+        Genres.setVgap(10);
+//        for (Enumerators.Genres genre: ???) {
+//            Genres.add(, , x, y)
+//        }
+        Genres.add(new CheckBox("Nightcore"),1,1);
+        Genres.add(new CheckBox("Jazz"), 1,2);
+        Genres.add(new CheckBox("Rock"),2,1);
+        Genres.add(new CheckBox("K-Pop"),2,2);
+        newArtistList.getChildren().add(Genres);
 
 //        newArtistList.getChildren().add(artistDescription);
 
 //        private Image image;
+
+        Label ArtistpictureLabel = new Label("Artist's picture:");
+        newArtistList.getChildren().add(ArtistpictureLabel);
+
 //        FileChooser imageChooser = new FileChooser();
 //        imageChooser.getExtensionFilters().addAll(
 //                new FileChooser.ExtensionFilter("jpg Files", "*.jpg")
@@ -394,12 +413,13 @@ inputStructure.add(PopularityLabel,3,5);
         choice.getChildren().add(stop);
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
-            this.popUp.close();
+            artistAddWindow.close();
         });
         choice.getChildren().add(confirm);
         choice.setAlignment(Pos.CENTER);
         choice.setSpacing(20);
-
+        Label ArtistdescriptionLabel = new Label("Artist's description:");
+        newArtistList.getChildren().add(ArtistdescriptionLabel);
         newArtistList.getChildren().add(artistDescription);
         newArtistList.getChildren().add(choice);
         Scene artistAddScene = new Scene(newArtistList);
@@ -419,6 +439,12 @@ inputStructure.add(PopularityLabel,3,5);
     public ComboBox StageBox (){
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("None");
+        comboBox.getItems().add("Add new Stage");
+        comboBox.setOnAction(event -> {
+            if (comboBox.getValue().equals("Add new Stage")){
+                stageAddWindow();
+            }
+        });
 
         return comboBox;
     }
@@ -466,5 +492,41 @@ public ComboBox uurBox (){
         return minuutBox;
     }
 
+    public void stageAddWindow(){
+        Stage stageAddWindow = new Stage();
+        stageAddWindow.setWidth(200);
+        stageAddWindow.setHeight(250);
+        stageAddWindow.initOwner(this.popUp);
+        stageAddWindow.initModality(Modality.WINDOW_MODAL);
+
+        VBox newStageList = new VBox();
+        Label StageLabelName = new Label("Stage Name:");
+        newStageList.getChildren().add(StageLabelName);
+        TextField StageName = new TextField();
+        newStageList.getChildren().add(StageName);
+        Label StageLabelCapacity = new Label("Stage Capacity:");
+        newStageList.getChildren().add(StageLabelCapacity);
+        TextField InputTextField = new TextField();
+        newStageList.getChildren().add(InputTextField);
+
+        HBox choice = new HBox();
+        Button stop = new Button("Cancel");
+        stop.setOnAction(event -> {
+            stageAddWindow.close();
+        });
+        choice.getChildren().add(stop);
+        Button confirm = new Button("Confirm");
+        confirm.setOnAction(event -> {
+            stageAddWindow.close();
+        });
+        choice.getChildren().add(confirm);
+        choice.setAlignment(Pos.CENTER);
+        choice.setSpacing(20);
+
+        newStageList.getChildren().add(choice);
+        Scene artistAddScene = new Scene(newStageList);
+        stageAddWindow.setScene(artistAddScene);
+        stageAddWindow.show();
+    }
 
 }
