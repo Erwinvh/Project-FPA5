@@ -19,7 +19,7 @@ public class GUI extends Application {
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         Scene scene = new Scene(tabPane);
-        scene.getStylesheets().add("StyleSheet.css");
+        scene.getStylesheets().add("Main-StyleSheet.css");
         primaryStage.setTitle("Festival Planner");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

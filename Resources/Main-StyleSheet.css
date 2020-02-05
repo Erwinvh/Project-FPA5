@@ -1,0 +1,44 @@
+* {
+    main-color: #542B80;
+    secondary-color: #A857FF;
+    third-color: #C6DEC6;
+    fourth-color: #542B80;
+}
+
+.root {
+    -fx-background-color: main-color;
+    -fx-text-fill: main-color;
+    -fx-control-inner-background: secondary-color;
+
+
+    -fx-alignment: CENTER;
+    -fx-font-size: 15;
+}
+
+.table-view {
+    -fx-background-color: secondary-color;
+}
+
+.table-view .column-header {
+    -fx-background-color: third-color;
+}
+
+.table-view .column-header-background .filler{
+    -fx-background-color: third-color;
+}
+
+.button {
+    -fx-background-color: third-color;
+}
+
+.tab {
+    -fx-background-color: third-color;
+}
+
+.tab-pane *.tab-header-area *.tab-header-background {
+    -fx-background-color: main-color;
+}
+
+
+
+

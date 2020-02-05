@@ -2,11 +2,13 @@ package GUILogic;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -50,7 +52,6 @@ public class ScheduleTab {
         TableColumn popularityCol = new TableColumn("Popularity");
         popularityCol.setPrefWidth(100);
         this.table.setPrefWidth(875);
-        table.setStyle("-fx-background-color: #000000");
 
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
     }
@@ -157,6 +158,7 @@ public class ScheduleTab {
         structure.setBottom(choice);
 
         Scene adderScene = new Scene(structure);
+        adderScene.getStylesheets().add("Window-StyleSheet.css");
         this.popUp.setScene(adderScene);
         this.popUp.show();
     }
@@ -181,6 +183,7 @@ public class ScheduleTab {
         structure.setBottom(choice);
 
         Scene editScene = new Scene(structure);
+        editScene.getStylesheets().add("Main-StyleSheet.css");
         this.popUp.setScene(editScene);
         this.popUp.show();
     }
@@ -204,6 +207,7 @@ public class ScheduleTab {
 
         structure.setBottom(choice);
         Scene deleteScene = new Scene(structure);
+        deleteScene.getStylesheets().add("Main-StyleSheet.css");
         this.popUp.setScene(deleteScene);
         this.popUp.show();
     }

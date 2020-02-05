@@ -1,0 +1,15 @@
+* {
+    main-color: #542B80;
+    secondary-color: #A857FF;
+    third-color: #C6DEC6;
+    fourth-color: #542B80;
+}
+
+.root {
+    -fx-background-color: secondary-color;
+    -fx-text-fill: secondary-color;
+
+
+    -fx-alignment: CENTER;
+    -fx-font-size: 15;
+}
