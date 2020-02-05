@@ -44,6 +44,14 @@
     -fx-background-color: selected-color;
 }
 
+.text-area {
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, main-color, transparent, main-color;
+}
+
+
+
+
 
 
 

@@ -5,6 +5,7 @@ import Enumerators.Genres;
 import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import javafx.scene.image.Image;
 
 public class Planner implements Serializable {
 
@@ -32,6 +33,36 @@ public class Planner implements Serializable {
                     ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
                     shows = (ArrayList<Show>) objectInputStream.readObject();
+                    for( Show show : this.shows){
+                        for(Artist artist : show.getArtists()){
+                            boolean contains = false;
+                            for(Artist existingArtist : this.artists){
+                                if(artist.getName().equals(existingArtist.getName())) {
+                                    contains = true;
+                                }
+                            }
+                            if(!contains){
+                                this.artists.add(artist);
+                            }
+                        }
+                        if(!this.stages.contains(show.getStage())){
+                            boolean contains = false;
+                            for(Stage stage : this.stages){
+                                if(stage.getName().equals(show.getStage().getName())){
+                                    contains = true;
+                                }
+                            }
+                            if(!contains) {
+                                this.stages.add(show.getStage());
+                            }
+                        }
+
+                        for(Genres genre : show.getGenre()){
+                            if(!this.genres.contains(genre)){
+                                this.genres.add(genre);
+                            }
+                        }
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -125,4 +156,61 @@ public class Planner implements Serializable {
     public ArrayList<Genres> getGenres() {
         return genres;
     }
+
+    public void addArtist(String name, Genres genre,Image image ,String description){
+        boolean contains = false;
+        for(Artist existingArtist : this.artists){
+            if(name.equals(existingArtist.getName())) {
+                contains = true;
+            }
+        }
+        if(!contains){
+            this.artists.add(new Artist(name,genre,image,description));
+        }
+    }
+
+    public void addArtist(String name, Genres genre, String description){
+        boolean contains = false;
+        for(Artist existingArtist : this.artists){
+            if(name.equals(existingArtist.getName())) {
+                contains = true;
+            }
+        }
+        if(!contains){
+            this.artists.add(new Artist(name,genre,description));
+        }
+    }
+
+    public void addStage(int capacity ,String name){
+        boolean contains = false;
+        for(Stage stage : this.stages){
+            if(stage.getName().equals(name)){
+                contains = true;
+            }
+        }
+        if(!contains) {
+            this.stages.add(new Stage(capacity, name));
+        }
+    }
+
+    public void addShow(LocalTime beginTime, LocalTime endTime, Stage stage, int popularity, Genres genre, ArrayList<Artist> artists){
+        boolean canBeAdded = true;
+        for(Show show : this.shows){
+            if(artists.get(0).getName().equals(show.getName())){
+                canBeAdded = false;
+            }
+            if(stage.getName().equals(show.getStage().getName())){
+                if(beginTime.isAfter(show.getBeginTime()) && beginTime.isBefore(show.getEndTime())){
+                    canBeAdded = false;
+                }
+                if(endTime.isAfter(show.getBeginTime()) && endTime.isBefore(show.getEndTime())){
+                    canBeAdded = false;
+                }
+            }
+        }
+        if(canBeAdded){
+            this.shows.add(new Show(beginTime, endTime, stage, artists,"","",genre,popularity));
+        }
+    }
+
 }

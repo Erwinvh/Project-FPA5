@@ -1,11 +1,7 @@
 package GUILogic;
 
-import Enumerators.Genres;
-import PlannerData.Artist;
-import PlannerData.Planner;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,18 +12,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jdk.internal.util.xml.impl.Input;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
-import java.io.File;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class ScheduleTab {
@@ -90,6 +79,7 @@ public class ScheduleTab {
 
         TextArea artistDescription = new TextArea("Description of artist 1");
         artistDescription.setEditable(false);
+
 
         this.description.getChildren().add(Artistpicture);
         this.description.getChildren().add(artistDescription);
@@ -206,7 +196,7 @@ inputStructure.add(PopularityLabel,3,5);
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
-        choice.setAlignment(Pos.CENTER);
+        choice.setPadding(new Insets(10));
         choice.setSpacing(20);
         structure.setBottom(choice);
 
@@ -280,7 +270,7 @@ inputStructure.add(PopularityLabel,3,5);
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
-        choice.setAlignment(Pos.CENTER);
+        choice.setPadding(new Insets(10));
         choice.setSpacing(20);
         structure.setBottom(choice);
 
@@ -310,7 +300,7 @@ inputStructure.add(PopularityLabel,3,5);
 
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(confirm);
-        choice.setAlignment(Pos.CENTER);
+        choice.setPadding(new Insets(10));
         choice.setSpacing(20);
 
         structure.setBottom(choice);
@@ -333,6 +323,7 @@ inputStructure.add(PopularityLabel,3,5);
         }
         errorList.getChildren().add(new Label("Please resolve these errors before submitting."));
         Scene errorScene = new Scene(errorList);
+        errorScene.getStylesheets().add("Window-StyleSheet.css");
 
         errorPopUp.setScene(errorScene);
         errorPopUp.show();
@@ -436,13 +427,14 @@ inputStructure.add(PopularityLabel,3,5);
             artistAddWindow.close();
         });
         choice.getChildren().add(confirm);
-        choice.setAlignment(Pos.CENTER);
+        choice.setPadding(new Insets(10));
         choice.setSpacing(20);
         Label ArtistdescriptionLabel = new Label("Artist's description:");
         newArtistList.getChildren().add(ArtistdescriptionLabel);
         newArtistList.getChildren().add(artistDescription);
         newArtistList.getChildren().add(choice);
         Scene artistAddScene = new Scene(newArtistList);
+        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
         artistAddWindow.setScene(artistAddScene);
         artistAddWindow.show();
     }
@@ -540,11 +532,12 @@ public ComboBox timeBox (){
             stageAddWindow.close();
         });
         choice.getChildren().add(confirm);
-        choice.setAlignment(Pos.CENTER);
+        choice.setPadding(new Insets(10));
         choice.setSpacing(20);
 
         newStageList.getChildren().add(choice);
         Scene artistAddScene = new Scene(newStageList);
+        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
         stageAddWindow.setScene(artistAddScene);
         stageAddWindow.show();
     }
