@@ -41,6 +41,7 @@ public class ScheduleTab {
     private Button cancel = new Button("Cancel");
     private String selected = "test";
     private ArrayList<String> errorlist = new ArrayList<>();
+    private ArrayList<String> timelist = new ArrayList<>();
 
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -77,8 +78,8 @@ public class ScheduleTab {
     }
 
     public void testsetup(){
-        this.errorlist.add("hello");
-        this.errorlist.add("this is an error");
+//        this.errorlist.add("hello");
+//        this.errorlist.add("this is an error");
     }
 
     public void desciption(){
@@ -152,14 +153,10 @@ public class ScheduleTab {
         inputStructure.setVgap(10);
         inputStructure.add(new Label("Begin time:"),1,1);
         inputStructure.add(new Label("End time:"),1,2);
-        ComboBox beginUur = uurBox();
-        ComboBox eindUur = uurBox();
+        ComboBox beginUur = timeBox();
+        ComboBox eindUur = timeBox();
         inputStructure.add(beginUur,2,1);
         inputStructure.add(eindUur,2,2);
-        ComboBox beginMinuut = minuutBox();
-        ComboBox eindMinuut = minuutBox();
-        inputStructure.add(beginMinuut,3,1);
-        inputStructure.add(eindMinuut,3,2);
         inputStructure.add(new Label("Stage:"),1,3);
         inputStructure.add(new Label("Genre:"),1,4);
         inputStructure.add(new Label("Popularity:"),1,5);
@@ -202,7 +199,9 @@ inputStructure.add(PopularityLabel,3,5);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
-            artistAddWindow();
+
+            control(beginUur, eindUur, stage, genre);
+
         });
 
         choice.getChildren().add(this.cancel);
@@ -228,14 +227,10 @@ inputStructure.add(PopularityLabel,3,5);
         inputStructure.setVgap(10);
         inputStructure.add(new Label("Begin time:"),1,1);
         inputStructure.add(new Label("End time:"),1,2);
-        ComboBox beginUur = uurBox();
-        ComboBox eindUur = uurBox();
+        ComboBox beginUur = timeBox();
+        ComboBox eindUur = timeBox();
         inputStructure.add(beginUur,2,1);
         inputStructure.add(eindUur,2,2);
-        ComboBox beginMinuut = minuutBox();
-        ComboBox eindMinuut = minuutBox();
-        inputStructure.add(beginMinuut,3,1);
-        inputStructure.add(eindMinuut,3,2);
         inputStructure.add(new Label("Stage:"),1,3);
         inputStructure.add(new Label("Genre:"),1,4);
         inputStructure.add(new Label("Popularity:"),1,5);
@@ -280,7 +275,7 @@ inputStructure.add(PopularityLabel,3,5);
 
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
-            this.popUp.close();
+            control(beginUur, eindUur, stage, genre);
         });
 
         choice.getChildren().add(this.cancel);
@@ -336,22 +331,47 @@ inputStructure.add(PopularityLabel,3,5);
         for (String Error : this.errorlist) {
             errorList.getChildren().add(new Label(Error));
         }
+        errorList.getChildren().add(new Label("Please resolve these errors before submitting."));
         Scene errorScene = new Scene(errorList);
 
         errorPopUp.setScene(errorScene);
         errorPopUp.show();
     }
 
-    public void control(){
-        try{
-            Integer.parseInt(this.selected);
+    public void control(ComboBox beginUur, ComboBox eindUur, ComboBox stage, ComboBox genre){
+        this.errorlist.clear();
+        int beginIndex = this.timelist.indexOf(beginUur.getValue());
+        int endIndex = this.timelist.indexOf(eindUur.getValue());
+        if (beginUur.getValue()==null||eindUur.getValue()==null) {
+            if (beginUur.getValue() == null) {
+                this.errorlist.add("The begintime has not been filled in.");
+            }
+            if (eindUur.getValue() == null) {
+                this.errorlist.add("The endtime has not been filled in.");
+            }
         }
-        catch(Exception e){
-
+        else {
+            if (beginIndex>endIndex){
+                this.errorlist.add("The begintime is later than the endtime.");
+            }
+            else if (beginIndex==endIndex){
+                this.errorlist.add("The begintime the same as the endtime.");
+            }
+        }
+        if (stage.getValue()==null){
+            this.errorlist.add("The stage has not been filled in.");
+        }
+        if (genre.getValue()==null){
+            this.errorlist.add("The genre has not been filled in.");
         }
 
 
-
+        if (this.errorlist.isEmpty()){
+            this.popUp.close();
+        }
+        else{
+            errorWindow();
+        }
     }
 
     public void artistAddWindow(){
@@ -460,37 +480,37 @@ inputStructure.add(PopularityLabel,3,5);
             }
         });
 
-
-
-
-
         return comboBox;
     }
 
-public ComboBox uurBox (){
+public ComboBox timeBox (){
         ComboBox uurBox = new ComboBox();
+        String time = "";
+        String halftime = "";
     for (int i=0; i<=23; i++){
         if (i<10){
-            uurBox.getItems().add("0"+i);
+            time = "0"+i;
         }
         else {
-            uurBox.getItems().add(""+i);
+            time = ""+i;
+        }
+        for (int j = 0; j<=1; j++){
+            if (j==0){
+                halftime = time;
+                time += ":00";
+            }
+            else{
+                halftime += ":30";
+                time = halftime;
+            }
+            if (!this.timelist.contains(time)){
+                this.timelist.add(time);
+            }
+            uurBox.getItems().add(time);
         }
     }
     return uurBox;
 }
-    public ComboBox minuutBox (){
-        ComboBox minuutBox = new ComboBox();
-        for (int i=0; i<=55; i+=5){
-            if (i<10){
-                minuutBox.getItems().add("0"+i);
-            }
-            else {
-                minuutBox.getItems().add(""+i);
-            }
-        }
-        return minuutBox;
-    }
 
     public void stageAddWindow(){
         Stage stageAddWindow = new Stage();
