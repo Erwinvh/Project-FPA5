@@ -50,6 +50,7 @@ public class ScheduleTab {
         TableColumn popularityCol = new TableColumn("Popularity");
         popularityCol.setPrefWidth(100);
         this.table.setPrefWidth(875);
+        table.setStyle("-fx-background-color: #000000");
 
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
     }
