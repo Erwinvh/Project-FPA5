@@ -1,13 +1,18 @@
 package GUILogic;
 
+import Enumerators.Genres;
+import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
 import PlannerData.Stage;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import org.jfree.fx.FXGraphics2D;
 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,12 +29,46 @@ public class VisualTab {
     public VisualTab(){
         this.planner = new Planner();
         this.startTime = 17;
-        this.endTime = 24;
+         
         this.visualTab = new Tab("Visual");
-        this.canvas = new Canvas(960, 540);
-        this.visualTab.setContent(this.canvas);
-        drawLayout(new FXGraphics2D(canvas.getGraphicsContext2D()));
+        this.canvas = new Canvas(960, 1240);
 
+        ScrollPane scrollPane = new ScrollPane(this.canvas);
+        scrollPane.setPrefSize(960, 540);
+        scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
+//        scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
+
+        this.visualTab.setContent(scrollPane);
+        drawLayout2(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
+    }
+
+    public void drawLayout2(FXGraphics2D graphics) {
+        graphics.setTransform(new AffineTransform());
+        graphics.translate(60, 40);
+
+        graphics.draw(new Line2D.Double(-60, 0, this.canvas.getWidth()-60, 0));
+        graphics.draw(new Line2D.Double(0, -40, 0, this.canvas.getHeight()-40));
+
+        this.planner.getStages().add(new Stage(1, "Test"));
+        this.planner.getStages().add(new Stage(1, "Barry"));
+        this.planner.getStages().add(new Stage(1, "I am Bored"));
+        this.planner.getStages().add(new Stage(1, "Pieter"));
+
+        int i = 0;
+        for (Stage stage : this.planner.getStages()) {
+            i++;
+            graphics.draw(new Line2D.Double(i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), -40, i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), this.canvas.getHeight()-40));
+            graphics.drawString(stage.getName(), (int) ((i - 1) * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()) + 10), -15);
+        }
+
+        for (int j = 1; j < 25; j++) {
+            graphics.drawString(j + ":00", -50, (int) ((j - 0.5) * 50));
+        }
+    }
+
+    public void drawPlanning2(FXGraphics2D graphics) {
+        graphics.setTransform(new AffineTransform());
+        graphics.translate(60, 40);
     }
 
     public Tab getVisualTab(){
