@@ -1,5 +1,6 @@
 import PlannerData.Planner;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,8 +12,16 @@ public class Main {
         Planner planner = new Planner();
 
         try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(saveFileName));
-            planner = (Planner) objectInputStream.readObject();
+            File file = new File(saveFileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            } else {
+                FileInputStream fileInputStream = new FileInputStream(saveFileName);
+                if (fileInputStream.available() > 1) {
+                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                    planner = (Planner) objectInputStream.readObject();
+                }
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
             e.printStackTrace();

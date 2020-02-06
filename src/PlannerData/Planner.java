@@ -1,13 +1,12 @@
 package PlannerData;
 
 import Enumerators.Genres;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import javafx.scene.image.Image;
 
-import java.io.*;
-import java.lang.reflect.Type;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -16,39 +15,15 @@ public class Planner implements Serializable {
     private ArrayList<Show> shows;
     private ArrayList<Stage> stages;
     private ArrayList<Artist> artists;
-    private ArrayList<Genres> genres;
+//    private ArrayList<Genres> genres;
 
     public final static String saveFileName = "Planner.txt";
-    //private Gson gson;
 
     public Planner() {
         this.shows = new ArrayList<>();
         this.stages = new ArrayList<>();
         this.artists = new ArrayList<>();
-        this.genres = new ArrayList<>();
-
-        //this.gson = new GsonBuilder().setPrettyPrinting().create();
-
-//        try {
-//            File file = new File(saveFileName);
-//            if (!file.exists()) {
-//                file.createNewFile();
-//            } else {
-//
-//                FileInputStream fileInputStream = new FileInputStream(saveFileName);
-//                if (fileInputStream.available() > 1) {
-//                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-//
-//                    //Type type = new TypeToken<ArrayList<Show>>() {}.getType();
-//                    //this.shows = gson.fromJson((String) objectInputStream.readObject(), type);
-//
-//
-//                }
-//            }
-//        } catch (IOException | ClassNotFoundException e) {
-//            System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
-//            e.printStackTrace();
-//        }
+//        this.genres = new ArrayList<>();
     }
 
     /**
@@ -67,10 +42,6 @@ public class Planner implements Serializable {
                 if (!this.artists.contains(artist)) {
                     this.artists.add(artist);
                 }
-            }
-
-            if (this.genres.contains(show.getGenre())) {
-                this.genres.addAll(show.getGenre());
             }
         }
     }
@@ -106,11 +77,6 @@ public class Planner implements Serializable {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
             objectOutputStream.writeObject(this);
-            //String savedShows = this.gson.toJson(this.shows);
-//
-//            objectOutputStream.writeObject(savedShows);
-//
-//            objectOutputStream.writeObject(savedShows);
             objectOutputStream.close();
 
         } catch (IOException e) {
@@ -124,7 +90,6 @@ public class Planner implements Serializable {
                 "shows=" + shows +
                 ", stages=" + stages +
                 ", artists=" + artists +
-                ", genres=" + genres +
                 ", saveFileName='" + saveFileName + '\'' +
                 '}';
     }
@@ -139,10 +104,6 @@ public class Planner implements Serializable {
 
     public ArrayList<Artist> getArtists() {
         return artists;
-    }
-
-    public ArrayList<Genres> getGenres() {
-        return genres;
     }
 
     public void addArtist(String name, Genres genre, Image image, String description) {
@@ -203,5 +164,4 @@ public class Planner implements Serializable {
             this.shows.add(new Show(beginTime, endTime, stage, artists, "", "", genre, popularity));
         }
     }
-
 }
