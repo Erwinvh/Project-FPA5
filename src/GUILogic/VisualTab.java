@@ -14,7 +14,10 @@ import org.jfree.fx.FXGraphics2D;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,13 +35,13 @@ public class VisualTab {
     public VisualTab(){
         this.planner = new Planner();
 
-        System.out.println(this.planner.getStages());
+        System.out.println(this.planner.getShows());
 
         this.planner.getStages().add(new Stage(1, "Test"));
         this.planner.getStages().add(new Stage(1, "Barry"));
 
         this.visualTab = new Tab("Visual");
-        this.canvas = new Canvas(960, 1200);
+        this.canvas = new Canvas(960, 2400);
         this.canvasStages = new Canvas(960, 40);
 
         ScrollPane scrollPane = new ScrollPane(this.canvas);
@@ -49,7 +52,8 @@ public class VisualTab {
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
-        drawLayout2(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
+        drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
+        drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
     }
 
     public void drawStages(FXGraphics2D graphics) {
@@ -68,73 +72,58 @@ public class VisualTab {
         }
     }
 
-    public void drawLayout2(FXGraphics2D graphics) {
+    public void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.translate(60, 0);
 
         graphics.draw(new Line2D.Double(0, 0, 0, this.canvas.getHeight()));
 
-//        int i = 0;
-//        for (Stage stage : this.planner.getStages()) {
-//            i++;
-//            graphics.draw(new Line2D.Double(i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), -40, i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), this.canvas.getHeight()-40));
-//            graphics.drawString(stage.getName(), (int) ((i - 1) * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()) + 10), -15);
-//        }
+        int i = 0;
+        for (Stage stage : this.planner.getStages()) {
+            i++;
+            graphics.draw(new Line2D.Double(i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), 0, i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), this.canvas.getHeight()));
+        }
 
         for (int j = 1; j < 24; j++) {
-            graphics.drawString(j + ":00", -50, (int) (j * 50));
-        }
-    }
-
-    public void drawPlanning2(FXGraphics2D graphics) {
-        graphics.setTransform(new AffineTransform());
-        graphics.translate(60, 40);
-    }
-
-    public Tab getVisualTab(){
-        return visualTab;
-    }
-
-       public void drawLayout(FXGraphics2D graphics) {
-        ArrayList<String> stages = new ArrayList<>(); // needs to be getter
-        stages.addAll(Arrays.asList("Rik", "Arne", "Lars", "Veel te lange naam", "Henk", "Peter"));
-        this.amountOfColumns = stages.size();
-
-        graphics.draw(new Line2D.Double(0, 50, 960, 50));
-        graphics.draw(new Line2D.Double(60, 0, 60, 540));
-
-        for (int i = 0; i < this.amountOfColumns; i++) {
-            graphics.draw(new Line2D.Double((900/amountOfColumns) * (1 + i) + 60,0 , (900/amountOfColumns) * (1 + i) + 60, 540));
-//            graphics.drawString(stages.get(i).getName(), (int)((900/amountOfColumns) * (i + 0.1) + 60), 30);
-            //dit werkt niet^
-        }
-
-
-        for (int i = this.startTime; i <= this.endTime; i++){
-            graphics.drawString((i) + ":00", 5, (int) ((i - this.startTime + 0.5) * (490/(this.endTime - this.startTime + 2)) + 50));
+            graphics.drawString(j + ":00", -50, (int) (j * this.canvas.getHeight() / 24));
         }
     }
 
     public void drawPlanning(FXGraphics2D graphics) {
-        int amountOfHours = this.endTime - this.startTime;
+        graphics.setTransform(new AffineTransform());
+        graphics.translate(60, 0);
+
+        this.columnWith = (int) ((this.canvas.getWidth() - 60) / this.planner.getStages().size());
+
+        System.out.println(this.planner.getShows().size());
+
         for (Show show : this.planner.getShows()) {
-            double timeDecimal = show.getBeginTime().minusHours(this.startTime).getHour() + (show.getBeginTime().getMinute()/60);
-            int beginY = (int) (490/amountOfHours * timeDecimal/amountOfHours);
-
-            timeDecimal = show.getEndTime().minusHours(this.startTime).getHour() + (show.getEndTime().getMinute()/60);
-            int endY = (int) (490/amountOfHours * timeDecimal/amountOfHours);
-
-            int counter = 0;
+            int stageCounter = 1;
             for (Stage stage : this.planner.getStages()) {
                 if (stage == show.getStage()) {
                     break;
                 }
-                counter++;
+                else
+                stageCounter++;
             }
+            if (stageCounter <= this.planner.getStages().size()) {
+                double timeDecimalBeginTime = show.getBeginTime().minusHours(this.startTime).getHour() + (show.getBeginTime().getMinute()/60);
+                double timeDecimalEndTime = show.getEndTime().minusHours(this.startTime).getHour() + (show.getEndTime().getMinute()/60);
 
-            int beginX = counter * this.columnWith + 62;
+                graphics.draw(new RoundRectangle2D.Double(((stageCounter - 1) * this.columnWith) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24), this.columnWith - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24), 25, 10));
+                String artists = "";
+                for (Artist artist : show.getArtists()) {
+                    artists += artist.getName() + ", ";
+                }
+                artists = artists.substring(0, artists.length()-2);
+                artists += ".";
+                graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " +show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((stageCounter - 1) * this.columnWith) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
 
-            graphics.drawRect(beginX, beginY, this.columnWith - 4, endY - beginY);
+            }
         }
+    }
+
+    public Tab getVisualTab(){
+        return visualTab;
     }
 }

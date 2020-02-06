@@ -21,6 +21,7 @@ public class Main {
         artists.add(new Artist("Ralf", Genres.ALTERNATIVE_ROCK, "GIT is als de dood, niet prettig maar onvermijdbaar."));
         artists.add(new Artist("Kasper", Genres.NIGHTCORE, "Een ware leider en houdt van Wendy."));
         artists.add(new Artist("Erwin", Genres.JAZZ, "Een ware leider."));
+        artists.add(new Artist("Lars", Genres.METAL, "De legend van Spoderman"));
 
         ArrayList<Stage> stages = new ArrayList<>();
         stages.add(new Stage(2500, "Main stage"));
