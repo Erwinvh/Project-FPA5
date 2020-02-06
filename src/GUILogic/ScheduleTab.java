@@ -1,5 +1,6 @@
 package GUILogic;
 
+import Enumerators.Genres;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,13 +18,13 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class ScheduleTab {
     private Tab scheduleTab;
     private TableView table = new TableView();
     private VBox description = new VBox();
+    private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
     private Stage primaryStage;
     private Stage popUp = new Stage();
@@ -40,6 +42,7 @@ public class ScheduleTab {
         this.popUp.setHeight(450);
         this.popUp.initOwner(this.primaryStage);
         this.popUp.initModality(Modality.WINDOW_MODAL);
+        this.allDescriptions.setPrefWidth(600);
     }
 
     public Tab getScheduleTab() {
@@ -61,28 +64,42 @@ public class ScheduleTab {
         genreCol.setPrefWidth(100);
         TableColumn popularityCol = new TableColumn("Popularity");
         popularityCol.setPrefWidth(100);
-        this.table.setPrefWidth(875);
+        this.table.setPrefWidth(800);
 
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
     }
 
-    public void testsetup(){
-//        this.errorlist.add("hello");
-//        this.errorlist.add("this is an error");
-    }
-
     public void desciption(){
-        Image baseImage = new Image("file:Resources/PersonImageBase.jpg");
-        ImageView Artistpicture = new ImageView(baseImage);
-        Artistpicture.setFitHeight(200);
-        Artistpicture.setFitWidth(200);
 
-        TextArea artistDescription = new TextArea("Description of artist 1");
-        artistDescription.setEditable(false);
+        //for each
+        for (int i = 0; i<2; i++) {
+            GridPane descriptionStructure = new GridPane();
+            TextField artistName = new TextField("get artistname (i)");
+            artistName.setEditable(false);
+            descriptionStructure.add(artistName, 1, 1);
 
+            TextField artistamount = new TextField("Number 1 out of (i)");
+            artistamount.setEditable(false);
+            artistamount.setPrefWidth(150);
+            descriptionStructure.add(artistamount, 2, 1);
 
-        this.description.getChildren().add(Artistpicture);
-        this.description.getChildren().add(artistDescription);
+            Image baseImage = new Image("file:Resources/PersonImageBase.jpg");
+            ImageView Artistpicture = new ImageView(baseImage);
+            Artistpicture.setFitHeight(200);
+            Artistpicture.setFitWidth(200);
+            descriptionStructure.add(Artistpicture, 1, 2);
+            TextArea Genres = new TextArea("Genre #1" + '\n' + "Genre #2");
+            Genres.setPrefWidth(150);
+            Genres.setEditable(false);
+            descriptionStructure.add(Genres, 2, 2);
+
+            TextArea artistDescription = new TextArea("Description of artist 1");
+            artistDescription.setEditable(false);
+            artistDescription.setPrefWidth(150);
+            this.description.getChildren().add(descriptionStructure);
+            this.description.getChildren().add(artistDescription);
+        }
+        this.allDescriptions.setContent(this.description);
     }
 
     public void layout1(){
@@ -91,11 +108,9 @@ public class ScheduleTab {
         table();
         desciption();
         cancelsetup();
-
-        testsetup();
         
         baseLayer.getChildren().add(this.table);
-        baseLayer.getChildren().add(this.description);
+        baseLayer.getChildren().add(this.allDescriptions);
 
         VBox base = new VBox();
         base.getChildren().add(baseLayer);
@@ -141,21 +156,25 @@ public class ScheduleTab {
         GridPane inputStructure = new GridPane();
         inputStructure.setHgap(10);
         inputStructure.setVgap(10);
-        inputStructure.add(new Label("Begin time:"),1,1);
-        inputStructure.add(new Label("End time:"),1,2);
+        Label showName = new Label("Show name:");
+        TextField inputShowName = new TextField();
+        inputStructure.add(showName,1,1);
+        inputStructure.add(inputShowName,2,1);
+        inputStructure.add(new Label("Begin time:"),1,2);
+        inputStructure.add(new Label("End time:"),1,3);
         ComboBox beginUur = timeBox();
         ComboBox eindUur = timeBox();
-        inputStructure.add(beginUur,2,1);
-        inputStructure.add(eindUur,2,2);
-        inputStructure.add(new Label("Stage:"),1,3);
-        inputStructure.add(new Label("Genre:"),1,4);
-        inputStructure.add(new Label("Popularity:"),1,5);
-        inputStructure.add(new Label("Artists:"),1,6);
+        inputStructure.add(beginUur,2,2);
+        inputStructure.add(eindUur,2,3);
+        inputStructure.add(new Label("Stage:"),1,4);
+        inputStructure.add(new Label("Genre:"),1,5);
+        inputStructure.add(new Label("Popularity:"),1,6);
+        inputStructure.add(new Label("Artists:"),1,7);
 
         ComboBox stage = StageBox();
-        inputStructure.add(stage,2,3);
+        inputStructure.add(stage,2,4);
         ComboBox genre = genreBox();
-        inputStructure.add(genre,2,4);
+        inputStructure.add(genre,2,5);
         Slider popularity = new Slider();
         popularity.setMin(0);
         popularity.setMax(100);
@@ -165,7 +184,7 @@ public class ScheduleTab {
         popularity.setMajorTickUnit(50);
         popularity.setMinorTickCount(5);
         popularity.setBlockIncrement(10);
-        inputStructure.add(popularity,2,5);
+        inputStructure.add(popularity,2,6);
         Label PopularityLabel = new Label("");
         popularity.valueProperty().addListener(new ChangeListener<Number>() {
 
@@ -181,16 +200,16 @@ public class ScheduleTab {
 
         PopularityLabel.textProperty().setValue("0");
 
-inputStructure.add(PopularityLabel,3,5);
+        inputStructure.add(PopularityLabel,3,6);
         ComboBox artists = artistBox();
-        inputStructure.add(artists,2,6);
+        inputStructure.add(artists,2,7);
 
         structure.setCenter(inputStructure);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
 
-            control(beginUur, eindUur, stage, genre);
+            control(beginUur, eindUur, stage, genre, inputShowName);
 
         });
 
@@ -215,21 +234,25 @@ inputStructure.add(PopularityLabel,3,5);
         GridPane inputStructure = new GridPane();
         inputStructure.setHgap(10);
         inputStructure.setVgap(10);
-        inputStructure.add(new Label("Begin time:"),1,1);
-        inputStructure.add(new Label("End time:"),1,2);
+        Label showName = new Label("Show name:");
+        TextField inputShowName = new TextField();
+        inputStructure.add(showName,1,1);
+        inputStructure.add(inputShowName,2,1);
+        inputStructure.add(new Label("Begin time:"),1,2);
+        inputStructure.add(new Label("End time:"),1,3);
         ComboBox beginUur = timeBox();
         ComboBox eindUur = timeBox();
-        inputStructure.add(beginUur,2,1);
-        inputStructure.add(eindUur,2,2);
-        inputStructure.add(new Label("Stage:"),1,3);
-        inputStructure.add(new Label("Genre:"),1,4);
-        inputStructure.add(new Label("Popularity:"),1,5);
-        inputStructure.add(new Label("Artists:"),1,6);
+        inputStructure.add(beginUur,2,2);
+        inputStructure.add(eindUur,2,3);
+        inputStructure.add(new Label("Stage:"),1,4);
+        inputStructure.add(new Label("Genre:"),1,5);
+        inputStructure.add(new Label("Popularity:"),1,6);
+        inputStructure.add(new Label("Artists:"),1,7);
 
         ComboBox stage = StageBox();
-        inputStructure.add(stage,2,3);
+        inputStructure.add(stage,2,4);
         ComboBox genre = genreBox();
-        inputStructure.add(genre,2,4);
+        inputStructure.add(genre,2,5);
         Slider popularity = new Slider();
         popularity.setMin(0);
         popularity.setMax(100);
@@ -239,7 +262,7 @@ inputStructure.add(PopularityLabel,3,5);
         popularity.setMajorTickUnit(50);
         popularity.setMinorTickCount(5);
         popularity.setBlockIncrement(10);
-        inputStructure.add(popularity,2,5);
+        inputStructure.add(popularity,2,6);
         Label PopularityLabel = new Label("");
         popularity.valueProperty().addListener(new ChangeListener<Number>() {
 
@@ -255,17 +278,17 @@ inputStructure.add(PopularityLabel,3,5);
 
         PopularityLabel.textProperty().setValue("0");
 
-        inputStructure.add(PopularityLabel,3,5);
+        inputStructure.add(PopularityLabel,3,6);
         ComboBox artists = artistBox();
-        inputStructure.add(artists,2,6);
+        inputStructure.add(artists,2,7);
 
         structure.setCenter(inputStructure);
-
         HBox choice = new HBox();
-
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
-            control(beginUur, eindUur, stage, genre);
+
+            control(beginUur, eindUur, stage, genre, inputShowName);
+
         });
 
         choice.getChildren().add(this.cancel);
@@ -313,26 +336,38 @@ inputStructure.add(PopularityLabel,3,5);
     public void errorWindow(){
 
         Stage errorPopUp = new Stage();
-        errorPopUp.setWidth(200);
+        errorPopUp.setWidth(500);
+        errorPopUp.setResizable(false);
         errorPopUp.setHeight(250);
         errorPopUp.initOwner(this.popUp);
         errorPopUp.initModality(Modality.WINDOW_MODAL);
+        HBox baseStructure = new HBox();
+        Image error = new Image("file:Resources/alert.png");
+        ImageView showError = new ImageView(error);
+        showError.setFitWidth(100);
+        showError.setFitHeight(100);
+        baseStructure.getChildren().add(showError);
         VBox errorList = new VBox();
         for (String Error : this.errorlist) {
             errorList.getChildren().add(new Label(Error));
         }
         errorList.getChildren().add(new Label("Please resolve these errors before submitting."));
-        Scene errorScene = new Scene(errorList);
+        errorList.setAlignment(Pos.CENTER);
+        baseStructure.getChildren().add(errorList);
+        Scene errorScene = new Scene(baseStructure);
         errorScene.getStylesheets().add("Window-StyleSheet.css");
 
         errorPopUp.setScene(errorScene);
         errorPopUp.show();
     }
 
-    public void control(ComboBox beginUur, ComboBox eindUur, ComboBox stage, ComboBox genre){
+    public void control(ComboBox beginUur, ComboBox eindUur, ComboBox stage, ComboBox genre, TextField showName){
         this.errorlist.clear();
         int beginIndex = this.timelist.indexOf(beginUur.getValue());
         int endIndex = this.timelist.indexOf(eindUur.getValue());
+        if (showName.getText().length()==0){
+            this.errorlist.add("The show name has not been filled in.");
+        }
         if (beginUur.getValue()==null||eindUur.getValue()==null) {
             if (beginUur.getValue() == null) {
                 this.errorlist.add("The begintime has not been filled in.");
@@ -359,6 +394,47 @@ inputStructure.add(PopularityLabel,3,5);
 
         if (this.errorlist.isEmpty()){
             this.popUp.close();
+        }
+        else{
+            errorWindow();
+        }
+    }
+
+    public void newArtistControl(TextField ArtistName, TextArea ArtistDescription){
+        this.errorlist.clear();
+        if (ArtistName.getText().length()==0){
+            this.errorlist.add("The artist's name has not been filled in.");
+        }
+        if (ArtistDescription.getText().length()==0){
+            this.errorlist.add("The artist's description has not been filled in.");
+        }
+        if (this.errorlist.isEmpty()){
+
+        }
+        else{
+            errorWindow();
+        }
+    }
+
+    public void newStageControl(TextField stageName, TextField capacity){
+        this.errorlist.clear();
+        if (stageName.getText().length()==0){
+            this.errorlist.add("The stage name has not been filled in.");
+        }
+        if (capacity.getText().length()==0){
+            this.errorlist.add("The capacity has not been filled in.");
+        }
+        else{
+            try {
+               int cap = Integer.parseInt(capacity.getText());
+            }
+            catch(Exception e){
+                this.errorlist.add("The capacity must be a Number.");
+            }
+
+        }
+        if (this.errorlist.isEmpty()){
+
         }
         else{
             errorWindow();
@@ -424,7 +500,7 @@ inputStructure.add(PopularityLabel,3,5);
         choice.getChildren().add(stop);
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
-            artistAddWindow.close();
+            newArtistControl(artistName, artistDescription);
         });
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
@@ -529,7 +605,7 @@ public ComboBox timeBox (){
         choice.getChildren().add(stop);
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
-            stageAddWindow.close();
+            newStageControl(StageName,InputTextField);
         });
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
