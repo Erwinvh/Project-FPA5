@@ -33,6 +33,7 @@ public class ScheduleTab {
     private String selected = "test";
     private ArrayList<String> errorlist = new ArrayList<>();
     private ArrayList<String> timelist = new ArrayList<>();
+    private int additionalArtists = 0;
 
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -148,6 +149,7 @@ public class ScheduleTab {
     }
 
     public void additionWindow(){
+        this.additionalArtists = 0;
         BorderPane structure = new BorderPane();
 
         Label addingNew = new Label("what show do you want to add?");
@@ -204,7 +206,23 @@ public class ScheduleTab {
         ComboBox artists = artistBox();
         inputStructure.add(artists,2,7);
 
-        structure.setCenter(inputStructure);
+        Button showArtistAdder = new Button("+");
+        inputStructure.add(showArtistAdder,3,7);
+        showArtistAdder.setOnAction(event -> {
+            this.additionalArtists++;
+            ComboBox ArtistAdded = artistBox();
+            inputStructure.add(ArtistAdded,2,7 + this.additionalArtists);
+            ArtistAdded.setOnAction(e -> {
+                if (ArtistAdded.getValue().equals("None")){
+                    inputStructure.getChildren().remove(ArtistAdded);
+                    this.additionalArtists--;
+                }
+            });
+                });
+
+        ScrollPane ArtistScroller = new ScrollPane();
+        ArtistScroller.setContent(inputStructure);
+        structure.setCenter(ArtistScroller);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
@@ -282,7 +300,23 @@ public class ScheduleTab {
         ComboBox artists = artistBox();
         inputStructure.add(artists,2,7);
 
-        structure.setCenter(inputStructure);
+        Button showArtistAdder = new Button("+");
+        inputStructure.add(showArtistAdder,3,7);
+        showArtistAdder.setOnAction(event -> {
+            this.additionalArtists++;
+            ComboBox ArtistAdded = artistBox();
+            inputStructure.add(ArtistAdded,2,7 + this.additionalArtists);
+            ArtistAdded.setOnAction(e -> {
+                if (ArtistAdded.getValue().equals("None")){
+                    inputStructure.getChildren().remove(ArtistAdded);
+                    this.additionalArtists--;
+                }
+            });
+        });
+
+        ScrollPane ArtistScroller = new ScrollPane();
+        ArtistScroller.setContent(inputStructure);
+        structure.setCenter(ArtistScroller);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
