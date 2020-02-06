@@ -2,6 +2,7 @@ package PlannerData;
 
 import Enumerators.Genres;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import javafx.scene.image.Image;
 
@@ -13,12 +14,12 @@ import java.util.ArrayList;
 public class Planner implements Serializable {
 
     private ArrayList<Show> shows;
-    private transient ArrayList<Stage> stages;
-    private transient ArrayList<Artist> artists;
-    private transient ArrayList<Genres> genres;
+    private ArrayList<Stage> stages;
+    private ArrayList<Artist> artists;
+    private ArrayList<Genres> genres;
 
-    private final String saveFileName = "Planner.txt";
-    private Gson gson;
+    public final static String saveFileName = "Planner.txt";
+    //private Gson gson;
 
     public Planner() {
         this.shows = new ArrayList<>();
@@ -26,61 +27,28 @@ public class Planner implements Serializable {
         this.artists = new ArrayList<>();
         this.genres = new ArrayList<>();
 
-        this.gson = new Gson();
-//        String savedData = gson.toJson(shows);
-//        shows = gson.fromJson(savedData, Object);
+        //this.gson = new GsonBuilder().setPrettyPrinting().create();
 
-        try {
-            File file = new File(saveFileName);
-            if (!file.exists()) {
-                file.createNewFile();
-            } else {
-
-                FileInputStream fileInputStream = new FileInputStream(saveFileName);
-                if (fileInputStream.available() > 1) {
-                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-                    Type type = new TypeToken<ArrayList<Show>>() {}.getType();
-
-                    this.shows = gson.fromJson(objectInputStream.readUTF(), type);
-                    //shows = (ArrayList<Show>) objectInputStream.readObject();
-                    for (Show show : this.shows) {
-                        for (Artist artist : show.getArtists()) {
-                            boolean contains = false;
-                            for (Artist existingArtist : this.artists) {
-                                if (artist.getName().equals(existingArtist.getName())) {
-                                    contains = true;
-                                }
-                            }
-                            if (!contains) {
-                                this.artists.add(artist);
-                            }
-                        }
-
-                        if (!this.stages.contains(show.getStage())) {
-                            boolean contains = false;
-                            for (Stage stage : this.stages) {
-                                if (stage.getName().equals(show.getStage().getName())) {
-                                    contains = true;
-                                }
-                            }
-                            if (!contains) {
-                                this.stages.add(show.getStage());
-                            }
-                        }
-
-                        for (Genres genre : show.getGenre()) {
-                            if (!this.genres.contains(genre)) {
-                                this.genres.add(genre);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
-            e.printStackTrace();
-        }
+//        try {
+//            File file = new File(saveFileName);
+//            if (!file.exists()) {
+//                file.createNewFile();
+//            } else {
+//
+//                FileInputStream fileInputStream = new FileInputStream(saveFileName);
+//                if (fileInputStream.available() > 1) {
+//                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+//
+//                    //Type type = new TypeToken<ArrayList<Show>>() {}.getType();
+//                    //this.shows = gson.fromJson((String) objectInputStream.readObject(), type);
+//
+//
+//                }
+//            }
+//        } catch (IOException | ClassNotFoundException e) {
+//            System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -137,8 +105,12 @@ public class Planner implements Serializable {
     public void savePlanner() {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
-            String savedShows = this.gson.toJson(this.shows);
-            objectOutputStream.writeObject(savedShows);
+            objectOutputStream.writeObject(this);
+            //String savedShows = this.gson.toJson(this.shows);
+//
+//            objectOutputStream.writeObject(savedShows);
+//
+//            objectOutputStream.writeObject(savedShows);
             objectOutputStream.close();
 
         } catch (IOException e) {

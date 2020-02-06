@@ -1,7 +1,5 @@
 package Enumerators;
 
-import java.io.Serializable;
-
 public enum Genres {
     BLUES,
     ROCK,
