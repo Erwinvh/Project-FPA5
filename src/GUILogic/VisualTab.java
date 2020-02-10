@@ -20,12 +20,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class VisualTab {
+
     private Tab visualTab;
     private Canvas canvas;
     private Canvas canvasStages;
     private Planner planner;
 
-    private int columnWidth = -1;
+    private int columnWidth = -1; //TODO: Add check whether this is still -1 when using this variable
+
+    private static final int CANVAS_WIDTH = 960;
+    private static final int CANVAS_HEIGHT = 2400;
+    private static final int STAGE_HEIGHT = 40;
+    private static final int TIME_COLUMN_WIDTH = 60;
 
     public VisualTab() {
         this.planner = new Planner();
@@ -44,14 +50,15 @@ public class VisualTab {
         planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
 
         this.visualTab = new Tab("Visual");
-        this.canvas = new Canvas(960, 2400);
-        this.canvasStages = new Canvas(960, 40);
+        this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.canvasStages = new Canvas(CANVAS_WIDTH, STAGE_HEIGHT);
 
         ScrollPane scrollPane = new ScrollPane(this.canvas);
-        scrollPane.setPrefSize(960, 500);
+        scrollPane.setPrefSize(CANVAS_WIDTH, 500);
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVvalue(LocalTime.now().getHour() / 24f);
+//        scrollPane.setFitToWidth(true);
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
@@ -65,18 +72,17 @@ public class VisualTab {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.WHITE);
         graphics.clearRect(0, 0, (int) this.canvasStages.getWidth(), (int) this.canvasStages.getHeight());
-        graphics.translate(60, 40);
+        graphics.translate(TIME_COLUMN_WIDTH, STAGE_HEIGHT);
 
         // Add axis lines to stages layout
-        graphics.draw(new Line2D.Double(-60, 0, this.canvasStages.getWidth() - 60, 0));
-        graphics.draw(new Line2D.Double(0, 0, 0, -40));
+        graphics.draw(new Line2D.Double(-TIME_COLUMN_WIDTH, 0, this.canvasStages.getWidth() - TIME_COLUMN_WIDTH, 0));
 
-        this.columnWidth = (int) ((this.canvas.getWidth() - 60) / this.planner.getStages().size());
+        this.columnWidth = (int) ((this.canvas.getWidth() - TIME_COLUMN_WIDTH) / this.planner.getStages().size());
 
         // Add all divider lines to stages layout
         for (int i = 0; i < planner.getStages().size(); i++) {
-            graphics.draw(new Line2D.Double(i * this.columnWidth, 0, i * this.columnWidth, -40));
-            graphics.drawString(planner.getStages().get(i).getName(), ((i - 1) * this.columnWidth + 10), -15);
+            graphics.draw(new Line2D.Double(i * this.columnWidth, 0, i * this.columnWidth, -STAGE_HEIGHT));
+            graphics.drawString(this.planner.getStages().get(i).getName() + " (cap. " + this.planner.getStages().get(i).getCapacity() + ")", (i * this.columnWidth + 10), -15);
         }
     }
 
@@ -84,7 +90,7 @@ public class VisualTab {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.WHITE);
         graphics.clearRect(0, 0, (int) this.canvas.getWidth(), (int) this.canvas.getHeight());
-        graphics.translate(60, 0);
+        graphics.translate(TIME_COLUMN_WIDTH, 0);
 
         // Add vertical line to divide time and shows
         graphics.draw(new Line2D.Double(0, 0, 0, this.canvas.getHeight()));
@@ -102,7 +108,7 @@ public class VisualTab {
 
     public void drawPlanning(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
-        graphics.translate(60, 0);
+        graphics.translate(TIME_COLUMN_WIDTH, 0);
 
         //System.out.println(this.planner.getShows().size());
 
