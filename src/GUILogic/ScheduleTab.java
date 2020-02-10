@@ -5,10 +5,12 @@ import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.collections.ObservableList;
 
 import javax.xml.crypto.Data;
 import java.time.LocalTime;
@@ -36,6 +39,7 @@ public class ScheduleTab {
     private ArrayList<String> errorlist = new ArrayList<>();
     private ArrayList<String> timelist = new ArrayList<>();
     private int additionalArtists = 0;
+    private final ObservableList<Show> data = FXCollections.observableArrayList();
 
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -54,22 +58,47 @@ public class ScheduleTab {
 
     public void table(){
         this.table.setEditable(false);
-
+        for (Show show:DataController.getPlanner().getShows()) {
+            this.data.add(show);
+        }
         TableColumn beginTimeCol = new TableColumn("Begin time");
         beginTimeCol.setPrefWidth(100);
+        beginTimeCol.setCellValueFactory(
+                new PropertyValueFactory<>("beginTime"));
         TableColumn endTimeCol = new TableColumn("End time");
         endTimeCol.setPrefWidth(100);
+        endTimeCol.setCellValueFactory(
+                new PropertyValueFactory<>("endTime"));
         TableColumn stageCol = new TableColumn("Stage");
         stageCol.setPrefWidth(100);
-        TableColumn artistCol = new TableColumn("Artist");
+        stageCol.setCellValueFactory(
+                new PropertyValueFactory<>("stage"));
+        TableColumn artistCol = new TableColumn("Artists");
         artistCol.setPrefWidth(100);
+        artistCol.setCellValueFactory(
+                new PropertyValueFactory<>("artists"));
         TableColumn genreCol = new TableColumn("Genre");
         genreCol.setPrefWidth(100);
+        genreCol.setCellValueFactory(
+                new PropertyValueFactory<>("genre"));
         TableColumn popularityCol = new TableColumn("Popularity");
         popularityCol.setPrefWidth(100);
+        popularityCol.setCellValueFactory(
+                new PropertyValueFactory<>("expectedPopularity"));
         this.table.setPrefWidth(800);
 
+//        private LocalTime beginTime;
+//        private LocalTime endTime;
+////        private String name;
+////        private String description;
+//        private PlannerData.Stage stage;
+//        private ArrayList<Genres> genre;
+//        private ArrayList<Artist> artists;
+
+        this.table.setItems(this.data);
+//HALLO
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
+
     }
 
     public void desciption(){
@@ -503,13 +532,21 @@ public class ScheduleTab {
 //        for (Enumerators.Genres genre: ???) {
 //            Genres.add(, , x, y)
 //        }
+
+
         Genres.add(new CheckBox("Nightcore"),1,1);
         Genres.add(new CheckBox("Jazz"), 1,2);
         Genres.add(new CheckBox("Rock"),2,1);
         Genres.add(new CheckBox("K-Pop"),2,2);
+
+
+
 //        for (Genres genre : Enumerators.Genres.values()) {
 //            Genres.add(new CheckBox(),2,2);
 //        }
+
+
+
         newArtistList.getChildren().add(Genres);
 
 //        newArtistList.getChildren().add(artistDescription);
@@ -565,7 +602,6 @@ public class ScheduleTab {
 
     public ComboBox StageBox (){
         ComboBox comboBox = new ComboBox();
-        comboBox.getItems().add("None");
 
         for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
             comboBox.getItems().add(stage.getName());

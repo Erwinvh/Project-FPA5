@@ -19,4 +19,9 @@ public class Stage implements Serializable {
 	public String getName() {
 		return name;
 	}
+//
+//	@Override
+//	public String toString() {
+//		return "" + name;
+//	}
 }
