@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -274,7 +275,15 @@ public class BaseControls {
         });
 
         ScrollPane ArtistScroller = new ScrollPane();
-        ArtistScroller.setContent(inputStructure);
+        VBox ScrutcureTwo = new VBox();
+        ScrutcureTwo.getChildren().add(inputStructure);
+        ScrutcureTwo.getChildren().add(new Label("Show Description:"));
+        TextArea ShowDescription = new TextArea(this.Selected.getDescription());
+        ShowDescription.setPrefWidth(360);
+        ScrutcureTwo.getChildren().add(ShowDescription);
+        ScrutcureTwo.setSpacing(10);
+
+        ArtistScroller.setContent(ScrutcureTwo);
         structure.setCenter(ArtistScroller);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
@@ -302,10 +311,11 @@ public class BaseControls {
         Label deleteThis = new Label("Are you sure you want to delete this show?");
         structure.setTop(deleteThis);
 
-        Label information = new Label("From " + this.Selected.getBeginTimeString() + " to " + this.Selected.getEndTimeString() + '\n'
-                + "By " + this.Selected.getArtistsNames() + " in the genre of " + this.Selected.getGenre() + '\n' +
-                "On stage " + this.Selected.getStageName() + '\n' +
-                "Expected popularity is " + this.Selected.getExpectedPopularity() + " people.");
+        Label information = new Label("Show: " + this.Selected.getName() + '\n'
+                + "From " + this.Selected.getBeginTimeString() + " to " + this.Selected.getEndTimeString() + '\n'
+                + "By " + this.Selected.getArtistsNames() + " in the genre of " + this.Selected.getGenre() + '\n'
+                + "On stage " + this.Selected.getStageName() + '\n'
+                + "Expected popularity is " + this.Selected.getExpectedPopularity() + " people.");
 
         structure.setCenter(information);
 

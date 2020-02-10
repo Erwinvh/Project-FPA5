@@ -7,6 +7,7 @@ import PlannerData.Show;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -34,7 +36,10 @@ public class ScheduleTab {
     private HBox controls = new HBox();
     private Stage primaryStage;
     private Stage popUp = new Stage();
-    private Show Selected;
+    private Show Selected = this.table.getSelectionModel().getSelectedItem();
+    private TableViewSelectionModel selectionModel =this.table.getSelectionModel();
+    private ObservableList<Show> selectedItems = this.selectionModel.getSelectedItems();
+
 
     private ObservableList<Show> data = FXCollections.observableArrayList();
 
@@ -42,7 +47,6 @@ public class ScheduleTab {
         this.primaryStage = primaryStage;
         this.scheduleTab = new Tab("Schedule");
         layout();
-
         this.allDescriptions.setPrefWidth(600);
     }
 
@@ -90,39 +94,59 @@ public class ScheduleTab {
         this.table.getItems().addAll(DataController.getPlanner().getShows());
 
         this.table.setItems(this.data);
+        this.table.getSelectionModel().selectFirst();
     }
 
     public void desciption() {
+        this.Selected = this.table.getSelectionModel().getSelectedItem();
+        int numberOfArtists = 0;
+try{
+    for (Artist artist:this.Selected.getArtists()) {
+        numberOfArtists++;
+        GridPane descriptionStructure = new GridPane();
+        TextField artistName = new TextField(artist.getName());
+        artistName.setEditable(false);
+        descriptionStructure.add(artistName, 1, 1);
 
-        //for each
-        for (int i = 0; i < 2; i++) {
-            GridPane descriptionStructure = new GridPane();
-            TextField artistName = new TextField("get artistname (i)");
-            artistName.setEditable(false);
-            descriptionStructure.add(artistName, 1, 1);
-
-            TextField artistamount = new TextField("Number 1 out of (i)");
-            artistamount.setEditable(false);
-            artistamount.setPrefWidth(150);
-            descriptionStructure.add(artistamount, 2, 1);
-
-            Image baseImage = new Image("file:Resources/PersonImageBase.jpg");
-            ImageView Artistpicture = new ImageView(baseImage);
-            Artistpicture.setFitHeight(200);
-            Artistpicture.setFitWidth(200);
-            descriptionStructure.add(Artistpicture, 1, 2);
-            TextArea Genres = new TextArea("Genre #1" + '\n' + "Genre #2");
-            Genres.setPrefWidth(150);
-            Genres.setEditable(false);
-            descriptionStructure.add(Genres, 2, 2);
-
-            TextArea artistDescription = new TextArea("Description of artist 1");
-            artistDescription.setEditable(false);
-            artistDescription.setPrefWidth(150);
-            this.description.getChildren().add(descriptionStructure);
-            this.description.getChildren().add(artistDescription);
+        TextField artistamount = new TextField("Number " + numberOfArtists + "out of " + this.Selected.getArtists().size());
+        artistamount.setEditable(false);
+        artistamount.setPrefWidth(150);
+        descriptionStructure.add(artistamount, 2, 1);
+        Image artistImage = new Image("file:Resources/PersonImageBase.jpg");
+        try {
+            Image ArtistImage = artist.getImage();
         }
-        this.allDescriptions.setContent(this.description);
+        catch(Exception e){
+
+        }
+        ImageView Artistpicture = new ImageView(artistImage);
+        Artistpicture.setFitHeight(200);
+        Artistpicture.setFitWidth(200);
+        descriptionStructure.add(Artistpicture, 1, 2);
+        TextArea Genres = new TextArea(artist.getGenre().getFancyName()+ '\n' + "Genre #2");
+        Genres.setPrefWidth(150);
+        Genres.setEditable(false);
+        descriptionStructure.add(Genres, 2, 2);
+
+        TextArea artistDescription = new TextArea(artist.getDescription());
+        artistDescription.setEditable(false);
+        artistDescription.setPrefWidth(150);
+        this.description.getChildren().add(descriptionStructure);
+        this.description.getChildren().add(artistDescription);
+    }
+    VBox DescriptionBase = new VBox();
+    DescriptionBase.getChildren().add(new Label("Show Description:"));
+    TextArea ShowDescription = new TextArea(this.Selected.getDescription());
+    ShowDescription.setEditable(false);
+    DescriptionBase.getChildren().add(ShowDescription);
+
+    DescriptionBase.getChildren().add(this.description);
+
+    this.allDescriptions.setContent(DescriptionBase);
+    }catch (Exception e){
+        this.allDescriptions.setContent(new Label("Select a Show for more information"));
+    }
+
     }
 
     public void layout() {
