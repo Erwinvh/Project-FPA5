@@ -420,6 +420,7 @@ public class ScheduleTab {
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
             DataController.getPlanner().deleteShow(this.Selected);
+            this.table.getItems().remove(this.Selected);
             this.popUp.close();
         });
 
