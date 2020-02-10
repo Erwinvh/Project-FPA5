@@ -259,34 +259,55 @@ public class ScheduleTab {
             LocalTime beginTime = indexToLocalTime(this.timelist.indexOf(beginUur.getValue()));
             LocalTime endTime = indexToLocalTime(this.timelist.indexOf(eindUur.getValue()));
             PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
-            ObservableList<ComboBox> artistBox = artists.getItems();
             ArrayList<Artist> addedArtists = new ArrayList<>();
-                String comboBoxString =  artists.getSelectionModel().getSelectedItem().toString();
+            if (artists.getSelectionModel().getSelectedItem() != null) {
+                String comboBoxString = artists.getSelectionModel().getSelectedItem().toString();
                 boolean containsArtist = false;
-                for(Artist artist : addedArtists){
-                    if(artist.getName().equals(comboBoxString)){
+                for (Artist artist : addedArtists) {
+                    if (artist.getName().equals(comboBoxString)) {
                         containsArtist = true;
                     }
                 }
-                if(!containsArtist){
+                if (!containsArtist) {
                     Artist artist = stringToArtist(comboBoxString);
-                    if(artist != null) {
+                    if (artist != null) {
                         addedArtists.add(artist);
                     }
                 }
+            } else {
+                addedArtists = null;
+            }
 
 
-            Genres addedGenre = stringToGenre(genre.getValue().toString());
+            Genres addedGenre;
+            if (genre.getValue() != null) {
+                addedGenre = stringToGenre(genre.getValue().toString());
+            } else {
+                addedGenre = null;
+            }
 
-            int popularityAdded = (int) (stageAdded.getCapacity() * popularity.getValue());
+            int popularityAdded;
+            if (stageAdded != null) {
+                popularityAdded = (int) (stageAdded.getCapacity() * (popularity.getValue() / 100));
+            } else {
+                popularityAdded = -1;
+            }
 
-            //if(!addedArtists.isEmpty() && addedArtists.get(0) != null && stageAdded != null && beginTime != null && endTime != null && addedGenre != null && !showNameAdding.isEmpty()){
+            if (addedArtists == null || addedArtists.isEmpty() || stageAdded == null || beginTime == null || endTime == null || showNameAdding.isEmpty() || popularityAdded < 0) {
+                return;
+            } else {
                 ArrayList<Genres> genres = new ArrayList<>();
-                genres.add(addedGenre);
-                Show show = new Show(beginTime,endTime,addedArtists,showNameAdding,stageAdded,"",genres,popularityAdded);
+                if (addedGenre == null) {
+                    for (Artist artist : addedArtists) {
+                        genres.add(artist.getGenre());
+                    }
+                } else {
+                    genres.add(addedGenre);
+                }
+                Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, "", genres, popularityAdded);
                 DataController.getPlanner().addShow(show);
                 data.add(show);
-           // }
+            }
 
 
         });
@@ -636,7 +657,9 @@ public class ScheduleTab {
     public ComboBox genreBox (){
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("None");
-        comboBox.getItems().addAll(Genres.values());
+        for(Genres genre :Genres.values()){
+            comboBox.getItems().add(genre.getFancyName());
+        }
         return comboBox;
     }
 
@@ -745,7 +768,7 @@ public ComboBox timeBox (){
 
     public Genres stringToGenre(String genreString){
         for(Genres genre : Genres.values()){
-            if(genre.toString().equals(genreString)){
+            if(genre.getFancyName().equals(genreString)){
                 return genre;
             }
         }
@@ -763,6 +786,9 @@ public ComboBox timeBox (){
     }
 
     public PlannerData.Stage stringToStage(String stageString){
+        if(stageString == null || stageString.isEmpty()){
+            return null;
+        }
         for(PlannerData.Stage stage : DataController.getPlanner().getStages()){
             if(stageString.equals(stage.getName())){
                 return stage;
