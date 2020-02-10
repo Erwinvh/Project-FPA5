@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ScheduleTab {
@@ -36,7 +37,7 @@ public class ScheduleTab {
     private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
     private String testtext = "test";
-    private Show Selected = this.table.getSelectionModel().getSelectedItem();
+    private Show Selected;
     private ArrayList<String> errorlist = new ArrayList<>();
     private ArrayList<String> timelist = new ArrayList<>();
     private int additionalArtists = 0;
@@ -163,10 +164,12 @@ public class ScheduleTab {
         });
         Button editButton = new Button("Edit");
         editButton.setOnAction(event -> {
+            this.Selected = this.table.getSelectionModel().getSelectedItem();
             editoryWindow();
         });
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(event -> {
+            this.Selected = this.table.getSelectionModel().getSelectedItem();
             deletionWindow();
         });
 
@@ -336,7 +339,7 @@ public class ScheduleTab {
         Slider popularity = new Slider();
         popularity.setMin(0);
         popularity.setMax(100);
-        popularity.setValue(0);
+        popularity.setValue(this.Selected.getExpectedPopularity());
         popularity.setShowTickLabels(true);
         popularity.setShowTickMarks(true);
         popularity.setMajorTickUnit(50);
@@ -356,7 +359,7 @@ public class ScheduleTab {
             }
         });
 
-        PopularityLabel.textProperty().setValue("0");
+        PopularityLabel.textProperty().setValue(""+this.Selected.getExpectedPopularity());
 
         inputStructure.add(PopularityLabel, 3, 6);
         ComboBox artists = artistBox();
@@ -404,17 +407,12 @@ public class ScheduleTab {
 
         Label deleteThis = new Label("Are you sure you want to delete this show?");
         structure.setTop(deleteThis);
-<<<<<<< HEAD
-        Label information = new Label("From "+ this.testtext + " to " + this.testtext + '\n'
-                + "By " + this.testtext + " in the genre of " + this.testtext + '\n' +
-                "On stage " + this.testtext + '\n'+
-                "Expected popularity is " + this.testtext + " people.");
-=======
-        Label information = new Label("From " + this.selected + " to " + this.selected + '\n'
-                + "By " + this.selected + " in the genre of " + this.selected + '\n' +
-                "On stage " + this.selected + '\n' +
-                "Expected popularity is " + this.selected + " people.");
->>>>>>> feature-databinding
+
+        Label information = new Label("From " + this.Selected.getBeginTimeString() + " to " + this.Selected.getEndTimeString() + '\n'
+                + "By " + this.Selected.getArtistsNames() + " in the genre of " + this.Selected.getGenre() + '\n' +
+                "On stage " + this.Selected.getStageName() + '\n' +
+                "Expected popularity is " + this.Selected.getExpectedPopularity() + " people.");
+
         structure.setCenter(information);
 
         HBox choice = new HBox();
