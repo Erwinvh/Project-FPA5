@@ -41,7 +41,7 @@ public class ScheduleTab {
     private ArrayList<String> errorlist = new ArrayList<>();
     private ArrayList<String> timelist = new ArrayList<>();
     private int additionalArtists = 0;
-    private final ObservableList<Show> data = FXCollections.observableArrayList();
+    private ObservableList<Show> data = FXCollections.observableArrayList();
 
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -89,12 +89,10 @@ public class ScheduleTab {
                 new PropertyValueFactory<>("expectedPopularity"));
         this.table.setPrefWidth(800);
 
-        this.table.setItems(this.data);
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
 
 
-        this.table.getItems().addAll(DataController.getPlanner().getShows());
-        
+        this.table.setItems(this.data);
     }
 
     public void desciption(){
