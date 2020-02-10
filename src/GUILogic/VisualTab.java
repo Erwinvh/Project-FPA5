@@ -16,14 +16,13 @@ import java.awt.geom.RoundRectangle2D;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-
 public class VisualTab {
     private Tab visualTab;
     private Canvas canvas;
     private Canvas canvasStages;
     private Planner planner;
 
-    public VisualTab(){
+    public VisualTab() {
         this.planner = new Planner();
 
         this.visualTab = new Tab("Visual");
@@ -38,6 +37,7 @@ public class VisualTab {
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
+
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
         drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
@@ -47,14 +47,12 @@ public class VisualTab {
         graphics.setTransform(new AffineTransform());
         graphics.translate(60, 40);
 
-        graphics.draw(new Line2D.Double(-60, 0, this.canvasStages.getWidth()-60, 0));
-
+        graphics.draw(new Line2D.Double(-60, 0, this.canvasStages.getWidth() - 60, 0));
         graphics.draw(new Line2D.Double(0, 0, 0, -40));
-        int i = 0;
-        for (Stage stage : this.planner.getStages()) {
-            i++;
+
+        for (int i = 0; i < planner.getStages().size(); i++) {
             graphics.draw(new Line2D.Double(i * ((this.canvasStages.getWidth() - 60) / this.planner.getStages().size()), 0, i * ((this.canvasStages.getWidth() - 60) / this.planner.getStages().size()), -40));
-            graphics.drawString(stage.getName(), (int) ((i - 1) * ((this.canvasStages.getWidth() - 60) / this.planner.getStages().size()) + 10), -15);
+            graphics.drawString(planner.getStages().get(i).getName(), (int) ((i - 1) * ((this.canvasStages.getWidth() - 60) / this.planner.getStages().size()) + 10), -15);
         }
     }
 
@@ -64,9 +62,7 @@ public class VisualTab {
 
         graphics.draw(new Line2D.Double(0, 0, 0, this.canvas.getHeight()));
 
-        int i = 0;
-        for (Stage stage : this.planner.getStages()) {
-            i++;
+        for (int i = 0; i < this.planner.getStages().size(); i++) {
             graphics.draw(new Line2D.Double(i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), 0, i * ((this.canvas.getWidth() - 60) / this.planner.getStages().size()), this.canvas.getHeight()));
         }
 
@@ -79,37 +75,37 @@ public class VisualTab {
         graphics.setTransform(new AffineTransform());
         graphics.translate(60, 0);
 
-        int columnWith = (int) ((this.canvas.getWidth() - 60) / this.planner.getStages().size());
+        int columnWidth = (int) ((this.canvas.getWidth() - 60) / this.planner.getStages().size());
 
-        System.out.println(this.planner.getShows().size());
+        //System.out.println(this.planner.getShows().size());
 
         for (Show show : this.planner.getShows()) {
             int stageCounter = 1;
             for (Stage stage : this.planner.getStages()) {
                 if (stage == show.getStage()) {
                     break;
-                }
-                else
-                stageCounter++;
+                } else
+                    stageCounter++;
             }
-            if (stageCounter <= this.planner.getStages().size()) {
-                double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute()/60);
-                double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute()/60);
 
-                graphics.draw(new RoundRectangle2D.Double(((stageCounter - 1) * columnWith) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24), columnWith - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24), 25, 10));
+            if (stageCounter <= this.planner.getStages().size()) {
+                double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60);
+                double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60);
+
+                graphics.draw(new RoundRectangle2D.Double(((stageCounter - 1) * columnWidth) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24), columnWidth - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24), 25, 10));
                 String artists = "";
                 for (Artist artist : show.getArtists()) {
                     artists += artist.getName() + ", ";
                 }
-                artists = artists.substring(0, artists.length()-2);
-                artists += ".";
-                graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " +show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((stageCounter - 1) * columnWith) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
 
+                artists = artists.substring(0, artists.length() - 2);
+                artists += ".";
+                graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((stageCounter - 1) * columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
             }
         }
     }
 
-    public Tab getVisualTab(){
+    public Tab getVisualTab() {
         return visualTab;
     }
 }

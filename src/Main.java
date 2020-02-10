@@ -8,6 +8,4 @@ public class Main {
         DataController dataController = new DataController();
         launch(GUI.class);
     }
-
-
 }

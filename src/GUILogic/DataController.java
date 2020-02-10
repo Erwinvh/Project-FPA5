@@ -39,8 +39,6 @@ public class DataController {
 //        genres.add(Genres.NIGHTCORE);
 //        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusHours(1), lars, "De ochtendshow van Lars", stage, "Lars die jamt", genres, 100000));
 //        planner.savePlanner();
-
-
     }
 
     public static Planner getPlanner() {
