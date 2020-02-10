@@ -1,6 +1,7 @@
 package PlannerData;
 
 import Enumerators.Genres;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -116,4 +117,12 @@ public class Show implements Serializable {
         duration = endTime.minusHours(beginTime.getHour());
         return duration;
     }
+
+	public String getBeginTimeString() {
+		return beginTime.getHour()+":"+beginTime.getMinute();
+	}
+
+	public String getEndTimeString() {
+		return endTime.getHour()+":"+endTime.getMinute();
+	}
 }

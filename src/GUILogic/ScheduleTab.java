@@ -5,6 +5,7 @@ import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -64,11 +65,11 @@ public class ScheduleTab {
         TableColumn beginTimeCol = new TableColumn("Begin time");
         beginTimeCol.setPrefWidth(100);
         beginTimeCol.setCellValueFactory(
-                new PropertyValueFactory<>("beginTime"));
+                new PropertyValueFactory<>("beginTimeString"));
         TableColumn endTimeCol = new TableColumn("End time");
         endTimeCol.setPrefWidth(100);
         endTimeCol.setCellValueFactory(
-                new PropertyValueFactory<>("endTime"));
+                new PropertyValueFactory<>("endTimeString"));
         TableColumn stageCol = new TableColumn("Stage");
         stageCol.setPrefWidth(100);
         stageCol.setCellValueFactory(
@@ -98,6 +99,9 @@ public class ScheduleTab {
         this.table.setItems(this.data);
 //HALLO
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
+
+
+        this.table.getItems().addAll(DataController.getPlanner().getShows());
 
     }
 
