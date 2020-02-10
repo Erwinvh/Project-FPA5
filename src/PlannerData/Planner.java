@@ -3,12 +3,11 @@ package PlannerData;
 import Enumerators.Genres;
 import javafx.scene.image.Image;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Planner implements Serializable {
 
@@ -184,9 +183,13 @@ public class Planner implements Serializable {
 
     public void savePlanner() {
         try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
-            objectOutputStream.writeObject(this);
-            objectOutputStream.close();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            FileWriter fileWriter = new FileWriter(saveFileName);
+            fileWriter.write(gson.toJson(this));
+            fileWriter.close();
+//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
+//            objectOutputStream.writeObject(this);
+//            objectOutputStream.close();
 
         } catch (IOException e) {
             e.printStackTrace();
