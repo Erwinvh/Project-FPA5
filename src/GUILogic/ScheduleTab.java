@@ -3,6 +3,7 @@ package GUILogic;
 import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Show;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -73,11 +74,11 @@ public class ScheduleTab {
         TableColumn stageCol = new TableColumn("Stage");
         stageCol.setPrefWidth(100);
         stageCol.setCellValueFactory(
-                new PropertyValueFactory<>("stage"));
+                new PropertyValueFactory<>("StageName"));
         TableColumn artistCol = new TableColumn("Artists");
         artistCol.setPrefWidth(100);
         artistCol.setCellValueFactory(
-                new PropertyValueFactory<>("artists"));
+                new PropertyValueFactory<>("ArtistsNames"));
         TableColumn genreCol = new TableColumn("Genre");
         genreCol.setPrefWidth(100);
         genreCol.setCellValueFactory(
@@ -88,21 +89,12 @@ public class ScheduleTab {
                 new PropertyValueFactory<>("expectedPopularity"));
         this.table.setPrefWidth(800);
 
-//        private LocalTime beginTime;
-//        private LocalTime endTime;
-////        private String name;
-////        private String description;
-//        private PlannerData.Stage stage;
-//        private ArrayList<Genres> genre;
-//        private ArrayList<Artist> artists;
-
         this.table.setItems(this.data);
-//HALLO
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
 
 
         this.table.getItems().addAll(DataController.getPlanner().getShows());
-
+        
     }
 
     public void desciption(){

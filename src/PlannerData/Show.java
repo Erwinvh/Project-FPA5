@@ -33,6 +33,17 @@ public class Show implements Serializable {
         this(beginTime, endTime, new ArrayList<>(), name, stage, description, genre, expectedPopularity);
         this.artists.add(artist);
     }
+    public String getStageName(){
+		return ""+this.stage.getName();
+	}
+
+	public String getArtistsNames(){
+		StringBuilder LineUp = new StringBuilder();
+		for (Artist artist:this.artists ) {
+			LineUp.append(artist.getName()+", ");
+		}
+		return LineUp.toString();
+	}
 
 	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, Stage stage, int expectedPopularity){
 		this(beginTime,endTime,artists,"",stage,"",new ArrayList<>(), expectedPopularity);
