@@ -2,6 +2,7 @@ package GUILogic;
 
 import Enumerators.Genres;
 import PlannerData.Artist;
+import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -10,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -41,7 +43,7 @@ public class ScheduleTab {
     private ArrayList<String> errorlist = new ArrayList<>();
     private ArrayList<String> timelist = new ArrayList<>();
     private int additionalArtists = 0;
-    private final ObservableList<Show> data = FXCollections.observableArrayList();
+    private ObservableList<Show> data = FXCollections.observableArrayList();
 
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -245,7 +247,7 @@ public class ScheduleTab {
                     this.additionalArtists--;
                 }
             });
-                });
+        });
 
         ScrollPane ArtistScroller = new ScrollPane();
         ArtistScroller.setContent(inputStructure);
@@ -255,6 +257,39 @@ public class ScheduleTab {
         submit.setOnAction(event -> {
 
             control(beginUur, eindUur, stage, genre, inputShowName);
+            String showNameAdding = inputShowName.getText();
+            LocalTime beginTime = indexToLocalTime(this.timelist.indexOf(beginUur.getValue()));
+            LocalTime endTime = indexToLocalTime(this.timelist.indexOf(eindUur.getValue()));
+            PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
+            ObservableList<ComboBox> artistBox = artists.getItems();
+            ArrayList<Artist> addedArtists = new ArrayList<>();
+                String comboBoxString =  artists.getSelectionModel().getSelectedItem().toString();
+                boolean containsArtist = false;
+                for(Artist artist : addedArtists){
+                    if(artist.getName().equals(comboBoxString)){
+                        containsArtist = true;
+                    }
+                }
+                if(!containsArtist){
+                    Artist artist = stringToArtist(comboBoxString);
+                    if(artist != null) {
+                        addedArtists.add(artist);
+                    }
+                }
+
+
+            Genres addedGenre = stringToGenre(genre.getValue().toString());
+
+            int popularityAdded = (int) (stageAdded.getCapacity() * popularity.getValue());
+
+            //if(!addedArtists.isEmpty() && addedArtists.get(0) != null && stageAdded != null && beginTime != null && endTime != null && addedGenre != null && !showNameAdding.isEmpty()){
+                ArrayList<Genres> genres = new ArrayList<>();
+                genres.add(addedGenre);
+                Show show = new Show(beginTime,endTime,addedArtists,showNameAdding,stageAdded,"",genres,popularityAdded);
+                DataController.getPlanner().addShow(show);
+                data.add(show);
+           // }
+
 
         });
 
@@ -472,7 +507,6 @@ public class ScheduleTab {
             this.errorlist.add("The artist's description has not been filled in.");
         }
         if (this.errorlist.isEmpty()){
-
         }
         else{
             errorWindow();
@@ -575,6 +609,18 @@ public class ScheduleTab {
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
             newArtistControl(artistName, artistDescription);
+            Planner planner = DataController.getPlanner();
+            ArrayList<Genres> genres = new ArrayList<>();
+            ObservableList<Node> checkBoxes = Genres.getChildren();
+            for(Node checkbox : checkBoxes){
+                CheckBox box = (CheckBox) checkbox;
+                if(box.isSelected()){
+                    genres.add(stringToGenre(box.getText()));
+                }
+            }
+            String description = artistDescription.getText();
+            String name = artistName.getText();
+            DataController.getPlanner().addArtist(name,genres.get(0),description);
         });
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
@@ -686,6 +732,7 @@ public ComboBox timeBox (){
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
             newStageControl(StageName,InputTextField);
+            DataController.getPlanner().addStage(Integer.parseInt(InputTextField.getText()),StageName.getText());
         });
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
@@ -696,6 +743,43 @@ public ComboBox timeBox (){
         artistAddScene.getStylesheets().add("Window-StyleSheet.css");
         stageAddWindow.setScene(artistAddScene);
         stageAddWindow.show();
+    }
+
+    public Genres stringToGenre(String genreString){
+        for(Genres genre : Genres.values()){
+            if(genre.toString().equals(genreString)){
+                return genre;
+            }
+        }
+        return null;
+    }
+
+    public LocalTime indexToLocalTime(int index){
+        LocalTime time = LocalTime.MIDNIGHT;
+        int hours = index / 2;
+        if(index % 2 == 1){
+            time = time.plusMinutes(30);
+        }
+        time = time.plusHours(hours);
+        return time;
+    }
+
+    public PlannerData.Stage stringToStage(String stageString){
+        for(PlannerData.Stage stage : DataController.getPlanner().getStages()){
+            if(stageString.equals(stage.getName())){
+                return stage;
+            }
+        }
+        return null;
+    }
+
+    public Artist stringToArtist(String artistString){
+        for(Artist artist : DataController.getPlanner().getArtists()){
+            if(artistString.equals(artist.getName())){
+                return artist;
+            }
+        }
+        return null;
     }
 
 }
