@@ -1,5 +1,6 @@
 package GUILogic;
 
+import PlannerData.Planner;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
