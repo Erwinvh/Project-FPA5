@@ -338,7 +338,7 @@ public class ScheduleTab {
         inputStructure.add(genre, 2, 5);
         Slider popularity = new Slider();
         popularity.setMin(0);
-        popularity.setMax(100);
+        popularity.setMax(this.Selected.getStage().getCapacity());
         popularity.setValue(this.Selected.getExpectedPopularity());
         popularity.setShowTickLabels(true);
         popularity.setShowTickMarks(true);
@@ -419,6 +419,7 @@ public class ScheduleTab {
 
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
+            DataController.getPlanner().deleteShow(this.Selected);
             this.popUp.close();
         });
 
