@@ -5,6 +5,7 @@ import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -98,6 +99,9 @@ public class ScheduleTab {
         this.table.setItems(this.data);
 //HALLO
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
+
+
+        this.table.getItems().addAll(DataController.getPlanner().getShows());
 
     }
 

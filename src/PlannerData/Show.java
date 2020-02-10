@@ -1,6 +1,7 @@
 package PlannerData;
 
 import Enumerators.Genres;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;
 import java.time.LocalTime;
