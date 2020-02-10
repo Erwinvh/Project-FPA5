@@ -34,23 +34,10 @@ public class VisualTab {
     private static final int TIME_COLUMN_WIDTH = 60;
 
     public VisualTab() {
-        this.planner = new Planner();
-
-        ArrayList<Artist> artists = new ArrayList<>();
-        artists.add(new Artist("Arne de Beer", Genres.BLUES, "Smoking hot"));
-        artists.add(new Artist("Lars Giskes", Genres.PUNK_ROCK, "The legend of Spoderman"));
-        artists.add(new Artist("Henk", Genres.METAL, "Dit is Henk"));
-
-        ArrayList<Stage> stages = new ArrayList<>();
-        stages.add(new Stage(500, "Main Stage"));
-        stages.add(new Stage(100, "Second Stage"));
-
-        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
-        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
-        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
+        this.planner = DataController.getPlanner();
 
         this.visualTab = new Tab("Visual");
-        this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.canvas = new Canvas(CANVAS_WIDTH-6, CANVAS_HEIGHT);
         this.canvasStages = new Canvas(CANVAS_WIDTH, STAGE_HEIGHT);
 
         ScrollPane scrollPane = new ScrollPane(this.canvas);
@@ -58,7 +45,6 @@ public class VisualTab {
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVvalue(LocalTime.now().getHour() / 24f);
-//        scrollPane.setFitToWidth(true);
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
@@ -81,8 +67,8 @@ public class VisualTab {
 
         // Add all divider lines to stages layout
         for (int i = 0; i < planner.getStages().size(); i++) {
-            graphics.draw(new Line2D.Double(i * this.columnWidth, 0, i * this.columnWidth, -STAGE_HEIGHT));
-            graphics.drawString(this.planner.getStages().get(i).getName() + " (cap. " + this.planner.getStages().get(i).getCapacity() + ")", (i * this.columnWidth + 10), -15);
+            graphics.draw(new Line2D.Double(i * this.columnWidth + 1, 0, i * this.columnWidth + 1, -STAGE_HEIGHT));
+            graphics.drawString(this.planner.getStages().get(i).getName() + "\n" + "(cap. " + this.planner.getStages().get(i).getCapacity() + ")", (i * this.columnWidth + 10), -STAGE_HEIGHT + 15);
         }
     }
 
@@ -103,7 +89,10 @@ public class VisualTab {
         // Draw all times to the layout
         for (int j = 1; j < 24; j++) {
             graphics.drawString(j + ":00", -50, (int) (j * this.canvas.getHeight() / 24));
+            graphics.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 25));
+            graphics.draw(new Line2D.Double());
         }
+        graphics.setStroke(new BasicStroke(10f));
     }
 
     public void drawPlanning(FXGraphics2D graphics) {
@@ -117,7 +106,7 @@ public class VisualTab {
                 if (show.getStage().equals(stage)) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
-                    graphics.draw(new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10));
+                    graphics.draw(new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10));
                     String artists = "";
                     for (Artist artist : show.getArtists()) {
                         artists += artist.getName() + ", ";
