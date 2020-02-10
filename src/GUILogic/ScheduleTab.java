@@ -68,7 +68,7 @@ public class ScheduleTab {
         TableColumn popularityCol = new TableColumn("Popularity");
         popularityCol.setPrefWidth(100);
         this.table.setPrefWidth(800);
-
+//HALLO
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
     }
 
