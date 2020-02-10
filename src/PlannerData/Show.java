@@ -8,14 +8,14 @@ import java.util.ArrayList;
 
 public class Show implements Serializable {
 
-    private int expectedPopularity;
     private LocalTime beginTime;
     private LocalTime endTime;
     private String name;
     private String description;
+    private ArrayList<Artist> artists;
     private Stage stage;
     private ArrayList<Genres> genre;
-    private ArrayList<Artist> artists;
+    private int expectedPopularity;
 
 	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
 		this.beginTime = beginTime;
