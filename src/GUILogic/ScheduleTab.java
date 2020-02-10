@@ -419,9 +419,15 @@ public class ScheduleTab {
 
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
-            DataController.getPlanner().deleteShow(this.Selected);
-            this.table.getItems().remove(this.Selected);
-            this.popUp.close();
+            if (DataController.getPlanner().deleteShow(this.Selected)){
+                this.table.getItems().remove(this.Selected);
+                DataController.getPlanner().savePlanner();
+                this.popUp.close();
+            }
+            else {
+                this.errorlist.add("The Show was not deleted, please try again later.");
+                errorWindow();
+            }
         });
 
         choice.getChildren().add(this.cancel);
