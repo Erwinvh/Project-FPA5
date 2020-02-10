@@ -17,26 +17,28 @@ public class Show implements Serializable {
     private ArrayList<Genres> genre;
     private ArrayList<Artist> artists;
 
-    public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
-        this.expectedPopularity = expectedPopularity;
-        this.beginTime = beginTime;
-        this.endTime = endTime;
-        this.name = name;
-        this.description = description;
-        this.stage = stage;
-        this.genre = genre;
-        this.artists = artists;
-    }
+	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
+		this.beginTime = beginTime;
+		this.endTime = endTime;
+		this.artists = artists;
+		this.name = name;
+		this.stage = stage;
+		this.description = description;
+		this.genre = genre;
+		this.expectedPopularity = expectedPopularity;
+	}
 
     public Show(LocalTime beginTime, LocalTime endTime, Artist artist, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
         this(beginTime, endTime, new ArrayList<>(), name, stage, description, genre, expectedPopularity);
         this.artists.add(artist);
     }
 
-    public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, Stage stage, int expectedPopularity) {
-        this(beginTime, endTime, artists, "", stage, "", new ArrayList<>(), expectedPopularity);
-        this.name = this.artists.get(0).getName();
-        this.description = "";
+	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, Stage stage, int expectedPopularity){
+		this(beginTime,endTime,artists,"",stage,"",new ArrayList<>(), expectedPopularity);
+		if (artists.size() != 0) {
+			this.name = this.artists.get(0).getName();
+		}
+		this.description = "";
 
         for (Artist artist : this.artists) {
             if (!this.genre.contains(artist.getGenre())) {

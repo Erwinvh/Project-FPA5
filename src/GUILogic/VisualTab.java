@@ -1,5 +1,6 @@
 package GUILogic;
 
+import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -10,11 +11,13 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import org.jfree.fx.FXGraphics2D;
 
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.RoundRectangle2D;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class VisualTab {
     private Tab visualTab;
@@ -24,6 +27,19 @@ public class VisualTab {
 
     public VisualTab() {
         this.planner = new Planner();
+
+        ArrayList<Artist> artists = new ArrayList<>();
+        artists.add(new Artist("Arne de Beer", Genres.BLUES, "Smoking hot"));
+        artists.add(new Artist("Lars Giskes", Genres.PUNK_ROCK, "The legend of Spoderman"));
+        artists.add(new Artist("Henk", Genres.METAL, "Dit is Henk"));
+
+        ArrayList<Stage> stages = new ArrayList<>();
+        stages.add(new Stage(500, "Main Stage"));
+        stages.add(new Stage(100, "Second Stage"));
+
+        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
+        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
+        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
 
         this.visualTab = new Tab("Visual");
         this.canvas = new Canvas(960, 1800);
@@ -45,6 +61,8 @@ public class VisualTab {
 
     public void drawStages(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
+        graphics.setBackground(Color.WHITE);
+        graphics.clearRect(0, 0, (int) this.canvasStages.getWidth(), (int) this.canvasStages.getHeight());
         graphics.translate(60, 40);
 
         graphics.draw(new Line2D.Double(-60, 0, this.canvasStages.getWidth() - 60, 0));
@@ -58,6 +76,8 @@ public class VisualTab {
 
     public void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
+        graphics.setBackground(Color.WHITE);
+        graphics.clearRect(0, 0, (int) this.canvas.getWidth(), (int) this.canvas.getHeight());
         graphics.translate(60, 0);
 
         graphics.draw(new Line2D.Double(0, 0, 0, this.canvas.getHeight()));
