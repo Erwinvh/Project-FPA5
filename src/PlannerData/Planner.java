@@ -93,6 +93,7 @@ public class Planner implements Serializable {
         }
 
         this.shows.add(newShow);
+        this.savePlanner();
     }
 
     public void addArtist(String name, Genres genre, Image image, String description) {
@@ -101,7 +102,9 @@ public class Planner implements Serializable {
                 return;
             }
         }
+
         this.artists.add(new Artist(name, genre, image, description));
+        this.savePlanner();
     }
 
     public void addArtist(String name, Genres genre, String description) {
@@ -110,6 +113,7 @@ public class Planner implements Serializable {
         }
 
         this.artists.add(new Artist(name, genre, description));
+        this.savePlanner();
     }
 
     public void addStage(int capacity, String name) {
@@ -121,6 +125,7 @@ public class Planner implements Serializable {
         }
 
         this.stages.add(new Stage(capacity, name));
+        this.savePlanner();
     }
 
     public boolean deleteShow(Show show){
