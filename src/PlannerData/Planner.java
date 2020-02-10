@@ -75,6 +75,26 @@ public class Planner implements Serializable {
         addShow(new Show(beginTime, endTime, artists, name, stage, description, genre, expectedPopularity));
     }
 
+    public void addShow(LocalTime beginTime, LocalTime endTime, Stage stage, int popularity, Genres genre, ArrayList<Artist> artists) {
+        Show newShow = new Show(beginTime, endTime, stage, artists, "", "", genre, popularity);
+
+        if (this.shows.contains(newShow)) return;
+
+        for (Show show : this.shows) {
+            if (show.getStage().equals(stage)) {
+                if (beginTime.isAfter(show.getBeginTime()) && beginTime.isBefore(show.getEndTime())) {
+                    return;
+                }
+
+                if (endTime.isAfter(show.getBeginTime()) && endTime.isBefore(show.getEndTime())) {
+                    return;
+                }
+            }
+        }
+
+        this.shows.add(newShow);
+    }
+
     public void addArtist(String name, Genres genre, Image image, String description) {
         for (Artist existingArtist : this.artists) {
             if (name.equals(existingArtist.getName())) {
@@ -103,24 +123,46 @@ public class Planner implements Serializable {
         this.stages.add(new Stage(capacity, name));
     }
 
-    public void addShow(LocalTime beginTime, LocalTime endTime, Stage stage, int popularity, Genres genre, ArrayList<Artist> artists) {
-        Show newShow = new Show(beginTime, endTime, stage, artists, "", "", genre, popularity);
+    public boolean deleteShow(Show show){
+        return this.shows.remove(show);
+    }
 
-        if (this.shows.contains(newShow)) return;
-
+    public boolean deleteShow(String showName){
         for (Show show : this.shows) {
-            if (show.getStage().equals(stage)) {
-                if (beginTime.isAfter(show.getBeginTime()) && beginTime.isBefore(show.getEndTime())) {
-                    return;
-                }
-
-                if (endTime.isAfter(show.getBeginTime()) && endTime.isBefore(show.getEndTime())) {
-                    return;
-                }
+            if(show.getName().equals(showName)){
+                return deleteShow(show);
             }
         }
 
-        this.shows.add(newShow);
+        return false;
+    }
+
+    public boolean deleteArtist(Artist artist){
+        return this.artists.remove(artist);
+    }
+
+    public boolean deleteArtist(String artistName){
+        for (Artist artist : this.artists) {
+            if(artist.getName().equals(artistName)){
+                return deleteArtist(artist);
+            }
+        }
+
+        return false;
+    }
+
+    public boolean deleteStage(Stage stage){
+        return this.stages.remove(stage);
+    }
+
+    public boolean deleteStage(String stageName){
+        for (Stage stage : this.stages) {
+            if(stage.getName().equals(stageName)){
+                return deleteStage(stageName);
+            }
+        }
+
+        return false;
     }
 
     public ArrayList<Show> getShows() {
