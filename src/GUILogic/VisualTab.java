@@ -35,7 +35,7 @@ class VisualTab {
         this.planner = DataController.getPlanner();
 
         this.visualTab = new Tab("Visual");
-        this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.canvas = new Canvas(CANVAS_WIDTH-6, CANVAS_HEIGHT);
         this.canvasStages = new Canvas(CANVAS_WIDTH, STAGE_HEIGHT);
 
         ScrollPane scrollPane = new ScrollPane(this.canvas);
@@ -43,7 +43,6 @@ class VisualTab {
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVvalue(LocalTime.now().getHour() / 24f);
-//        scrollPane.setFitToWidth(true);
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
@@ -66,8 +65,8 @@ class VisualTab {
 
         // Add all divider lines to stages layout
         for (int i = 0; i < planner.getStages().size(); i++) {
-            graphics.draw(new Line2D.Double(i * this.columnWidth, 0, i * this.columnWidth, -STAGE_HEIGHT));
-            graphics.drawString(this.planner.getStages().get(i).getName() + " (cap. " + this.planner.getStages().get(i).getCapacity() + ")", (i * this.columnWidth + 10), -15);
+            graphics.draw(new Line2D.Double(i * this.columnWidth + 1, 0, i * this.columnWidth + 1, -STAGE_HEIGHT));
+            graphics.drawString(this.planner.getStages().get(i).getName() + "\n" + "(cap. " + this.planner.getStages().get(i).getCapacity() + ")", (i * this.columnWidth + 10), -STAGE_HEIGHT + 15);
         }
     }
 
@@ -88,7 +87,10 @@ class VisualTab {
         // Draw all times to the layout
         for (int j = 1; j < 24; j++) {
             graphics.drawString(j + ":00", -50, (int) (j * this.canvas.getHeight() / 24));
+            graphics.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0, new float[]{25, 25}, 40));
+            graphics.draw(new Line2D.Double(0, this.canvas.getHeight() / 24 * j, this.canvas.getWidth() - TIME_COLUMN_WIDTH, this.canvas.getHeight() / 24 * j));
         }
+        graphics.setStroke(new BasicStroke(1f));
     }
 
     private void drawPlanning(FXGraphics2D graphics) {
@@ -102,10 +104,12 @@ class VisualTab {
                 if (show.getStage().equals(stage)) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
-
                     // Draw the box around the show
-                    graphics.draw(new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10));
-
+                    Shape rectangle = new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10);
+                    graphics.draw(rectangle);
+                    graphics.setColor(Color.WHITE);
+                    graphics.fill(rectangle);
+                    graphics.setColor(Color.BLACK);
                     String artists = "";
                     for (Artist artist : show.getArtists()) {
                         artists += artist.getName() + ", ";
@@ -122,5 +126,11 @@ class VisualTab {
 
     Tab getVisualTab() {
         return visualTab;
+    }
+
+    void update() {
+        drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
+        drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
+        drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
     }
 }

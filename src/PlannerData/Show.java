@@ -1,7 +1,6 @@
 package PlannerData;
 
 import Enumerators.Genres;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -18,39 +17,40 @@ public class Show implements Serializable {
     private ArrayList<Genres> genre;
     private int expectedPopularity;
 
-	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
-		this.beginTime = beginTime;
-		this.endTime = endTime;
-		this.artists = artists;
-		this.name = name;
-		this.stage = stage;
-		this.description = description;
-		this.genre = genre;
-		this.expectedPopularity = expectedPopularity;
-	}
+    public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.artists = artists;
+        this.name = name;
+        this.stage = stage;
+        this.description = description;
+        this.genre = genre;
+        this.expectedPopularity = expectedPopularity;
+    }
 
     public Show(LocalTime beginTime, LocalTime endTime, Artist artist, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
         this(beginTime, endTime, new ArrayList<>(), name, stage, description, genre, expectedPopularity);
         this.artists.add(artist);
     }
-    public String getStageName(){
-		return ""+this.stage.getName();
-	}
 
-	public String getArtistsNames(){
-		StringBuilder LineUp = new StringBuilder();
-		for (Artist artist:this.artists ) {
-			LineUp.append(artist.getName()+", ");
-		}
-		return LineUp.toString();
-	}
+    public String getStageName() {
+        return "" + this.stage.getName();
+    }
 
-	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, Stage stage, int expectedPopularity){
-		this(beginTime,endTime,artists,"",stage,"",new ArrayList<>(), expectedPopularity);
-		if (artists.size() != 0) {
-			this.name = this.artists.get(0).getName();
-		}
-		this.description = "";
+    public String getArtistsNames() {
+        StringBuilder LineUp = new StringBuilder();
+        for (Artist artist : this.artists) {
+            LineUp.append(artist.getName() + ", ");
+        }
+        return LineUp.toString();
+    }
+
+    public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, Stage stage, int expectedPopularity) {
+        this(beginTime, endTime, artists, "", stage, "", new ArrayList<>(), expectedPopularity);
+        if (artists.size() != 0) {
+            this.name = this.artists.get(0).getName();
+        }
+        this.description = "";
 
         for (Artist artist : this.artists) {
             if (!this.genre.contains(artist.getGenre())) {
@@ -129,11 +129,11 @@ public class Show implements Serializable {
         return duration;
     }
 
-	public String getBeginTimeString() {
-		return beginTime.getHour()+":"+beginTime.getMinute();
-	}
+    public String getBeginTimeString() {
+        return beginTime.getHour() + ":" + beginTime.getMinute();
+    }
 
-	public String getEndTimeString() {
-		return endTime.getHour()+":"+endTime.getMinute();
-	}
+    public String getEndTimeString() {
+        return endTime.getHour() + ":" + endTime.getMinute();
+    }
 }
