@@ -1,23 +1,25 @@
 package GUILogic;
 
 import Enumerators.Genres;
+import PlannerData.Artist;
+import PlannerData.Show;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ScheduleTab {
@@ -427,6 +429,8 @@ public class ScheduleTab {
 
 
         if (this.errorlist.isEmpty()){
+//            DataController.getPlanner().addShow(new Show(beginUur.getValue()));
+            //TODO: LocalTime stuff when adding new show
             this.popUp.close();
         }
         else{
@@ -503,6 +507,9 @@ public class ScheduleTab {
         Genres.add(new CheckBox("Jazz"), 1,2);
         Genres.add(new CheckBox("Rock"),2,1);
         Genres.add(new CheckBox("K-Pop"),2,2);
+//        for (Genres genre : Enumerators.Genres.values()) {
+//            Genres.add(new CheckBox(),2,2);
+//        }
         newArtistList.getChildren().add(Genres);
 
 //        newArtistList.getChildren().add(artistDescription);
@@ -552,16 +559,20 @@ public class ScheduleTab {
     public ComboBox genreBox (){
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("None");
-//        for (Planner.genre genre:Planner) {
-//            comboBox.getItems().add(genre);
-//        }
+        comboBox.getItems().addAll(Genres.values());
         return comboBox;
     }
 
     public ComboBox StageBox (){
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("None");
+
+        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+            comboBox.getItems().add(stage.getName());
+        }
+
         comboBox.getItems().add("Add new Stage");
+
         comboBox.setOnAction(event -> {
             if (comboBox.getValue().equals("Add new Stage")){
                 stageAddWindow();
@@ -574,6 +585,9 @@ public class ScheduleTab {
     public ComboBox artistBox(){
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("None");
+        for (Artist artist : DataController.getPlanner().getArtists()) {
+            comboBox.getItems().add(artist.getName());
+        }
         comboBox.getItems().add("Add new Artist");
 
         comboBox.setOnAction(event -> {

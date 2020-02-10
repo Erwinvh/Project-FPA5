@@ -1,6 +1,5 @@
 package GUILogic;
 
-import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -11,43 +10,31 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class VisualTab {
     private Tab visualTab;
     private Canvas canvas;
     private Canvas canvasStages;
-    private int amountOfColumns;
-    private int columnWith;
-    private int startTime;
-    private int endTime;
     private Planner planner;
 
     public VisualTab(){
         this.planner = new Planner();
 
-        System.out.println(this.planner.getShows());
-
-        this.planner.getStages().add(new Stage(1, "Test"));
-        this.planner.getStages().add(new Stage(1, "Barry"));
-
         this.visualTab = new Tab("Visual");
-        this.canvas = new Canvas(960, 2400);
+        this.canvas = new Canvas(960, 1800);
         this.canvasStages = new Canvas(960, 40);
 
         ScrollPane scrollPane = new ScrollPane(this.canvas);
         scrollPane.setPrefSize(960, 500);
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVvalue(LocalTime.now().getHour() / 24f);
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
@@ -61,7 +48,6 @@ public class VisualTab {
         graphics.translate(60, 40);
 
         graphics.draw(new Line2D.Double(-60, 0, this.canvasStages.getWidth()-60, 0));
-
 
         graphics.draw(new Line2D.Double(0, 0, 0, -40));
         int i = 0;
@@ -93,7 +79,7 @@ public class VisualTab {
         graphics.setTransform(new AffineTransform());
         graphics.translate(60, 0);
 
-        this.columnWith = (int) ((this.canvas.getWidth() - 60) / this.planner.getStages().size());
+        int columnWith = (int) ((this.canvas.getWidth() - 60) / this.planner.getStages().size());
 
         System.out.println(this.planner.getShows().size());
 
@@ -107,17 +93,17 @@ public class VisualTab {
                 stageCounter++;
             }
             if (stageCounter <= this.planner.getStages().size()) {
-                double timeDecimalBeginTime = show.getBeginTime().minusHours(this.startTime).getHour() + (show.getBeginTime().getMinute()/60);
-                double timeDecimalEndTime = show.getEndTime().minusHours(this.startTime).getHour() + (show.getEndTime().getMinute()/60);
+                double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute()/60);
+                double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute()/60);
 
-                graphics.draw(new RoundRectangle2D.Double(((stageCounter - 1) * this.columnWith) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24), this.columnWith - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24), 25, 10));
+                graphics.draw(new RoundRectangle2D.Double(((stageCounter - 1) * columnWith) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24), columnWith - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24), 25, 10));
                 String artists = "";
                 for (Artist artist : show.getArtists()) {
                     artists += artist.getName() + ", ";
                 }
                 artists = artists.substring(0, artists.length()-2);
                 artists += ".";
-                graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " +show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((stageCounter - 1) * this.columnWith) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
+                graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " +show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((stageCounter - 1) * columnWith) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
 
             }
         }
