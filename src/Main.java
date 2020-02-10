@@ -17,12 +17,12 @@ public class Main {
 
         DataController dataController = new DataController();
 
-//        Artist artist = new Artist("Rik", Genres.ROCK,"sings beautyfull");
-//        Stage stage = new Stage(100,"main");
-//        ArrayList<Genres> genres = new ArrayList<>();
-//        genres.add(Genres.DANCE);
-//        Show show = new Show(LocalTime.now(),LocalTime.now(),artist,"rock",stage,"temp",genres,100);
-//        DataController.getPlanner().addShow(show);
+        Artist artist = new Artist("Rik", Genres.ROCK,"sings beautyfull");
+        Stage stage = new Stage(100,"rock-stage");
+        ArrayList<Genres> genres = new ArrayList<>();
+        genres.add(Genres.DANCE);
+        Show show = new Show(LocalTime.now(),LocalTime.now().plusMinutes(30),artist,"rock",stage,"temp",genres,100);
+        DataController.getPlanner().addShow(show);
 
         launch(GUI.class);
     }
