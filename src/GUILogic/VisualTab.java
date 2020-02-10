@@ -1,6 +1,5 @@
 package GUILogic;
 
-import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -17,9 +16,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.RoundRectangle2D;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
-public class VisualTab {
+class VisualTab {
 
     private Tab visualTab;
     private Canvas canvas;
@@ -33,7 +31,7 @@ public class VisualTab {
     private static final int STAGE_HEIGHT = 40;
     private static final int TIME_COLUMN_WIDTH = 60;
 
-    public VisualTab() {
+    VisualTab() {
         this.planner = DataController.getPlanner();
 
         this.visualTab = new Tab("Visual");
@@ -54,7 +52,7 @@ public class VisualTab {
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
     }
 
-    public void drawStages(FXGraphics2D graphics) {
+    private void drawStages(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.WHITE);
         graphics.clearRect(0, 0, (int) this.canvasStages.getWidth(), (int) this.canvasStages.getHeight());
@@ -72,7 +70,7 @@ public class VisualTab {
         }
     }
 
-    public void drawLayout(FXGraphics2D graphics) {
+    private void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.WHITE);
         graphics.clearRect(0, 0, (int) this.canvas.getWidth(), (int) this.canvas.getHeight());
@@ -95,7 +93,7 @@ public class VisualTab {
         graphics.setStroke(new BasicStroke(1f));
     }
 
-    public void drawPlanning(FXGraphics2D graphics) {
+    private void drawPlanning(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.translate(TIME_COLUMN_WIDTH, 0);
 
@@ -106,6 +104,7 @@ public class VisualTab {
                 if (show.getStage().equals(stage)) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
+                    // Draw the box around the show
                     Shape rectangle = new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10);
                     graphics.draw(rectangle);
                     graphics.setColor(Color.WHITE);
@@ -117,13 +116,15 @@ public class VisualTab {
                     }
 
                     artists = artists.substring(0, artists.length() - 2);
+
+                    // Draw the info of the show
                     graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
                 }
             }
         }
     }
 
-    public Tab getVisualTab() {
+    Tab getVisualTab() {
         return visualTab;
     }
 }

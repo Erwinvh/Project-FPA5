@@ -73,39 +73,6 @@ public class Planner implements Serializable {
         addShow(new Show(beginTime, endTime, artists, name, stage, description, genre, expectedPopularity));
     }
 
-    public void savePlanner() {
-        try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
-            objectOutputStream.writeObject(this);
-            objectOutputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Planner{" +
-                "shows=" + shows +
-                ", stages=" + stages +
-                ", artists=" + artists +
-                ", saveFileName='" + saveFileName + '\'' +
-                '}';
-    }
-
-    public ArrayList<Show> getShows() {
-        return this.shows;
-    }
-
-    public ArrayList<Stage> getStages() {
-        return stages;
-    }
-
-    public ArrayList<Artist> getArtists() {
-        return artists;
-    }
-
     public void addArtist(String name, Genres genre, Image image, String description) {
         boolean contains = false;
         for (Artist existingArtist : this.artists) {
@@ -163,5 +130,38 @@ public class Planner implements Serializable {
         if (canBeAdded) {
             this.shows.add(new Show(beginTime, endTime, stage, artists, "", "", genre, popularity));
         }
+    }
+
+    public ArrayList<Show> getShows() {
+        return this.shows;
+    }
+
+    public ArrayList<Stage> getStages() {
+        return this.stages;
+    }
+
+    public ArrayList<Artist> getArtists() {
+        return this.artists;
+    }
+
+    public void savePlanner() {
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
+            objectOutputStream.writeObject(this);
+            objectOutputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Planner{" +
+                "shows=" + shows +
+                ", stages=" + stages +
+                ", artists=" + artists +
+                ", saveFileName='" + saveFileName + '\'' +
+                '}';
     }
 }
