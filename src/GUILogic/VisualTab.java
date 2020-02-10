@@ -89,10 +89,10 @@ public class VisualTab {
         // Draw all times to the layout
         for (int j = 1; j < 24; j++) {
             graphics.drawString(j + ":00", -50, (int) (j * this.canvas.getHeight() / 24));
-            graphics.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 25));
-            graphics.draw(new Line2D.Double());
+            graphics.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0, new float[]{25, 25}, 40));
+            graphics.draw(new Line2D.Double(0, this.canvas.getHeight() / 24 * j, this.canvas.getWidth() - TIME_COLUMN_WIDTH, this.canvas.getHeight() / 24 * j));
         }
-        graphics.setStroke(new BasicStroke(10f));
+        graphics.setStroke(new BasicStroke(1f));
     }
 
     public void drawPlanning(FXGraphics2D graphics) {
@@ -106,7 +106,11 @@ public class VisualTab {
                 if (show.getStage().equals(stage)) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
-                    graphics.draw(new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10));
+                    Shape rectangle = new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10);
+                    graphics.draw(rectangle);
+                    graphics.setColor(Color.WHITE);
+                    graphics.fill(rectangle);
+                    graphics.setColor(Color.BLACK);
                     String artists = "";
                     for (Artist artist : show.getArtists()) {
                         artists += artist.getName() + ", ";
