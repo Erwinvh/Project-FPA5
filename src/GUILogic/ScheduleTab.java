@@ -65,11 +65,11 @@ public class ScheduleTab {
         TableColumn beginTimeCol = new TableColumn("Begin time");
         beginTimeCol.setPrefWidth(100);
         beginTimeCol.setCellValueFactory(
-                new PropertyValueFactory<>("beginTime"));
+                new PropertyValueFactory<>("beginTimeString"));
         TableColumn endTimeCol = new TableColumn("End time");
         endTimeCol.setPrefWidth(100);
         endTimeCol.setCellValueFactory(
-                new PropertyValueFactory<>("endTime"));
+                new PropertyValueFactory<>("endTimeString"));
         TableColumn stageCol = new TableColumn("Stage");
         stageCol.setPrefWidth(100);
         stageCol.setCellValueFactory(

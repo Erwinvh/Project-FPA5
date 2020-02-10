@@ -12,11 +12,11 @@ public class Show implements Serializable {
     private int expectedPopularity;
     private LocalTime beginTime;
     private LocalTime endTime;
-    private String name;
-    private String description;
-    private Stage stage;
-    private ArrayList<Genres> genre;
-    private ArrayList<Artist> artists;
+	private String name;
+	private String description;
+	private Stage stage;
+	private ArrayList<Genres> genre;
+	private ArrayList<Artist> artists;
 
 	public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
 		this.beginTime = beginTime;
@@ -117,4 +117,12 @@ public class Show implements Serializable {
         duration = endTime.minusHours(beginTime.getHour());
         return duration;
     }
+
+	public String getBeginTimeString() {
+		return beginTime.getHour()+":"+beginTime.getMinute();
+	}
+
+	public String getEndTimeString() {
+		return endTime.getHour()+":"+endTime.getMinute();
+	}
 }
