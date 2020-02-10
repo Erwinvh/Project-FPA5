@@ -18,7 +18,7 @@ public class Main {
         ArrayList<Artist> artists = new ArrayList<>();
         artists.add(new Artist("Arne", Genres.BLUES, "hij zingt en speelt gitaar."));
         artists.add(new Artist("Rik", Genres.ROCK, "Hij schreeuwt."));
-        artists.add(new Artist("Ralf", Genres.ALTERNATIVE_ROCK, "GIT is als de dood, niet prettig maar onvermijdbaar."));
+        artists.add(new Artist("Ralf", Genres.EMO_ROCK, "GIT is als de dood, niet prettig maar onvermijdbaar."));
         artists.add(new Artist("Kasper", Genres.NIGHTCORE, "Een ware leider en houdt van Wendy."));
         artists.add(new Artist("Erwin", Genres.JAZZ, "Een ware leider."));
         artists.add(new Artist("Lars", Genres.METAL, "De legend van Spoderman"));
