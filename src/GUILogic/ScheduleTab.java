@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class ScheduleTab {
     private Tab scheduleTab;
-    private TableView table = new TableView();
+    private TableView<Show> table = new TableView();
     private VBox description = new VBox();
     private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
@@ -39,7 +39,8 @@ public class ScheduleTab {
     private Stage popUp = new Stage();
     private Button confirm = new Button("Confirm");
     private Button cancel = new Button("Cancel");
-    private String selected = "test";
+    private String testtext = "test";
+    private Show Selected = this.table.getSelectionModel().getSelectedItem();
     private ArrayList<String> errorlist = new ArrayList<>();
     private ArrayList<String> timelist = new ArrayList<>();
     private int additionalArtists = 0;
@@ -65,6 +66,10 @@ public class ScheduleTab {
         for (Show show:DataController.getPlanner().getShows()) {
             this.data.add(show);
         }
+        TableColumn NameCol = new TableColumn("Name");
+        NameCol.setPrefWidth(100);
+        NameCol.setCellValueFactory(
+                new PropertyValueFactory<>("Name"));
         TableColumn beginTimeCol = new TableColumn("Begin time");
         beginTimeCol.setPrefWidth(100);
         beginTimeCol.setCellValueFactory(
@@ -93,6 +98,7 @@ public class ScheduleTab {
 
         this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
 
+        this.table.getItems().addAll(DataController.getPlanner().getShows());
 
         this.table.setItems(this.data);
     }
@@ -402,10 +408,10 @@ public class ScheduleTab {
 
         Label deleteThis = new Label("Are you sure you want to delete this show?");
         structure.setTop(deleteThis);
-        Label information = new Label("From "+ this.selected + " to " + this.selected + '\n'
-                + "By " + this.selected + " in the genre of " + this.selected + '\n' +
-                "On stage " + this.selected + '\n'+
-                "Expected popularity is " + this.selected + " people.");
+        Label information = new Label("From "+ this.testtext + " to " + this.testtext + '\n'
+                + "By " + this.testtext + " in the genre of " + this.testtext + '\n' +
+                "On stage " + this.testtext + '\n'+
+                "Expected popularity is " + this.testtext + " people.");
         structure.setCenter(information);
 
         HBox choice = new HBox();
