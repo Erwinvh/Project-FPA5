@@ -1,6 +1,5 @@
 package GUILogic;
 
-import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -17,9 +16,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.RoundRectangle2D;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
-public class VisualTab {
+class VisualTab {
 
     private Tab visualTab;
     private Canvas canvas;
@@ -33,21 +31,8 @@ public class VisualTab {
     private static final int STAGE_HEIGHT = 40;
     private static final int TIME_COLUMN_WIDTH = 60;
 
-    public VisualTab() {
-        this.planner = new Planner();
-
-        ArrayList<Artist> artists = new ArrayList<>();
-        artists.add(new Artist("Arne de Beer", Genres.BLUES, "Smoking hot"));
-        artists.add(new Artist("Lars Giskes", Genres.PUNK_ROCK, "The legend of Spoderman"));
-        artists.add(new Artist("Henk", Genres.METAL, "Dit is Henk"));
-
-        ArrayList<Stage> stages = new ArrayList<>();
-        stages.add(new Stage(500, "Main Stage"));
-        stages.add(new Stage(100, "Second Stage"));
-
-        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
-        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
-        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
+    VisualTab() {
+        this.planner = DataController.getPlanner();
 
         this.visualTab = new Tab("Visual");
         this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -68,7 +53,7 @@ public class VisualTab {
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
     }
 
-    public void drawStages(FXGraphics2D graphics) {
+    private void drawStages(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.WHITE);
         graphics.clearRect(0, 0, (int) this.canvasStages.getWidth(), (int) this.canvasStages.getHeight());
@@ -86,7 +71,7 @@ public class VisualTab {
         }
     }
 
-    public void drawLayout(FXGraphics2D graphics) {
+    private void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.WHITE);
         graphics.clearRect(0, 0, (int) this.canvas.getWidth(), (int) this.canvas.getHeight());
@@ -106,7 +91,7 @@ public class VisualTab {
         }
     }
 
-    public void drawPlanning(FXGraphics2D graphics) {
+    private void drawPlanning(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.translate(TIME_COLUMN_WIDTH, 0);
 
@@ -117,20 +102,25 @@ public class VisualTab {
                 if (show.getStage().equals(stage)) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
+
+                    // Draw the box around the show
                     graphics.draw(new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 4, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 8, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10));
+
                     String artists = "";
                     for (Artist artist : show.getArtists()) {
                         artists += artist.getName() + ", ";
                     }
 
                     artists = artists.substring(0, artists.length() - 2);
+
+                    // Draw the info of the show
                     graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
                 }
             }
         }
     }
 
-    public Tab getVisualTab() {
+    Tab getVisualTab() {
         return visualTab;
     }
 }
