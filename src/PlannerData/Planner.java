@@ -43,6 +43,8 @@ public class Planner implements Serializable {
                     this.artists.add(artist);
                 }
             }
+
+            this.savePlanner();
         }
     }
 
@@ -74,62 +76,51 @@ public class Planner implements Serializable {
     }
 
     public void addArtist(String name, Genres genre, Image image, String description) {
-        boolean contains = false;
         for (Artist existingArtist : this.artists) {
             if (name.equals(existingArtist.getName())) {
-                contains = true;
+                return;
             }
         }
-        if (!contains) {
-            this.artists.add(new Artist(name, genre, image, description));
-        }
+        this.artists.add(new Artist(name, genre, image, description));
     }
 
     public void addArtist(String name, Genres genre, String description) {
-        boolean contains = false;
         for (Artist existingArtist : this.artists) {
-            if (name.equals(existingArtist.getName())) {
-                contains = true;
-            }
+            if (name.equals(existingArtist.getName())) return;
         }
-        if (!contains) {
-            this.artists.add(new Artist(name, genre, description));
-        }
+
+        this.artists.add(new Artist(name, genre, description));
     }
 
     public void addStage(int capacity, String name) {
-        boolean contains = false;
+
+        if (capacity < 1 || capacity > 100000) return;
+
         for (Stage stage : this.stages) {
-            if (stage.getName().equals(name)) {
-                contains = true;
-            }
+            if (stage.getName().equals(name)) return;
         }
-        if (!contains) {
-            this.stages.add(new Stage(capacity, name));
-        }
+
+        this.stages.add(new Stage(capacity, name));
     }
 
     public void addShow(LocalTime beginTime, LocalTime endTime, Stage stage, int popularity, Genres genre, ArrayList<Artist> artists) {
-        boolean canBeAdded = true;
-        for (Show show : this.shows) {
-            if (artists.get(0).getName().equals(show.getName())) {
-                canBeAdded = false;
-            }
+        Show newShow = new Show(beginTime, endTime, stage, artists, "", "", genre, popularity);
 
-            if (stage.getName().equals(show.getStage().getName())) {
+        if (this.shows.contains(newShow)) return;
+
+        for (Show show : this.shows) {
+            if (show.getStage().equals(stage)) {
                 if (beginTime.isAfter(show.getBeginTime()) && beginTime.isBefore(show.getEndTime())) {
-                    canBeAdded = false;
+                    return;
                 }
 
                 if (endTime.isAfter(show.getBeginTime()) && endTime.isBefore(show.getEndTime())) {
-                    canBeAdded = false;
+                    return;
                 }
             }
         }
 
-        if (canBeAdded) {
-            this.shows.add(new Show(beginTime, endTime, stage, artists, "", "", genre, popularity));
-        }
+        this.shows.add(newShow);
     }
 
     public ArrayList<Show> getShows() {
