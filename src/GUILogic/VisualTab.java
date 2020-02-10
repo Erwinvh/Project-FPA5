@@ -127,4 +127,10 @@ class VisualTab {
     Tab getVisualTab() {
         return visualTab;
     }
+
+    void update() {
+        drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
+        drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
+        drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
+    }
 }

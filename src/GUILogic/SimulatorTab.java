@@ -2,14 +2,14 @@ package GUILogic;
 
 import javafx.scene.control.Tab;
 
-public class SimulatorTab {
+class SimulatorTab {
     private Tab simulatorTab;
 
-    public SimulatorTab() {
+    SimulatorTab() {
         this.simulatorTab = new Tab("Simulator");
     }
 
-    public Tab getSimulatorTab() {
+    Tab getSimulatorTab() {
         return simulatorTab;
     }
 }
