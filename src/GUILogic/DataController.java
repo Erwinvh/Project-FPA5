@@ -5,11 +5,9 @@ import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
 import PlannerData.Stage;
+import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -21,19 +19,21 @@ public class DataController {
 
     public DataController() {
         planner = new Planner();
+        Gson gson = new Gson();
 
         try {
             File file = new File(saveFileName);
             if (!file.exists()) {
                 file.createNewFile();
             } else {
-                FileInputStream fileInputStream = new FileInputStream(saveFileName);
-                if (fileInputStream.available() > 1) {
-                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                    planner = (Planner) objectInputStream.readObject();
+                try (Reader reader = new FileReader(saveFileName)){
+                    planner = gson.fromJson(reader,Planner.class);
+                }catch (Exception e){
+                    System.out.println("error loading data due to: ");
+                    e.printStackTrace();
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
             e.printStackTrace();
         }
@@ -55,9 +55,9 @@ public class DataController {
         stages.add(new Stage(500, "Main Stage"));
         stages.add(new Stage(100, "Second Stage"));
 
-        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
-        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
-        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
+//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
+//        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
+//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
     }
 
     public static Planner getPlanner() {

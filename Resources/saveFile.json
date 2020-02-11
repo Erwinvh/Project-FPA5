@@ -1,0 +1,158 @@
+{
+  "shows": [
+    {
+      "beginTime": {
+        "hour": 8,
+        "minute": 49,
+        "second": 0,
+        "nano": 25000000
+      },
+      "endTime": {
+        "hour": 9,
+        "minute": 19,
+        "second": 0,
+        "nano": 41000000
+      },
+      "name": "",
+      "description": "",
+      "artists": [
+        {
+          "name": "Arne de Beer",
+          "genre": "BLUES",
+          "description": "Smoking hot"
+        }
+      ],
+      "stage": {
+        "name": "Main Stage",
+        "capacity": 500
+      },
+      "genre": [],
+      "expectedPopularity": 400
+    },
+    {
+      "beginTime": {
+        "hour": 9,
+        "minute": 34,
+        "second": 0,
+        "nano": 172000000
+      },
+      "endTime": {
+        "hour": 10,
+        "minute": 49,
+        "second": 0,
+        "nano": 172000000
+      },
+      "name": "",
+      "description": "",
+      "artists": [
+        {
+          "name": "Lars Giskes",
+          "genre": "PUNK_ROCK",
+          "description": "The legend of Spoderman"
+        }
+      ],
+      "stage": {
+        "name": "Main Stage",
+        "capacity": 500
+      },
+      "genre": [],
+      "expectedPopularity": 400
+    },
+    {
+      "beginTime": {
+        "hour": 8,
+        "minute": 49,
+        "second": 0,
+        "nano": 172000000
+      },
+      "endTime": {
+        "hour": 9,
+        "minute": 19,
+        "second": 0,
+        "nano": 172000000
+      },
+      "name": "",
+      "description": "",
+      "artists": [
+        {
+          "name": "Henk",
+          "genre": "METAL",
+          "description": "Dit is Henk"
+        }
+      ],
+      "stage": {
+        "name": "Second Stage",
+        "capacity": 100
+      },
+      "genre": [],
+      "expectedPopularity": 75
+    },
+    {
+      "beginTime": {
+        "hour": 8,
+        "minute": 49,
+        "second": 0,
+        "nano": 188000000
+      },
+      "endTime": {
+        "hour": 9,
+        "minute": 19,
+        "second": 0,
+        "nano": 188000000
+      },
+      "name": "rock",
+      "description": "temp",
+      "artists": [
+        {
+          "name": "Rik",
+          "genre": "ROCK",
+          "description": "sings beautyfull"
+        }
+      ],
+      "stage": {
+        "name": "rock-stage",
+        "capacity": 100
+      },
+      "genre": [
+        "DANCE"
+      ],
+      "expectedPopularity": 100
+    }
+  ],
+  "stages": [
+    {
+      "name": "Main Stage",
+      "capacity": 500
+    },
+    {
+      "name": "Second Stage",
+      "capacity": 100
+    },
+    {
+      "name": "rock-stage",
+      "capacity": 100
+    }
+  ],
+  "artists": [
+    {
+      "name": "Arne de Beer",
+      "genre": "BLUES",
+      "description": "Smoking hot"
+    },
+    {
+      "name": "Lars Giskes",
+      "genre": "PUNK_ROCK",
+      "description": "The legend of Spoderman"
+    },
+    {
+      "name": "Henk",
+      "genre": "METAL",
+      "description": "Dit is Henk"
+    },
+    {
+      "name": "Rik",
+      "genre": "ROCK",
+      "description": "sings beautyfull"
+    }
+  ]
+}
