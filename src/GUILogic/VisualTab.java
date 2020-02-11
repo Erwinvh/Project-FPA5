@@ -35,7 +35,7 @@ class VisualTab {
         this.planner = DataController.getPlanner();
 
         this.visualTab = new Tab("Visual");
-        this.canvas = new Canvas(CANVAS_WIDTH-6, CANVAS_HEIGHT);
+        this.canvas = new Canvas(CANVAS_WIDTH - 6, CANVAS_HEIGHT);
         this.canvasStages = new Canvas(CANVAS_WIDTH, STAGE_HEIGHT);
 
         ScrollPane scrollPane = new ScrollPane(this.canvas);

@@ -118,10 +118,12 @@ public class Planner implements Serializable {
 
     public void addStage(int capacity, String name) {
 
-        if (capacity < 1 || capacity > 100000) return;
+        if (capacity < 1 || capacity > 100000)
+            return;
 
         for (Stage stage : this.stages) {
-            if (stage.getName().equals(name)) return;
+            if (stage.getName().toLowerCase().equals(name.toLowerCase()))
+                return;
         }
 
         this.stages.add(new Stage(capacity, name));
