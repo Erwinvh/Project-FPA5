@@ -16,7 +16,7 @@ public class Planner implements Serializable {
     private ArrayList<Artist> artists;
 //    private ArrayList<Genres> genres;
 
-    public final static String saveFileName = "Planner.txt";
+    public final static String saveFileName = "Resources/saveFile.json";
 
     public Planner() {
         this.shows = new ArrayList<>();

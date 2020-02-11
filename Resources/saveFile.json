@@ -2,16 +2,16 @@
   "shows": [
     {
       "beginTime": {
-        "hour": 18,
-        "minute": 23,
-        "second": 33,
-        "nano": 367000000
+        "hour": 8,
+        "minute": 49,
+        "second": 0,
+        "nano": 25000000
       },
       "endTime": {
-        "hour": 18,
-        "minute": 53,
-        "second": 33,
-        "nano": 382000000
+        "hour": 9,
+        "minute": 19,
+        "second": 0,
+        "nano": 41000000
       },
       "name": "",
       "description": "",
@@ -23,24 +23,24 @@
         }
       ],
       "stage": {
-        "capacity": 500,
-        "name": "Main Stage"
+        "name": "Main Stage",
+        "capacity": 500
       },
       "genre": [],
       "expectedPopularity": 400
     },
     {
       "beginTime": {
-        "hour": 19,
-        "minute": 8,
-        "second": 33,
-        "nano": 663000000
+        "hour": 9,
+        "minute": 34,
+        "second": 0,
+        "nano": 172000000
       },
       "endTime": {
-        "hour": 20,
-        "minute": 23,
-        "second": 33,
-        "nano": 663000000
+        "hour": 10,
+        "minute": 49,
+        "second": 0,
+        "nano": 172000000
       },
       "name": "",
       "description": "",
@@ -52,24 +52,24 @@
         }
       ],
       "stage": {
-        "capacity": 500,
-        "name": "Main Stage"
+        "name": "Main Stage",
+        "capacity": 500
       },
       "genre": [],
       "expectedPopularity": 400
     },
     {
       "beginTime": {
-        "hour": 18,
-        "minute": 23,
-        "second": 33,
-        "nano": 677000000
+        "hour": 8,
+        "minute": 49,
+        "second": 0,
+        "nano": 172000000
       },
       "endTime": {
-        "hour": 18,
-        "minute": 53,
-        "second": 33,
-        "nano": 677000000
+        "hour": 9,
+        "minute": 19,
+        "second": 0,
+        "nano": 172000000
       },
       "name": "",
       "description": "",
@@ -81,24 +81,24 @@
         }
       ],
       "stage": {
-        "capacity": 100,
-        "name": "Second Stage"
+        "name": "Second Stage",
+        "capacity": 100
       },
       "genre": [],
       "expectedPopularity": 75
     },
     {
       "beginTime": {
-        "hour": 18,
-        "minute": 23,
-        "second": 33,
-        "nano": 689000000
+        "hour": 8,
+        "minute": 49,
+        "second": 0,
+        "nano": 188000000
       },
       "endTime": {
-        "hour": 18,
-        "minute": 53,
-        "second": 33,
-        "nano": 689000000
+        "hour": 9,
+        "minute": 19,
+        "second": 0,
+        "nano": 188000000
       },
       "name": "rock",
       "description": "temp",
@@ -110,8 +110,8 @@
         }
       ],
       "stage": {
-        "capacity": 100,
-        "name": "rock-stage"
+        "name": "rock-stage",
+        "capacity": 100
       },
       "genre": [
         "DANCE"
@@ -121,16 +121,16 @@
   ],
   "stages": [
     {
-      "capacity": 500,
-      "name": "Main Stage"
+      "name": "Main Stage",
+      "capacity": 500
     },
     {
-      "capacity": 100,
-      "name": "Second Stage"
+      "name": "Second Stage",
+      "capacity": 100
     },
     {
-      "capacity": 100,
-      "name": "rock-stage"
+      "name": "rock-stage",
+      "capacity": 100
     }
   ],
   "artists": [
