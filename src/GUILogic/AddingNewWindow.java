@@ -2,21 +2,28 @@ package GUILogic;
 
 import Enumerators.Genres;
 import PlannerData.Planner;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 public class AddingNewWindow {
@@ -24,9 +31,13 @@ public class AddingNewWindow {
     private Stage upperStage;
     private Stage currentStage = new Stage();
     private ArrayList<String> errorlist = new ArrayList<>();
+    private FileChooser fileChooser = new FileChooser();
+    private ImageView ProfielImage = new ImageView();
 
     public AddingNewWindow(int ScreenNumber, Stage upperStage) {
         this.upperStage = upperStage;
+        this.ProfielImage.setFitWidth(100);
+        this.ProfielImage.setFitHeight(100);
         if (ScreenNumber ==1){
             stageAddWindow();
         }
@@ -117,18 +128,33 @@ public class AddingNewWindow {
 
         Label ArtistpictureLabel = new Label("Artist's picture:");
         newArtistList.getChildren().add(ArtistpictureLabel);
+        newArtistList.getChildren().add(this.ProfielImage);
+        Button PictureInput = new Button();
+        newArtistList.getChildren().add(PictureInput);
+        PictureInput.setOnAction(event -> {
+            File selectedFile = fileChooser.showOpenDialog(this.currentStage);
+            fileChooser.setInitialDirectory(new File("Resources"+DataController.getPlanner().getArtists().size()));
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("PNG Files", "*.png")
+                    ,new FileChooser.ExtensionFilter("Jpg Files", "*.jpg")
+                    , new FileChooser.ExtensionFilter("Jpeg Files", "*.jpeg")
+            );
+            try{
+                BufferedImage bufferedImage = ImageIO.read(selectedFile);
+                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                ProfielImage.setImage(image);
+            }catch(Exception e){
+                System.out.println("failed image");
+                System.out.println("Exception:" + e);
+            }
 
-//        FileChooser imageChooser = new FileChooser();
-//        imageChooser.getExtensionFilters().addAll(
-//                new FileChooser.ExtensionFilter("jpg Files", "*.jpg")
-//                ,new FileChooser.ExtensionFilter("png Files", "*.png")
-//        );
-//        Button openButton = new Button("Choose Image");
-//
-//        openButton.setOnAction(event -> {
-//                        File selectedFile = imageChooser.showOpenDialog(this.popUp);
-//
-//                });
+        });
+
+
+
+
+
+
 
 
         HBox choice = new HBox();
