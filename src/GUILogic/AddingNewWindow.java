@@ -5,10 +5,7 @@ import PlannerData.Planner;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -71,7 +68,6 @@ public class AddingNewWindow {
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
             newStageControl(StageName,InputTextField);
-            DataController.getPlanner().addStage(Integer.parseInt(InputTextField.getText()),StageName.getText());
         });
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
@@ -84,6 +80,29 @@ public class AddingNewWindow {
         this.currentStage.show();
     }
 
+    public void newStageControl(TextField stageName, TextField capacity) {
+        this.errorlist.clear();
+        if (stageName.getText().length() == 0) {
+            this.errorlist.add("The stage name has not been filled in.");
+        }
+        if (capacity.getText().length() == 0) {
+            this.errorlist.add("The capacity has not been filled in.");
+        } else {
+            try {
+                int cap = Integer.parseInt(capacity.getText());
+            } catch (Exception e) {
+                this.errorlist.add("The capacity must be a Number.");
+            }
+
+        }
+        if (this.errorlist.isEmpty()) {
+            DataController.getPlanner().addStage(Integer.parseInt(capacity.getText()),stageName.getText());
+            this.currentStage.close();
+        } else {
+            new ErrorWindow(this.currentStage, this.errorlist);
+        }
+    }
+
     public void artistAddWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(400);
@@ -91,41 +110,24 @@ public class AddingNewWindow {
         this.currentStage.initModality(Modality.WINDOW_MODAL);
 
         VBox newArtistList = new VBox();
-        TextField artistName = new TextField();
 
-        TextArea artistDescription = new TextArea();
+        //artist name
         Label ArtistNameLabel = new Label("Artist name:");
+        TextField artistName = new TextField();
         newArtistList.getChildren().add(ArtistNameLabel);
         newArtistList.getChildren().add(artistName);
 
         //genre
         Label ArtistGenreLabel = new Label("Artist's Genres:");
         newArtistList.getChildren().add(ArtistGenreLabel);
-        GridPane Genres = new GridPane();
-        Genres.setHgap(10);
-        Genres.setVgap(10);
-//        for (Enumerators.Genres genre: ???) {
-//            Genres.add(, , x, y)
-//        }
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().add("None");
+        for(Genres genre : Enumerators.Genres.values()){
+            comboBox.getItems().add(genre.getFancyName());
+        }
+        newArtistList.getChildren().add(comboBox);
 
-
-        Genres.add(new CheckBox("Nightcore"), 1, 1);
-        Genres.add(new CheckBox("Jazz"), 1, 2);
-        Genres.add(new CheckBox("Rock"), 2, 1);
-        Genres.add(new CheckBox("K-Pop"), 2, 2);
-
-
-//        for (Genres genre : Enumerators.Genres.values()) {
-//            Genres.add(new CheckBox(),2,2);
-//        }
-
-
-        newArtistList.getChildren().add(Genres);
-
-//        newArtistList.getChildren().add(artistDescription);
-
-//        private Image image;
-
+        //picture
         Label ArtistpictureLabel = new Label("Artist's picture:");
         newArtistList.getChildren().add(ArtistpictureLabel);
         newArtistList.getChildren().add(this.ProfielImage);
@@ -147,16 +149,15 @@ public class AddingNewWindow {
                 System.out.println("failed image");
                 System.out.println("Exception:" + e);
             }
-
         });
 
+        //artist description
+        Label ArtistdescriptionLabel = new Label("Artist's description:");
+        TextArea artistDescription = new TextArea();
+        newArtistList.getChildren().add(ArtistdescriptionLabel);
+        newArtistList.getChildren().add(artistDescription);
 
-
-
-
-
-
-
+        //buttons
         HBox choice = new HBox();
         Button stop = new Button("Cancel");
         stop.setOnAction(event -> {
@@ -165,27 +166,13 @@ public class AddingNewWindow {
         choice.getChildren().add(stop);
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
-            newArtistControl(artistName, artistDescription);
-            Planner planner = DataController.getPlanner();
-            ArrayList<Enumerators.Genres> genres = new ArrayList<>();
-            ObservableList<Node> checkBoxes = Genres.getChildren();
-            for(Node checkbox : checkBoxes){
-                CheckBox box = (CheckBox) checkbox;
-                if(box.isSelected()){
-                    genres.add(stringToGenre(box.getText()));
-                }
-            }
-            String description = artistDescription.getText();
-            String name = artistName.getText();
-            DataController.getPlanner().addArtist(name,genres.get(0),description);
+            newArtistControl(artistName, artistDescription, comboBox.getValue().toString(), ProfielImage.getImage(), artistDescription);
         });
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
-        Label ArtistdescriptionLabel = new Label("Artist's description:");
-        newArtistList.getChildren().add(ArtistdescriptionLabel);
-        newArtistList.getChildren().add(artistDescription);
         newArtistList.getChildren().add(choice);
+
         Scene artistAddScene = new Scene(newArtistList);
         artistAddScene.getStylesheets().add("Window-StyleSheet.css");
         this.currentStage.setScene(artistAddScene);
@@ -201,8 +188,7 @@ public class AddingNewWindow {
         return null;
     }
 
-
-    public void newArtistControl(TextField ArtistName, TextArea ArtistDescription) {
+    public void newArtistControl(TextField ArtistName, TextArea ArtistDescription, String Genre, Image image, TextArea Description) {
         this.errorlist.clear();
         if (ArtistName.getText().length() == 0) {
             this.errorlist.add("The artist's name has not been filled in.");
@@ -211,29 +197,12 @@ public class AddingNewWindow {
             this.errorlist.add("The artist's description has not been filled in.");
         }
         if (this.errorlist.isEmpty()) {
+            try{
+                DataController.getPlanner().addArtist(ArtistName.getText(), stringToGenre(Genre), image, Description.getText());
+                this.currentStage.close();
+            }catch(Exception e){
 
-        } else {
-            new ErrorWindow(this.currentStage, this.errorlist);
-        }
-    }
-
-    public void newStageControl(TextField stageName, TextField capacity) {
-        this.errorlist.clear();
-        if (stageName.getText().length() == 0) {
-            this.errorlist.add("The stage name has not been filled in.");
-        }
-        if (capacity.getText().length() == 0) {
-            this.errorlist.add("The capacity has not been filled in.");
-        } else {
-            try {
-                int cap = Integer.parseInt(capacity.getText());
-            } catch (Exception e) {
-                this.errorlist.add("The capacity must be a Number.");
             }
-
-        }
-        if (this.errorlist.isEmpty()) {
-
         } else {
             new ErrorWindow(this.currentStage, this.errorlist);
         }
