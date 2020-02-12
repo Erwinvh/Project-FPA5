@@ -267,6 +267,8 @@ public class BaseControls {
         inputStructure.add(new Label("End time:"), 1, 3);
         ComboBox startingTime = timeBox();
         ComboBox endingTime = timeBox();
+        startingTime.getSelectionModel().select(LocalTimeToindex(this.selectedShow.getBeginTime()));
+        endingTime.getSelectionModel().select(LocalTimeToindex(this.selectedShow.getEndTime()));
         inputStructure.add(startingTime, 2, 2);
         inputStructure.add(endingTime, 2, 3);
 
@@ -584,6 +586,15 @@ public class BaseControls {
             }
         }
         return null;
+    }
+
+    public int LocalTimeToindex(LocalTime time){
+        int index = 0;
+        index += time.getHour() * 2;
+        if(time.getMinute() == 30){
+            index++;
+        }
+        return index;
     }
 
 }
