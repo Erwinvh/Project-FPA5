@@ -142,9 +142,6 @@ public class BaseControls {
 
         });
 
-        stage.setOnAction(event -> {
-            popularity.setValue(0);
-        });
 
         PopularityLabel.textProperty().setValue("0");
         inputStructure.add(PopularityLabel, 3, 6);
@@ -274,11 +271,13 @@ public class BaseControls {
 
         inputStructure.add(new Label("Stage:"), 1, 4);
         ComboBox stage = StageBox();
+        stage.setValue(this.selectedShow.getStage().getName());
         inputStructure.add(stage, 2, 4);
         // add listener for popularity slider
 
         inputStructure.add(new Label("Genre:"), 1, 5);
         ComboBox genre = genreBox();
+        genre.setValue(this.selectedShow.getGenre().get(0).getFancyName());
         inputStructure.add(genre, 2, 5);
 
         inputStructure.add(new Label("Popularity:"), 1, 6);
@@ -600,7 +599,7 @@ public class BaseControls {
     }
 
     public int LocalTimeToindex(LocalTime time){
-        int index = 0;
+        int index = 1;
         index += time.getHour() * 2;
         if(time.getMinute() == 30){
             index++;
