@@ -137,22 +137,24 @@ public class BaseControls {
         //artists
         inputStructure.add(new Label("Artists:"), 1, 7);
         ComboBox artists = artistBox();
-        inputStructure.add(artists, 2, 7);
+
 
         //add more artists
         Button showArtistAdder = new Button("+");
+        VBox ArtistAddList = new VBox();
+        ArtistAddList.getChildren().add(artists);
         inputStructure.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
-            this.additionalArtists++;
             ComboBox artistAdded = artistBox();
-            inputStructure.add(artistAdded, 2, 7 + this.additionalArtists);
+            artistAdded.getItems().add("None");
+            ArtistAddList.getChildren().add(artistAdded);
             artistAdded.setOnAction(e -> {
                 if (artistAdded.getValue().equals("None")) {
-                    inputStructure.getChildren().remove(artistAdded);
-                    this.additionalArtists--;
+                    ArtistAddList.getChildren().remove(artistAdded);
                 }
             });
         });
+        inputStructure.add(ArtistAddList, 2, 7);
 
         ScrollPane artistScroller = new ScrollPane();
         artistScroller.setContent(inputStructure);
@@ -291,22 +293,28 @@ public class BaseControls {
 
         inputStructure.add(PopularityLabel, 3, 6);
 
+        //artists
         inputStructure.add(new Label("Artists:"), 1, 7);
         ComboBox artists = artistBox();
-        inputStructure.add(artists, 2, 7);
+
+
+        //add more artists
         Button showArtistAdder = new Button("+");
+        VBox ArtistAddList = new VBox();
+        ArtistAddList.getChildren().add(artists);
         inputStructure.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
-            this.additionalArtists++;
             ComboBox artistAdded = artistBox();
-            inputStructure.add(artistAdded, 2, 7 + this.additionalArtists);
+            artistAdded.getItems().add("None");
+            ArtistAddList.getChildren().add(artistAdded);
             artistAdded.setOnAction(e -> {
                 if (artistAdded.getValue().equals("None")) {
-                    inputStructure.getChildren().remove(artistAdded);
-                    this.additionalArtists--;
+                    ArtistAddList.getChildren().remove(artistAdded);
                 }
             });
         });
+        inputStructure.add(ArtistAddList, 2, 7);
+
 
         ScrollPane artistScroller = new ScrollPane();
         VBox scrutcureTwo = new VBox();
@@ -500,6 +508,7 @@ public class BaseControls {
      */
     public ComboBox artistBox() {
         ComboBox artistBox = new ComboBox();
+
         artistBox.getItems().add("--Select--");
         artistBox.getSelectionModel().selectFirst();
         for (Artist artist : DataController.getPlanner().getArtists()) {
