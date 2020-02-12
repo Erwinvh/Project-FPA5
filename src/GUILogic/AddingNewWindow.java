@@ -32,6 +32,12 @@ public class AddingNewWindow {
     private FileChooser fileChooser = new FileChooser();
     private ImageView ProfielImage = new ImageView();
 
+    /**
+     * This is the constructor of the base of the submenus.
+     * This method also decides which submenu it should show to the user.
+     * @param ScreenNumber
+     * @param upperStage
+     */
     public AddingNewWindow(int ScreenNumber, Stage upperStage) {
         this.upperStage = upperStage;
         this.ProfielImage.setFitWidth(200);
@@ -47,6 +53,10 @@ public class AddingNewWindow {
         }
     }
 
+    /**
+     * This method creates the submenu where the user can add a Stage to the festival.
+     * The user must choose a name for the Stage and choose a capacity.
+     */
     public void stageAddWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
@@ -81,6 +91,12 @@ public class AddingNewWindow {
         this.currentStage.show();
     }
 
+    /**
+     * This method checks if the new Stage is valid or not.
+     * If it isn't valid it will notify the user of the mistakes so the user may repair them before submitting them again.
+     * @param stageName
+     * @param capacity
+     */
     public void newStageControl(TextField stageName, TextField capacity) {
         this.errorlist.clear();
         if (stageName.getText().length() == 0) {
@@ -88,13 +104,16 @@ public class AddingNewWindow {
         }
         if (capacity.getText().length() == 0) {
             this.errorlist.add("The capacity has not been filled in.");
-        } else {
+        }
+        else {
             try {
                 int cap = Integer.parseInt(capacity.getText());
+                if (cap <=0){
+                    this.errorlist.add("The Capacity must be larger than 0");
+                }
             } catch (Exception e) {
                 this.errorlist.add("The capacity must be a Number.");
             }
-
         }
         if (this.errorlist.isEmpty()) {
             DataController.getPlanner().addStage(Integer.parseInt(capacity.getText()),stageName.getText());
@@ -104,6 +123,10 @@ public class AddingNewWindow {
         }
     }
 
+    /**
+     *This method sets the submenu to the Add Artist submenu.
+     *The user will be able to fill in all the required fields for an unknown artist.
+     */
     public void artistAddWindow() {
         this.currentStage.setWidth(275);
         this.currentStage.setHeight(400);
@@ -199,6 +222,15 @@ public class AddingNewWindow {
         return null;
     }
 
+    /**
+     *This method checks whether the new Artist is valid or not.
+     *If it isn't this method will notify the user what he/she needs to repair before submitting again.
+     * @param ArtistName
+     * @param ArtistDescription
+     * @param Genre
+     * @param image
+     * @param Description
+     */
     public void newArtistControl(TextField ArtistName, TextArea ArtistDescription, String Genre, Image image, TextArea Description) {
         this.errorlist.clear();
         if (ArtistName.getText().length() == 0) {

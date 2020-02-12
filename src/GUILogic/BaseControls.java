@@ -387,6 +387,14 @@ public class BaseControls {
         this.popUp.show();
     }
 
+    /**
+     * This method checks whether the input is valid or not.
+     * @param beginUur
+     * @param eindUur
+     * @param stage
+     * @param genre
+     * @param showName
+     */
     public void control(ComboBox beginUur, ComboBox eindUur, ComboBox stage, ComboBox genre, TextField showName) {
         this.errorlist.clear();
         int beginIndex = this.timelist.indexOf(beginUur.getValue());

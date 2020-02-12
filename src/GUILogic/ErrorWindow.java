@@ -14,6 +14,11 @@ import java.util.ArrayList;
 
 public class ErrorWindow {
 
+    /**
+     * This Constructor creates a Error Window that shows the user which Error he/she made during a process.
+     * @param upperStage
+     * @param errorlist
+     */
     public ErrorWindow(Stage upperStage, ArrayList<String> errorlist) {
         Stage errorPopUp = new Stage();
         errorPopUp.setWidth(500);
