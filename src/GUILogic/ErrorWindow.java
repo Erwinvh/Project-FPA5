@@ -14,6 +14,12 @@ import java.util.ArrayList;
 
 public class ErrorWindow {
 
+    /**
+     * This Constructor creates a Error Window that shows the user which Error he/she made during a process.
+     *
+     * @param upperStage
+     * @param errorlist
+     */
     public ErrorWindow(Stage upperStage, ArrayList<String> errorlist) {
         Stage errorPopUp = new Stage();
         errorPopUp.setWidth(500);
@@ -22,8 +28,8 @@ public class ErrorWindow {
         errorPopUp.initOwner(upperStage);
         errorPopUp.initModality(Modality.WINDOW_MODAL);
         HBox baseStructure = new HBox();
-        Image error = new Image("file:Resources/alert.png");
-        ImageView showError = new ImageView(error);
+        Image errorImage = new Image("file:Resources/alert.png");
+        ImageView showError = new ImageView(errorImage);
         showError.setFitWidth(100);
         showError.setFitHeight(100);
         baseStructure.getChildren().add(showError);
