@@ -32,7 +32,17 @@ public class BaseControls {
     private Stage popUp = new Stage();
     private TableView<Show> table;
     private ObservableList<Show> data;
+    private int stagePopularity = 0;
 
+    /**
+     * This is the constructor of the base layout of the windows of the three Menus.
+     * The method also sends the user to the correct menu window.
+     * @param ScreenNumber
+     * @param upperStage
+     * @param data
+     * @param table
+     * @param Selected
+     */
     public BaseControls(int ScreenNumber, Stage upperStage, javafx.collections.ObservableList<Show> data, TableView<Show> table, Show Selected) {
         this.upperStage = upperStage;
         this.table = table;
@@ -42,6 +52,11 @@ public class BaseControls {
         this.popUp.setHeight(450);
         this.popUp.initOwner(this.upperStage);
         this.popUp.initModality(Modality.WINDOW_MODAL);
+        try {
+            this.stagePopularity = this.Selected.getStage().getCapacity();
+        }catch(Exception e){
+
+        }
         cancelsetup();
         if (ScreenNumber==1){
             additionWindow();
@@ -54,6 +69,9 @@ public class BaseControls {
         }
     }
 
+    /**
+     * This method allows the user to Add a new Show.
+     */
     public void additionWindow() {
         this.additionalArtists = 0;
         BorderPane structure = new BorderPane();
@@ -64,25 +82,33 @@ public class BaseControls {
         GridPane inputStructure = new GridPane();
         inputStructure.setHgap(10);
         inputStructure.setVgap(10);
+
+        //showname
         Label showName = new Label("Show name:");
         TextField inputShowName = new TextField();
         inputStructure.add(showName, 1, 1);
         inputStructure.add(inputShowName, 2, 1);
+
+        //time
         inputStructure.add(new Label("Begin time:"), 1, 2);
         inputStructure.add(new Label("End time:"), 1, 3);
         ComboBox beginUur = timeBox();
         ComboBox eindUur = timeBox();
         inputStructure.add(beginUur, 2, 2);
         inputStructure.add(eindUur, 2, 3);
-        inputStructure.add(new Label("Stage:"), 1, 4);
-        inputStructure.add(new Label("Genre:"), 1, 5);
-        inputStructure.add(new Label("Popularity:"), 1, 6);
-        inputStructure.add(new Label("Artists:"), 1, 7);
 
+        //stage
+        inputStructure.add(new Label("Stage:"), 1, 4);
         ComboBox stage = StageBox();
         inputStructure.add(stage, 2, 4);
+
+        //genre
+        inputStructure.add(new Label("Genre:"), 1, 5);
         ComboBox genre = genreBox();
         inputStructure.add(genre, 2, 5);
+
+        //popularity
+        inputStructure.add(new Label("Popularity:"), 1, 6);
         Slider popularity = new Slider();
         popularity.setMin(0);
         popularity.setMax(100);
@@ -107,11 +133,14 @@ public class BaseControls {
         });
 
         PopularityLabel.textProperty().setValue("0");
-
         inputStructure.add(PopularityLabel, 3, 6);
+
+        //artists
+        inputStructure.add(new Label("Artists:"), 1, 7);
         ComboBox artists = artistBox();
         inputStructure.add(artists, 2, 7);
 
+        //add more artists
         Button showArtistAdder = new Button("+");
         inputStructure.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
@@ -126,9 +155,12 @@ public class BaseControls {
             });
         });
 
+
         ScrollPane ArtistScroller = new ScrollPane();
         ArtistScroller.setContent(inputStructure);
         structure.setCenter(ArtistScroller);
+
+        //buttons
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
@@ -156,7 +188,6 @@ public class BaseControls {
             } else {
                 addedArtists = null;
             }
-
 
             Genres addedGenre;
             if (genre.getValue() != null) {
@@ -187,8 +218,6 @@ public class BaseControls {
                 DataController.getPlanner().addShow(show);
                 this.data.add(show);
             }
-
-
         });
 
         choice.getChildren().add(this.cancel);
@@ -203,6 +232,9 @@ public class BaseControls {
         this.popUp.show();
     }
 
+    /**
+     * This method allows the user to edit the selected show.
+     */
     public void editoryWindow() {
         BorderPane structure = new BorderPane();
 
@@ -212,28 +244,32 @@ public class BaseControls {
         GridPane inputStructure = new GridPane();
         inputStructure.setHgap(10);
         inputStructure.setVgap(10);
+
         Label showName = new Label("Show name:");
-        TextField inputShowName = new TextField();
+        TextField inputShowName = new TextField(this.Selected.getName());
         inputStructure.add(showName, 1, 1);
         inputStructure.add(inputShowName, 2, 1);
+
         inputStructure.add(new Label("Begin time:"), 1, 2);
         inputStructure.add(new Label("End time:"), 1, 3);
         ComboBox beginUur = timeBox();
         ComboBox eindUur = timeBox();
         inputStructure.add(beginUur, 2, 2);
         inputStructure.add(eindUur, 2, 3);
-        inputStructure.add(new Label("Stage:"), 1, 4);
-        inputStructure.add(new Label("Genre:"), 1, 5);
-        inputStructure.add(new Label("Popularity:"), 1, 6);
-        inputStructure.add(new Label("Artists:"), 1, 7);
 
+        inputStructure.add(new Label("Stage:"), 1, 4);
         ComboBox stage = StageBox();
         inputStructure.add(stage, 2, 4);
+        // add listener for popularity slider
+
+        inputStructure.add(new Label("Genre:"), 1, 5);
         ComboBox genre = genreBox();
         inputStructure.add(genre, 2, 5);
+
+        inputStructure.add(new Label("Popularity:"), 1, 6);
         Slider popularity = new Slider();
         popularity.setMin(0);
-        popularity.setMax(this.Selected.getStage().getCapacity());
+        popularity.setMax(this.stagePopularity);
         popularity.setValue(this.Selected.getExpectedPopularity());
         popularity.setShowTickLabels(true);
         popularity.setShowTickMarks(true);
@@ -257,9 +293,10 @@ public class BaseControls {
         PopularityLabel.textProperty().setValue(""+this.Selected.getExpectedPopularity());
 
         inputStructure.add(PopularityLabel, 3, 6);
+
+        inputStructure.add(new Label("Artists:"), 1, 7);
         ComboBox artists = artistBox();
         inputStructure.add(artists, 2, 7);
-
         Button showArtistAdder = new Button("+");
         inputStructure.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
@@ -305,6 +342,9 @@ public class BaseControls {
         this.popUp.show();
     }
 
+    /**
+     * This method allows the user to see the selected show that they wish to delete.
+     */
     public void deletionWindow() {
         BorderPane structure = new BorderPane();
 
@@ -315,7 +355,8 @@ public class BaseControls {
                 + "From " + this.Selected.getBeginTimeString() + " to " + this.Selected.getEndTimeString() + '\n'
                 + "By " + this.Selected.getArtistsNames() + " in the genre of " + this.Selected.getGenre() + '\n'
                 + "On stage " + this.Selected.getStageName() + '\n'
-                + "Expected popularity is " + this.Selected.getExpectedPopularity() + " people.");
+                + "Expected popularity is " + this.Selected.getExpectedPopularity() + " people."
+        + "with the desciption: " + '\n' + this.Selected.getDescription());
 
         structure.setCenter(information);
 
@@ -384,13 +425,20 @@ public class BaseControls {
         }
     }
 
-
+    /**
+     * This method sets the action of the Cancel button.
+     */
     public void cancelsetup() {
         this.cancel.setOnAction(event -> {
             this.popUp.close();
         });
     }
 
+    /**
+     * This method makes a ComboBox with all the known Genres. it is not possible to add a Genre.
+     * This method is only used once in the Adding menu and once in the Edit menu.
+     * @return ComboBox
+     */
     public ComboBox genreBox() {
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("None");
@@ -400,6 +448,11 @@ public class BaseControls {
         return comboBox;
     }
 
+    /**
+     * This method makes a ComboBox with all the known stages and allows for the user to create a new Stage.
+     * This method is only used once in the Adding Menu and once in the Edit Menu.
+     * @return ComboBox
+     */
     public ComboBox StageBox() {
         ComboBox comboBox = new ComboBox();
 
@@ -418,6 +471,11 @@ public class BaseControls {
         return comboBox;
     }
 
+    /**
+     * This method allows a ComboBox to be made with the total amount of artists that are known and to add an unknown Artist to the Show.
+     * This ComboBox will be at least used once in the Adding menu as in the Edit Menu.
+     * @return ComboBox
+     */
     public ComboBox artistBox() {
         ComboBox comboBox = new ComboBox();
         comboBox.getItems().add("None");
@@ -435,6 +493,11 @@ public class BaseControls {
         return comboBox;
     }
 
+    /**
+     * In the method of timeBox we can make a timeBox which contains all half and whole hours to plan a show.
+     * This box will be used twice in the Adding menu as in the Edit menu.
+     * @return ComboBox
+     */
     public ComboBox timeBox() {
         ComboBox uurBox = new ComboBox();
         String time = "";
@@ -461,8 +524,6 @@ public class BaseControls {
         }
         return uurBox;
     }
-
-
 
     public Genres stringToGenre(String genreString){
         for(Genres genre : Genres.values()){

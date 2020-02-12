@@ -39,6 +39,7 @@ public class ScheduleTab {
     private Show Selected = this.table.getSelectionModel().getSelectedItem();
     private TableViewSelectionModel selectionModel =this.table.getSelectionModel();
     private ObservableList<Show> selectedItems = this.selectionModel.getSelectedItems();
+    private ArrayList<String> errorList = new ArrayList<>();
 
 
     private ObservableList<Show> data = FXCollections.observableArrayList();
@@ -50,10 +51,17 @@ public class ScheduleTab {
         this.allDescriptions.setPrefWidth(600);
     }
 
+    /**
+     * This is the getter of the Schedule tab, it allows the Gui to show the schedule tab in the application.
+     * @return Tab
+     */
     public Tab getScheduleTab() {
         return scheduleTab;
     }
 
+    /**
+     * This method creates the table which shows the user all shows that are currently planned.
+     */
     public void table() {
         this.table.setEditable(false);
         for (Show show : DataController.getPlanner().getShows()) {
@@ -97,6 +105,9 @@ public class ScheduleTab {
         this.table.getSelectionModel().selectFirst();
     }
 
+    /**
+     * This method creates the description that shows the Artists of the selected show.
+     */
     public void desciption() {
         this.Selected = this.table.getSelectionModel().getSelectedItem();
         int numberOfArtists = 0;
@@ -149,6 +160,9 @@ try{
 
     }
 
+    /**
+     * This method creates the base Layout of the Schedule tab by calling the separate pieces.
+     */
     public void layout() {
         HBox baseLayer = new HBox();
         baseLayer.setSpacing(10);
@@ -166,6 +180,9 @@ try{
         this.scheduleTab.setContent(base);
     }
 
+    /**
+     * This method creates the Buttons to the Add, Edit and Delete menus.
+     */
     public void Controls() {
         Button addButton = new Button("Add");
         addButton.setOnAction(event -> {
@@ -173,13 +190,28 @@ try{
         });
         Button editButton = new Button("Edit");
         editButton.setOnAction(event -> {
-            this.Selected = this.table.getSelectionModel().getSelectedItem();
-            new BaseControls(2, this.primaryStage, this.data, this.table, this.Selected);
+            try{
+                this.Selected = this.table.getSelectionModel().getSelectedItem();
+                new BaseControls(2, this.primaryStage, this.data, this.table, this.Selected);
+            }
+            catch(Exception e){
+                this.errorList.clear();
+                this.errorList.add("No show has been selected.");
+                new ErrorWindow(this.primaryStage, this.errorList);
+            }
+
         });
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(event -> {
-            this.Selected = this.table.getSelectionModel().getSelectedItem();
-            new BaseControls(3, this.primaryStage, this.data, this.table, this.Selected);
+            try{
+                this.Selected = this.table.getSelectionModel().getSelectedItem();
+                new BaseControls(3, this.primaryStage, this.data, this.table, this.Selected);
+            }
+            catch(Exception e){
+                this.errorList.clear();
+                this.errorList.add("No show has been selected.");
+                new ErrorWindow(this.primaryStage, this.errorList);
+            }
         });
 
         this.controls.getChildren().add(addButton);
