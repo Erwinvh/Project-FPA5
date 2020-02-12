@@ -113,7 +113,7 @@ public class BaseControls {
         popularity.setValue(0);
         popularity.setShowTickLabels(true);
         popularity.setShowTickMarks(true);
-        popularity.setMajorTickUnit(50);
+        popularity.setMajorTickUnit(25);
         popularity.setMinorTickCount(5);
         popularity.setBlockIncrement(10);
         inputStructure.add(popularity, 2, 6);
@@ -125,9 +125,25 @@ public class BaseControls {
                     ObservableValue<? extends Number> observableValue,
                     Number oldValue,
                     Number newValue) {
-                PopularityLabel.textProperty().setValue(
-                        String.valueOf(newValue.intValue()));
+
+                int stageCapacity = 100;
+
+                if(stage.getValue() != null) {
+                    PlannerData.Stage selectedStage = stringToStage(stage.getValue().toString());
+                    if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
+                        stageCapacity = selectedStage.getCapacity();
+                    }
+                }
+                PopularityLabel.textProperty().setValue( String.valueOf((newValue.intValue())));
+                popularity.setMax(stageCapacity);
+                popularity.setMajorTickUnit( (stageCapacity/4));
+                popularity.setMinorTickCount( stageCapacity/20);
             }
+
+        });
+
+        stage.setOnAction(event -> {
+            popularity.setValue(0);
         });
 
         PopularityLabel.textProperty().setValue("0");
@@ -195,7 +211,7 @@ public class BaseControls {
 
             int popularityAdded;
             if (stageAdded != null) {
-                popularityAdded = (int) (stageAdded.getCapacity() * (popularity.getValue() / 100));
+                popularityAdded = (int) popularity.getValue();
             } else {
                 popularityAdded = -1;
             }
