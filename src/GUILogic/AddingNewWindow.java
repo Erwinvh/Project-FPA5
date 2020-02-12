@@ -3,6 +3,7 @@ package GUILogic;
 import Enumerators.Genres;
 import PlannerData.Planner;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -33,8 +34,11 @@ public class AddingNewWindow {
 
     public AddingNewWindow(int ScreenNumber, Stage upperStage) {
         this.upperStage = upperStage;
-        this.ProfielImage.setFitWidth(100);
-        this.ProfielImage.setFitHeight(100);
+        this.ProfielImage.setFitWidth(200);
+        this.ProfielImage.setFitHeight(200);
+        this.currentStage.initOwner(this.upperStage);
+        this.currentStage.initModality(Modality.WINDOW_MODAL);
+        this.currentStage.setResizable(false);
         if (ScreenNumber ==1){
             stageAddWindow();
         }
@@ -46,9 +50,6 @@ public class AddingNewWindow {
     public void stageAddWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
-        this.currentStage.initOwner(this.upperStage);
-        this.currentStage.initModality(Modality.WINDOW_MODAL);
-
         VBox newStageList = new VBox();
         Label StageLabelName = new Label("Stage Name:");
         newStageList.getChildren().add(StageLabelName);
@@ -104,16 +105,16 @@ public class AddingNewWindow {
     }
 
     public void artistAddWindow() {
-        this.currentStage.setWidth(200);
+        this.currentStage.setWidth(275);
         this.currentStage.setHeight(400);
-        this.currentStage.initOwner(this.upperStage);
-        this.currentStage.initModality(Modality.WINDOW_MODAL);
 
         VBox newArtistList = new VBox();
+        newArtistList.setPrefWidth(250);
 
         //artist name
         Label ArtistNameLabel = new Label("Artist name:");
         TextField artistName = new TextField();
+        artistName.setPrefWidth(250);
         newArtistList.getChildren().add(ArtistNameLabel);
         newArtistList.getChildren().add(artistName);
 
@@ -131,8 +132,12 @@ public class AddingNewWindow {
         Label ArtistpictureLabel = new Label("Artist's picture:");
         newArtistList.getChildren().add(ArtistpictureLabel);
         newArtistList.getChildren().add(this.ProfielImage);
-        Button PictureInput = new Button();
+        Button PictureInput = new Button("Add a picture");
         newArtistList.getChildren().add(PictureInput);
+        newArtistList.getChildren().add(new Label("the picture wil be resized"));
+        newArtistList.getChildren().add(new Label("to 200X200 pixels"));
+
+
         PictureInput.setOnAction(event -> {
             File selectedFile = fileChooser.showOpenDialog(this.currentStage);
             fileChooser.setInitialDirectory(new File("Resources"+DataController.getPlanner().getArtists().size()));
@@ -146,6 +151,8 @@ public class AddingNewWindow {
                 Image image = SwingFXUtils.toFXImage(bufferedImage, null);
                 ProfielImage.setImage(image);
             }catch(Exception e){
+                this.errorlist.add("this is not an image file: choose a Jpeg/Jpg/PNG file");
+                new ErrorWindow(this.currentStage,this.errorlist);
                 System.out.println("failed image");
                 System.out.println("Exception:" + e);
             }
@@ -154,6 +161,7 @@ public class AddingNewWindow {
         //artist description
         Label ArtistdescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
+        artistDescription.setPrefWidth(250);
         newArtistList.getChildren().add(ArtistdescriptionLabel);
         newArtistList.getChildren().add(artistDescription);
 
@@ -172,8 +180,11 @@ public class AddingNewWindow {
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
         newArtistList.getChildren().add(choice);
+        ScrollPane ArtistScroller = new ScrollPane();
+        ArtistScroller.setContent(newArtistList);
+        newArtistList.setAlignment(Pos.CENTER);
 
-        Scene artistAddScene = new Scene(newArtistList);
+        Scene artistAddScene = new Scene(ArtistScroller);
         artistAddScene.getStylesheets().add("Window-StyleSheet.css");
         this.currentStage.setScene(artistAddScene);
         this.currentStage.show();
