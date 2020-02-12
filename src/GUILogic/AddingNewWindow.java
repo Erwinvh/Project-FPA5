@@ -161,7 +161,7 @@ public class AddingNewWindow {
 
         artistPictureInput.setOnAction(event -> {
             File selectedFile = fileChooser.showOpenDialog(this.currentStage);
-            fileChooser.setInitialDirectory(new File("Resources" + DataController.getPlanner().getArtists().size()));
+            fileChooser.setInitialDirectory(new File("Resources"));
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("PNG Files", "*.png")
                     , new FileChooser.ExtensionFilter("Jpg Files", "*.jpg")
@@ -243,7 +243,8 @@ public class AddingNewWindow {
                 DataController.getPlanner().addArtist(artistName.getText(), stringToGenre(genre), image, description.getText());
                 this.currentStage.close();
             } catch (Exception e) {
-
+                this.errorList.add("Failed to add the artist.");
+                new ErrorWindow(this.currentStage, this.errorList);
             }
         } else {
             new ErrorWindow(this.currentStage, this.errorList);
