@@ -162,7 +162,7 @@ public class BaseControls {
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
 
-            control(startingTime, endingTime, stage, genre, inputShowName);
+            control(startingTime, endingTime, stage, genre, inputShowName, artists);
             String showNameAdding = inputShowName.getText();
             LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
             LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
@@ -323,7 +323,7 @@ public class BaseControls {
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
 
-            control(startingTime, endingTime, stage, genre, inputShowName);
+            control(startingTime, endingTime, stage, genre, inputShowName, artists);
 
         });
 
@@ -392,7 +392,7 @@ public class BaseControls {
      * @param genre
      * @param showName
      */
-    public void control(ComboBox startingTime, ComboBox endingTime, ComboBox stage, ComboBox genre, TextField showName) {
+    public void control(ComboBox startingTime, ComboBox endingTime, ComboBox stage, ComboBox genre, TextField showName, ComboBox artist) {
         this.errorList.clear();
         int startIndex = this.timeList.indexOf(startingTime.getValue());
         int endIndex = this.timeList.indexOf(endingTime.getValue());
@@ -400,10 +400,10 @@ public class BaseControls {
             this.errorList.add("The show name has not been filled in.");
         }
         if (startingTime.getValue() == null || endingTime.getValue() == null) {
-            if (startingTime.getValue() == null) {
+            if (startingTime.getValue() == null || startingTime.getValue().equals("Select")) {
                 this.errorList.add("The begintime has not been filled in.");
             }
-            if (endingTime.getValue() == null) {
+            if (endingTime.getValue() == null || endingTime.getValue().equals("Select")) {
                 this.errorList.add("The endtime has not been filled in.");
             }
         } else {
@@ -413,11 +413,14 @@ public class BaseControls {
                 this.errorList.add("The begintime the same as the endtime.");
             }
         }
-        if (stage.getValue() == null) {
+        if (stage.getValue() == null || stage.getValue().equals("--Select--")) {
             this.errorList.add("The stage has not been filled in.");
         }
-        if (genre.getValue() == null) {
+        if (genre.getValue() == null || genre.getValue().equals("--Select--")) {
             this.errorList.add("The genre has not been filled in.");
+        }
+        if (artist.getValue() == null || artist.getValue().equals("--Select--")){
+            this.errorList.add("An artist has not been added yet");
         }
 
 
@@ -447,7 +450,8 @@ public class BaseControls {
      */
     public ComboBox genreBox() {
         ComboBox genreBox = new ComboBox();
-        genreBox.getItems().add("None");
+        genreBox.getItems().add("--Select--");
+        genreBox.getSelectionModel().selectFirst();
         for (Genres genre : Genres.values()) {
             genreBox.getItems().add(genre.getFancyName());
         }
@@ -462,6 +466,8 @@ public class BaseControls {
      */
     public ComboBox StageBox() {
         ComboBox stageBox = new ComboBox();
+        stageBox.getItems().add("--Select--");
+        stageBox.getSelectionModel().selectFirst();
         for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
             stageBox.getItems().add(stage.getName());
         }
@@ -469,6 +475,7 @@ public class BaseControls {
         stageBox.setOnAction(event -> {
             if (stageBox.getValue().equals("Add new Stage")) {
                 new AddingNewWindow(1, this.popUp);
+                stageBox.getSelectionModel().selectFirst();
             }
         });
         return stageBox;
@@ -482,7 +489,8 @@ public class BaseControls {
      */
     public ComboBox artistBox() {
         ComboBox artistBox = new ComboBox();
-        artistBox.getItems().add("None");
+        artistBox.getItems().add("--Select--");
+        artistBox.getSelectionModel().selectFirst();
         for (Artist artist : DataController.getPlanner().getArtists()) {
             artistBox.getItems().add(artist.getName());
         }
@@ -491,6 +499,7 @@ public class BaseControls {
         artistBox.setOnAction(event -> {
             if (artistBox.getValue().equals("Add new Artist")) {
                 new AddingNewWindow(2, this.popUp);
+//                artistBox.getSelectionModel().selectFirst();
             }
         });
 
@@ -505,6 +514,8 @@ public class BaseControls {
      */
     public ComboBox timeBox() {
         ComboBox timeBox = new ComboBox();
+        timeBox.getItems().add("Select");
+        timeBox.getSelectionModel().selectFirst();
         String time = "";
         String halftime = "";
         for (int i = 0; i <= 23; i++) {
