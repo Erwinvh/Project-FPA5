@@ -32,6 +32,7 @@ public class BaseControls {
     private TableView<Show> table;
     private ObservableList<Show> data;
     private int stagePopularity = 0;
+    private Slider popularitySlider = new Slider();
 
     /**
      * This is the constructor of the base layout of the windows of the three Menus.
@@ -107,44 +108,28 @@ public class BaseControls {
 
         //popularity
         inputStructure.add(new Label("Popularity:"), 1, 6);
-        Slider popularity = new Slider();
-        popularity.setMin(0);
-        popularity.setMax(100);
-        popularity.setValue(0);
-        popularity.setShowTickLabels(true);
-        popularity.setShowTickMarks(true);
-        popularity.setMajorTickUnit(25);
-        popularity.setMinorTickCount(5);
-        popularity.setBlockIncrement(10);
-        inputStructure.add(popularity, 2, 6);
+        this.popularitySlider.setMin(0);
+        this.popularitySlider.setMax(100);
+        this.popularitySlider.setValue(0);
+        this.popularitySlider.setShowTickLabels(true);
+        this.popularitySlider.setShowTickMarks(true);
+        this.popularitySlider.setMajorTickUnit(25);
+        this.popularitySlider.setMinorTickCount(5);
+        this.popularitySlider.setBlockIncrement(10);
+        inputStructure.add(this.popularitySlider, 2, 6);
         Label PopularityLabel = new Label("");
-        popularity.valueProperty().addListener(new ChangeListener<Number>() {
+        this.popularitySlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
             public void changed(
                     ObservableValue<? extends Number> observableValue,
                     Number oldValue,
                     Number newValue) {
-
-                int stageCapacity = 100;
-
-                if(stage.getValue() != null) {
-                    PlannerData.Stage selectedStage = stringToStage(stage.getValue().toString());
-                    if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
-                        stageCapacity = selectedStage.getCapacity();
-                    }
-                }
-                PopularityLabel.textProperty().setValue( String.valueOf((newValue.intValue())));
-                popularity.setMax(stageCapacity);
-                popularity.setMajorTickUnit( (stageCapacity/4));
-                popularity.setMinorTickCount( stageCapacity/20);
+                PopularityLabel.textProperty().setValue(String.valueOf((newValue.intValue())));
             }
 
         });
 
-        stage.setOnAction(event -> {
-            popularity.setValue(0);
-        });
 
         PopularityLabel.textProperty().setValue("0");
         inputStructure.add(PopularityLabel, 3, 6);
@@ -211,7 +196,7 @@ public class BaseControls {
 
             int popularityAdded;
             if (stageAdded != null) {
-                popularityAdded = (int) popularity.getValue();
+                popularityAdded = (int) this.popularitySlider.getValue();
             } else {
                 popularityAdded = -1;
             }
@@ -280,18 +265,17 @@ public class BaseControls {
         inputStructure.add(genre, 2, 5);
 
         inputStructure.add(new Label("Popularity:"), 1, 6);
-        Slider popularity = new Slider();
-        popularity.setMin(0);
-        popularity.setMax(this.stagePopularity);
-        popularity.setValue(this.selectedShow.getExpectedPopularity());
-        popularity.setShowTickLabels(true);
-        popularity.setShowTickMarks(true);
-        popularity.setMajorTickUnit(50);
-        popularity.setMinorTickCount(5);
-        popularity.setBlockIncrement(10);
-        inputStructure.add(popularity, 2, 6);
+        this.popularitySlider.setMin(0);
+        this.popularitySlider.setMax(this.stagePopularity);
+        this.popularitySlider.setValue(this.selectedShow.getExpectedPopularity());
+        this.popularitySlider.setShowTickLabels(true);
+        this.popularitySlider.setShowTickMarks(true);
+        this.popularitySlider.setMajorTickUnit(50);
+        this.popularitySlider.setMinorTickCount(5);
+        this.popularitySlider.setBlockIncrement(10);
+        inputStructure.add(this.popularitySlider, 2, 6);
         Label PopularityLabel = new Label("");
-        popularity.valueProperty().addListener(new ChangeListener<Number>() {
+        this.popularitySlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
             public void changed(
@@ -489,10 +473,21 @@ public class BaseControls {
         }
         stageBox.getItems().add("Add new Stage");
         stageBox.setOnAction(event -> {
+            int stageCapacity = 100;
             if (stageBox.getValue().equals("Add new Stage")) {
                 new AddingNewWindow(1, this.popUp);
                 stageBox.getSelectionModel().selectFirst();
             }
+            else if (!stageBox.getValue().equals("--Select--")){
+                PlannerData.Stage selectedStage = stringToStage(stageBox.getValue().toString());
+                    if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
+                        stageCapacity = selectedStage.getCapacity();
+                    }
+                }
+                this.popularitySlider.setMax(stageCapacity);
+                this.popularitySlider.setMajorTickUnit( (stageCapacity/4));
+                this.popularitySlider.setMinorTickCount( stageCapacity/20);
+
         });
         return stageBox;
     }
