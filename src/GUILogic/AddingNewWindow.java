@@ -191,12 +191,14 @@ public class AddingNewWindow {
 
         artistImageAddition.setOnAction(event -> {
             String selected = artistImageAddition.getSelectionModel().getSelectedItem().toString();
-            Image showImage = new Image("PersonImageBase.jpg");
+            String imageURL = "PersonImageBase.jpg";
+            Image showImage = new Image(imageURL);
 
             if (!selected.equals("None")){
                 for (String image : getArtistImages()){
                     if (getFileName(image).equals(selected)){
-                        showImage = new Image("Artist_Images/" +image);
+                        imageURL = "Artist_Images/" +image;
+                        showImage = new Image(imageURL);
                     }
                 }
             }
