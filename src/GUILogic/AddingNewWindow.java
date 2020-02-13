@@ -28,6 +28,7 @@ public class AddingNewWindow {
     private ArrayList<String> errorList = new ArrayList<>();
     private FileChooser fileChooser = new FileChooser();
     private ImageView artistImage = new ImageView();
+    private String imageURL = "PersonImageBase.jpg";
 
     /**
      * This is the constructor of the base of the submenus.
@@ -150,67 +151,6 @@ public class AddingNewWindow {
         }
         newArtistList.getChildren().add(genreComboBox);
 
-        //picture
-//        Label artistPictureLabel = new Label("Artist's picture:");
-//        newArtistList.getChildren().add(artistPictureLabel);
-//        newArtistList.getChildren().add(this.artistImage);
-//        Button artistPictureInput = new Button("Add a picture");
-//        newArtistList.getChildren().add(artistPictureInput);
-//        newArtistList.getChildren().add(new Label("the picture wil be resized"));
-//        newArtistList.getChildren().add(new Label("to 200X200 pixels"));
-
-
-//        artistPictureInput.setOnAction(event -> {
-//            File selectedFile = fileChooser.showOpenDialog(this.currentStage);
-//            fileChooser.setInitialDirectory(new File("Resources"));
-//            fileChooser.getExtensionFilters().addAll(
-//                    new FileChooser.ExtensionFilter("PNG Files", "*.png")
-//                    , new FileChooser.ExtensionFilter("Jpg Files", "*.jpg")
-//                    , new FileChooser.ExtensionFilter("Jpeg Files", "*.jpeg")
-//            );
-//            try {
-//                BufferedImage bufferedArtistImage = ImageIO.read(selectedFile);
-//                Image image = SwingFXUtils.toFXImage(bufferedArtistImage, null);
-//                artistImage.setImage(image);
-//            } catch (Exception e) {
-//                this.errorList.add("this is not an image file: choose a Jpeg/Jpg/PNG file");
-//                new ErrorWindow(this.currentStage, this.errorList);
-//                System.out.println("failed image");
-//                System.out.println("Exception:" + e);
-//            }
-//        });
-
-        // picture selection #2
-        ArrayList<String> imagesArtist = getArtistImages();
-        Label artistImageLabel = new Label("Artist's picture:");
-        ComboBox artistImageAddition = new ComboBox();
-        artistImageAddition.getItems().add("None");
-        for (String imageName : imagesArtist){
-            artistImageAddition.getItems().add(getFileName(imageName));
-        }
-
-        artistImageAddition.setOnAction(event -> {
-            String selected = artistImageAddition.getSelectionModel().getSelectedItem().toString();
-            String imageURL = "PersonImageBase.jpg";
-            Image showImage = new Image(imageURL);
-
-            if (!selected.equals("None")){
-                for (String image : getArtistImages()){
-                    if (getFileName(image).equals(selected)){
-                        imageURL = "Artist_Images/" +image;
-                        showImage = new Image(imageURL);
-                    }
-                }
-            }
-            this.artistImage.setImage(showImage);
-        });
-        this.artistImage.setImage(new Image("PersonImageBase.jpg"));
-
-        newArtistList.getChildren().addAll(artistImageLabel, this.artistImage, artistImageAddition);
-
-
-
-
         //artist description
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
@@ -227,7 +167,7 @@ public class AddingNewWindow {
         choice.getChildren().add(stop);
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
-            newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistImage.getImage(), artistDescription);
+            newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription);
         });
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
@@ -289,10 +229,10 @@ public class AddingNewWindow {
      * @param artistName
      * @param artistDescription
      * @param genre
-     * @param image
+     * @param imagePath
      * @param description
      */
-    public void newArtistControl(TextField artistName, TextArea artistDescription, String genre, Image image, TextArea description) {
+    public void newArtistControl(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
         this.errorList.clear();
         if (artistName.getText().length() == 0) {
             this.errorList.add("The artist's name has not been filled in.");
@@ -302,7 +242,7 @@ public class AddingNewWindow {
         }
         if (this.errorList.isEmpty()) {
             try {
-                DataController.getPlanner().addArtist(artistName.getText(), stringToGenre(genre), image, description.getText());
+                DataController.getPlanner().addArtist(artistName.getText(), stringToGenre(genre), description.getText());
                 this.currentStage.close();
             } catch (Exception e) {
                 this.errorList.add("Failed to add the artist.");
