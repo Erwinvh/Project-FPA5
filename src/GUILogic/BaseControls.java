@@ -160,7 +160,8 @@ public class BaseControls {
         VBox StructureTwo = new VBox();
         StructureTwo.getChildren().add(inputStructure);
         StructureTwo.getChildren().add(new Label("Show description:"));
-        StructureTwo.getChildren().add(ShowDescription("", 200, 250));
+        TextArea descriptionTextArea =ShowDescription("", 200, 250);
+        StructureTwo.getChildren().add(descriptionTextArea);
 
 
 
@@ -209,7 +210,7 @@ public class BaseControls {
             } else {
                 popularityAdded = -1;
             }
-
+            String descriptionShow = descriptionTextArea.getText();
             if (addedArtists == null || addedArtists.isEmpty() || stageAdded == null || beginTime == null || endTime == null || showNameAdding.isEmpty() || popularityAdded < 0) {
                 return;
             } else {
@@ -221,7 +222,7 @@ public class BaseControls {
                 } else {
                     genres.add(addedGenre);
                 }
-                Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, "", genres, popularityAdded);
+                Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
                 DataController.getPlanner().addShow(show);
                 this.data.add(show);
             }

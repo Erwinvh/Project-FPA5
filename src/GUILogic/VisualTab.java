@@ -1,5 +1,6 @@
 package GUILogic;
 
+import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -101,7 +102,7 @@ class VisualTab {
 
         for (Stage stage : this.planner.getStages()) {
             for (Show show : this.planner.getShows()) {
-                if (show.getStage().equals(stage)) {
+                if (show.getStage().getName().equals(stage.getName()) && show.getStage().getCapacity() == stage.getCapacity()) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
                     // Draw the box around the show
@@ -117,8 +118,20 @@ class VisualTab {
 
                     artists = artists.substring(0, artists.length() - 2);
 
+                    String genres = "";
+                    if (!show.getGenre().isEmpty()) {
+                        genres += "(";
+                        for (Genres genre : show.getGenre()) {
+                            genres += genre.getFancyName() + ", ";
+                        }
+                        genres = genres.substring(0, genres.length()-2);
+                        genres += ")";
+                    }
+                    else {
+                        genres += "(No specified genre)";
+                    }
                     // Draw the info of the show
-                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
+                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " " + genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
                 }
             }
         }

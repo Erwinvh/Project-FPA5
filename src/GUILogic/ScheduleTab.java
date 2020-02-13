@@ -113,11 +113,6 @@ public class ScheduleTab {
                 artistamount.setPrefWidth(150);
                 descriptionStructure.add(artistamount, 2, 1);
                 Image artistImage = new Image("file:Resources/PersonImageBase.jpg");
-                try {
-                    Image ArtistImage = artist.getImage();
-                } catch (Exception e) {
-
-                }
                 ImageView Artistpicture = new ImageView(artistImage);
                 Artistpicture.setFitHeight(200);
                 Artistpicture.setFitWidth(200);

@@ -95,14 +95,25 @@ public class Planner implements Serializable {
         this.savePlanner();
     }
 
-    public void addArtist(String name, Genres genre, Image image, String description) {
+//    public void addArtist(String name, Genres genre, Image image, String description) {
+//        for (Artist existingArtist : this.artists) {
+//            if (name.equals(existingArtist.getName())) {
+//                return;
+//            }
+//        }
+//
+//        this.artists.add(new Artist(name, genre, image, description));
+//        this.savePlanner();
+//    }
+
+    public void addArtist(String name, Genres genre, String imagePath, String description) {
         for (Artist existingArtist : this.artists) {
             if (name.equals(existingArtist.getName())) {
                 return;
             }
         }
 
-        this.artists.add(new Artist(name, genre, image, description));
+        this.artists.add(new Artist(name, genre, description));
         this.savePlanner();
     }
 
