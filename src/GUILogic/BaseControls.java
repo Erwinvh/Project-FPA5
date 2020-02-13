@@ -223,9 +223,36 @@ public class BaseControls {
                 int popularityAdded = (int) this.popularitySlider.getValue();
 
                 Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
-                DataController.getPlanner().addShow(show);
-                this.data.add(show);
-                this.popUp.close();
+                if(!DataController.getPlanner().getShows().equals(show)){
+                    for(Show existingShow : DataController.getPlanner().getShows()){
+                        if (existingShow.getStage().getName().equals(show.getStage().getName())) {
+                            if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals( existingShow.getBeginTime())) {
+                                return;
+                            }
+
+                            if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals( existingShow.getEndTime())) {
+                                return;
+                            }
+                        }
+                        for(Artist existingArtist : existingShow.getArtists()){
+                            for(Artist showArtist : show.getArtists()){
+                                if(existingArtist.getName().equals(showArtist.getName())){
+                                    if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals( existingShow.getBeginTime())) {
+                                        return;
+                                    }
+
+                                    if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals( existingShow.getEndTime())) {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    DataController.getPlanner().addShow(show);
+                    this.data.add(show);
+                    this.popUp.close();
+                }
+
             } else {
                 new ErrorWindow(this.popUp, this.errorList);
             }
@@ -403,12 +430,53 @@ public class BaseControls {
                 int popularityAdded = (int) this.popularitySlider.getValue();
 
                 this.addedShow = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
-                DataController.getPlanner().deleteShow(this.selectedShow);
-                this.table.getItems().remove(this.selectedShow);
-                DataController.getPlanner().addShow(this.addedShow);
-                this.data.add(addedShow);
-                DataController.getPlanner().savePlanner();
-                this.popUp.close();
+                if(!this.addedShow.equals(this.selectedShow)){
+                    DataController.getPlanner().deleteShow(this.selectedShow);
+                    this.table.getItems().remove(this.selectedShow);
+                    DataController.getPlanner().savePlanner();
+
+                    for(Show existingShow : DataController.getPlanner().getShows()){
+                        if (existingShow.getStage().getName().equals(addedShow.getStage().getName())) {
+                            if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals( existingShow.getBeginTime())) {
+                                DataController.getPlanner().addShow(this.selectedShow);
+                                this.data.add(this.selectedShow);
+                                DataController.getPlanner().savePlanner();
+                                return;
+                            }
+
+                            if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals( existingShow.getEndTime())) {
+                                DataController.getPlanner().addShow(this.selectedShow);
+                                this.data.add(this.selectedShow);
+                                DataController.getPlanner().savePlanner();
+                                return;
+                            }
+                        }
+                        for(Artist existingArtist : existingShow.getArtists()){
+                            for(Artist showArtist : addedShow.getArtists()){
+                                if(existingArtist.getName().equals(showArtist.getName())){
+                                    if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals( existingShow.getBeginTime())) {
+                                        DataController.getPlanner().addShow(this.selectedShow);
+                                        this.data.add(this.selectedShow);
+                                        DataController.getPlanner().savePlanner();
+                                        return;
+                                    }
+
+                                    if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals( existingShow.getEndTime())) {
+                                        DataController.getPlanner().addShow(this.selectedShow);
+                                        this.data.add(this.selectedShow);
+                                        DataController.getPlanner().savePlanner();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    this.table.getItems().remove(this.selectedShow);
+                    DataController.getPlanner().addShow(this.addedShow);
+                    this.data.add(addedShow);
+                    DataController.getPlanner().savePlanner();
+                    this.popUp.close();
+                }
             } else {
                 new ErrorWindow(this.popUp, this.errorList);
             }

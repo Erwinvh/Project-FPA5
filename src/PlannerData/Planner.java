@@ -31,20 +31,9 @@ public class Planner implements Serializable {
      * @param show object where data about the show is stored
      */
     public void addShow(Show show) {
-        if (!this.shows.contains(show)) {
             this.shows.add(show);
-            if (!this.stages.contains(show.getStage())) {
-                this.stages.add(show.getStage());
-            }
-
-            for (Artist artist : show.getArtists()) {
-                if (!this.artists.contains(artist)) {
-                    this.artists.add(artist);
-                }
-            }
-
             this.savePlanner();
-        }
+
     }
 
     /**
