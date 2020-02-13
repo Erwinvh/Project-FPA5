@@ -129,16 +129,12 @@ public class BaseControls {
             }
 
         });
-
-
         PopularityLabel.textProperty().setValue("0");
         inputStructure.add(PopularityLabel, 3, 6);
 
         //artists
         inputStructure.add(new Label("Artists:"), 1, 7);
         ComboBox artists = artistBox();
-
-
         //add more artists
         Button showArtistAdder = new Button("+");
         VBox ArtistAddList = new VBox();
@@ -149,17 +145,28 @@ public class BaseControls {
             artistAdded.getItems().add("None");
             ArtistAddList.getChildren().add(artistAdded);
             artistAdded.setOnAction(e -> {
-                if (artistAdded.getValue().equals("None")) {
+                if (artistAdded.getValue().equals("Add new Artist")) {
+                    new AddingNewWindow(2, this.popUp);
+                    artistAdded.getSelectionModel().selectFirst();
+                }
+                else if (artistAdded.getValue().equals("None")) {
                     ArtistAddList.getChildren().remove(artistAdded);
                 }
             });
         });
         inputStructure.add(ArtistAddList, 2, 7);
 
-        ScrollPane artistScroller = new ScrollPane();
-        artistScroller.setContent(inputStructure);
-        structure.setCenter(artistScroller);
+        //Description
+        VBox StructureTwo = new VBox();
+        StructureTwo.getChildren().add(inputStructure);
+        StructureTwo.getChildren().add(new Label("Show description:"));
+        StructureTwo.getChildren().add(ShowDescription("", 200, 250));
 
+
+
+        ScrollPane artistScroller = new ScrollPane();
+        artistScroller.setContent(StructureTwo);
+        structure.setCenter(artistScroller);
         //buttons
         HBox choice = new HBox();
         Button submit = new Button("Submit");
@@ -238,6 +245,7 @@ public class BaseControls {
     public void editoryWindow() {
         BorderPane structure = new BorderPane();
 
+        //titel
         Label editingThis = new Label("Edit this show:");
         structure.setTop(editingThis);
 
@@ -245,11 +253,13 @@ public class BaseControls {
         inputStructure.setHgap(10);
         inputStructure.setVgap(10);
 
+        //show name
         Label showName = new Label("Show name:");
         TextField inputShowName = new TextField(this.selectedShow.getName());
         inputStructure.add(showName, 1, 1);
         inputStructure.add(inputShowName, 2, 1);
 
+        //time
         inputStructure.add(new Label("Begin time:"), 1, 2);
         inputStructure.add(new Label("End time:"), 1, 3);
         ComboBox startingTime = timeBox();
@@ -257,15 +267,17 @@ public class BaseControls {
         inputStructure.add(startingTime, 2, 2);
         inputStructure.add(endingTime, 2, 3);
 
+        //stage
         inputStructure.add(new Label("Stage:"), 1, 4);
         ComboBox stage = StageBox();
         inputStructure.add(stage, 2, 4);
-        // add listener for popularity slider
 
+        //Genre
         inputStructure.add(new Label("Genre:"), 1, 5);
         ComboBox genre = genreBox();
         inputStructure.add(genre, 2, 5);
 
+        //popularity
         inputStructure.add(new Label("Popularity:"), 1, 6);
         this.popularitySlider.setMin(0);
         this.popularitySlider.setMax(this.stagePopularity);
@@ -288,16 +300,12 @@ public class BaseControls {
                         String.valueOf(newValue.intValue()));
             }
         });
-
         PopularityLabel.textProperty().setValue("" + this.selectedShow.getExpectedPopularity());
-
         inputStructure.add(PopularityLabel, 3, 6);
 
         //artists
         inputStructure.add(new Label("Artists:"), 1, 7);
         ComboBox artists = artistBox();
-
-
         //add more artists
         Button showArtistAdder = new Button("+");
         VBox ArtistAddList = new VBox();
@@ -308,6 +316,10 @@ public class BaseControls {
             artistAdded.getItems().add("None");
             ArtistAddList.getChildren().add(artistAdded);
             artistAdded.setOnAction(e -> {
+                if (artistAdded.getValue().equals("Add new Artist")) {
+                    new AddingNewWindow(2, this.popUp);
+                    artistAdded.getSelectionModel().selectFirst();
+                }
                 if (artistAdded.getValue().equals("None")) {
                     ArtistAddList.getChildren().remove(artistAdded);
                 }
@@ -319,12 +331,13 @@ public class BaseControls {
         ScrollPane artistScroller = new ScrollPane();
         VBox scrutcureTwo = new VBox();
         scrutcureTwo.getChildren().add(inputStructure);
+
+        //Description
         scrutcureTwo.getChildren().add(new Label("Show Description:"));
-        TextArea showDescription = new TextArea(this.selectedShow.getDescription());
-        showDescription.setPrefWidth(360);
-        scrutcureTwo.getChildren().add(showDescription);
+        scrutcureTwo.getChildren().add(ShowDescription(this.selectedShow.getDescription(),360,0));
         scrutcureTwo.setSpacing(10);
 
+        //buttons
         artistScroller.setContent(scrutcureTwo);
         structure.setCenter(artistScroller);
         HBox choice = new HBox();
@@ -334,7 +347,6 @@ public class BaseControls {
             control(startingTime, endingTime, stage, genre, inputShowName, artists);
 
         });
-
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(submit);
         choice.setPadding(new Insets(10));
@@ -353,9 +365,11 @@ public class BaseControls {
     public void deletionWindow() {
         BorderPane structure = new BorderPane();
 
+        //title
         Label deleteThis = new Label("Are you sure you want to delete this show?");
         structure.setTop(deleteThis);
 
+        //information
         Label information = new Label("Show: " + this.selectedShow.getName() + '\n'
                 + "From " + this.selectedShow.getBeginTimeString() + " to " + this.selectedShow.getEndTimeString() + '\n'
                 + "By " + this.selectedShow.getArtistsNames() + " in the genre of " + this.selectedShow.getGenre() + '\n'
@@ -365,8 +379,8 @@ public class BaseControls {
 
         structure.setCenter(information);
 
+        //buttons
         HBox choice = new HBox();
-
         Button confirm = new Button("Confirm");
         confirm.setOnAction(event -> {
             if (DataController.getPlanner().deleteShow(this.selectedShow)) {
@@ -378,7 +392,6 @@ public class BaseControls {
                 new ErrorWindow(this.popUp, this.errorList);
             }
         });
-
         choice.getChildren().add(this.cancel);
         choice.getChildren().add(confirm);
         choice.setPadding(new Insets(10));
@@ -519,7 +532,7 @@ public class BaseControls {
         artistBox.setOnAction(event -> {
             if (artistBox.getValue().equals("Add new Artist")) {
                 new AddingNewWindow(2, this.popUp);
-//                artistBox.getSelectionModel().selectFirst();
+                artistBox.getSelectionModel().selectFirst();
             }
         });
 
@@ -559,6 +572,17 @@ public class BaseControls {
             }
         }
         return timeBox;
+    }
+
+    public TextArea ShowDescription(String presetText, int width, int heigth){
+        TextArea description = new TextArea(presetText);
+        if (heigth!=0){
+            description.setPrefHeight(heigth);
+        }
+        if (width!=0){
+            description.setPrefWidth(width);
+        }
+        return description;
     }
 
     public Genres stringToGenre(String genreString) {
