@@ -92,6 +92,9 @@ public class ScheduleTab {
 
         this.table.setItems(this.data);
         this.table.getSelectionModel().selectFirst();
+        this.table.setOnMouseClicked(event->{
+            desciption();
+        });
     }
 
     /**
@@ -117,7 +120,7 @@ public class ScheduleTab {
                 Artistpicture.setFitHeight(200);
                 Artistpicture.setFitWidth(200);
                 descriptionStructure.add(Artistpicture, 1, 2);
-                TextArea Genres = new TextArea(artist.getGenre().getFancyName() + '\n' + "Genre #2");
+                TextArea Genres = new TextArea(artist.getGenre().getFancyName());
                 Genres.setPrefWidth(150);
                 Genres.setEditable(false);
                 descriptionStructure.add(Genres, 2, 2);
