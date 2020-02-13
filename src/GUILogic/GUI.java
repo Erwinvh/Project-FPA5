@@ -16,8 +16,14 @@ public class GUI extends Application {
         SettingsTab settingsTab = new SettingsTab();
         VisualTab visualTab = new VisualTab();
 
+
         tabPane.getTabs().addAll(scheduleTab.getScheduleTab(), visualTab.getVisualTab(), simulatorTab.getSimulatorTab(), settingsTab.getSettingsTab());
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+            if (newTab == visualTab.getVisualTab()) {
+                visualTab.update();
+            }
+        });
 
         Scene scene = new Scene(tabPane);
         scene.getStylesheets().add("Main-StyleSheet.css");

@@ -101,7 +101,7 @@ class VisualTab {
 
         for (Stage stage : this.planner.getStages()) {
             for (Show show : this.planner.getShows()) {
-                if (show.getStage().equals(stage)) {
+                if (show.getStage().getName().equals(stage.getName()) && show.getStage().getCapacity() == stage.getCapacity()) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
                     // Draw the box around the show
