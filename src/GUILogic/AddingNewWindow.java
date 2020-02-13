@@ -29,6 +29,7 @@ public class AddingNewWindow {
     private FileChooser fileChooser = new FileChooser();
     private ImageView artistImage = new ImageView();
     private String imageURL = "PersonImageBase.jpg";
+    private Boolean stageUpdate = false;
 
     /**
      * This is the constructor of the base of the submenus.
@@ -117,10 +118,19 @@ public class AddingNewWindow {
         }
         if (this.errorList.isEmpty()) {
             DataController.getPlanner().addStage(Integer.parseInt(capacity.getText()), stageName.getText());
+            this.stageUpdate = true;
             this.currentStage.close();
         } else {
             new ErrorWindow(this.currentStage, this.errorList);
         }
+    }
+
+    public Boolean stageUpdate(){
+        return this.stageUpdate;
+    }
+
+    public void resetupdate(){
+        this.stageUpdate = false;
     }
 
     /**

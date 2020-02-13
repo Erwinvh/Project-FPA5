@@ -314,14 +314,26 @@ public class BaseControls {
         //artists
         inputStructure.add(new Label("Artists:"), 1, 7);
         ComboBox artists = artistBox();
+        artists.setValue(this.selectedShow.getArtists().get(0).getName());
         //add more artists
         Button showArtistAdder = new Button("+");
         VBox ArtistAddList = new VBox();
         ArtistAddList.getChildren().add(artists);
-        for (Artist artist : this.selectedShow.getArtists()) {
+        for (int i =1; i<this.selectedShow.getArtists().size();i++) {
             ComboBox addedArtist = artistBox();
-            addedArtist.setValue(artist.getName());
+//            addedArtist.
+            addedArtist.setValue(this.selectedShow.getArtists().get(i).getName());
             ArtistAddList.getChildren().add(addedArtist);
+            addedArtist.getItems().add("None");
+            addedArtist.setOnAction(e -> {
+                if (addedArtist.getValue().equals("Add new Artist")) {
+                    new AddingNewWindow(2, this.popUp);
+                    addedArtist.getSelectionModel().selectFirst();
+                }
+                if (addedArtist.getValue().equals("None")) {
+                    ArtistAddList.getChildren().remove(addedArtist);
+                }
+            });
         }
         inputStructure.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
@@ -552,7 +564,16 @@ public class BaseControls {
         stageBox.setOnAction(event -> {
             int stageCapacity = 100;
             if (stageBox.getValue().equals("Add new Stage")) {
-                new AddingNewWindow(1, this.popUp);
+                AddingNewWindow addstage = new AddingNewWindow(1, this.popUp);
+                if (addstage.stageUpdate()){
+                    addstage.resetupdate();
+                    stageBox.getItems().clear();
+                    stageBox.getItems().add("--Select--");
+                    for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+                        stageBox.getItems().add(stage.getName());
+                    }
+                    stageBox.getItems().add("Add new Stage");
+                }
                 stageBox.getSelectionModel().selectFirst();
             } else if (!stageBox.getValue().equals("--Select--")) {
                 PlannerData.Stage selectedStage = stringToStage(stageBox.getValue().toString());
