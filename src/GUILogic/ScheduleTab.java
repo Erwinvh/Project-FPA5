@@ -104,6 +104,7 @@ public class ScheduleTab {
         this.Selected = this.table.getSelectionModel().getSelectedItem();
         int numberOfArtists = 0;
         try {
+            this.description = new VBox();
             for (Artist artist : this.Selected.getArtists()) {
                 numberOfArtists++;
                 GridPane descriptionStructure = new GridPane();

@@ -130,10 +130,38 @@ public class Show implements Serializable {
     }
 
     public String getBeginTimeString() {
-        return beginTime.getHour() + ":" + beginTime.getMinute();
+        String beginTimeString = "";
+        if (beginTime.getHour()<10){
+            beginTimeString = "0" + beginTime.getHour() + ":";
+        }
+        else{
+            beginTimeString = beginTime.getHour() + ":";
+        }
+        if (beginTime.getMinute()<10){
+            beginTimeString += "0" + beginTime.getMinute();
+        }
+        else{
+            beginTimeString+=beginTime.getMinute();
+        }
+
+        return beginTimeString;
     }
 
     public String getEndTimeString() {
-        return endTime.getHour() + ":" + endTime.getMinute();
+        String endTimeString = "";
+        if (endTime.getHour()<10){
+            endTimeString = "0" + endTime.getHour() + ":";
+        }
+        else{
+            endTimeString = endTime.getHour() + ":";
+        }
+        if (endTime.getMinute()<10){
+            endTimeString += "0" + endTime.getMinute();
+        }
+        else{
+            endTimeString+=endTime.getMinute();
+        }
+
+        return endTimeString;
     }
 }
