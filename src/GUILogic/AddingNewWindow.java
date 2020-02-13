@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AddingNewWindow {
 
@@ -150,34 +151,63 @@ public class AddingNewWindow {
         newArtistList.getChildren().add(genreComboBox);
 
         //picture
-        Label artistPictureLabel = new Label("Artist's picture:");
-        newArtistList.getChildren().add(artistPictureLabel);
-        newArtistList.getChildren().add(this.artistImage);
-        Button artistPictureInput = new Button("Add a picture");
-        newArtistList.getChildren().add(artistPictureInput);
-        newArtistList.getChildren().add(new Label("the picture wil be resized"));
-        newArtistList.getChildren().add(new Label("to 200X200 pixels"));
+//        Label artistPictureLabel = new Label("Artist's picture:");
+//        newArtistList.getChildren().add(artistPictureLabel);
+//        newArtistList.getChildren().add(this.artistImage);
+//        Button artistPictureInput = new Button("Add a picture");
+//        newArtistList.getChildren().add(artistPictureInput);
+//        newArtistList.getChildren().add(new Label("the picture wil be resized"));
+//        newArtistList.getChildren().add(new Label("to 200X200 pixels"));
 
 
-        artistPictureInput.setOnAction(event -> {
-            File selectedFile = fileChooser.showOpenDialog(this.currentStage);
-            fileChooser.setInitialDirectory(new File("Resources"));
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("PNG Files", "*.png")
-                    , new FileChooser.ExtensionFilter("Jpg Files", "*.jpg")
-                    , new FileChooser.ExtensionFilter("Jpeg Files", "*.jpeg")
-            );
-            try {
-                BufferedImage bufferedArtistImage = ImageIO.read(selectedFile);
-                Image image = SwingFXUtils.toFXImage(bufferedArtistImage, null);
-                artistImage.setImage(image);
-            } catch (Exception e) {
-                this.errorList.add("this is not an image file: choose a Jpeg/Jpg/PNG file");
-                new ErrorWindow(this.currentStage, this.errorList);
-                System.out.println("failed image");
-                System.out.println("Exception:" + e);
+//        artistPictureInput.setOnAction(event -> {
+//            File selectedFile = fileChooser.showOpenDialog(this.currentStage);
+//            fileChooser.setInitialDirectory(new File("Resources"));
+//            fileChooser.getExtensionFilters().addAll(
+//                    new FileChooser.ExtensionFilter("PNG Files", "*.png")
+//                    , new FileChooser.ExtensionFilter("Jpg Files", "*.jpg")
+//                    , new FileChooser.ExtensionFilter("Jpeg Files", "*.jpeg")
+//            );
+//            try {
+//                BufferedImage bufferedArtistImage = ImageIO.read(selectedFile);
+//                Image image = SwingFXUtils.toFXImage(bufferedArtistImage, null);
+//                artistImage.setImage(image);
+//            } catch (Exception e) {
+//                this.errorList.add("this is not an image file: choose a Jpeg/Jpg/PNG file");
+//                new ErrorWindow(this.currentStage, this.errorList);
+//                System.out.println("failed image");
+//                System.out.println("Exception:" + e);
+//            }
+//        });
+
+        // picture selection #2
+        ArrayList<String> imagesArtist = getArtistImages();
+        Label artistImageLabel = new Label("Artist's picture:");
+        ComboBox artistImageAddition = new ComboBox();
+        artistImageAddition.getItems().add("None");
+        for (String imageName : imagesArtist){
+            artistImageAddition.getItems().add(getFileName(imageName));
+        }
+
+        artistImageAddition.setOnAction(event -> {
+            String selected = artistImageAddition.getSelectionModel().getSelectedItem().toString();
+            Image showImage = new Image("PersonImageBase.jpg");
+
+            if (!selected.equals("None")){
+                for (String image : getArtistImages()){
+                    if (getFileName(image).equals(selected)){
+                        showImage = new Image("Artist_Images/" +image);
+                    }
+                }
             }
+            this.artistImage.setImage(showImage);
         });
+        this.artistImage.setImage(new Image("PersonImageBase.jpg"));
+
+        newArtistList.getChildren().addAll(artistImageLabel, this.artistImage, artistImageAddition);
+
+
+
 
         //artist description
         Label artistDescriptionLabel = new Label("Artist's description:");
@@ -209,6 +239,36 @@ public class AddingNewWindow {
         artistAddScene.getStylesheets().add("Window-StyleSheet.css");
         this.currentStage.setScene(artistAddScene);
         this.currentStage.show();
+    }
+
+    public ArrayList<String> getArtistImages(){
+        ArrayList<String> imagesStrings = new ArrayList<>();
+
+        File directory = new File("Resources/Artist_Images");
+        File[] filesArray = directory.listFiles();
+
+        for (File file : filesArray){
+            if (file.isFile() &&
+                    (file.getName().contains(".png") ||
+                            file.getName().contains(".jpg") ||
+                            file.getName().contains(".jpeg"))){
+                imagesStrings.add(file.getName());
+            }
+        }
+        return imagesStrings;
+    }
+
+    public String getFileName(String fileName){
+        String returnString = "Not an imageFile with .jpg, .jpeg or .png!";
+        if (fileName.contains(".jpg")){
+            return fileName.substring(0,fileName.indexOf(".jpg"));
+        } else if (fileName.contains(".jpeg")){
+            return fileName.substring(0,fileName.indexOf(".jpeg"));
+        } else if (fileName.contains(".png")){
+            return fileName.substring(0,fileName.indexOf(".png"));
+        }
+
+        return returnString;
     }
 
     public Genres stringToGenre(String genreString) {
