@@ -33,6 +33,7 @@ public class BaseControls {
     private ObservableList<Show> data;
     private int stagePopularity = 0;
     private Slider popularitySlider = new Slider();
+    private Show addedShow;
 
     /**
      * This is the constructor of the base layout of the windows of the three Menus.
@@ -163,8 +164,6 @@ public class BaseControls {
         TextArea descriptionTextArea =ShowDescription("", 200, 250);
         StructureTwo.getChildren().add(descriptionTextArea);
 
-
-
         ScrollPane artistScroller = new ScrollPane();
         artistScroller.setContent(StructureTwo);
         structure.setCenter(artistScroller);
@@ -172,8 +171,6 @@ public class BaseControls {
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
-
-            control(startingTime, endingTime, stage, genre, inputShowName, artists);
             String showNameAdding = inputShowName.getText();
             LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
             LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
@@ -196,7 +193,6 @@ public class BaseControls {
             } else {
                 addedArtists = null;
             }
-
             Genres addedGenre;
             if (genre.getValue() != null) {
                 addedGenre = stringToGenre(genre.getValue().toString());
@@ -222,6 +218,10 @@ public class BaseControls {
                 } else {
                     genres.add(addedGenre);
                 }
+
+            control(startingTime, endingTime, stage, genre, inputShowName, artists);
+
+
                 Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
                 DataController.getPlanner().addShow(show);
                 this.data.add(show);
@@ -339,7 +339,8 @@ public class BaseControls {
 
         //Description
         scrutcureTwo.getChildren().add(new Label("Show Description:"));
-        scrutcureTwo.getChildren().add(ShowDescription(this.selectedShow.getDescription(),360,0));
+        TextArea showDesciption = ShowDescription(this.selectedShow.getDescription(),360,0);
+        scrutcureTwo.getChildren().add(showDesciption);
         scrutcureTwo.setSpacing(10);
 
         //buttons
@@ -348,8 +349,65 @@ public class BaseControls {
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
+            String showNameAdding = inputShowName.getText();
+            LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
+            LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
+            PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
+            String descriptionShow = showDesciption.getText();
+            ArrayList<Artist> addedArtists = new ArrayList<>();
+            if (artists.getSelectionModel().getSelectedItem() != null) {
+                String comboBoxString = artists.getSelectionModel().getSelectedItem().toString();
+                boolean containsArtist = false;
+                for (Artist artist : addedArtists) {
+                    if (artist.getName().equals(comboBoxString)) {
+                        containsArtist = true;
+                    }
+                }
+                if (!containsArtist) {
+                    Artist artist = stringToArtist(comboBoxString);
+                    if (artist != null) {
+                        addedArtists.add(artist);
+                    }
+                }
+            } else {
+                addedArtists = null;
+            }
+            Genres addedGenre;
+            if (genre.getValue() != null) {
+                addedGenre = stringToGenre(genre.getValue().toString());
+            } else {
+                addedGenre = null;
+            }
 
-            control(startingTime, endingTime, stage, genre, inputShowName, artists);
+            int popularityAdded;
+            if (stageAdded != null) {
+                popularityAdded = (int) this.popularitySlider.getValue();
+            } else {
+                popularityAdded = -1;
+            }
+                    if (addedArtists == null || addedArtists.isEmpty() || stageAdded == null || beginTime == null || endTime == null || showNameAdding.isEmpty() || popularityAdded < 0) {
+                        return;
+                    }
+                    else {
+                        ArrayList<Genres> genres = new ArrayList<>();
+                        if (addedGenre == null) {
+                            for (Artist artist : addedArtists) {
+                                genres.add(artist.getGenre());
+                            }
+                        } else {
+                            genres.add(addedGenre);
+                        }
+                        this.addedShow = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
+                    }
+
+            if (control(startingTime, endingTime, stage, genre, inputShowName, artists)){
+                DataController.getPlanner().deleteShow(this.selectedShow);
+                DataController.getPlanner().addShow(this.addedShow);
+                  this.popUp.close();
+            }
+            else {
+                new ErrorWindow(this.popUp, this.errorList);
+            }
 
         });
         choice.getChildren().add(this.cancel);
@@ -418,7 +476,7 @@ public class BaseControls {
      * @param genre
      * @param showName
      */
-    public void control(ComboBox startingTime, ComboBox endingTime, ComboBox stage, ComboBox genre, TextField showName, ComboBox artist) {
+    public Boolean control(ComboBox startingTime, ComboBox endingTime, ComboBox stage, ComboBox genre, TextField showName, ComboBox artist) {
         this.errorList.clear();
         int startIndex = this.timeList.indexOf(startingTime.getValue());
         int endIndex = this.timeList.indexOf(endingTime.getValue());
@@ -451,11 +509,11 @@ public class BaseControls {
 
 
         if (this.errorList.isEmpty()) {
-//            DataController.getPlanner().addShow(new Show(startingTime.getValue()));
+            return true;
             //TODO: LocalTime stuff when adding new show
-            this.popUp.close();
         } else {
-            new ErrorWindow(this.popUp, this.errorList);
+            return false;
+
         }
     }
 
