@@ -1,9 +1,8 @@
 * {
-    main-color: #542B80;
-    secondary-color: #A857FF;
-    third-color: #C6DEC6;
-    fourth-color: #542B80;
-    selected-color: #B570FF;
+    main-color: #eaeaea;
+    secondary-color: #b5c2d2;
+    third-color: #cdcdcd;
+    selected-color: #7899b4;
 }
 
 .root {

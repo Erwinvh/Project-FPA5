@@ -4,7 +4,9 @@ import PlannerData.Planner;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class GUI extends Application {
 
@@ -30,6 +32,7 @@ public class GUI extends Application {
         primaryStage.setTitle("Festival Planner");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new Image("Artist_Images/Red Hot Chilli Peppers.jpg"));
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
         primaryStage.show();
