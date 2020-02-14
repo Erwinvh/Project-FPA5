@@ -1,9 +1,11 @@
 package PlannerData;
 
-public class Stage {
+import java.io.Serializable;
 
-	private int capacity;
+public class Stage implements Serializable {
+
 	private String name;
+	private int capacity;
 
 	public Stage(int capacity, String name) {
 		this.capacity = capacity;
@@ -17,4 +19,5 @@ public class Stage {
 	public String getName() {
 		return name;
 	}
+
 }
