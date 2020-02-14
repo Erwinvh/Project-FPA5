@@ -167,17 +167,20 @@ public class ScheduleTab {
 
             VBox descriptionBase = new VBox();
             descriptionBase.getChildren().add(new Label("Show:"));
-            TextFlow flow = new TextFlow();
-            
+            TextFlow showDescriptionTextFlow = new TextFlow();
 
-            Text textTitle = new Text(this.selectedItem.getName() + "\n\n Show Description:");
-            textTitle.setStyle("-fx-font-weight: bold");
+
+            Text textTitle = new Text(this.selectedItem.getName());
+            textTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 40");
+
+            Text textDescrTitle = new Text("\n\n Show Description:");
+            textDescrTitle.setStyle("-fx-font-weight: bold;");
 
             Text textDescription = new Text("\n" + this.selectedItem.getDescription());
-            textDescription.setStyle("-fx-font-weight: regular;");
-            flow.getChildren().addAll(textTitle, textDescription);
+            showDescriptionTextFlow.getChildren().addAll(textTitle, textDescrTitle, textDescription);
+            showDescriptionTextFlow.setMaxWidth(450);
 
-            descriptionBase.getChildren().addAll(flow, this.description);
+            descriptionBase.getChildren().addAll(showDescriptionTextFlow, this.description);
             this.allDescriptions.setContent(descriptionBase);
 
         } catch (Exception e) {
