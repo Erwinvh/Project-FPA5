@@ -25,7 +25,7 @@ class VisualTab {
     private Canvas canvasStages;
     private Planner planner;
 
-    private int columnWidth = -1; //TODO: Add check whether this is still -1 when using this variable
+    private int columnWidth = -1;
 
     private static final int CANVAS_WIDTH = 1280;
     private static final int CANVAS_HEIGHT = 2400;
@@ -40,7 +40,7 @@ class VisualTab {
         this.canvasStages = new Canvas(CANVAS_WIDTH, STAGE_HEIGHT);
 
         ScrollPane scrollPane = new ScrollPane(this.canvas);
-        scrollPane.setPrefSize(CANVAS_WIDTH, 500);
+        scrollPane.setPrefSize(CANVAS_WIDTH, 680);
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVvalue(LocalTime.now().getHour() / 24f);

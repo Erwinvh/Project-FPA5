@@ -55,6 +55,7 @@ public class BaseControls {
         this.popUp.setWidth(400);
         this.popUp.setHeight(450);
         this.popUp.initOwner(this.upperStage);
+        this.popUp.setResizable(false);
         this.popUp.initModality(Modality.WINDOW_MODAL);
 
         try {
@@ -225,7 +226,7 @@ public class BaseControls {
                                 return;
                             }
 
-                            if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime())) {
+                            if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime()) || (show.getBeginTime().isBefore(existingShow.getBeginTime())&&show.getEndTime().isAfter(existingShow.getEndTime()))) {
                                 this.errorList.clear();
                                 this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
                                 new ErrorWindow(this.popUp,this.errorList);
@@ -445,7 +446,7 @@ public class BaseControls {
 
                     for (Show existingShow : DataController.getPlanner().getShows()) {
                         if (existingShow.getStage().getName().equals(addedShow.getStage().getName())) {
-                            if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime())) {
+                            if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime())|| (addedShow.getBeginTime().isBefore(existingShow.getBeginTime())&& addedShow.getEndTime().isAfter(existingShow.getEndTime()))) {
                                 DataController.getPlanner().addShow(this.selectedShow);
                                 this.data.add(this.selectedShow);
                                 DataController.getPlanner().savePlanner();
