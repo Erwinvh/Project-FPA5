@@ -34,11 +34,6 @@ public class ScheduleTab {
     private ObservableList<Show> selectedItems = this.selectionModel.getSelectedItems();
     private ArrayList<String> errorList = new ArrayList<>();
 
-    private int descriptionBoxWidth = 450;
-    private int artistDescrWidth = 450;
-    private int artistPicSize = 200;
-    private int genreBoxWidth = 250;
-
 
     private ObservableList<Show> data = FXCollections.observableArrayList();
 
@@ -160,11 +155,6 @@ public class ScheduleTab {
                 this.description.getChildren().add(descriptionStructure);
                 this.description.getChildren().add(artistDescription);
             }
-            VBox DescriptionBase = new VBox();
-            DescriptionBase.getChildren().add(new Label("Show Description:"));
-            TextArea ShowDescription = new TextArea(this.Selected.getDescription());
-            ShowDescription.setEditable(false);
-            DescriptionBase.getChildren().add(ShowDescription);
 
 //            VBox descriptionBase = new VBox();
 //            descriptionBase.getChildren().add(new Label("Show:"));
