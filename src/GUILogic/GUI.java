@@ -30,8 +30,8 @@ public class GUI extends Application {
         primaryStage.setTitle("Festival Planner");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.setWidth(960);
-        primaryStage.setHeight(540);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
         primaryStage.show();
     }
 }

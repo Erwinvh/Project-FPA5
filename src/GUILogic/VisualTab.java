@@ -27,7 +27,7 @@ class VisualTab {
 
     private int columnWidth = -1; //TODO: Add check whether this is still -1 when using this variable
 
-    private static final int CANVAS_WIDTH = 960;
+    private static final int CANVAS_WIDTH = 1280;
     private static final int CANVAS_HEIGHT = 2400;
     private static final int STAGE_HEIGHT = 40;
     private static final int TIME_COLUMN_WIDTH = 60;

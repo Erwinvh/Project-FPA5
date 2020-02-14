@@ -504,7 +504,7 @@ public class BaseControls {
                 + "By " + this.selectedShow.getArtistsNames() + " in the genre of " + this.selectedShow.getGenre() + '\n'
                 + "On stage " + this.selectedShow.getStageName() + '\n'
                 + "Expected popularity is " + this.selectedShow.getExpectedPopularity() + " people."
-                + "with the desciption: " + '\n' + this.selectedShow.getDescription());
+                + "with the description: " + '\n' + this.selectedShow.getDescription());
 
         structure.setCenter(information);
 

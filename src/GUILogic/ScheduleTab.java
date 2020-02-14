@@ -4,15 +4,20 @@ import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -29,13 +34,24 @@ public class ScheduleTab {
     private ObservableList<Show> selectedItems = this.selectionModel.getSelectedItems();
     private ArrayList<String> errorList = new ArrayList<>();
 
+
     private ObservableList<Show> data = FXCollections.observableArrayList();
 
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.scheduleTab = new Tab("Schedule");
+        this.allDescriptions.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.allDescriptions.addEventFilter(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                if (event.getDeltaX() != 0){
+                    event.consume();
+                }
+            }
+        });
         layout();
-        this.allDescriptions.setPrefWidth(600);
+        int descriptionBoxWidth = 450;
+        this.allDescriptions.setPrefWidth(descriptionBoxWidth);
     }
 
     /**
@@ -73,9 +89,9 @@ public class ScheduleTab {
         stageCol.setCellValueFactory(new PropertyValueFactory<>("StageName"));
 
         TableColumn artistCol = new TableColumn("Artists");
-        artistCol.setPrefWidth(100);
-        artistCol.setCellValueFactory(new PropertyValueFactory<>("ArtistsNames"));
-
+        artistCol.setPrefWidth(300);
+        artistCol.setCellValueFactory(
+                new PropertyValueFactory<>("ArtistsNames"));
         TableColumn genreCol = new TableColumn("Genre");
         genreCol.setPrefWidth(100);
         genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
@@ -91,13 +107,15 @@ public class ScheduleTab {
 
         this.table.setItems(this.data);
         this.table.getSelectionModel().selectFirst();
-        this.table.setOnMouseClicked(e -> desciption());
+        this.table.setOnMouseClicked(event->{
+            description();
+        });
     }
 
     /**
      * This method creates the description that shows the Artists of the selected show.
      */
-    public void desciption() {
+    public void description() {
         this.selectedItem = this.table.getSelectionModel().getSelectedItem();
         int numberOfArtists = 0;
 
@@ -116,31 +134,50 @@ public class ScheduleTab {
                 descriptionStructure.add(artistAmount, 2, 1);
 
                 Image artistImage = new Image("file:Resources/PersonImageBase.jpg");
-                ImageView artistPicture = new ImageView(artistImage);
-                artistPicture.setFitHeight(200);
-                artistPicture.setFitWidth(200);
+                ImageView Artistpicture = new ImageView(artistImage);
 
-                descriptionStructure.add(artistPicture, 1, 2);
+                int artistPicSize = 200;
+                Artistpicture.setFitHeight(artistPicSize);
+                Artistpicture.setFitWidth(artistPicSize);
 
+                descriptionStructure.add(Artistpicture, 1, 2);
                 TextArea Genres = new TextArea(artist.getGenre().getFancyName());
-                Genres.setPrefWidth(150);
+
+                int genreBoxWidth = 250;
+                Genres.setPrefWidth(genreBoxWidth);
                 Genres.setEditable(false);
                 descriptionStructure.add(Genres, 2, 2);
 
                 TextArea artistDescription = new TextArea(artist.getDescription());
                 artistDescription.setEditable(false);
-                artistDescription.setPrefWidth(150);
+                int artistDescrWidth = 450;
+                artistDescription.setMaxWidth(artistDescrWidth);
                 this.description.getChildren().add(descriptionStructure);
                 this.description.getChildren().add(artistDescription);
             }
 
-            VBox descriptionBase = new VBox();
-            descriptionBase.getChildren().add(new Label("Show Description:"));
+//            VBox descriptionBase = new VBox();
+//            descriptionBase.getChildren().add(new Label("Show:"));
+//
+//            TextArea showDescription = new TextArea(this.selectedItem.getName().toUpperCase() + "\n\n\t\tShow description:\n" + this.selectedItem.getDescription());
+//            showDescription.setEditable(false);
+//            descriptionBase.getChildren().add(showDescription);
+//            descriptionBase.getChildren().add(this.description);
+//            this.allDescriptions.setContent(descriptionBase);
 
-            TextArea showDescription = new TextArea(this.selectedItem.getDescription());
-            showDescription.setEditable(false);
-            descriptionBase.getChildren().add(showDescription);
-            descriptionBase.getChildren().add(this.description);
+            VBox descriptionBase = new VBox();
+            descriptionBase.getChildren().add(new Label("Show:"));
+            TextFlow flow = new TextFlow();
+            
+
+            Text textTitle = new Text(this.selectedItem.getName() + "\n\n Show Description:");
+            textTitle.setStyle("-fx-font-weight: bold");
+
+            Text textDescription = new Text("\n" + this.selectedItem.getDescription());
+            textDescription.setStyle("-fx-font-weight: regular;");
+            flow.getChildren().addAll(textTitle, textDescription);
+
+            descriptionBase.getChildren().addAll(flow, this.description);
             this.allDescriptions.setContent(descriptionBase);
 
         } catch (Exception e) {
@@ -155,7 +192,7 @@ public class ScheduleTab {
         HBox baseLayer = new HBox();
         baseLayer.setSpacing(10);
         table();
-        desciption();
+        description();
 
         baseLayer.getChildren().add(this.table);
         baseLayer.getChildren().add(this.allDescriptions);
