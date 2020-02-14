@@ -33,8 +33,6 @@ public class ScheduleTab {
     private TableViewSelectionModel selectionModel = this.table.getSelectionModel();
     private ObservableList<Show> selectedItems = this.selectionModel.getSelectedItems();
     private ArrayList<String> errorList = new ArrayList<>();
-
-
     private ObservableList<Show> data = FXCollections.observableArrayList();
 
     public ScheduleTab(Stage primaryStage) {
@@ -90,8 +88,7 @@ public class ScheduleTab {
 
         TableColumn artistCol = new TableColumn("Artists");
         artistCol.setPrefWidth(300);
-        artistCol.setCellValueFactory(
-                new PropertyValueFactory<>("ArtistsNames"));
+        artistCol.setCellValueFactory(new PropertyValueFactory<>("ArtistsNames"));
         TableColumn genreCol = new TableColumn("Genre");
         genreCol.setPrefWidth(100);
         genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
@@ -212,12 +209,12 @@ public class ScheduleTab {
      * This method creates the Buttons to the Add, Edit and Delete menus.
      */
     private void Controls() {
-        Button addButton = new Button("Add");
+        Button addButton = new Button("Add Show");
         addButton.setOnAction(event -> {
             new BaseControls(1, this.primaryStage, this.data, this.table, this.selectedItem);
         });
 
-        Button editButton = new Button("Edit");
+        Button editButton = new Button("Edit Show");
         editButton.setOnAction(event -> {
             try {
                 this.selectedItem = this.table.getSelectionModel().getSelectedItem();
@@ -229,7 +226,7 @@ public class ScheduleTab {
             }
         });
 
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button("Delete Show");
         deleteButton.setOnAction(event -> {
             try {
                 this.selectedItem = this.table.getSelectionModel().getSelectedItem();
@@ -241,9 +238,21 @@ public class ScheduleTab {
             }
         });
 
+        Button addArtistButton = new Button("Add Artist");
+        addArtistButton.setOnAction(event -> {
+                new AddingNewWindow(2, this.primaryStage);
+        });
+
+        Button addStageButton = new Button("Add Stage");
+        addStageButton.setOnAction(event -> {
+                new AddingNewWindow(1, this.primaryStage);
+        });
+
         this.controls.getChildren().add(addButton);
         this.controls.getChildren().add(editButton);
         this.controls.getChildren().add(deleteButton);
+        this.controls.getChildren().add(addArtistButton);
+        this.controls.getChildren().add(addStageButton);
         this.controls.setSpacing(20);
         this.controls.setPadding(new Insets(10));
     }

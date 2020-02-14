@@ -129,6 +129,10 @@ public class Planner implements Serializable {
         this.stages.add(new Stage(capacity, name));
         this.savePlanner();
     }
+    public void addStage(Stage stage) {
+        this.stages.add(stage);
+        this.savePlanner();
+    }
 
     public boolean deleteShow(Show show) {
         return this.shows.remove(show);

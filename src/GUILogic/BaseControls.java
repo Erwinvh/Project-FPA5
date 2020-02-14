@@ -5,11 +5,13 @@ import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -643,25 +645,12 @@ public class BaseControls {
         ComboBox stageBox = new ComboBox();
         stageBox.getItems().add("--Select--");
         stageBox.getSelectionModel().selectFirst();
-        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+        for (PlannerData.Stage stage: DataController.getPlanner().getStages()){
             stageBox.getItems().add(stage.getName());
         }
-        stageBox.getItems().add("Add new Stage");
         stageBox.setOnAction(event -> {
             int stageCapacity = 100;
-            if (stageBox.getValue().equals("Add new Stage")) {
-                AddingNewWindow addstage = new AddingNewWindow(1, this.popUp);
-                if (addstage.stageUpdate()) {
-                    addstage.resetUpdate();
-                    stageBox.getItems().clear();
-                    stageBox.getItems().add("--Select--");
-                    for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
-                        stageBox.getItems().add(stage.getName());
-                    }
-                    stageBox.getItems().add("Add new Stage");
-                }
-                stageBox.getSelectionModel().selectFirst();
-            } else if (!stageBox.getValue().equals("--Select--")) {
+            if (!stageBox.getValue().equals("--Select--")) {
                 PlannerData.Stage selectedStage = stringToStage(stageBox.getValue().toString());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
                     stageCapacity = selectedStage.getCapacity();
@@ -683,21 +672,11 @@ public class BaseControls {
      */
     public ComboBox artistBox() {
         ComboBox artistBox = new ComboBox();
-
         artistBox.getItems().add("--Select--");
         artistBox.getSelectionModel().selectFirst();
         for (Artist artist : DataController.getPlanner().getArtists()) {
             artistBox.getItems().add(artist.getName());
         }
-        artistBox.getItems().add("Add new Artist");
-
-        artistBox.setOnAction(event -> {
-            if (artistBox.getValue().equals("Add new Artist")) {
-                new AddingNewWindow(2, this.popUp);
-                artistBox.getSelectionModel().selectFirst();
-            }
-        });
-
         return artistBox;
     }
 
