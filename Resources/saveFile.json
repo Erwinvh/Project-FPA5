@@ -1,0 +1,16 @@
+{
+  "shows": [],
+  "stages": [
+    {
+      "name": "Main stage",
+      "capacity": 10000
+    }
+  ],
+  "artists": [
+    {
+      "name": "Ralf",
+      "genre": "FOLK",
+      "description": "beschrijving"
+    }
+  ]
+}

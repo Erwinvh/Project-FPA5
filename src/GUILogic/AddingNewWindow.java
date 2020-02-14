@@ -1,25 +1,19 @@
 package GUILogic;
 
 import Enumerators.Genres;
-import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
-import javafx.scene.control.TextField;
-import javafx.collections.ObservableList;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AddingNewWindow {
 
@@ -35,17 +29,18 @@ public class AddingNewWindow {
      * This is the constructor of the base of the submenus.
      * This method also decides which submenu it should show to the user.
      *
-     * @param ScreenNumber
+     * @param screenNumber
      * @param upperStage
      */
-    public AddingNewWindow(int ScreenNumber, Stage upperStage) {
+    public AddingNewWindow(int screenNumber, Stage upperStage) {
         this.upperStage = upperStage;
         this.artistImage.setFitWidth(200);
         this.artistImage.setFitHeight(200);
         this.currentStage.initOwner(this.upperStage);
         this.currentStage.initModality(Modality.WINDOW_MODAL);
         this.currentStage.setResizable(false);
-        if (ScreenNumber == 1) {
+
+        if (screenNumber == 1) {
             stageAddWindow();
         } else {
             artistAddWindow();
@@ -61,27 +56,26 @@ public class AddingNewWindow {
         this.currentStage.setHeight(250);
         VBox newStageList = new VBox();
 
-        Label StageLabelName = new Label("Stage Name:");
-        newStageList.getChildren().add(StageLabelName);
-        TextField StageName = new TextField();
-        newStageList.getChildren().add(StageName);
+        Label stageNameLabel = new Label("Stage Name:");
+        newStageList.getChildren().add(stageNameLabel);
 
-        Label StageLabelCapacity = new Label("Stage Capacity:");
-        newStageList.getChildren().add(StageLabelCapacity);
+        TextField stageName = new TextField();
+        newStageList.getChildren().add(stageName);
+
+        Label stageCapacityLabel = new Label("Stage Capacity:");
+        newStageList.getChildren().add(stageCapacityLabel);
         TextField InputTextField = new TextField();
         newStageList.getChildren().add(InputTextField);
 
         HBox choice = new HBox();
-        Button stop = new Button("Cancel");
-        stop.setOnAction(event -> {
-            this.currentStage.close();
-        });
-        choice.getChildren().add(stop);
+        Button cancelButton = new Button("Cancel");
+        choice.getChildren().add(cancelButton);
+        cancelButton.setOnAction(e -> this.currentStage.close());
+
         Button confirm = new Button("Confirm");
-        confirm.setOnAction(event -> {
-            newStageControl(StageName, InputTextField);
-        });
         choice.getChildren().add(confirm);
+        confirm.setOnAction(e -> newStageControl(stageName, InputTextField));
+
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
 
@@ -101,21 +95,25 @@ public class AddingNewWindow {
      */
     public void newStageControl(TextField stageName, TextField capacity) {
         this.errorList.clear();
+
         if (stageName.getText().length() == 0) {
             this.errorList.add("The stage name has not been filled in.");
         }
+
         if (capacity.getText().length() == 0) {
             this.errorList.add("The capacity has not been filled in.");
         } else {
             try {
                 int capacityCheck = Integer.parseInt(capacity.getText());
                 if (capacityCheck <= 0) {
-                    this.errorList.add("The Capacity must be larger than 0");
+                    this.errorList.add("The capacity must be larger than 0");
                 }
+
             } catch (Exception e) {
-                this.errorList.add("The capacity must be a Number.");
+                this.errorList.add("The capacity must be a number.");
             }
         }
+
         if (this.errorList.isEmpty()) {
             DataController.getPlanner().addStage(Integer.parseInt(capacity.getText()), stageName.getText());
             this.stageUpdate = true;
@@ -129,7 +127,7 @@ public class AddingNewWindow {
         return this.stageUpdate;
     }
 
-    public void resetupdate(){
+    public void resetUpdate(){
         this.stageUpdate = false;
     }
 
@@ -171,18 +169,17 @@ public class AddingNewWindow {
         //buttons
         HBox choice = new HBox();
         Button stop = new Button("Cancel");
-        stop.setOnAction(event -> {
-            this.currentStage.close();
-        });
+        stop.setOnAction(e -> this.currentStage.close());
         choice.getChildren().add(stop);
+
         Button confirm = new Button("Confirm");
-        confirm.setOnAction(event -> {
-            newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription);
-        });
+        confirm.setOnAction(e -> newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription));
         choice.getChildren().add(confirm);
+
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
         newArtistList.getChildren().add(choice);
+
         ScrollPane artistScroller = new ScrollPane();
         artistScroller.setContent(newArtistList);
         newArtistList.setAlignment(Pos.CENTER);
@@ -223,15 +220,6 @@ public class AddingNewWindow {
         return returnString;
     }
 
-    public Genres stringToGenre(String genreString) {
-        for (Genres genre : Genres.values()) {
-            if (genre.getFancyName().equals(genreString)) {
-                return genre;
-            }
-        }
-        return null;
-    }
-
     /**
      * This method checks whether the new Artist is valid or not.
      * If it isn't this method will notify the user what he/she needs to repair before submitting again.
@@ -239,7 +227,6 @@ public class AddingNewWindow {
      * @param artistName
      * @param artistDescription
      * @param genre
-     * @param imagePath
      * @param description
      */
     public void newArtistControl(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
@@ -247,12 +234,14 @@ public class AddingNewWindow {
         if (artistName.getText().length() == 0) {
             this.errorList.add("The artist's name has not been filled in.");
         }
+
         if (artistDescription.getText().length() == 0) {
             this.errorList.add("The artist's description has not been filled in.");
         }
+
         if (this.errorList.isEmpty()) {
             try {
-                DataController.getPlanner().addArtist(artistName.getText(), stringToGenre(genre), description.getText());
+                DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genre), description.getText());
                 this.currentStage.close();
             } catch (Exception e) {
                 this.errorList.add("Failed to add the artist.");
@@ -262,5 +251,4 @@ public class AddingNewWindow {
             new ErrorWindow(this.currentStage, this.errorList);
         }
     }
-
 }

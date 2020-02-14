@@ -44,4 +44,13 @@ public enum Genres {
     public String getFancyName(){
         return this.fancyName;
     }
+
+    public static Genres getGenre(String name){
+        for (Genres genre : Genres.values()) {
+            if(genre.getFancyName().equals(name))
+                return genre;
+        }
+
+        return null;
+    }
 }

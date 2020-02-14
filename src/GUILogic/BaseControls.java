@@ -5,7 +5,8 @@ import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,10 +19,6 @@ import javafx.stage.Stage;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-
-import javafx.geometry.Insets;
-import javafx.scene.control.TextField;
-import javafx.collections.ObservableList;
 
 public class BaseControls {
 
@@ -42,30 +39,32 @@ public class BaseControls {
      * This is the constructor of the base layout of the windows of the three Menus.
      * The method also sends the user to the correct menu window.
      *
-     * @param ScreenNumber
+     * @param screenNumber
      * @param upperStage
      * @param data
      * @param table
-     * @param Selected
+     * @param selectedShow
      */
-    public BaseControls(int ScreenNumber, Stage upperStage, javafx.collections.ObservableList<Show> data, TableView<Show> table, Show Selected) {
+    public BaseControls(int screenNumber, Stage upperStage, javafx.collections.ObservableList<Show> data, TableView<Show> table, Show selectedShow) {
         this.upperStage = upperStage;
         this.table = table;
         this.data = data;
-        this.selectedShow = Selected;
+        this.selectedShow = selectedShow;
         this.popUp.setWidth(400);
         this.popUp.setHeight(450);
         this.popUp.initOwner(this.upperStage);
         this.popUp.initModality(Modality.WINDOW_MODAL);
+
         try {
             this.stagePopularity = this.selectedShow.getStage().getCapacity();
         } catch (Exception e) {
 
         }
+
         cancelsetup();
-        if (ScreenNumber == 1) {
+        if (screenNumber == 1) {
             additionWindow();
-        } else if (ScreenNumber == 2) {
+        } else if (screenNumber == 2) {
             editoryWindow();
         } else {
             deletionWindow();
@@ -79,7 +78,7 @@ public class BaseControls {
         this.additionalArtists = 0;
         BorderPane structure = new BorderPane();
 
-        Label addingNew = new Label("what show do you want to add?");
+        Label addingNew = new Label("What show do you want to add?");
         structure.setTop(addingNew);
 
         GridPane inputStructure = new GridPane();
@@ -122,17 +121,7 @@ public class BaseControls {
         this.popularitySlider.setBlockIncrement(10);
         inputStructure.add(this.popularitySlider, 2, 6);
         Label PopularityLabel = new Label("");
-        this.popularitySlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-            @Override
-            public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                PopularityLabel.textProperty().setValue(String.valueOf((newValue.intValue())));
-            }
-
-        });
+        this.popularitySlider.valueProperty().addListener((observableValue, oldValue, newValue) -> PopularityLabel.textProperty().setValue(String.valueOf((newValue.intValue()))));
         PopularityLabel.textProperty().setValue("0");
         inputStructure.add(PopularityLabel, 3, 6);
 
@@ -211,43 +200,46 @@ public class BaseControls {
                     addedArtists = null;
                 }
             }
+
             if (control(startingTime, endingTime, stage, genre, inputShowName, artists)) {
                 String showNameAdding = inputShowName.getText();
                 LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
                 LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
                 PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
-                Genres addedGenre = stringToGenre(genre.getValue().toString());
+                Genres addedGenre = Genres.getGenre(genre.getValue().toString());
                 ArrayList<Genres> genres = new ArrayList<>();
                 genres.add(addedGenre);
                 String descriptionShow = descriptionTextArea.getText();
                 int popularityAdded = (int) this.popularitySlider.getValue();
 
                 Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
-                if(!DataController.getPlanner().getShows().equals(show)){
-                    for(Show existingShow : DataController.getPlanner().getShows()){
+                if (!DataController.getPlanner().getShows().contains(show)) {
+                    for (Show existingShow : DataController.getPlanner().getShows()) {
                         if (existingShow.getStage().getName().equals(show.getStage().getName())) {
-                            if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals( existingShow.getBeginTime())) {
+                            if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals(existingShow.getBeginTime())) {
                                 return;
                             }
 
-                            if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals( existingShow.getEndTime())) {
+                            if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime())) {
                                 return;
                             }
                         }
-                        for(Artist existingArtist : existingShow.getArtists()){
-                            for(Artist showArtist : show.getArtists()){
-                                if(existingArtist.getName().equals(showArtist.getName())){
-                                    if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals( existingShow.getBeginTime())) {
+
+                        for (Artist existingArtist : existingShow.getArtists()) {
+                            for (Artist showArtist : show.getArtists()) {
+                                if (existingArtist.getName().equals(showArtist.getName())) {
+                                    if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals(existingShow.getBeginTime())) {
                                         return;
                                     }
 
-                                    if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals( existingShow.getEndTime())) {
+                                    if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime())) {
                                         return;
                                     }
                                 }
                             }
                         }
                     }
+
                     DataController.getPlanner().addShow(show);
                     this.data.add(show);
                     this.popUp.close();
@@ -346,7 +338,7 @@ public class BaseControls {
         Button showArtistAdder = new Button("+");
         VBox ArtistAddList = new VBox();
         ArtistAddList.getChildren().add(artists);
-        for (int i =1; i<this.selectedShow.getArtists().size();i++) {
+        for (int i = 1; i < this.selectedShow.getArtists().size(); i++) {
             ComboBox addedArtist = artistBox();
 //            addedArtist.
             addedArtist.setValue(this.selectedShow.getArtists().get(i).getName());
@@ -357,11 +349,13 @@ public class BaseControls {
                     new AddingNewWindow(2, this.popUp);
                     addedArtist.getSelectionModel().selectFirst();
                 }
+
                 if (addedArtist.getValue().equals("None")) {
                     ArtistAddList.getChildren().remove(addedArtist);
                 }
             });
         }
+
         inputStructure.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
             ComboBox artistAdded = artistBox();
@@ -423,45 +417,45 @@ public class BaseControls {
                 LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
                 LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
                 PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
-                Genres addedGenre = stringToGenre(genre.getValue().toString());
+                Genres addedGenre = Genres.getGenre(genre.getValue().toString());
                 ArrayList<Genres> genres = new ArrayList<>();
                 genres.add(addedGenre);
                 String descriptionShow = showDesciption.getText();
                 int popularityAdded = (int) this.popularitySlider.getValue();
 
                 this.addedShow = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
-                if(!this.addedShow.equals(this.selectedShow)){
+                if (!this.addedShow.equals(this.selectedShow)) {
                     DataController.getPlanner().deleteShow(this.selectedShow);
                     this.table.getItems().remove(this.selectedShow);
                     DataController.getPlanner().savePlanner();
 
-                    for(Show existingShow : DataController.getPlanner().getShows()){
+                    for (Show existingShow : DataController.getPlanner().getShows()) {
                         if (existingShow.getStage().getName().equals(addedShow.getStage().getName())) {
-                            if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals( existingShow.getBeginTime())) {
+                            if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime())) {
                                 DataController.getPlanner().addShow(this.selectedShow);
                                 this.data.add(this.selectedShow);
                                 DataController.getPlanner().savePlanner();
                                 return;
                             }
 
-                            if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals( existingShow.getEndTime())) {
+                            if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals(existingShow.getEndTime())) {
                                 DataController.getPlanner().addShow(this.selectedShow);
                                 this.data.add(this.selectedShow);
                                 DataController.getPlanner().savePlanner();
                                 return;
                             }
                         }
-                        for(Artist existingArtist : existingShow.getArtists()){
-                            for(Artist showArtist : addedShow.getArtists()){
-                                if(existingArtist.getName().equals(showArtist.getName())){
-                                    if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals( existingShow.getBeginTime())) {
+                        for (Artist existingArtist : existingShow.getArtists()) {
+                            for (Artist showArtist : addedShow.getArtists()) {
+                                if (existingArtist.getName().equals(showArtist.getName())) {
+                                    if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime())) {
                                         DataController.getPlanner().addShow(this.selectedShow);
                                         this.data.add(this.selectedShow);
                                         DataController.getPlanner().savePlanner();
                                         return;
                                     }
 
-                                    if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals( existingShow.getEndTime())) {
+                                    if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals(existingShow.getEndTime())) {
                                         DataController.getPlanner().addShow(this.selectedShow);
                                         this.data.add(this.selectedShow);
                                         DataController.getPlanner().savePlanner();
@@ -633,8 +627,8 @@ public class BaseControls {
             int stageCapacity = 100;
             if (stageBox.getValue().equals("Add new Stage")) {
                 AddingNewWindow addstage = new AddingNewWindow(1, this.popUp);
-                if (addstage.stageUpdate()){
-                    addstage.resetupdate();
+                if (addstage.stageUpdate()) {
+                    addstage.resetUpdate();
                     stageBox.getItems().clear();
                     stageBox.getItems().add("--Select--");
                     for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {

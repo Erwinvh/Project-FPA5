@@ -1,24 +1,18 @@
 package GUILogic;
 
-import Enumerators.Genres;
-import PlannerData.Artist;
 import PlannerData.Planner;
-import PlannerData.Show;
-import PlannerData.Stage;
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.time.LocalTime;
-import java.util.ArrayList;
 
 import static PlannerData.Planner.saveFileName;
 
 public class DataController {
 
-    static Planner planner;
+    private static Planner planner;
 
     public DataController() {
         planner = new Planner();
@@ -64,7 +58,7 @@ public class DataController {
 //        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
     }
 
-    public static Planner getPlanner() {
+    static Planner getPlanner() {
         return planner;
     }
 }

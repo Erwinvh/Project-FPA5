@@ -18,33 +18,37 @@ public class ErrorWindow {
      * This Constructor creates a Error Window that shows the user which Error he/she made during a process.
      *
      * @param upperStage
-     * @param errorlist
+     * @param errorList
      */
-    public ErrorWindow(Stage upperStage, ArrayList<String> errorlist) {
+    public ErrorWindow(Stage upperStage, ArrayList<String> errorList) {
         Stage errorPopUp = new Stage();
         errorPopUp.setWidth(500);
         errorPopUp.setResizable(false);
         errorPopUp.setHeight(250);
         errorPopUp.initOwner(upperStage);
         errorPopUp.initModality(Modality.WINDOW_MODAL);
+
         HBox baseStructure = new HBox();
+
         Image errorImage = new Image("file:Resources/alert.png");
         ImageView showError = new ImageView(errorImage);
         showError.setFitWidth(100);
         showError.setFitHeight(100);
         baseStructure.getChildren().add(showError);
-        VBox errorList = new VBox();
-        for (String Error : errorlist) {
-            errorList.getChildren().add(new Label(Error));
+
+        VBox errorVBox = new VBox();
+        for (String error : errorList) {
+            errorVBox.getChildren().add(new Label(error));
         }
-        errorList.getChildren().add(new Label("Please resolve these errors before submitting."));
-        errorList.setAlignment(Pos.CENTER);
-        baseStructure.getChildren().add(errorList);
+
+        errorVBox.getChildren().add(new Label("Please resolve these errors before submitting."));
+        errorVBox.setAlignment(Pos.CENTER);
+        baseStructure.getChildren().add(errorVBox);
+
         Scene errorScene = new Scene(baseStructure);
         errorScene.getStylesheets().add("Window-StyleSheet.css");
 
         errorPopUp.setScene(errorScene);
         errorPopUp.show();
     }
-
 }

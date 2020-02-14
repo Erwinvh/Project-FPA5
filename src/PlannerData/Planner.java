@@ -1,13 +1,14 @@
 package PlannerData;
 
 import Enumerators.Genres;
-import javafx.scene.image.Image;
-
-import java.io.*;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Planner implements Serializable {
 
@@ -31,8 +32,8 @@ public class Planner implements Serializable {
      * @param show object where data about the show is stored
      */
     public void addShow(Show show) {
-            this.shows.add(show);
-            this.savePlanner();
+        this.shows.add(show);
+        this.savePlanner();
 
     }
 
@@ -129,13 +130,13 @@ public class Planner implements Serializable {
         this.savePlanner();
     }
 
-    public boolean deleteShow(Show show){
+    public boolean deleteShow(Show show) {
         return this.shows.remove(show);
     }
 
-    public boolean deleteShow(String showName){
+    public boolean deleteShow(String showName) {
         for (Show show : this.shows) {
-            if(show.getName().equals(showName)){
+            if (show.getName().equals(showName)) {
                 return deleteShow(show);
             }
         }
@@ -143,13 +144,13 @@ public class Planner implements Serializable {
         return false;
     }
 
-    public boolean deleteArtist(Artist artist){
+    public boolean deleteArtist(Artist artist) {
         return this.artists.remove(artist);
     }
 
-    public boolean deleteArtist(String artistName){
+    public boolean deleteArtist(String artistName) {
         for (Artist artist : this.artists) {
-            if(artist.getName().equals(artistName)){
+            if (artist.getName().equals(artistName)) {
                 return deleteArtist(artist);
             }
         }
@@ -157,13 +158,13 @@ public class Planner implements Serializable {
         return false;
     }
 
-    public boolean deleteStage(Stage stage){
+    public boolean deleteStage(Stage stage) {
         return this.stages.remove(stage);
     }
 
-    public boolean deleteStage(String stageName){
+    public boolean deleteStage(String stageName) {
         for (Stage stage : this.stages) {
-            if(stage.getName().equals(stageName)){
+            if (stage.getName().equals(stageName)) {
                 return deleteStage(stageName);
             }
         }
