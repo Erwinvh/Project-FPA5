@@ -19,6 +19,7 @@ public class AddingNewWindow {
 
     private Stage upperStage;
     private Stage currentStage = new Stage();
+    private PlannerData.Stage addedStage;
     private ArrayList<String> errorList = new ArrayList<>();
     private FileChooser fileChooser = new FileChooser();
     private ImageView artistImage = new ImageView();
@@ -105,8 +106,8 @@ public class AddingNewWindow {
         } else {
             try {
                 int capacityCheck = Integer.parseInt(capacity.getText());
-                if (capacityCheck <= 0) {
-                    this.errorList.add("The capacity must be larger than 0");
+                if (capacityCheck < 20) {
+                    this.errorList.add("The capacity must be at least 20");
                 }
 
             } catch (Exception e) {
@@ -115,12 +116,17 @@ public class AddingNewWindow {
         }
 
         if (this.errorList.isEmpty()) {
-            DataController.getPlanner().addStage(Integer.parseInt(capacity.getText()), stageName.getText());
+            this.addedStage = new PlannerData.Stage(Integer.parseInt(capacity.getText()), stageName.getText());
+            DataController.getPlanner().addStage(this.addedStage);
             this.stageUpdate = true;
             this.currentStage.close();
         } else {
             new ErrorWindow(this.currentStage, this.errorList);
         }
+    }
+
+    public PlannerData.Stage getAddedStage() {
+        return addedStage;
     }
 
     public Boolean stageUpdate(){
