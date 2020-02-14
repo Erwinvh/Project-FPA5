@@ -53,6 +53,7 @@ public class BaseControls {
         this.popUp.setWidth(400);
         this.popUp.setHeight(450);
         this.popUp.initOwner(this.upperStage);
+        this.popUp.setResizable(false);
         this.popUp.initModality(Modality.WINDOW_MODAL);
 
         try {
