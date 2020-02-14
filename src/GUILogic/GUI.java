@@ -32,7 +32,7 @@ public class GUI extends Application {
         primaryStage.setTitle("Festival Planner");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.getIcons().add(new Image("Artist_Images/Red Hot Chilli Peppers.jpg"));
+        primaryStage.getIcons().add(new Image("logoA5.jpg"));
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
         primaryStage.show();

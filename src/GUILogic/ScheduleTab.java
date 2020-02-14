@@ -89,7 +89,7 @@ public class ScheduleTab {
         stageCol.setCellValueFactory(new PropertyValueFactory<>("StageName"));
 
         TableColumn artistCol = new TableColumn("Artists");
-        artistCol.setPrefWidth(300);
+        artistCol.setPrefWidth(198);
         artistCol.setCellValueFactory(
                 new PropertyValueFactory<>("ArtistsNames"));
         TableColumn genreCol = new TableColumn("Genre");
