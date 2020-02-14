@@ -217,10 +217,16 @@ public class BaseControls {
                     for (Show existingShow : DataController.getPlanner().getShows()) {
                         if (existingShow.getStage().getName().equals(show.getStage().getName())) {
                             if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals(existingShow.getBeginTime())) {
+                                this.errorList.clear();
+                                this.errorList.add("A show cannot begin at the same time or during another show on the same stage.");
+                                new ErrorWindow(this.popUp,this.errorList);
                                 return;
                             }
 
                             if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime())) {
+                                this.errorList.clear();
+                                this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
+                                new ErrorWindow(this.popUp,this.errorList);
                                 return;
                             }
                         }
@@ -229,10 +235,16 @@ public class BaseControls {
                             for (Artist showArtist : show.getArtists()) {
                                 if (existingArtist.getName().equals(showArtist.getName())) {
                                     if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals(existingShow.getBeginTime())) {
+                                        this.errorList.clear();
+                                        this.errorList.add("An artist cannot be at two shows at the same time");
+                                        new ErrorWindow(this.popUp,this.errorList);
                                         return;
                                     }
 
                                     if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime())) {
+                                        this.errorList.clear();
+                                        this.errorList.add("An artist cannot be at two shows at the same time");
+                                        new ErrorWindow(this.popUp,this.errorList);
                                         return;
                                     }
                                 }
@@ -435,6 +447,9 @@ public class BaseControls {
                                 DataController.getPlanner().addShow(this.selectedShow);
                                 this.data.add(this.selectedShow);
                                 DataController.getPlanner().savePlanner();
+                                this.errorList.clear();
+                                this.errorList.add("A show cannot begin at the same time or during another show on the same stage.");
+                                new ErrorWindow(this.popUp,this.errorList);
                                 return;
                             }
 
@@ -442,6 +457,9 @@ public class BaseControls {
                                 DataController.getPlanner().addShow(this.selectedShow);
                                 this.data.add(this.selectedShow);
                                 DataController.getPlanner().savePlanner();
+                                this.errorList.clear();
+                                this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
+                                new ErrorWindow(this.popUp,this.errorList);
                                 return;
                             }
                         }
@@ -452,6 +470,9 @@ public class BaseControls {
                                         DataController.getPlanner().addShow(this.selectedShow);
                                         this.data.add(this.selectedShow);
                                         DataController.getPlanner().savePlanner();
+                                        this.errorList.clear();
+                                        this.errorList.add("An artist cannot be at two shows at the same time");
+                                        new ErrorWindow(this.popUp,this.errorList);
                                         return;
                                     }
 
@@ -459,6 +480,9 @@ public class BaseControls {
                                         DataController.getPlanner().addShow(this.selectedShow);
                                         this.data.add(this.selectedShow);
                                         DataController.getPlanner().savePlanner();
+                                        this.errorList.clear();
+                                        this.errorList.add("An artist cannot be at two shows at the same time");
+                                        new ErrorWindow(this.popUp,this.errorList);
                                         return;
                                     }
                                 }
