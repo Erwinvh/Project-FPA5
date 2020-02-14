@@ -31,7 +31,7 @@ class VisualTab {
     private static final int CANVAS_HEIGHT = 2400;
     private static final int STAGE_HEIGHT = 40;
     private static final int TIME_COLUMN_WIDTH = 60;
-    private static final Color BACKGROUND_COLOR = Color.decode("#eaeaea");
+    private static final Color BACKGROUND_COLOR = Color.decode("#d9e2ea");
     private static final Color SECONDARY_COLOR = Color.decode("#b5c2d2");
 
     VisualTab() {

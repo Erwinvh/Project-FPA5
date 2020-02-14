@@ -251,7 +251,7 @@ public class ScheduleTab {
         this.controls.getChildren().add(addButton);
         this.controls.getChildren().add(editButton);
         this.controls.getChildren().add(deleteButton);
-        this.controls.getChildren().add(new Label("            "));
+        this.controls.getChildren().add(new Label("             "));
 
         this.controls.getChildren().add(addArtistButton);
         this.controls.getChildren().add(addStageButton);
