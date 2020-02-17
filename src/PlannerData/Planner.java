@@ -1,14 +1,13 @@
 package PlannerData;
 
 import Enumerators.Genres;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import javax.json.*;
 
 public class Planner implements Serializable {
 
@@ -82,7 +81,7 @@ public class Planner implements Serializable {
         }
 
         this.shows.add(newShow);
-        this.savePlanner();
+        //this.savePlanner();
     }
 
 //    public void addArtist(String name, Genres genre, Image image, String description) {
@@ -190,13 +189,60 @@ public class Planner implements Serializable {
 
     public void savePlanner() {
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            FileWriter fileWriter = new FileWriter(saveFileName);
-            fileWriter.write(gson.toJson(this));
-            fileWriter.close();
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
-//            objectOutputStream.writeObject(this);
-//            objectOutputStream.close();
+            JsonWriter writer = Json.createWriter(new FileWriter(saveFileName));
+            JsonObjectBuilder plannerBuilder = Json.createObjectBuilder();
+            JsonArrayBuilder showsBuilder = Json.createArrayBuilder();
+            JsonArrayBuilder stagesBuilder =  Json.createArrayBuilder();
+            JsonArrayBuilder artistsBuilder = Json.createArrayBuilder();
+
+            for(Stage stage : this.getStages()){
+                JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
+                stageBuilder.add("name",stage.getName());
+                stageBuilder.add("capacity", stage.getCapacity());
+                stagesBuilder.add(stageBuilder);
+            }
+
+            for(Artist artist : this.getArtists()){
+                JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
+                artistBuilder.add("name", artist.getName());
+                artistBuilder.add("description", artist.getDescription());
+                artistBuilder.add("genre", artist.getGenre().getFancyName());
+                artistsBuilder.add(artistBuilder);
+            }
+
+            for(Show show : this.getShows()){
+                JsonArrayBuilder showArtistsBuilder = Json.createArrayBuilder();
+                JsonObjectBuilder showBuilder = Json.createObjectBuilder();
+                JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
+
+                for(Artist artist : show.getArtists()){
+                    JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
+                    artistBuilder.add("name", artist.getName());
+                    artistBuilder.add("description", artist.getDescription());
+                    artistBuilder.add("genre", artist.getGenre().getFancyName());
+                    showArtistsBuilder.add(artistBuilder);
+                }
+                Stage stage = show.getStage();
+                stageBuilder.add("name",stage.getName());
+                stageBuilder.add("capacity",stage.getCapacity());
+
+                showBuilder.add("name", show.getName());
+                showBuilder.add("artists", showArtistsBuilder);
+                showBuilder.add("stage", stageBuilder);
+                showBuilder.add("beginTime", show.getBeginTimeString());
+                showBuilder.add("endTime", show.getEndTimeString());
+                showBuilder.add("description",show.getDescription());
+                showBuilder.add("genre",show.getGenre().get(0).getFancyName());
+                showBuilder.add("expectedPopularity", show.getExpectedPopularity());
+                showsBuilder.add(showBuilder);
+            }
+            plannerBuilder.add("shows",showsBuilder);
+            plannerBuilder.add("artists", artistsBuilder);
+            plannerBuilder.add("stages",stagesBuilder);
+
+            writer.writeObject(plannerBuilder.build());
+            writer.close();
+
 
         } catch (IOException e) {
             e.printStackTrace();
