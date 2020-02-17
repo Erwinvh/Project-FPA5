@@ -1,11 +1,13 @@
 package GUILogic;
 
 import Enumerators.Genres;
+import PlannerData.Artist;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -42,9 +44,17 @@ public class AddingNewWindow {
         this.currentStage.setResizable(false);
 
         if (screenNumber == 1) {
-            stageAddWindow();
-        } else {
             artistAddWindow();
+        } else if (screenNumber == 2) {
+            artistEditWindow();
+        } else if (screenNumber == 3) {
+            artistDeleteWindow();
+        } else if (screenNumber == 4) {
+            stageAddWindow();
+        } else if (screenNumber == 5) {
+            stageEditWindow();
+        } else if (screenNumber == 6) {
+            stageDeleteWindow();
         }
     }
 
@@ -85,6 +95,12 @@ public class AddingNewWindow {
         artistAddScene.getStylesheets().add("Window-StyleSheet.css");
         this.currentStage.setScene(artistAddScene);
         this.currentStage.show();
+    }
+
+    public void stageEditWindow() {
+    }
+
+    public void stageDeleteWindow() {
     }
 
     /**
@@ -196,7 +212,50 @@ public class AddingNewWindow {
         this.currentStage.show();
     }
 
-    public ArrayList<String> getArtistImages(){
+
+    public void artistEditWindow() {
+    }
+
+    public void artistDeleteWindow() {
+        this.currentStage.setWidth(275);
+        this.currentStage.setHeight(400);
+
+        VBox newArtistList = new VBox();
+        newArtistList.setPrefWidth(250);
+
+        ComboBox artistComboBox = new ComboBox();
+        for (Artist artist : DataController.getPlanner().getArtists()) {
+            artistComboBox.getItems().add(artist.getName());
+        }
+
+        //buttons
+        HBox choice = new HBox();
+        Button stop = new Button("Cancel");
+        stop.setOnAction(e -> this.currentStage.close());
+        choice.getChildren().add(stop);
+
+        Button confirm = new Button("Confirm");
+        confirm.setOnAction(e -> {
+            DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
+            this.currentStage.close();
+        });
+        choice.getChildren().add(confirm);
+
+        choice.setPadding(new Insets(10));
+        choice.setSpacing(20);
+        newArtistList.getChildren().add(choice);
+
+        BorderPane artistBorderPane = new BorderPane();
+        artistBorderPane.setTop(artistComboBox);
+        artistBorderPane.setBottom(choice);
+
+        Scene artistDeleteScene = new Scene(artistBorderPane);
+        artistDeleteScene.getStylesheets().add("Window-StyleSheet.css");
+        this.currentStage.setScene(artistDeleteScene);
+        this.currentStage.show();
+    }
+
+    public ArrayList<String> getArtistImages() {
         ArrayList<String> imagesStrings = new ArrayList<>();
 
         File directory = new File("Resources/Artist_Images");

@@ -240,12 +240,12 @@ public class ScheduleTab {
 
         Button addArtistButton = new Button("Add Artist");
         addArtistButton.setOnAction(event -> {
-                new AddingNewWindow(2, this.primaryStage);
+                new AddingNewWindow(1, this.primaryStage);
         });
 
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
-                new AddingNewWindow(1, this.primaryStage);
+                new AddingNewWindow(4, this.primaryStage);
         });
 
         this.controls.getChildren().add(addButton);
