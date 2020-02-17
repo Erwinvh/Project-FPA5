@@ -1,6 +1,7 @@
 package GUILogic;
 
 import Enumerators.Genres;
+import PlannerData.Artist;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -99,6 +100,13 @@ public class AddingNewWindow {
 
         if (stageName.getText().length() == 0) {
             this.errorList.add("The stage name has not been filled in.");
+        }
+        else{
+            for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+                if (stageName.getText().equals(stage.getName())){
+                    this.errorList.add("This Stage already exists.");
+                }
+            }
         }
 
         if (capacity.getText().length() == 0) {
@@ -239,6 +247,13 @@ public class AddingNewWindow {
         this.errorList.clear();
         if (artistName.getText().length() == 0) {
             this.errorList.add("The artist's name has not been filled in.");
+        }
+        else{
+            for (Artist artist : DataController.getPlanner().getArtists()) {
+                if (artistName.getText().equals(artist.getName())){
+                    this.errorList.add("This Artist already exists.");
+                }
+            }
         }
 
         if (artistDescription.getText().length() == 0) {
