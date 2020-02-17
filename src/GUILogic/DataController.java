@@ -32,11 +32,9 @@ public class DataController {
             File file = new File(saveFileName);
             if (!file.exists()) {
                 file.createNewFile();
-                System.out.println("is a empty file");
             } else {
                 try (Reader reader = new FileReader(saveFileName)) {
                     if (file.length() != 0){
-                        System.out.println("Not empty");
                         JsonReader jsonReader = Json.createReader(reader);
                         JsonObject planner = jsonReader.readObject();
                         JsonArray shows = planner.getJsonArray("shows");
@@ -76,7 +74,7 @@ public class DataController {
                         }
                     }
                     else{
-                        System.out.println("empty file");
+
                     }
 
                 } catch (Exception e) {
