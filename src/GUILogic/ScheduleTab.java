@@ -243,18 +243,47 @@ public class ScheduleTab {
                 new AddingNewWindow(1, this.primaryStage);
         });
 
+        Button editArtistButton = new Button("Edit Artist");
+        editArtistButton.setOnAction(event -> {
+            new AddingNewWindow(2, this.primaryStage);
+        });
+
+        Button deleteArtistButton = new Button("Delete Artist");
+        deleteArtistButton.setOnAction(event -> {
+            new AddingNewWindow(3, this.primaryStage);
+        });
+
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
                 new AddingNewWindow(4, this.primaryStage);
         });
 
+        Button editStageButton = new Button("Edit Stage");
+        editStageButton.setOnAction(event -> {
+            new AddingNewWindow(5, this.primaryStage);
+        });
+
+        Button deleteStageButton = new Button("Delete Stage");
+        deleteStageButton.setOnAction(event -> {
+            new AddingNewWindow(6, this.primaryStage);
+        });
+
         this.controls.getChildren().add(addButton);
         this.controls.getChildren().add(editButton);
         this.controls.getChildren().add(deleteButton);
+
         this.controls.getChildren().add(new Label("             "));
 
         this.controls.getChildren().add(addArtistButton);
+        this.controls.getChildren().add(editArtistButton);
+        this.controls.getChildren().add(deleteArtistButton);
+
+        this.controls.getChildren().add(new Label("             "));
+
         this.controls.getChildren().add(addStageButton);
+        this.controls.getChildren().add(editStageButton);
+        this.controls.getChildren().add(deleteStageButton);
+
         this.controls.setSpacing(20);
         this.controls.setPadding(new Insets(10));
     }

@@ -98,9 +98,11 @@ public class AddingNewWindow {
     }
 
     public void stageEditWindow() {
+        this.currentStage.show();
     }
 
     public void stageDeleteWindow() {
+        this.currentStage.show();
     }
 
     /**
@@ -221,6 +223,7 @@ public class AddingNewWindow {
 
 
     public void artistEditWindow() {
+        this.currentStage.show();
     }
 
     public void artistDeleteWindow() {
