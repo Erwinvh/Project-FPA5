@@ -1,7 +1,6 @@
 package GUILogic;
 
 import Enumerators.Genres;
-import PlannerData.Artist;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -100,13 +99,6 @@ public class AddingNewWindow {
 
         if (stageName.getText().length() == 0) {
             this.errorList.add("The stage name has not been filled in.");
-        } else {
-            for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
-                if (stageName.getText().equals(stage.getName())) {
-                    this.errorList.add("The stage has already been added.");
-                }
-            }
-
         }
 
         if (capacity.getText().length() == 0) {
@@ -137,11 +129,11 @@ public class AddingNewWindow {
         return addedStage;
     }
 
-    public Boolean stageUpdate() {
+    public Boolean stageUpdate(){
         return this.stageUpdate;
     }
 
-    public void resetUpdate() {
+    public void resetUpdate(){
         this.stageUpdate = false;
     }
 
@@ -204,31 +196,31 @@ public class AddingNewWindow {
         this.currentStage.show();
     }
 
-    public ArrayList<String> getArtistImages() {
+    public ArrayList<String> getArtistImages(){
         ArrayList<String> imagesStrings = new ArrayList<>();
 
         File directory = new File("Resources/Artist_Images");
         File[] filesArray = directory.listFiles();
 
-        for (File file : filesArray) {
+        for (File file : filesArray){
             if (file.isFile() &&
                     (file.getName().contains(".png") ||
                             file.getName().contains(".jpg") ||
-                            file.getName().contains(".jpeg"))) {
+                            file.getName().contains(".jpeg"))){
                 imagesStrings.add(file.getName());
             }
         }
         return imagesStrings;
     }
 
-    public String getFileName(String fileName) {
+    public String getFileName(String fileName){
         String returnString = "Not an imageFile with .jpg, .jpeg or .png!";
-        if (fileName.contains(".jpg")) {
-            return fileName.substring(0, fileName.indexOf(".jpg"));
-        } else if (fileName.contains(".jpeg")) {
-            return fileName.substring(0, fileName.indexOf(".jpeg"));
-        } else if (fileName.contains(".png")) {
-            return fileName.substring(0, fileName.indexOf(".png"));
+        if (fileName.contains(".jpg")){
+            return fileName.substring(0,fileName.indexOf(".jpg"));
+        } else if (fileName.contains(".jpeg")){
+            return fileName.substring(0,fileName.indexOf(".jpeg"));
+        } else if (fileName.contains(".png")){
+            return fileName.substring(0,fileName.indexOf(".png"));
         }
 
         return returnString;
@@ -247,29 +239,22 @@ public class AddingNewWindow {
         this.errorList.clear();
         if (artistName.getText().length() == 0) {
             this.errorList.add("The artist's name has not been filled in.");
-        } else {
-            for (Artist artist : DataController.getPlanner().getArtists()) {
-                if (artistName.getText().equals(artist.getName())) {
-                    this.errorList.add("The Artist has already been added.");
-                }
-            }
+        }
 
+        if (artistDescription.getText().length() == 0) {
+            this.errorList.add("The artist's description has not been filled in.");
+        }
 
-            if (artistDescription.getText().length() == 0) {
-                this.errorList.add("The artist's description has not been filled in.");
-            }
-
-            if (this.errorList.isEmpty()) {
-                try {
-                    DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genre), description.getText());
-                    this.currentStage.close();
-                } catch (Exception e) {
-                    this.errorList.add("Failed to add the artist.");
-                    new ErrorWindow(this.currentStage, this.errorList);
-                }
-            } else {
+        if (this.errorList.isEmpty()) {
+            try {
+                DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genre), description.getText());
+                this.currentStage.close();
+            } catch (Exception e) {
+                this.errorList.add("Failed to add the artist.");
                 new ErrorWindow(this.currentStage, this.errorList);
             }
+        } else {
+            new ErrorWindow(this.currentStage, this.errorList);
         }
     }
 }
