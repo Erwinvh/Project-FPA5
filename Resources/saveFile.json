@@ -1,0 +1,196 @@
+{
+  "shows": [
+    {
+      "beginTime": {
+        "hour": 9,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      },
+      "endTime": {
+        "hour": 10,
+        "minute": 30,
+        "second": 0,
+        "nano": 0
+      },
+      "name": "Mirror",
+      "description": "Mirror on the wall",
+      "artists": [
+        {
+          "name": "The Maine",
+          "genre": "EMO_ROCK",
+          "description": "American Emo rock band"
+        }
+      ],
+      "stage": {
+        "name": "The Mirror",
+        "capacity": 500
+      },
+      "genre": [
+        "EMO_ROCK"
+      ],
+      "expectedPopularity": 399
+    },
+    {
+      "beginTime": {
+        "hour": 9,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      },
+      "endTime": {
+        "hour": 10,
+        "minute": 30,
+        "second": 0,
+        "nano": 0
+      },
+      "name": "Wall",
+      "description": "Wonderwall",
+      "artists": [
+        {
+          "name": "Lost Frequencies",
+          "genre": "DANCE",
+          "description": "Lost Frequencies"
+        }
+      ],
+      "stage": {
+        "name": "Dance Stage",
+        "capacity": 425
+      },
+      "genre": [
+        "ELECTRONIC"
+      ],
+      "expectedPopularity": 326
+    },
+    {
+      "beginTime": {
+        "hour": 6,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      },
+      "endTime": {
+        "hour": 8,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      },
+      "name": "EDDIE",
+      "description": "Stand",
+      "artists": [
+        {
+          "name": "Stand Atlantic",
+          "genre": "PUNK_ROCK",
+          "description": "Australian Punk rock band"
+        }
+      ],
+      "stage": {
+        "name": "Dance Stage",
+        "capacity": 425
+      },
+      "genre": [
+        "BLUES"
+      ],
+      "expectedPopularity": 198
+    },
+    {
+      "beginTime": {
+        "hour": 20,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      },
+      "endTime": {
+        "hour": 21,
+        "minute": 30,
+        "second": 0,
+        "nano": 0
+      },
+      "name": "Test more than 1 artist and long show name",
+      "description": "Just a test show to grind your gears!",
+      "artists": [
+        {
+          "name": "The Maine",
+          "genre": "EMO_ROCK",
+          "description": "American Emo rock band"
+        },
+        {
+          "name": "Stand Atlantic",
+          "genre": "PUNK_ROCK",
+          "description": "Australian Punk rock band"
+        },
+        {
+          "name": "Lost Frequencies",
+          "genre": "DANCE",
+          "description": "Lost Frequencies"
+        }
+      ],
+      "stage": {
+        "name": "The Mirror",
+        "capacity": 500
+      },
+      "genre": [
+        "ALTERNATIVE_ROCK"
+      ],
+      "expectedPopularity": 402
+    },
+    {
+      "beginTime": {
+        "hour": 0,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      },
+      "endTime": {
+        "hour": 0,
+        "minute": 30,
+        "second": 0,
+        "nano": 0
+      },
+      "name": "show descrip",
+      "description": "This is a description\nDo enters work?\nI think so\nBut what happens with the height of the\nTextArea?",
+      "artists": [
+        {
+          "name": "The Maine",
+          "genre": "EMO_ROCK",
+          "description": "American Emo rock band"
+        }
+      ],
+      "stage": {
+        "name": "The Mirror",
+        "capacity": 500
+      },
+      "genre": [
+        "ALTERNATIVE_ROCK"
+      ],
+      "expectedPopularity": 260
+    }
+  ],
+  "stages": [
+    {
+      "name": "The Mirror",
+      "capacity": 500
+    },
+    {
+      "name": "Dance Stage",
+      "capacity": 425
+    }
+  ],
+  "artists": [
+    {
+      "name": "The Maine",
+      "genre": "EMO_ROCK",
+      "description": "American Emo rock band"
+    },
+    {
+      "name": "Stand Atlantic",
+      "genre": "PUNK_ROCK",
+      "description": "Australian Punk rock band"
+    },
+    {
+      "name": "Lost Frequencies",
+      "genre": "DANCE",
+      "description": "Lost Frequencies"
+    }
+  ]
+}

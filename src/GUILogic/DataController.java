@@ -1,33 +1,37 @@
 package GUILogic;
 
 import PlannerData.Planner;
+import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.Reader;
 
 import static PlannerData.Planner.saveFileName;
 
 public class DataController {
 
-    static Planner planner;
+    private static Planner planner;
 
     public DataController() {
         planner = new Planner();
+        Gson gson = new Gson();
 
         try {
             File file = new File(saveFileName);
             if (!file.exists()) {
                 file.createNewFile();
             } else {
-                FileInputStream fileInputStream = new FileInputStream(saveFileName);
-                if (fileInputStream.available() > 1) {
-                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                    planner = (Planner) objectInputStream.readObject();
+                try (Reader reader = new FileReader(saveFileName)) {
+                    if (file.length() != 0)
+                        planner = gson.fromJson(reader, Planner.class);
+                } catch (Exception e) {
+                    System.out.println("error loading data due to: ");
+                    e.printStackTrace();
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
             e.printStackTrace();
         }
@@ -40,10 +44,21 @@ public class DataController {
 //        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusHours(1), lars, "De ochtendshow van Lars", stage, "Lars die jamt", genres, 100000));
 //        planner.savePlanner();
 
-
+//        ArrayList<Artist> artists = new ArrayList<>();
+//        artists.add(new Artist("Arne de Beer", Genres.BLUES, "Smoking hot"));
+//        artists.add(new Artist("Lars Giskes", Genres.PUNK_ROCK, "The legend of Spoderman"));
+//        artists.add(new Artist("Henk", Genres.METAL, "Dit is Henk"));
+//
+//        ArrayList<Stage> stages = new ArrayList<>();
+//        stages.add(new Stage(500, "Main Stage"));
+//        stages.add(new Stage(100, "Second Stage"));
+//
+//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
+//        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
+//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
     }
 
-    public static Planner getPlanner() {
+    static Planner getPlanner() {
         return planner;
     }
 }

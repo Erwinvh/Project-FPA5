@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Stage implements Serializable {
 
-	private int capacity;
 	private String name;
+	private int capacity;
 
 	public Stage(int capacity, String name) {
 		this.capacity = capacity;
@@ -19,4 +19,5 @@ public class Stage implements Serializable {
 	public String getName() {
 		return name;
 	}
+
 }

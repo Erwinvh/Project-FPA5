@@ -1,117 +1,199 @@
 package GUILogic;
 
-import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Show;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ScheduleTab {
     private Tab scheduleTab;
-    private TableView table = new TableView();
+    private TableView<Show> table = new TableView();
     private VBox description = new VBox();
     private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
     private Stage primaryStage;
-    private Stage popUp = new Stage();
-    private Button confirm = new Button("Confirm");
-    private Button cancel = new Button("Cancel");
-    private String selected = "test";
-    private ArrayList<String> errorlist = new ArrayList<>();
-    private ArrayList<String> timelist = new ArrayList<>();
-    private int additionalArtists = 0;
+    private Show selectedItem = this.table.getSelectionModel().getSelectedItem();
+    private TableViewSelectionModel selectionModel = this.table.getSelectionModel();
+    private ObservableList<Show> selectedItems = this.selectionModel.getSelectedItems();
+    private ArrayList<String> errorList = new ArrayList<>();
+    private ObservableList<Show> data = FXCollections.observableArrayList();
 
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.scheduleTab = new Tab("Schedule");
-        layout1();
-        this.popUp.setWidth(400);
-        this.popUp.setHeight(450);
-        this.popUp.initOwner(this.primaryStage);
-        this.popUp.initModality(Modality.WINDOW_MODAL);
-        this.allDescriptions.setPrefWidth(600);
+        this.allDescriptions.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.allDescriptions.addEventFilter(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                if (event.getDeltaX() != 0){
+                    event.consume();
+                }
+            }
+        });
+        layout();
+        int descriptionBoxWidth = 450;
+        this.allDescriptions.setPrefWidth(descriptionBoxWidth);
     }
 
+    /**
+     * This is the getter of the Schedule tab, it allows the Gui to show the schedule tab in the application.
+     *
+     * @return Tab
+     */
     public Tab getScheduleTab() {
         return scheduleTab;
     }
 
-    public void table(){
+    /**
+     * This method creates the table which shows the user all shows that are currently planned.
+     */
+    public void table() {
         this.table.setEditable(false);
+        for (Show show : DataController.getPlanner().getShows()) {
+            this.data.add(show);
+        }
+
+        TableColumn nameColumn = new TableColumn("Name");
+        nameColumn.setPrefWidth(100);
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
 
         TableColumn beginTimeCol = new TableColumn("Begin time");
         beginTimeCol.setPrefWidth(100);
+        beginTimeCol.setCellValueFactory(new PropertyValueFactory<>("beginTimeString"));
+
         TableColumn endTimeCol = new TableColumn("End time");
         endTimeCol.setPrefWidth(100);
+        endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTimeString"));
+
         TableColumn stageCol = new TableColumn("Stage");
         stageCol.setPrefWidth(100);
-        TableColumn artistCol = new TableColumn("Artist");
-        artistCol.setPrefWidth(100);
+        stageCol.setCellValueFactory(new PropertyValueFactory<>("StageName"));
+
+        TableColumn artistCol = new TableColumn("Artists");
+        artistCol.setPrefWidth(300);
+        artistCol.setCellValueFactory(new PropertyValueFactory<>("ArtistsNames"));
         TableColumn genreCol = new TableColumn("Genre");
         genreCol.setPrefWidth(100);
+        genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
+
         TableColumn popularityCol = new TableColumn("Popularity");
         popularityCol.setPrefWidth(100);
+        popularityCol.setCellValueFactory(new PropertyValueFactory<>("expectedPopularity"));
         this.table.setPrefWidth(800);
 
-        this.table.getColumns().addAll(beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
+        this.table.getColumns().addAll(nameColumn, beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
+
+        this.table.getItems().addAll(DataController.getPlanner().getShows());
+
+        this.table.setItems(this.data);
+        this.table.getSelectionModel().selectFirst();
+        this.table.setOnMouseClicked(event->{
+            description();
+        });
     }
 
-    public void desciption(){
+    /**
+     * This method creates the description that shows the Artists of the selected show.
+     */
+    public void description() {
+        this.selectedItem = this.table.getSelectionModel().getSelectedItem();
+        int numberOfArtists = 0;
 
-        //for each
-        for (int i = 0; i<2; i++) {
-            GridPane descriptionStructure = new GridPane();
-            TextField artistName = new TextField("get artistname (i)");
-            artistName.setEditable(false);
-            descriptionStructure.add(artistName, 1, 1);
+        try {
+            this.description = new VBox();
+            for (Artist artist : this.selectedItem.getArtists()) {
+                numberOfArtists++;
+                GridPane descriptionStructure = new GridPane();
+                TextField artistName = new TextField(artist.getName());
+                artistName.setEditable(false);
+                descriptionStructure.add(artistName, 1, 1);
 
-            TextField artistamount = new TextField("Number 1 out of (i)");
-            artistamount.setEditable(false);
-            artistamount.setPrefWidth(150);
-            descriptionStructure.add(artistamount, 2, 1);
+                TextField artistAmount = new TextField("Number " + numberOfArtists + "out of " + this.selectedItem.getArtists().size());
+                artistAmount.setEditable(false);
+                artistAmount.setPrefWidth(150);
+                descriptionStructure.add(artistAmount, 2, 1);
 
-            Image baseImage = new Image("file:Resources/PersonImageBase.jpg");
-            ImageView Artistpicture = new ImageView(baseImage);
-            Artistpicture.setFitHeight(200);
-            Artistpicture.setFitWidth(200);
-            descriptionStructure.add(Artistpicture, 1, 2);
-            TextArea Genres = new TextArea("Genre #1" + '\n' + "Genre #2");
-            Genres.setPrefWidth(150);
-            Genres.setEditable(false);
-            descriptionStructure.add(Genres, 2, 2);
+                Image artistImage = new Image("file:Resources/PersonImageBase.jpg");
+                ImageView Artistpicture = new ImageView(artistImage);
 
-            TextArea artistDescription = new TextArea("Description of artist 1");
-            artistDescription.setEditable(false);
-            artistDescription.setPrefWidth(150);
-            this.description.getChildren().add(descriptionStructure);
-            this.description.getChildren().add(artistDescription);
+                int artistPicSize = 200;
+                Artistpicture.setFitHeight(artistPicSize);
+                Artistpicture.setFitWidth(artistPicSize);
+
+                descriptionStructure.add(Artistpicture, 1, 2);
+                TextArea Genres = new TextArea(artist.getGenre().getFancyName());
+
+                int genreBoxWidth = 250;
+                Genres.setPrefWidth(genreBoxWidth);
+                Genres.setEditable(false);
+                descriptionStructure.add(Genres, 2, 2);
+
+                TextArea artistDescription = new TextArea(artist.getDescription());
+                artistDescription.setEditable(false);
+                int artistDescrWidth = 450;
+                artistDescription.setMaxWidth(artistDescrWidth);
+                this.description.getChildren().add(descriptionStructure);
+                this.description.getChildren().add(artistDescription);
+            }
+
+//            VBox descriptionBase = new VBox();
+//            descriptionBase.getChildren().add(new Label("Show:"));
+//
+//            TextArea showDescription = new TextArea(this.selectedItem.getName().toUpperCase() + "\n\n\t\tShow description:\n" + this.selectedItem.getDescription());
+//            showDescription.setEditable(false);
+//            descriptionBase.getChildren().add(showDescription);
+//            descriptionBase.getChildren().add(this.description);
+//            this.allDescriptions.setContent(descriptionBase);
+
+            VBox descriptionBase = new VBox();
+            descriptionBase.getChildren().add(new Label("Show:"));
+            TextFlow showDescriptionTextFlow = new TextFlow();
+
+
+            Text textTitle = new Text(this.selectedItem.getName());
+            textTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 40");
+
+            Text textDescrTitle = new Text("\n\n Show Description:");
+            textDescrTitle.setStyle("-fx-font-weight: bold;");
+
+            Text textDescription = new Text("\n" + this.selectedItem.getDescription());
+            showDescriptionTextFlow.getChildren().addAll(textTitle, textDescrTitle, textDescription);
+            showDescriptionTextFlow.setMaxWidth(450);
+
+            descriptionBase.getChildren().addAll(showDescriptionTextFlow, this.description);
+            this.allDescriptions.setContent(descriptionBase);
+
+        } catch (Exception e) {
+            this.allDescriptions.setContent(new Label("Select a Show for more information"));
         }
-        this.allDescriptions.setContent(this.description);
     }
 
-    public void layout1(){
+    /**
+     * This method creates the base Layout of the Schedule tab by calling the separate pieces.
+     */
+    public void layout() {
         HBox baseLayer = new HBox();
         baseLayer.setSpacing(10);
         table();
-        desciption();
-        cancelsetup();
-        
+        description();
+
         baseLayer.getChildren().add(this.table);
         baseLayer.getChildren().add(this.allDescriptions);
 
@@ -123,547 +205,57 @@ public class ScheduleTab {
         this.scheduleTab.setContent(base);
     }
 
-    public void cancelsetup(){
-        this.cancel.setOnAction(event -> {
-            this.popUp.close();
-        });
-    }
-
-    public void Controls(){
-       Button addButton = new Button("Add");
+    /**
+     * This method creates the Buttons to the Add, Edit and Delete menus.
+     */
+    private void Controls() {
+        Button addButton = new Button("Add Show");
         addButton.setOnAction(event -> {
-            additionWindow();
+            new BaseControls(1, this.primaryStage, this.data, this.table, this.selectedItem);
         });
-        Button editButton = new Button("Edit");
+
+        Button editButton = new Button("Edit Show");
         editButton.setOnAction(event -> {
-            editoryWindow();
+            try {
+                this.selectedItem = this.table.getSelectionModel().getSelectedItem();
+                new BaseControls(2, this.primaryStage, this.data, this.table, this.selectedItem);
+            } catch (Exception e) {
+                this.errorList.clear();
+                this.errorList.add("No show has been selected.");
+                new ErrorWindow(this.primaryStage, this.errorList);
+            }
         });
-        Button deleteButton = new Button("Delete");
+
+        Button deleteButton = new Button("Delete Show");
         deleteButton.setOnAction(event -> {
-            deletionWindow();
+            try {
+                this.selectedItem = this.table.getSelectionModel().getSelectedItem();
+                new BaseControls(3, this.primaryStage, this.data, this.table, this.selectedItem);
+            } catch (Exception e) {
+                this.errorList.clear();
+                this.errorList.add("No show has been selected.");
+                new ErrorWindow(this.primaryStage, this.errorList);
+            }
+        });
+
+        Button addArtistButton = new Button("Add Artist");
+        addArtistButton.setOnAction(event -> {
+                new AddingNewWindow(2, this.primaryStage);
+        });
+
+        Button addStageButton = new Button("Add Stage");
+        addStageButton.setOnAction(event -> {
+                new AddingNewWindow(1, this.primaryStage);
         });
 
         this.controls.getChildren().add(addButton);
         this.controls.getChildren().add(editButton);
         this.controls.getChildren().add(deleteButton);
+        this.controls.getChildren().add(new Label("             "));
+
+        this.controls.getChildren().add(addArtistButton);
+        this.controls.getChildren().add(addStageButton);
         this.controls.setSpacing(20);
         this.controls.setPadding(new Insets(10));
     }
-
-    public void additionWindow(){
-        this.additionalArtists = 0;
-        BorderPane structure = new BorderPane();
-
-        Label addingNew = new Label("what show do you want to add?");
-        structure.setTop(addingNew);
-
-        GridPane inputStructure = new GridPane();
-        inputStructure.setHgap(10);
-        inputStructure.setVgap(10);
-        Label showName = new Label("Show name:");
-        TextField inputShowName = new TextField();
-        inputStructure.add(showName,1,1);
-        inputStructure.add(inputShowName,2,1);
-        inputStructure.add(new Label("Begin time:"),1,2);
-        inputStructure.add(new Label("End time:"),1,3);
-        ComboBox beginUur = timeBox();
-        ComboBox eindUur = timeBox();
-        inputStructure.add(beginUur,2,2);
-        inputStructure.add(eindUur,2,3);
-        inputStructure.add(new Label("Stage:"),1,4);
-        inputStructure.add(new Label("Genre:"),1,5);
-        inputStructure.add(new Label("Popularity:"),1,6);
-        inputStructure.add(new Label("Artists:"),1,7);
-
-        ComboBox stage = StageBox();
-        inputStructure.add(stage,2,4);
-        ComboBox genre = genreBox();
-        inputStructure.add(genre,2,5);
-        Slider popularity = new Slider();
-        popularity.setMin(0);
-        popularity.setMax(100);
-        popularity.setValue(0);
-        popularity.setShowTickLabels(true);
-        popularity.setShowTickMarks(true);
-        popularity.setMajorTickUnit(50);
-        popularity.setMinorTickCount(5);
-        popularity.setBlockIncrement(10);
-        inputStructure.add(popularity,2,6);
-        Label PopularityLabel = new Label("");
-        popularity.valueProperty().addListener(new ChangeListener<Number>() {
-
-            @Override
-            public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                PopularityLabel.textProperty().setValue(
-                        String.valueOf(newValue.intValue()));
-            }
-        });
-
-        PopularityLabel.textProperty().setValue("0");
-
-        inputStructure.add(PopularityLabel,3,6);
-        ComboBox artists = artistBox();
-        inputStructure.add(artists,2,7);
-
-        Button showArtistAdder = new Button("+");
-        inputStructure.add(showArtistAdder,3,7);
-        showArtistAdder.setOnAction(event -> {
-            this.additionalArtists++;
-            ComboBox ArtistAdded = artistBox();
-            inputStructure.add(ArtistAdded,2,7 + this.additionalArtists);
-            ArtistAdded.setOnAction(e -> {
-                if (ArtistAdded.getValue().equals("None")){
-                    inputStructure.getChildren().remove(ArtistAdded);
-                    this.additionalArtists--;
-                }
-            });
-                });
-
-        ScrollPane ArtistScroller = new ScrollPane();
-        ArtistScroller.setContent(inputStructure);
-        structure.setCenter(ArtistScroller);
-        HBox choice = new HBox();
-        Button submit = new Button("Submit");
-        submit.setOnAction(event -> {
-
-            control(beginUur, eindUur, stage, genre, inputShowName);
-
-        });
-
-        choice.getChildren().add(this.cancel);
-        choice.getChildren().add(submit);
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
-        structure.setBottom(choice);
-
-        Scene adderScene = new Scene(structure);
-        adderScene.getStylesheets().add("Window-StyleSheet.css");
-        this.popUp.setScene(adderScene);
-        this.popUp.show();
-    }
-
-    public void editoryWindow(){
-        BorderPane structure = new BorderPane();
-
-        Label editingThis = new Label("Edit this show:");
-        structure.setTop(editingThis);
-
-        GridPane inputStructure = new GridPane();
-        inputStructure.setHgap(10);
-        inputStructure.setVgap(10);
-        Label showName = new Label("Show name:");
-        TextField inputShowName = new TextField();
-        inputStructure.add(showName,1,1);
-        inputStructure.add(inputShowName,2,1);
-        inputStructure.add(new Label("Begin time:"),1,2);
-        inputStructure.add(new Label("End time:"),1,3);
-        ComboBox beginUur = timeBox();
-        ComboBox eindUur = timeBox();
-        inputStructure.add(beginUur,2,2);
-        inputStructure.add(eindUur,2,3);
-        inputStructure.add(new Label("Stage:"),1,4);
-        inputStructure.add(new Label("Genre:"),1,5);
-        inputStructure.add(new Label("Popularity:"),1,6);
-        inputStructure.add(new Label("Artists:"),1,7);
-
-        ComboBox stage = StageBox();
-        inputStructure.add(stage,2,4);
-        ComboBox genre = genreBox();
-        inputStructure.add(genre,2,5);
-        Slider popularity = new Slider();
-        popularity.setMin(0);
-        popularity.setMax(100);
-        popularity.setValue(0);
-        popularity.setShowTickLabels(true);
-        popularity.setShowTickMarks(true);
-        popularity.setMajorTickUnit(50);
-        popularity.setMinorTickCount(5);
-        popularity.setBlockIncrement(10);
-        inputStructure.add(popularity,2,6);
-        Label PopularityLabel = new Label("");
-        popularity.valueProperty().addListener(new ChangeListener<Number>() {
-
-            @Override
-            public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                PopularityLabel.textProperty().setValue(
-                        String.valueOf(newValue.intValue()));
-            }
-        });
-
-        PopularityLabel.textProperty().setValue("0");
-
-        inputStructure.add(PopularityLabel,3,6);
-        ComboBox artists = artistBox();
-        inputStructure.add(artists,2,7);
-
-        Button showArtistAdder = new Button("+");
-        inputStructure.add(showArtistAdder,3,7);
-        showArtistAdder.setOnAction(event -> {
-            this.additionalArtists++;
-            ComboBox ArtistAdded = artistBox();
-            inputStructure.add(ArtistAdded,2,7 + this.additionalArtists);
-            ArtistAdded.setOnAction(e -> {
-                if (ArtistAdded.getValue().equals("None")){
-                    inputStructure.getChildren().remove(ArtistAdded);
-                    this.additionalArtists--;
-                }
-            });
-        });
-
-        ScrollPane ArtistScroller = new ScrollPane();
-        ArtistScroller.setContent(inputStructure);
-        structure.setCenter(ArtistScroller);
-        HBox choice = new HBox();
-        Button submit = new Button("Submit");
-        submit.setOnAction(event -> {
-
-            control(beginUur, eindUur, stage, genre, inputShowName);
-
-        });
-
-        choice.getChildren().add(this.cancel);
-        choice.getChildren().add(submit);
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
-        structure.setBottom(choice);
-
-        Scene editScene = new Scene(structure);
-        editScene.getStylesheets().add("Window-StyleSheet.css");
-        this.popUp.setScene(editScene);
-        this.popUp.show();
-    }
-
-    public void deletionWindow(){
-        BorderPane structure = new BorderPane();
-
-        Label deleteThis = new Label("Are you sure you want to delete this show?");
-        structure.setTop(deleteThis);
-        Label information = new Label("From "+ this.selected + " to " + this.selected + '\n'
-                + "By " + this.selected + " in the genre of " + this.selected + '\n' +
-                "On stage " + this.selected + '\n'+
-                "Expected popularity is " + this.selected + " people.");
-        structure.setCenter(information);
-
-        HBox choice = new HBox();
-
-        Button confirm = new Button("Confirm");
-        confirm.setOnAction(event -> {
-            this.popUp.close();
-        });
-
-        choice.getChildren().add(this.cancel);
-        choice.getChildren().add(confirm);
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
-
-        structure.setBottom(choice);
-        Scene deleteScene = new Scene(structure);
-        deleteScene.getStylesheets().add("Window-StyleSheet.css");
-        this.popUp.setScene(deleteScene);
-        this.popUp.show();
-    }
-
-    public void errorWindow(){
-
-        Stage errorPopUp = new Stage();
-        errorPopUp.setWidth(500);
-        errorPopUp.setResizable(false);
-        errorPopUp.setHeight(250);
-        errorPopUp.initOwner(this.popUp);
-        errorPopUp.initModality(Modality.WINDOW_MODAL);
-        HBox baseStructure = new HBox();
-        Image error = new Image("file:Resources/alert.png");
-        ImageView showError = new ImageView(error);
-        showError.setFitWidth(100);
-        showError.setFitHeight(100);
-        baseStructure.getChildren().add(showError);
-        VBox errorList = new VBox();
-        for (String Error : this.errorlist) {
-            errorList.getChildren().add(new Label(Error));
-        }
-        errorList.getChildren().add(new Label("Please resolve these errors before submitting."));
-        errorList.setAlignment(Pos.CENTER);
-        baseStructure.getChildren().add(errorList);
-        Scene errorScene = new Scene(baseStructure);
-        errorScene.getStylesheets().add("Window-StyleSheet.css");
-
-        errorPopUp.setScene(errorScene);
-        errorPopUp.show();
-    }
-
-    public void control(ComboBox beginUur, ComboBox eindUur, ComboBox stage, ComboBox genre, TextField showName){
-        this.errorlist.clear();
-        int beginIndex = this.timelist.indexOf(beginUur.getValue());
-        int endIndex = this.timelist.indexOf(eindUur.getValue());
-        if (showName.getText().length()==0){
-            this.errorlist.add("The show name has not been filled in.");
-        }
-        if (beginUur.getValue()==null||eindUur.getValue()==null) {
-            if (beginUur.getValue() == null) {
-                this.errorlist.add("The begintime has not been filled in.");
-            }
-            if (eindUur.getValue() == null) {
-                this.errorlist.add("The endtime has not been filled in.");
-            }
-        }
-        else {
-            if (beginIndex>endIndex){
-                this.errorlist.add("The begintime is later than the endtime.");
-            }
-            else if (beginIndex==endIndex){
-                this.errorlist.add("The begintime the same as the endtime.");
-            }
-        }
-        if (stage.getValue()==null){
-            this.errorlist.add("The stage has not been filled in.");
-        }
-        if (genre.getValue()==null){
-            this.errorlist.add("The genre has not been filled in.");
-        }
-
-
-        if (this.errorlist.isEmpty()){
-//            DataController.getPlanner().addShow(new Show(beginUur.getValue()));
-            //TODO: LocalTime stuff when adding new show
-            this.popUp.close();
-        }
-        else{
-            errorWindow();
-        }
-    }
-
-    public void newArtistControl(TextField ArtistName, TextArea ArtistDescription){
-        this.errorlist.clear();
-        if (ArtistName.getText().length()==0){
-            this.errorlist.add("The artist's name has not been filled in.");
-        }
-        if (ArtistDescription.getText().length()==0){
-            this.errorlist.add("The artist's description has not been filled in.");
-        }
-        if (this.errorlist.isEmpty()){
-
-        }
-        else{
-            errorWindow();
-        }
-    }
-
-    public void newStageControl(TextField stageName, TextField capacity){
-        this.errorlist.clear();
-        if (stageName.getText().length()==0){
-            this.errorlist.add("The stage name has not been filled in.");
-        }
-        if (capacity.getText().length()==0){
-            this.errorlist.add("The capacity has not been filled in.");
-        }
-        else{
-            try {
-               int cap = Integer.parseInt(capacity.getText());
-            }
-            catch(Exception e){
-                this.errorlist.add("The capacity must be a Number.");
-            }
-
-        }
-        if (this.errorlist.isEmpty()){
-
-        }
-        else{
-            errorWindow();
-        }
-    }
-
-    public void artistAddWindow(){
-        Stage artistAddWindow = new Stage();
-        artistAddWindow.setWidth(200);
-        artistAddWindow.setHeight(400);
-        artistAddWindow.initOwner(this.popUp);
-        artistAddWindow.initModality(Modality.WINDOW_MODAL);
-
-        VBox newArtistList = new VBox();
-        TextField artistName = new TextField();
-
-        TextArea artistDescription = new TextArea();
-        Label ArtistNameLabel = new Label("Artist name:");
-        newArtistList.getChildren().add(ArtistNameLabel);
-        newArtistList.getChildren().add(artistName);
-
-        //genre
-        Label ArtistGenreLabel = new Label("Artist's Genres:");
-        newArtistList.getChildren().add(ArtistGenreLabel);
-        GridPane Genres = new GridPane();
-        Genres.setHgap(10);
-        Genres.setVgap(10);
-//        for (Enumerators.Genres genre: ???) {
-//            Genres.add(, , x, y)
-//        }
-        Genres.add(new CheckBox("Nightcore"),1,1);
-        Genres.add(new CheckBox("Jazz"), 1,2);
-        Genres.add(new CheckBox("Rock"),2,1);
-        Genres.add(new CheckBox("K-Pop"),2,2);
-//        for (Genres genre : Enumerators.Genres.values()) {
-//            Genres.add(new CheckBox(),2,2);
-//        }
-        newArtistList.getChildren().add(Genres);
-
-//        newArtistList.getChildren().add(artistDescription);
-
-//        private Image image;
-
-        Label ArtistpictureLabel = new Label("Artist's picture:");
-        newArtistList.getChildren().add(ArtistpictureLabel);
-
-//        FileChooser imageChooser = new FileChooser();
-//        imageChooser.getExtensionFilters().addAll(
-//                new FileChooser.ExtensionFilter("jpg Files", "*.jpg")
-//                ,new FileChooser.ExtensionFilter("png Files", "*.png")
-//        );
-//        Button openButton = new Button("Choose Image");
-//
-//        openButton.setOnAction(event -> {
-//                        File selectedFile = imageChooser.showOpenDialog(this.popUp);
-//
-//                });
-
-
-
-        HBox choice = new HBox();
-        Button stop = new Button("Cancel");
-        stop.setOnAction(event -> {
-            artistAddWindow.close();
-        });
-        choice.getChildren().add(stop);
-        Button confirm = new Button("Confirm");
-        confirm.setOnAction(event -> {
-            newArtistControl(artistName, artistDescription);
-        });
-        choice.getChildren().add(confirm);
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
-        Label ArtistdescriptionLabel = new Label("Artist's description:");
-        newArtistList.getChildren().add(ArtistdescriptionLabel);
-        newArtistList.getChildren().add(artistDescription);
-        newArtistList.getChildren().add(choice);
-        Scene artistAddScene = new Scene(newArtistList);
-        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
-        artistAddWindow.setScene(artistAddScene);
-        artistAddWindow.show();
-    }
-
-    public ComboBox genreBox (){
-        ComboBox comboBox = new ComboBox();
-        comboBox.getItems().add("None");
-        comboBox.getItems().addAll(Genres.values());
-        return comboBox;
-    }
-
-    public ComboBox StageBox (){
-        ComboBox comboBox = new ComboBox();
-        comboBox.getItems().add("None");
-
-        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
-            comboBox.getItems().add(stage.getName());
-        }
-
-        comboBox.getItems().add("Add new Stage");
-
-        comboBox.setOnAction(event -> {
-            if (comboBox.getValue().equals("Add new Stage")){
-                stageAddWindow();
-            }
-        });
-
-        return comboBox;
-    }
-
-    public ComboBox artistBox(){
-        ComboBox comboBox = new ComboBox();
-        comboBox.getItems().add("None");
-        for (Artist artist : DataController.getPlanner().getArtists()) {
-            comboBox.getItems().add(artist.getName());
-        }
-        comboBox.getItems().add("Add new Artist");
-
-        comboBox.setOnAction(event -> {
-            if (comboBox.getValue().equals("Add new Artist")){
-                artistAddWindow();
-            }
-        });
-
-        return comboBox;
-    }
-
-public ComboBox timeBox (){
-        ComboBox uurBox = new ComboBox();
-        String time = "";
-        String halftime = "";
-    for (int i=0; i<=23; i++){
-        if (i<10){
-            time = "0"+i;
-        }
-        else {
-            time = ""+i;
-        }
-        for (int j = 0; j<=1; j++){
-            if (j==0){
-                halftime = time;
-                time += ":00";
-            }
-            else{
-                halftime += ":30";
-                time = halftime;
-            }
-            if (!this.timelist.contains(time)){
-                this.timelist.add(time);
-            }
-            uurBox.getItems().add(time);
-        }
-    }
-    return uurBox;
-}
-
-    public void stageAddWindow(){
-        Stage stageAddWindow = new Stage();
-        stageAddWindow.setWidth(200);
-        stageAddWindow.setHeight(250);
-        stageAddWindow.initOwner(this.popUp);
-        stageAddWindow.initModality(Modality.WINDOW_MODAL);
-
-        VBox newStageList = new VBox();
-        Label StageLabelName = new Label("Stage Name:");
-        newStageList.getChildren().add(StageLabelName);
-        TextField StageName = new TextField();
-        newStageList.getChildren().add(StageName);
-        Label StageLabelCapacity = new Label("Stage Capacity:");
-        newStageList.getChildren().add(StageLabelCapacity);
-        TextField InputTextField = new TextField();
-        newStageList.getChildren().add(InputTextField);
-
-        HBox choice = new HBox();
-        Button stop = new Button("Cancel");
-        stop.setOnAction(event -> {
-            stageAddWindow.close();
-        });
-        choice.getChildren().add(stop);
-        Button confirm = new Button("Confirm");
-        confirm.setOnAction(event -> {
-            newStageControl(StageName,InputTextField);
-        });
-        choice.getChildren().add(confirm);
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
-
-        newStageList.getChildren().add(choice);
-        Scene artistAddScene = new Scene(newStageList);
-        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
-        stageAddWindow.setScene(artistAddScene);
-        stageAddWindow.show();
-    }
-
 }
