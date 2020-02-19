@@ -2,6 +2,7 @@ package GUILogic;
 
 import Enumerators.Genres;
 import PlannerData.Artist;
+import PlannerData.Show;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -171,7 +172,7 @@ public class AddingNewWindow {
         stageBox.getSelectionModel().selectFirst();
         stageBox.setOnAction(event -> {
             if (!stageBox.getValue().equals("--Select--")) {
-                PlannerData.Stage selectedStage = stringToStage(stageBox.getValue().toString());
+                   this.selectedStage = stringToStage(stageBox.getValue().toString());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
                     this.information.textProperty().setValue("Do you want to delete the stage: " + selectedStage.getName() + '\n' + " with the capacity of " + selectedStage.getCapacity());
                 }
@@ -193,7 +194,20 @@ public class AddingNewWindow {
 
         Button confirm = new Button("Confirm");
         choice.getChildren().add(confirm);
-        confirm.setOnAction(e -> {});
+        confirm.setOnAction(e -> {
+            if (StageDeleteChecker()){
+                try{
+                    DataController.getPlanner().deleteStage(stageBox.getValue().toString());
+                    this.currentStage.close();
+                }
+                catch(Exception exception){
+                    this.errorList.clear();
+                    this.errorList.add("The Stage could not be deleted.");
+                    new ErrorWindow(this.currentStage, this.errorList);
+                }
+            }
+
+        });
 
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
@@ -436,7 +450,7 @@ public class AddingNewWindow {
         artistComboBox.getSelectionModel().selectFirst();
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("--Select--")) {
-                PlannerData.Artist selectedArtist = stringToArtist(artistComboBox.getValue().toString());
+                    this.selectedArtist = stringToArtist(artistComboBox.getValue().toString());
                 if (selectedArtist != null && !selectedArtist.getName().isEmpty()) {
                     this.information.textProperty().setValue("Do you want to delete the artist: " + selectedArtist.getName() + '\n' + " with the genre of " + selectedArtist.getGenre().getFancyName()+ '\n' + " with the description: " + selectedArtist.getDescription() );
                 }
@@ -457,16 +471,17 @@ public class AddingNewWindow {
 
         Button confirm = new Button("Confirm");
         confirm.setOnAction(e -> {
-            try{
-                DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
-                this.currentStage.close();
+            if (ArtistDeleteChecker()){
+                try{
+                    DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
+                    this.currentStage.close();
+                }
+                catch(Exception exception){
+                    this.errorList.clear();
+                    this.errorList.add("The artist could not be deleted.");
+                    new ErrorWindow(this.currentStage, this.errorList);
+                }
             }
-            catch(Exception exception){
-                this.errorList.clear();
-                this.errorList.add("The artist could not be deleted.");
-                new ErrorWindow(this.currentStage, this.errorList);
-            }
-
         });
         choice.getChildren().add(confirm);
 
@@ -560,6 +575,38 @@ public class AddingNewWindow {
             }
         } else {
             new ErrorWindow(this.currentStage, this.errorList);
+        }
+    }
+    public Boolean ArtistDeleteChecker(){
+        this.errorList.clear();
+        for (Show show : DataController.getPlanner().getShows()) {
+            for (Artist artist : show.getArtists()) {
+                    if (artist.getName().equals(this.selectedArtist.getName())) {
+                        this.errorList.add("performing Artists cannot be removed from the event.");
+                    }
+            }
+        }
+        if (this.errorList.isEmpty()){
+            return true;
+        }
+        else{
+            new ErrorWindow(this.currentStage,this.errorList);
+            return false;
+        }
+    }
+    public Boolean StageDeleteChecker(){
+        this.errorList.clear();
+        for (Show show : DataController.getPlanner().getShows()) {
+            if (show.getStage().getName().equals(this.selectedStage.getName())){
+                this.errorList.add("Stages in use cannot be removed from the event.");
+            }
+        }
+        if (this.errorList.isEmpty()){
+            return true;
+        }
+        else{
+            new ErrorWindow(this.currentStage,this.errorList);
+            return false;
         }
     }
 }
