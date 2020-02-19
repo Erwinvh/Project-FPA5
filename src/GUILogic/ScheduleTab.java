@@ -245,12 +245,24 @@ public class ScheduleTab {
 
         Button editArtistButton = new Button("Edit Artist");
         editArtistButton.setOnAction(event -> {
-            new AddingNewWindow(2, this.primaryStage);
+            if (DataController.getPlanner().getArtists().isEmpty()){
+                this.errorList.clear();
+                this.errorList.add("There is no Artist to edit.");
+                new ErrorWindow(this.primaryStage,this.errorList);
+            }else{
+                new AddingNewWindow(2, this.primaryStage);
+            }
         });
 
         Button deleteArtistButton = new Button("Delete Artist");
         deleteArtistButton.setOnAction(event -> {
-            new AddingNewWindow(3, this.primaryStage);
+            if (DataController.getPlanner().getArtists().isEmpty()){
+                this.errorList.clear();
+                this.errorList.add("There is no Artist to delete.");
+                new ErrorWindow(this.primaryStage,this.errorList);
+            }else{
+                new AddingNewWindow(3, this.primaryStage);
+            }
         });
 
         Button addStageButton = new Button("Add Stage");
@@ -260,12 +272,24 @@ public class ScheduleTab {
 
         Button editStageButton = new Button("Edit Stage");
         editStageButton.setOnAction(event -> {
-            new AddingNewWindow(5, this.primaryStage);
+            if (DataController.getPlanner().getStages().isEmpty()){
+                this.errorList.clear();
+                this.errorList.add("There is no stage to edit.");
+                new ErrorWindow(this.primaryStage,this.errorList);
+            }else{
+                new AddingNewWindow(5, this.primaryStage);
+            }
         });
 
         Button deleteStageButton = new Button("Delete Stage");
         deleteStageButton.setOnAction(event -> {
-            new AddingNewWindow(6, this.primaryStage);
+            if (DataController.getPlanner().getStages().isEmpty()){
+                this.errorList.clear();
+                this.errorList.add("There is no stage to delete.");
+                new ErrorWindow(this.primaryStage,this.errorList);
+            }else{
+                new AddingNewWindow(6, this.primaryStage);
+            }
         });
 
         this.controls.getChildren().add(addButton);

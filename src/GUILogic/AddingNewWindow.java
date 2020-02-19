@@ -27,6 +27,7 @@ public class AddingNewWindow {
     private ImageView artistImage = new ImageView();
     private String imageURL = "PersonImageBase.jpg";
     private Boolean stageUpdate = false;
+    private Label information = new Label();
 
     /**
      * This is the constructor of the base of the submenus.
@@ -102,7 +103,70 @@ public class AddingNewWindow {
     }
 
     public void stageDeleteWindow() {
+        BorderPane structure = new BorderPane();
+        HBox startLine = new HBox();
+        startLine.getChildren().add(new Label("Choose the stage you want to delete:"));
+        ComboBox stageBox = new ComboBox();
+        stageBox.getItems().add("--Select--");
+        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+            stageBox.getItems().add(stage.getName());
+        }
+        stageBox.getSelectionModel().selectFirst();
+        stageBox.setOnAction(event -> {
+            if (!stageBox.getValue().equals("--Select--")) {
+                PlannerData.Stage selectedStage = stringToStage(stageBox.getValue().toString());
+                if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
+                    this.information.textProperty().setValue("Do you want to delete the stage: " + selectedStage.getName() + '\n' + " with the capacity of " + selectedStage.getCapacity());
+                }
+            }
+            else{
+                this.information.textProperty().setValue("         "+'\n');
+                //something here?
+            }
+        });
+
+        startLine.getChildren().add(stageBox);
+        structure.setTop(startLine);
+        structure.setCenter(this.information);
+
+        HBox choice = new HBox();
+        Button cancelButton = new Button("Cancel");
+        choice.getChildren().add(cancelButton);
+        cancelButton.setOnAction(e -> this.currentStage.close());
+
+        Button confirm = new Button("Confirm");
+        choice.getChildren().add(confirm);
+        confirm.setOnAction(e -> {});
+
+        choice.setPadding(new Insets(10));
+        choice.setSpacing(20);
+        structure.setBottom(choice);
+        Scene stageDeleteScene = new Scene(structure);
+        stageDeleteScene.getStylesheets().add("Window-StyleSheet.css");
+        this.currentStage.setScene(stageDeleteScene);
+
         this.currentStage.show();
+    }
+
+    public PlannerData.Stage stringToStage(String stageString) {
+        if (stageString == null || stageString.isEmpty()) {
+            return null;
+        }
+        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+            if (stageString.equals(stage.getName())) {
+                return stage;
+            }
+        }
+        return null;
+    }
+
+    public Artist stringToArtist(String artistString) {
+        for (Artist artist : DataController.getPlanner().getArtists()) {
+            if (artistString.equals(artist.getName())) {
+                return artist;
+            }
+        }
+        return null;
     }
 
     /**
@@ -232,11 +296,31 @@ public class AddingNewWindow {
 
         VBox newArtistList = new VBox();
         newArtistList.setPrefWidth(250);
+        HBox startLine = new HBox();
+        startLine.getChildren().add(new Label("Choose the artist you want to delete:"));
+
 
         ComboBox artistComboBox = new ComboBox();
+        artistComboBox.getItems().add("--Select--");
         for (Artist artist : DataController.getPlanner().getArtists()) {
             artistComboBox.getItems().add(artist.getName());
         }
+
+        artistComboBox.getSelectionModel().selectFirst();
+        artistComboBox.setOnAction(event -> {
+            if (!artistComboBox.getValue().equals("--Select--")) {
+                PlannerData.Artist selectedArtist = stringToArtist(artistComboBox.getValue().toString());
+                if (selectedArtist != null && !selectedArtist.getName().isEmpty()) {
+                    this.information.textProperty().setValue("Do you want to delete the artist: " + selectedArtist.getName() + '\n' + " with the genre of " + selectedArtist.getGenre().getFancyName()+ '\n' + " with the description: " + selectedArtist.getDescription() );
+                }
+            }
+            else{
+                this.information.textProperty().setValue("         "+'\n');
+                //something here?
+            }
+        });
+
+        startLine.getChildren().add(artistComboBox);
 
         //buttons
         HBox choice = new HBox();
@@ -246,8 +330,16 @@ public class AddingNewWindow {
 
         Button confirm = new Button("Confirm");
         confirm.setOnAction(e -> {
-            DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
-            this.currentStage.close();
+            try{
+                DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
+                this.currentStage.close();
+            }
+            catch(Exception exception){
+                this.errorList.clear();
+                this.errorList.add("The artist could not be deleted.");
+                new ErrorWindow(this.currentStage, this.errorList);
+            }
+
         });
         choice.getChildren().add(confirm);
 
@@ -255,11 +347,12 @@ public class AddingNewWindow {
         choice.setSpacing(20);
         newArtistList.getChildren().add(choice);
 
-        BorderPane artistBorderPane = new BorderPane();
-        artistBorderPane.setTop(artistComboBox);
-        artistBorderPane.setBottom(choice);
+        BorderPane structure = new BorderPane();
+        structure.setTop(startLine);
+        structure.setCenter(this.information);
+        structure.setBottom(choice);
 
-        Scene artistDeleteScene = new Scene(artistBorderPane);
+        Scene artistDeleteScene = new Scene(structure);
         artistDeleteScene.getStylesheets().add("Window-StyleSheet.css");
         this.currentStage.setScene(artistDeleteScene);
         this.currentStage.show();
