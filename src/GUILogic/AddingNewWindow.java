@@ -28,6 +28,8 @@ public class AddingNewWindow {
     private String imageURL = "PersonImageBase.jpg";
     private Boolean stageUpdate = false;
     private Label information = new Label();
+    private PlannerData.Stage selectedStage;
+    private Artist selectedArtist;
 
     /**
      * This is the constructor of the base of the submenus.
@@ -99,6 +101,61 @@ public class AddingNewWindow {
     }
 
     public void stageEditWindow() {
+        this.currentStage.setWidth(200);
+        this.currentStage.setHeight(250);
+        VBox newStageList = new VBox();
+        Label startEdit = new Label("Which stage do you want to edit?");
+        newStageList.getChildren().add(startEdit);
+
+        ComboBox stageBox = new ComboBox();
+        stageBox.getItems().add("--Select--");
+        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+            stageBox.getItems().add(stage.getName());
+        }
+        stageBox.getSelectionModel().selectFirst();
+
+        newStageList.getChildren().add(stageBox);
+
+        Label stageNameLabel = new Label("Stage Name:");
+        newStageList.getChildren().add(stageNameLabel);
+
+        TextField stageName = new TextField();
+        newStageList.getChildren().add(stageName);
+
+        Label stageCapacityLabel = new Label("Stage Capacity:");
+        newStageList.getChildren().add(stageCapacityLabel);
+        TextField InputTextField = new TextField();
+        newStageList.getChildren().add(InputTextField);
+
+        HBox choice = new HBox();
+        Button cancelButton = new Button("Cancel");
+        choice.getChildren().add(cancelButton);
+        cancelButton.setOnAction(e -> this.currentStage.close());
+
+        Button confirm = new Button("Confirm");
+        choice.getChildren().add(confirm);
+        confirm.setOnAction(e -> newStageControl(stageName, InputTextField));
+
+        choice.setPadding(new Insets(10));
+        choice.setSpacing(20);
+
+        stageBox.setOnAction(event -> {
+            if (!stageBox.getValue().equals("--Select--")) {
+                this.selectedStage = stringToStage(stageBox.getValue().toString());
+                stageName.setText(this.selectedStage.getName());
+                InputTextField.setText("" + this.selectedStage.getCapacity());
+            }
+            else{
+                stageName.setText("");
+                InputTextField.setText("");
+            }
+        });
+
+        newStageList.getChildren().add(choice);
+        Scene artistAddScene = new Scene(newStageList);
+        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
+        this.currentStage.setScene(artistAddScene);
+        this.currentStage.show();
         this.currentStage.show();
     }
 
@@ -160,14 +217,6 @@ public class AddingNewWindow {
         return null;
     }
 
-    public Artist stringToArtist(String artistString) {
-        for (Artist artist : DataController.getPlanner().getArtists()) {
-            if (artistString.equals(artist.getName())) {
-                return artist;
-            }
-        }
-        return null;
-    }
 
     /**
      * This method checks if the new Stage is valid or not.
@@ -287,6 +336,84 @@ public class AddingNewWindow {
 
 
     public void artistEditWindow() {
+        this.currentStage.setWidth(275);
+        this.currentStage.setHeight(400);
+
+        VBox newArtistList = new VBox();
+        Label startEdit = new Label("Which artist do you want to edit?");
+        newArtistList.getChildren().add(startEdit);
+        ComboBox artistComboBox = new ComboBox();
+        artistComboBox.getItems().add("--Select--");
+        for (Artist artist : DataController.getPlanner().getArtists()) {
+            artistComboBox.getItems().add(artist.getName());
+        }
+        artistComboBox.getSelectionModel().selectFirst();
+
+        newArtistList.getChildren().add(artistComboBox);
+
+        newArtistList.setPrefWidth(250);
+
+        //artist name
+        Label artistNameLabel = new Label("Artist name:");
+        TextField artistName = new TextField();
+        artistName.setPrefWidth(250);
+        newArtistList.getChildren().add(artistNameLabel);
+        newArtistList.getChildren().add(artistName);
+
+        //genre
+        Label artistGenreLabel = new Label("Artist's Genres:");
+        newArtistList.getChildren().add(artistGenreLabel);
+        ComboBox genreComboBox = new ComboBox();
+        genreComboBox.getItems().add("None");
+        for (Genres genre : Enumerators.Genres.values()) {
+            genreComboBox.getItems().add(genre.getFancyName());
+        }
+        newArtistList.getChildren().add(genreComboBox);
+
+        //artist description
+        Label artistDescriptionLabel = new Label("Artist's description:");
+        TextArea artistDescription = new TextArea();
+        artistDescription.setPrefWidth(250);
+        newArtistList.getChildren().add(artistDescriptionLabel);
+        newArtistList.getChildren().add(artistDescription);
+
+        artistComboBox.setOnAction(event -> {
+            if (!artistComboBox.getValue().equals("--Select--")) {
+                this.selectedArtist  = stringToArtist(artistComboBox.getValue().toString());
+                artistName.setText(this.selectedArtist.getName());
+                artistDescription.setText(this.selectedArtist.getDescription());
+                genreComboBox.getSelectionModel().select(this.selectedArtist.getGenre());
+            }
+            else{
+                artistName.setText("");
+                artistDescription.setText("");
+                genreComboBox.getSelectionModel().selectFirst();
+
+            }
+        });
+
+        //buttons
+        HBox choice = new HBox();
+        Button stop = new Button("Cancel");
+        stop.setOnAction(e -> this.currentStage.close());
+        choice.getChildren().add(stop);
+
+        Button confirm = new Button("Confirm");
+        confirm.setOnAction(e -> newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription));
+        choice.getChildren().add(confirm);
+
+        choice.setPadding(new Insets(10));
+        choice.setSpacing(20);
+        newArtistList.getChildren().add(choice);
+
+        ScrollPane artistScroller = new ScrollPane();
+        artistScroller.setContent(newArtistList);
+        newArtistList.setAlignment(Pos.CENTER);
+
+        Scene artistAddScene = new Scene(artistScroller);
+        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
+        this.currentStage.setScene(artistAddScene);
+
         this.currentStage.show();
     }
 
@@ -356,6 +483,15 @@ public class AddingNewWindow {
         artistDeleteScene.getStylesheets().add("Window-StyleSheet.css");
         this.currentStage.setScene(artistDeleteScene);
         this.currentStage.show();
+    }
+
+    public Artist stringToArtist(String artistString) {
+        for (Artist artist : DataController.getPlanner().getArtists()) {
+            if (artistString.equals(artist.getName())) {
+                return artist;
+            }
+        }
+        return null;
     }
 
     public ArrayList<String> getArtistImages() {
