@@ -28,4 +28,16 @@ public class Artist implements Serializable {
 	public String getDescription() {
 		return description;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setGenre(Genres genre) {
+		this.genre = genre;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

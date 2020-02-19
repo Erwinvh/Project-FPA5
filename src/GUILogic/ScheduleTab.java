@@ -240,7 +240,7 @@ public class ScheduleTab {
 
         Button addArtistButton = new Button("Add Artist");
         addArtistButton.setOnAction(event -> {
-                new AddingNewWindow(1, this.primaryStage);
+                new ArtistWindow(1, this.primaryStage);
         });
 
         Button editArtistButton = new Button("Edit Artist");
@@ -250,7 +250,7 @@ public class ScheduleTab {
                 this.errorList.add("There is no Artist to edit.");
                 new ErrorWindow(this.primaryStage,this.errorList);
             }else{
-                new AddingNewWindow(2, this.primaryStage);
+                new ArtistWindow(2, this.primaryStage);
             }
         });
 
@@ -261,13 +261,13 @@ public class ScheduleTab {
                 this.errorList.add("There is no Artist to delete.");
                 new ErrorWindow(this.primaryStage,this.errorList);
             }else{
-                new AddingNewWindow(3, this.primaryStage);
+                new ArtistWindow(3, this.primaryStage);
             }
         });
 
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
-                new AddingNewWindow(4, this.primaryStage);
+                new StageWindow(4, this.primaryStage);
         });
 
         Button editStageButton = new Button("Edit Stage");
@@ -277,7 +277,7 @@ public class ScheduleTab {
                 this.errorList.add("There is no stage to edit.");
                 new ErrorWindow(this.primaryStage,this.errorList);
             }else{
-                new AddingNewWindow(5, this.primaryStage);
+                new StageWindow(5, this.primaryStage);
             }
         });
 
@@ -288,7 +288,7 @@ public class ScheduleTab {
                 this.errorList.add("There is no stage to delete.");
                 new ErrorWindow(this.primaryStage,this.errorList);
             }else{
-                new AddingNewWindow(6, this.primaryStage);
+                new StageWindow(6, this.primaryStage);
             }
         });
 
