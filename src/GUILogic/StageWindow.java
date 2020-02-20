@@ -70,7 +70,13 @@ public class StageWindow {
 
         Button confirm = new Button("Confirm");
         choice.getChildren().add(confirm);
-        confirm.setOnAction(e -> newStageControl(stageName, InputTextField));
+        confirm.setOnAction(e -> {
+            if (newStageControl(stageName, InputTextField)){
+                this.addedStage = new PlannerData.Stage(Integer.parseInt(InputTextField.getText()), stageName.getText());
+                DataController.getPlanner().addStage(this.addedStage);
+                this.currentStage.close();
+            }
+    });
 
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
@@ -116,7 +122,14 @@ public class StageWindow {
 
         Button confirm = new Button("Confirm");
         choice.getChildren().add(confirm);
-        confirm.setOnAction(e -> newStageControl(stageName, InputTextField));
+        confirm.setOnAction(e -> {
+            if (newStageControl(stageName, InputTextField)){
+                this.selectedStage.setName(stageName.getText());
+                this.selectedStage.setCapacity(Integer.parseInt(InputTextField.getText()));
+                DataController.getPlanner().savePlanner();
+                this.currentStage.close();
+            }
+        });
 
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
@@ -221,7 +234,7 @@ public class StageWindow {
      * @param stageName
      * @param capacity
      */
-    public void newStageControl(TextField stageName, TextField capacity) {
+    public Boolean newStageControl(TextField stageName, TextField capacity) {
         this.errorList.clear();
 
         if (stageName.getText().length() == 0) {
@@ -250,12 +263,10 @@ public class StageWindow {
         }
 
         if (this.errorList.isEmpty()) {
-            this.addedStage = new PlannerData.Stage(Integer.parseInt(capacity.getText()), stageName.getText());
-            DataController.getPlanner().addStage(this.addedStage);
-            this.stageUpdate = true;
-            this.currentStage.close();
+            return true;
         } else {
             new ErrorWindow(this.currentStage, this.errorList);
+            return false;
         }
     }
 

@@ -82,7 +82,17 @@ public class ArtistWindow {
         choice.getChildren().add(stop);
 
         Button confirm = new Button("Confirm");
-        confirm.setOnAction(e -> newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription));
+        confirm.setOnAction(e -> {
+            if(newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)){
+                try {
+                    DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue().toString()), artistDescription.getText());
+                    this.currentStage.close();
+                } catch (Exception event) {
+                    this.errorList.add("Failed to add the artist.");
+                    new ErrorWindow(this.currentStage, this.errorList);
+                }
+            }
+        });
         choice.getChildren().add(confirm);
 
         choice.setPadding(new Insets(10));
@@ -163,7 +173,20 @@ public class ArtistWindow {
         choice.getChildren().add(stop);
 
         Button confirm = new Button("Confirm");
-        confirm.setOnAction(e -> newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription));
+        confirm.setOnAction(e -> {
+            if (newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)){
+                try {
+                    this.selectedArtist.setName(artistName.getText());
+                    this.selectedArtist.setDescription(artistDescription.getText());
+                    this.selectedArtist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));
+                    DataController.getPlanner().savePlanner();
+                    this.currentStage.close();
+                } catch (Exception event) {
+                    this.errorList.add("Failed to edit the artist.");
+                    new ErrorWindow(this.currentStage, this.errorList);
+                }
+            }
+        });
         choice.getChildren().add(confirm);
 
         choice.setPadding(new Insets(10));
@@ -268,7 +291,7 @@ public class ArtistWindow {
      * @param genre
      * @param description
      */
-    public void newArtistControl(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
+    public Boolean newArtistControl(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
         this.errorList.clear();
         if (artistName.getText().length() == 0) {
             this.errorList.add("The artist's name has not been filled in.");
@@ -286,15 +309,10 @@ public class ArtistWindow {
         }
 
         if (this.errorList.isEmpty()) {
-            try {
-                DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genre), description.getText());
-                this.currentStage.close();
-            } catch (Exception e) {
-                this.errorList.add("Failed to add the artist.");
-                new ErrorWindow(this.currentStage, this.errorList);
-            }
+            return true;
         } else {
             new ErrorWindow(this.currentStage, this.errorList);
+            return false;
         }
     }
     public Boolean ArtistDeleteChecker(){
