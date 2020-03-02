@@ -168,7 +168,7 @@ public class Planner implements Serializable {
     public boolean deleteStage(String stageName) {
         for (Stage stage : this.stages) {
             if (stage.getName().equals(stageName)) {
-                return deleteStage(stageName);
+                return deleteStage(stage);
             }
         }
 

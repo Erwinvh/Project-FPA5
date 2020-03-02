@@ -20,4 +20,11 @@ public class Stage implements Serializable {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
 }

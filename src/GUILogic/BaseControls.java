@@ -141,10 +141,7 @@ public class BaseControls {
             artistAdded.getItems().add("None");
             ArtistAddList.getChildren().add(artistAdded);
             artistAdded.setOnAction(e -> {
-                if (artistAdded.getValue().equals("Add new Artist")) {
-                    new AddingNewWindow(2, this.popUp);
-                    artistAdded.getSelectionModel().selectFirst();
-                } else if (artistAdded.getValue().equals("None")) {
+               if (artistAdded.getValue().equals("None")) {
                     ArtistAddList.getChildren().remove(artistAdded);
                 }
             });
@@ -360,11 +357,6 @@ public class BaseControls {
             ArtistAddList.getChildren().add(addedArtist);
             addedArtist.getItems().add("None");
             addedArtist.setOnAction(e -> {
-                if (addedArtist.getValue().equals("Add new Artist")) {
-                    new AddingNewWindow(2, this.popUp);
-                    addedArtist.getSelectionModel().selectFirst();
-                }
-
                 if (addedArtist.getValue().equals("None")) {
                     ArtistAddList.getChildren().remove(addedArtist);
                 }
@@ -377,10 +369,6 @@ public class BaseControls {
             artistAdded.getItems().add("None");
             ArtistAddList.getChildren().add(artistAdded);
             artistAdded.setOnAction(e -> {
-                if (artistAdded.getValue().equals("Add new Artist")) {
-                    new AddingNewWindow(2, this.popUp);
-                    artistAdded.getSelectionModel().selectFirst();
-                }
                 if (artistAdded.getValue().equals("None")) {
                     ArtistAddList.getChildren().remove(artistAdded);
                 }
