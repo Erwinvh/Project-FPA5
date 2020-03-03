@@ -242,7 +242,7 @@ public class StageWindow {
         }
         else{
             for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
-                if (stageName.getText().equals(stage.getName())){
+                if (!this.selectedStage.equals(stage)&&stageName.getText().equals(stage.getName())){
                     this.errorList.add("This Stage already exists.");
                 }
             }

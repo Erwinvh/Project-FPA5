@@ -298,7 +298,7 @@ public class ArtistWindow {
         }
         else{
             for (Artist artist : DataController.getPlanner().getArtists()) {
-                if (artistName.getText().equals(artist.getName())){
+                if (!this.selectedArtist.equals(artist)&&artistName.getText().equals(artist.getName())){
                     this.errorList.add("This Artist already exists.");
                 }
             }
