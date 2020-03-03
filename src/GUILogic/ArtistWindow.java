@@ -156,7 +156,7 @@ public class ArtistWindow {
                 this.selectedArtist  = stringToArtist(artistComboBox.getValue().toString());
                 artistName.setText(this.selectedArtist.getName());
                 artistDescription.setText(this.selectedArtist.getDescription());
-                genreComboBox.getSelectionModel().select(this.selectedArtist.getGenre());
+                genreComboBox.setValue(this.selectedArtist.getGenre().getFancyName());
             }
             else{
                 artistName.setText("");
