@@ -15,7 +15,7 @@ public class GUI extends Application {
         TabPane tabPane = new TabPane();
         ScheduleTab scheduleTab = new ScheduleTab(primaryStage);
         SimulatorTab simulatorTab = new SimulatorTab();
-        SettingsTab settingsTab = new SettingsTab();
+        SettingsTab settingsTab = new SettingsTab(primaryStage);
         VisualTab visualTab = new VisualTab();
 
 

@@ -298,10 +298,18 @@ public class ArtistWindow {
         }
         else{
             for (Artist artist : DataController.getPlanner().getArtists()) {
+                if (this.selectedArtist!=null){
                 if (!this.selectedArtist.equals(artist)&&artistName.getText().equals(artist.getName())){
                     this.errorList.add("This Artist already exists.");
                 }
             }
+                else{
+                    if (artistName.getText().equals(artist.getName())){
+                        this.errorList.add("This Artist already exists.");
+                    }
+                }
+            }
+
         }
 
         if (artistDescription.getText().length() == 0) {

@@ -268,7 +268,14 @@ public class ScheduleTab {
 
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
+            if (DataController.getPlanner().getStages().size()<=5){
                 new StageWindow(4, this.primaryStage);
+            }
+            else{
+                this.errorList.clear();
+                this.errorList.add("You cannot exceed the maximum of 6 stages.");
+                new ErrorWindow(this.primaryStage,this.errorList);
+            }
         });
 
         Button editStageButton = new Button("Edit Stage");
