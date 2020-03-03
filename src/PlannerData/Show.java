@@ -37,6 +37,10 @@ public class Show implements Serializable {
         return "" + this.stage.getName();
     }
 
+    public String getGenreFancyName(){
+        return "" + this.genre.get(0).getFancyName();
+    }
+
     public String getArtistsNames() {
         StringBuilder LineUp = new StringBuilder();
         for (Artist artist : this.artists) {
