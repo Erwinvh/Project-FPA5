@@ -87,6 +87,10 @@ public class Show implements Serializable {
         return expectedPopularity;
     }
 
+    public void setExpectedPopularity(int expectedPopularity) {
+        this.expectedPopularity = expectedPopularity;
+    }
+
     public LocalTime getBeginTime() {
         return beginTime;
     }

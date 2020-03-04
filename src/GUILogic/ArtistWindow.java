@@ -176,6 +176,20 @@ public class ArtistWindow {
         confirm.setOnAction(e -> {
             if (newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)){
                 try {
+                    for (Show show : DataController.getPlanner().getShows()) {
+                        for (Artist artist : show.getArtists()){
+                            if (artist.getName().equals(this.selectedArtist.getName())){
+                                artist.setName(artistName.getText());
+                                artist.setDescription(artistDescription.getText());
+                                artist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));
+                            }
+                        }
+//                        if (show.getArtists().contains(this.selectedArtist)){
+//                            show.getArtists().get(show.getArtists().indexOf(this.selectedArtist))
+//                            show.getArtists().get(show.getArtists().indexOf(this.selectedArtist)).
+//                            show.getArtists().get(show.getArtists().indexOf(this.selectedArtist))
+//                        }
+                    }
                     this.selectedArtist.setName(artistName.getText());
                     this.selectedArtist.setDescription(artistDescription.getText());
                     this.selectedArtist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));

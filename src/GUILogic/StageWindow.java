@@ -124,6 +124,16 @@ public class StageWindow {
         choice.getChildren().add(confirm);
         confirm.setOnAction(e -> {
             if (newStageControl(stageName, InputTextField)){
+                for (Show show : DataController.getPlanner().getShows()) {
+                    PlannerData.Stage stage = show.getStage();
+                        if (stage.getName().equals(this.selectedStage.getName())){
+                           stage.setName(stageName.getText());
+                           stage.setCapacity(Integer.parseInt(InputTextField.getText()));
+                        }
+                        if (show.getExpectedPopularity()>stage.getCapacity()){
+                            show.setExpectedPopularity(stage.getCapacity());
+                    }
+                }
                 this.selectedStage.setName(stageName.getText());
                 this.selectedStage.setCapacity(Integer.parseInt(InputTextField.getText()));
                 DataController.getPlanner().savePlanner();
