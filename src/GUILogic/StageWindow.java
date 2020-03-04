@@ -262,7 +262,10 @@ public class StageWindow {
             try {
                 int capacityCheck = Integer.parseInt(capacity.getText());
                 if (capacityCheck < 20) {
-                    this.errorList.add("The capacity must be at least 20");
+                    this.errorList.add("The capacity must be at least 20.");
+                }
+                else if (capacityCheck > 10000){
+                    this.errorList.add("The capacity cannot be larger than 10.000.");
                 }
 
             } catch (Exception e) {
