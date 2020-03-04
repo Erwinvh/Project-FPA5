@@ -98,6 +98,7 @@ public class ScheduleTab {
         popularityCol.setPrefWidth(100);
         popularityCol.setCellValueFactory(new PropertyValueFactory<>("expectedPopularity"));
         this.table.setPrefWidth(800);
+        this.table.setPrefHeight(600);
 
         this.table.getColumns().addAll(nameColumn, beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
 

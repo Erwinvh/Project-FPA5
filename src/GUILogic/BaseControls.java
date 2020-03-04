@@ -323,7 +323,7 @@ public class BaseControls {
         this.popularitySlider.setValue(this.selectedShow.getExpectedPopularity());
         this.popularitySlider.setShowTickLabels(true);
         this.popularitySlider.setShowTickMarks(true);
-        this.popularitySlider.setMajorTickUnit(50);
+        this.popularitySlider.setMajorTickUnit(25);
         this.popularitySlider.setMinorTickCount(5);
         this.popularitySlider.setBlockIncrement(10);
         inputStructure.add(this.popularitySlider, 2, 6);

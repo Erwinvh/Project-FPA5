@@ -44,7 +44,12 @@ public class Show implements Serializable {
     public String getArtistsNames() {
         StringBuilder LineUp = new StringBuilder();
         for (Artist artist : this.artists) {
-            LineUp.append(artist.getName() + ", ");
+            if (!artist.equals(this.artists.get(this.artists.size()-1))){
+                LineUp.append(artist.getName() + ", ");
+            }
+            else {
+                LineUp.append(artist.getName());
+            }
         }
         return LineUp.toString();
     }
