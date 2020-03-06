@@ -57,6 +57,8 @@ public class SettingsTab {
             DeleteShowWindow();
         });
 
+        CheckBox prediction = new CheckBox("Predicted types of guests");
+
         Slider speedSlider = new Slider();
         speedSlider.setMax(10);
         speedSlider.setMin(0.1);
@@ -114,6 +116,8 @@ public class SettingsTab {
 
         split.add(speedLabel,3,3);
         split.add(amountLabel,3,5);
+
+        split.add(prediction,2,6);
 
         settingsTab.setContent(split);
         return settingsTab;
