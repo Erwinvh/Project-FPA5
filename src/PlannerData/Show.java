@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * A class that indicates a show
+ */
 public class Show implements Serializable {
 
     private LocalTime beginTime;
@@ -17,6 +20,17 @@ public class Show implements Serializable {
     private ArrayList<Genres> genre;
     private int expectedPopularity;
 
+    /**
+     * Creates a show
+     * @param beginTime the starting time of the show
+     * @param endTime the ending time of the show
+     * @param artists the artists performing
+     * @param name the name of the show
+     * @param stage the stage of the show
+     * @param description the description of the show
+     * @param genre the genre of the show
+     * @param expectedPopularity the expected popularity of the show
+     */
     public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
         this.beginTime = beginTime;
         this.endTime = endTime;
@@ -28,11 +42,6 @@ public class Show implements Serializable {
         this.expectedPopularity = expectedPopularity;
     }
 
-    public Show(LocalTime beginTime, LocalTime endTime, Artist artist, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
-        this(beginTime, endTime, new ArrayList<>(), name, stage, description, genre, expectedPopularity);
-        this.artists.add(artist);
-    }
-
     public String getStageName() {
         return "" + this.stage.getName();
     }
@@ -41,6 +50,10 @@ public class Show implements Serializable {
         return "" + this.genre.get(0).getFancyName();
     }
 
+    /**
+     * Gets all the artists in the String format
+     * @return all the Artist names
+     */
     public String getArtistsNames() {
         StringBuilder LineUp = new StringBuilder();
         for (Artist artist : this.artists) {
@@ -54,34 +67,6 @@ public class Show implements Serializable {
         return LineUp.toString();
     }
 
-    public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, Stage stage, int expectedPopularity) {
-        this(beginTime, endTime, artists, "", stage, "", new ArrayList<>(), expectedPopularity);
-        if (artists.size() != 0) {
-            this.name = this.artists.get(0).getName();
-        }
-        this.description = "";
-
-        for (Artist artist : this.artists) {
-            if (!this.genre.contains(artist.getGenre())) {
-                this.genre.add(artist.getGenre());
-            }
-        }
-    }
-
-    public Show(LocalTime beginTime, LocalTime endTime, Stage stage, Artist artist, int expectedPopularity) {
-        this(beginTime, endTime, new ArrayList<>(), stage, expectedPopularity);
-        this.artists.add(artist);
-    }
-
-    public Show(LocalTime beginTime, LocalTime endTime, Stage stage, ArrayList<Artist> artists, String name, String description, Genres genre, int expectedPopularity) {
-        this(beginTime, endTime, artists, name, stage, description, new ArrayList<>(), expectedPopularity);
-        this.genre.add(genre);
-    }
-
-    public Show(LocalTime beginTime, LocalTime endTime, Stage stage, Artist artist, String name, String description, Genres genre, int expectedPopularity) {
-        this(beginTime, endTime, artist, name, stage, description, new ArrayList<>(), expectedPopularity);
-        this.genre.add(genre);
-    }
 
     public int getExpectedPopularity() {
         return expectedPopularity;
@@ -131,17 +116,11 @@ public class Show implements Serializable {
         return artists;
     }
 
-    /**
-     * Calculates the duration of the show
-     *
-     * @return duration, a Local time of the duration of the show
-     */
-    public LocalTime getDuration() {
-        LocalTime duration = endTime.minusMinutes(beginTime.getMinute());
-        duration = endTime.minusHours(beginTime.getHour());
-        return duration;
-    }
 
+    /**
+     * Gets the begin time of the show in a String format
+     * @return the begin time
+     */
     public String getBeginTimeString() {
         String beginTimeString = "";
         if (beginTime.getHour()<10){
@@ -160,6 +139,10 @@ public class Show implements Serializable {
         return beginTimeString;
     }
 
+    /**
+     * Gets the begin time of the show in a String format
+     * @return the end time
+     */
     public String getEndTimeString() {
         String endTimeString = "";
         if (endTime.getHour()<10){
