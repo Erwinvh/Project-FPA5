@@ -2,11 +2,14 @@ package PlannerData;
 
 import Enumerators.Genres;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.json.*;
 
 /**
  * A class that saves all added shows, artists and stages.
@@ -27,6 +30,7 @@ public class Planner implements Serializable {
 
     /**
      * method to add shows and saves the planner
+     *
      * @param show object where data about the show is stored
      */
     public void addShow(Show show) {
@@ -36,8 +40,9 @@ public class Planner implements Serializable {
 
     /**
      * Adds an artists to artists
-     * @param name the name of the artist
-     * @param genre the genre of the artist
+     *
+     * @param name        the name of the artist
+     * @param genre       the genre of the artist
      * @param description the description of the artist
      */
     public void addArtist(String name, Genres genre, String description) {
@@ -51,6 +56,7 @@ public class Planner implements Serializable {
 
     /**
      * Adds a stage to stages and saves the planner
+     *
      * @param stage A new stage to add
      */
     public void addStage(Stage stage) {
@@ -60,6 +66,7 @@ public class Planner implements Serializable {
 
     /**
      * Deletes a show
+     *
      * @param show the show to be deleted
      * @return true if the delete is successful, false if not
      */
@@ -69,6 +76,7 @@ public class Planner implements Serializable {
 
     /**
      * Deletes an artist
+     *
      * @param artist the artist to be deleted
      * @return true if the deletion is successful, false if not
      */
@@ -78,6 +86,7 @@ public class Planner implements Serializable {
 
     /**
      * Delete an artist
+     *
      * @param artistName the name of the artist to be deleted
      * @return true if the deletion is successful, false if not
      */
@@ -93,6 +102,7 @@ public class Planner implements Serializable {
 
     /**
      * Deletes a stage
+     *
      * @param stage the stage to be deleted
      * @return true if the deletion is successful, false if not
      */
@@ -102,6 +112,7 @@ public class Planner implements Serializable {
 
     /**
      * Deletes a stage
+     *
      * @param stageName the name of the stage to be deleted
      * @return true if the deletion is succesful, false if not
      */
@@ -139,7 +150,7 @@ public class Planner implements Serializable {
             JsonArrayBuilder artistsBuilder = Json.createArrayBuilder();
 
             //saves all stages
-            for(Stage stage : this.getStages()){
+            for (Stage stage : this.getStages()) {
                 JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
                 stageBuilder.add("name", stage.getName());
                 stageBuilder.add("capacity", stage.getCapacity());
@@ -147,7 +158,7 @@ public class Planner implements Serializable {
             }
 
             //saves all artist
-            for(Artist artist : this.getArtists()){
+            for (Artist artist : this.getArtists()) {
                 JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                 artistBuilder.add("name", artist.getName());
                 artistBuilder.add("getShowDescription", artist.getDescription());
@@ -156,13 +167,13 @@ public class Planner implements Serializable {
             }
 
             //saves all shows
-            for(Show show : this.getShows()){
+            for (Show show : this.getShows()) {
                 JsonArrayBuilder showArtistsBuilder = Json.createArrayBuilder();
                 JsonObjectBuilder showBuilder = Json.createObjectBuilder();
                 JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
 
                 //saves the artist in a show
-                for(Artist artist : show.getArtists()){
+                for (Artist artist : show.getArtists()) {
                     JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                     artistBuilder.add("name", artist.getName());
                     artistBuilder.add("getShowDescription", artist.getDescription());
@@ -183,13 +194,13 @@ public class Planner implements Serializable {
                 showBuilder.add("expectedPopularity", show.getExpectedPopularity());
                 showsBuilder.add(showBuilder);
             }
+
             plannerBuilder.add("shows", showsBuilder);
             plannerBuilder.add("artists", artistsBuilder);
             plannerBuilder.add("stages", stagesBuilder);
 
             writer.writeObject(plannerBuilder.build());
             writer.close();
-
 
         } catch (IOException e) {
             e.printStackTrace();

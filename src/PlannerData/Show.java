@@ -22,13 +22,14 @@ public class Show implements Serializable {
 
     /**
      * Creates a show
-     * @param beginTime the starting time of the show
-     * @param endTime the ending time of the show
-     * @param artists the artists performing
-     * @param name the name of the show
-     * @param stage the stage of the show
-     * @param description the description of the show
-     * @param genre the genre of the show
+     *
+     * @param beginTime          the starting time of the show
+     * @param endTime            the ending time of the show
+     * @param artists            the artists performing
+     * @param name               the name of the show
+     * @param stage              the stage of the show
+     * @param description        the description of the show
+     * @param genre              the genre of the show
      * @param expectedPopularity the expected popularity of the show
      */
     public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
@@ -46,30 +47,25 @@ public class Show implements Serializable {
         return "" + this.stage.getName();
     }
 
-    public String getGenreFancyName(){
-        return "" + this.genre.get(0).getFancyName();
-    }
-
     /**
      * Gets all the artists in the String format
+     *
      * @return all the Artist names
      */
     public String getArtistsNames() {
-        StringBuilder LineUp = new StringBuilder();
+        StringBuilder lineUp = new StringBuilder();
         for (Artist artist : this.artists) {
-            if (!artist.equals(this.artists.get(this.artists.size()-1))){
-                LineUp.append(artist.getName() + ", ");
-            }
-            else {
-                LineUp.append(artist.getName());
+            if (!artist.equals(this.artists.get(this.artists.size() - 1))) {
+                lineUp.append(artist.getName() + ", ");
+            } else {
+                lineUp.append(artist.getName());
             }
         }
-        return LineUp.toString();
+        return lineUp.toString();
     }
 
-
     public int getExpectedPopularity() {
-        return expectedPopularity;
+        return this.expectedPopularity;
     }
 
     public void setExpectedPopularity(int expectedPopularity) {
@@ -77,7 +73,7 @@ public class Show implements Serializable {
     }
 
     public LocalTime getBeginTime() {
-        return beginTime;
+        return this.beginTime;
     }
 
     public void setGenre(ArrayList<Genres> genre) {
@@ -89,11 +85,11 @@ public class Show implements Serializable {
     }
 
     public LocalTime getEndTime() {
-        return endTime;
+        return this.endTime;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -101,63 +97,48 @@ public class Show implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Stage getStage() {
-        return stage;
+        return this.stage;
     }
 
     public ArrayList<Genres> getGenre() {
-        return genre;
+        return this.genre;
     }
 
     public ArrayList<Artist> getArtists() {
-        return artists;
+        return this.artists;
     }
-
 
     /**
      * Gets the begin time of the show in a String format
+     *
      * @return the begin time
      */
     public String getBeginTimeString() {
-        String beginTimeString = "";
-        if (beginTime.getHour()<10){
-            beginTimeString = "0" + beginTime.getHour() + ":";
-        }
-        else{
-            beginTimeString = beginTime.getHour() + ":";
-        }
-        if (beginTime.getMinute()<10){
-            beginTimeString += "0" + beginTime.getMinute();
-        }
-        else{
-            beginTimeString+=beginTime.getMinute();
-        }
-
-        return beginTimeString;
+        return getTimeString(this.beginTime);
     }
 
     /**
      * Gets the begin time of the show in a String format
+     *
      * @return the end time
      */
     public String getEndTimeString() {
-        String endTimeString = "";
-        if (endTime.getHour()<10){
-            endTimeString = "0" + endTime.getHour() + ":";
-        }
-        else{
-            endTimeString = endTime.getHour() + ":";
-        }
-        if (endTime.getMinute()<10){
-            endTimeString += "0" + endTime.getMinute();
-        }
-        else{
-            endTimeString+=endTime.getMinute();
-        }
+        return getTimeString(this.endTime);
+    }
 
-        return endTimeString;
+    private String getTimeString(LocalTime time){
+        String timeString;
+
+        if (time.getHour() < 10) timeString = "0" + time.getHour() + ":";
+        else timeString = time.getHour() + ":";
+
+        if (time.getMinute() < 10) timeString += "0" + time.getMinute();
+        else timeString += time.getMinute();
+
+        return timeString;
     }
 }

@@ -1,7 +1,6 @@
 package PlannerData;
 
 import Enumerators.Genres;
-import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
