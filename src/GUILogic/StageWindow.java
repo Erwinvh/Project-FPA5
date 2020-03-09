@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class StageWindow {
 
-    private Stage currentParentStage;
     private Stage currentStage = new Stage();
     private PlannerData.Stage addedStage;
     private ArrayList<String> errorList = new ArrayList<>();
@@ -32,8 +31,7 @@ public class StageWindow {
      * @param currentParentStage
      */
     public StageWindow(int screenNumber, Stage currentParentStage) {
-        this.currentParentStage = currentParentStage;
-        this.currentStage.initOwner(this.currentParentStage);
+        this.currentStage.initOwner(currentParentStage);
         this.currentStage.initModality(Modality.WINDOW_MODAL);
         this.currentStage.setResizable(false);
 

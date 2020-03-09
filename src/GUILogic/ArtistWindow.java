@@ -17,15 +17,13 @@ import java.util.ArrayList;
 
 public class ArtistWindow {
 
-    private Stage currParentStage;
     private Stage currStage = new Stage();
     private ArrayList<String> errorList = new ArrayList<>();
     private Label artistDeleteText = new Label();
     private Artist selectedArtist;
 
     public ArtistWindow(int screenNumber, Stage currParentStage) {
-        this.currParentStage = currParentStage;
-        this.currStage.initOwner(this.currParentStage);
+        this.currStage.initOwner(currParentStage);
         this.currStage.initModality(Modality.WINDOW_MODAL);
         this.currStage.setResizable(false);
 
