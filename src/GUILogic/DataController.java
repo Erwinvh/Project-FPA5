@@ -47,7 +47,7 @@ public class DataController {
                         }
                         for(JsonObject artist : artists.getValuesAs(JsonObject.class)){
                             String name = artist.getString("name");
-                            String description = artist.getString("description");
+                            String description = artist.getString("getShowDescription");
                             Genres genre = stringToGenre(artist.getString("genre"));
                             this.planner.getArtists().add(new Artist(name, genre, description));
                         }
@@ -57,13 +57,13 @@ public class DataController {
 
                             ArrayList<Artist> artistsInShow = new ArrayList<>();
                             for(JsonObject artist : showArtists.getValuesAs(JsonObject.class)){
-                                artistsInShow.add(new Artist(artist.getString("name"),stringToGenre(artist.getString("genre")),artist.getString("description")));
+                                artistsInShow.add(new Artist(artist.getString("name"),stringToGenre(artist.getString("genre")),artist.getString("getShowDescription")));
                             }
 
                             Stage stageInShow = new Stage(stage.getInt("capacity"),stage.getString("name"));
                             String name = show.getString("name");
                             Genres genre = stringToGenre( show.getString("genre"));
-                            String description = show.getString("description");
+                            String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
                             ArrayList<Genres> genres =  new ArrayList<>();
                             genres.add(genre);

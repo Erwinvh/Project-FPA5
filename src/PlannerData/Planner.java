@@ -33,7 +33,6 @@ public class Planner implements Serializable {
     public void addShow(Show show) {
         this.shows.add(show);
         this.savePlanner();
-
     }
 
     /**
@@ -84,14 +83,14 @@ public class Planner implements Serializable {
         //this.savePlanner();
     }
 
-//    public void addArtist(String name, Genres genre, Image image, String description) {
+//    public void addArtist(String name, Genres genre, Image image, String getShowDescription) {
 //        for (Artist existingArtist : this.artists) {
 //            if (name.equals(existingArtist.getName())) {
 //                return;
 //            }
 //        }
 //
-//        this.artists.add(new Artist(name, genre, image, description));
+//        this.artists.add(new Artist(name, genre, image, getShowDescription));
 //        this.savePlanner();
 //    }
 
@@ -128,6 +127,7 @@ public class Planner implements Serializable {
         this.stages.add(new Stage(capacity, name));
         this.savePlanner();
     }
+
     public void addStage(Stage stage) {
         this.stages.add(stage);
         this.savePlanner();
@@ -192,53 +192,53 @@ public class Planner implements Serializable {
             JsonWriter writer = Json.createWriter(new FileWriter(saveFileName));
             JsonObjectBuilder plannerBuilder = Json.createObjectBuilder();
             JsonArrayBuilder showsBuilder = Json.createArrayBuilder();
-            JsonArrayBuilder stagesBuilder =  Json.createArrayBuilder();
+            JsonArrayBuilder stagesBuilder = Json.createArrayBuilder();
             JsonArrayBuilder artistsBuilder = Json.createArrayBuilder();
 
-            for(Stage stage : this.getStages()){
+            for (Stage stage : this.getStages()) {
                 JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
-                stageBuilder.add("name",stage.getName());
+                stageBuilder.add("name", stage.getName());
                 stageBuilder.add("capacity", stage.getCapacity());
                 stagesBuilder.add(stageBuilder);
             }
 
-            for(Artist artist : this.getArtists()){
+            for (Artist artist : this.getArtists()) {
                 JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                 artistBuilder.add("name", artist.getName());
-                artistBuilder.add("description", artist.getDescription());
+                artistBuilder.add("getShowDescription", artist.getDescription());
                 artistBuilder.add("genre", artist.getGenre().getFancyName());
                 artistsBuilder.add(artistBuilder);
             }
 
-            for(Show show : this.getShows()){
+            for (Show show : this.getShows()) {
                 JsonArrayBuilder showArtistsBuilder = Json.createArrayBuilder();
                 JsonObjectBuilder showBuilder = Json.createObjectBuilder();
                 JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
 
-                for(Artist artist : show.getArtists()){
+                for (Artist artist : show.getArtists()) {
                     JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                     artistBuilder.add("name", artist.getName());
-                    artistBuilder.add("description", artist.getDescription());
+                    artistBuilder.add("getShowDescription", artist.getDescription());
                     artistBuilder.add("genre", artist.getGenre().getFancyName());
                     showArtistsBuilder.add(artistBuilder);
                 }
                 Stage stage = show.getStage();
-                stageBuilder.add("name",stage.getName());
-                stageBuilder.add("capacity",stage.getCapacity());
+                stageBuilder.add("name", stage.getName());
+                stageBuilder.add("capacity", stage.getCapacity());
 
                 showBuilder.add("name", show.getName());
                 showBuilder.add("artists", showArtistsBuilder);
                 showBuilder.add("stage", stageBuilder);
                 showBuilder.add("beginTime", show.getBeginTimeString());
                 showBuilder.add("endTime", show.getEndTimeString());
-                showBuilder.add("description",show.getDescription());
-                showBuilder.add("genre",show.getGenre().get(0).getFancyName());
+                showBuilder.add("getShowDescription", show.getDescription());
+                showBuilder.add("genre", show.getGenre().get(0).getFancyName());
                 showBuilder.add("expectedPopularity", show.getExpectedPopularity());
                 showsBuilder.add(showBuilder);
             }
-            plannerBuilder.add("shows",showsBuilder);
+            plannerBuilder.add("shows", showsBuilder);
             plannerBuilder.add("artists", artistsBuilder);
-            plannerBuilder.add("stages",stagesBuilder);
+            plannerBuilder.add("stages", stagesBuilder);
 
             writer.writeObject(plannerBuilder.build());
             writer.close();

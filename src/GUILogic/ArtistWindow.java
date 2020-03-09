@@ -3,6 +3,7 @@ package GUILogic;
 import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Show;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,7 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
 
 import java.util.ArrayList;
 
@@ -59,14 +59,14 @@ public class ArtistWindow {
         artistName.setPrefWidth(250);
 
         //genre
-        Label artistGenreLabel = new Label("Artist's Genres:");
+        Label artistGenreLabel = new Label("Artist's genres:");
         ComboBox genreComboBox = new ComboBox();
         genreComboBox.getItems().add("None");
         for (Genres genre : Enumerators.Genres.values()) {
             genreComboBox.getItems().add(genre.getFancyName());
         }
 
-        //artist description
+        //artist getShowDescription
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
@@ -135,7 +135,7 @@ public class ArtistWindow {
         newArtistList.getChildren().addAll(artistNameLabel, artistName);
 
         //genre
-        Label artistGenreLabel = new Label("Artist's Genres:");
+        Label artistGenreLabel = new Label("Artist's genres:");
         newArtistList.getChildren().add(artistGenreLabel);
         ComboBox genreComboBox = new ComboBox();
         genreComboBox.getItems().add("None");
@@ -146,7 +146,7 @@ public class ArtistWindow {
 
         newArtistList.getChildren().add(genreComboBox);
 
-        //artist description
+        //artist getShowDescription
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
@@ -338,7 +338,7 @@ public class ArtistWindow {
         for (Show show : DataController.getPlanner().getShows()) {
             for (Artist artist : show.getArtists()) {
                 if (artist.getName().equals(this.selectedArtist.getName())) {
-                    this.errorList.add("performing Artists cannot be removed from the event.");
+                    this.errorList.add("Artists who are performing cannot be removed from the event.");
                 }
             }
         }
