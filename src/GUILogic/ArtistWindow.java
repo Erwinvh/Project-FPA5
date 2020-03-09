@@ -13,23 +13,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class ArtistWindow {
 
-    private Stage upperStage;
-    private Stage currentStage = new Stage();
-    private Artist addedSartist;
+    private Stage currParentStage;
+    private Stage currStage = new Stage();
     private ArrayList<String> errorList = new ArrayList<>();
-    private Label information = new Label();
+    private Label artistDeleteText = new Label();
     private Artist selectedArtist;
 
-    public ArtistWindow(int screenNumber, Stage upperStage) {
-        this.upperStage = upperStage;
-        this.currentStage.initOwner(this.upperStage);
-        this.currentStage.initModality(Modality.WINDOW_MODAL);
-        this.currentStage.setResizable(false);
+    public ArtistWindow(int screenNumber, Stage currParentStage) {
+        this.currParentStage = currParentStage;
+        this.currStage.initOwner(this.currParentStage);
+        this.currStage.initModality(Modality.WINDOW_MODAL);
+        this.currStage.setResizable(false);
 
         switch (screenNumber) {
             case 1:
@@ -49,8 +47,8 @@ public class ArtistWindow {
      * The user will be able to fill in all the required fields for an unknown artist.
      */
     public void artistAddWindow() {
-        this.currentStage.setWidth(275);
-        this.currentStage.setHeight(400);
+        this.currStage.setWidth(275);
+        this.currStage.setHeight(400);
 
         VBox newArtistList = new VBox();
         newArtistList.setPrefWidth(250);
@@ -59,51 +57,47 @@ public class ArtistWindow {
         Label artistNameLabel = new Label("Artist name:");
         TextField artistName = new TextField();
         artistName.setPrefWidth(250);
-        newArtistList.getChildren().addAll(artistNameLabel, artistName);
-        //newArtistList.getChildren().add(artistName);
 
         //genre
         Label artistGenreLabel = new Label("Artist's Genres:");
-        newArtistList.getChildren().add(artistGenreLabel);
         ComboBox genreComboBox = new ComboBox();
         genreComboBox.getItems().add("None");
         for (Genres genre : Enumerators.Genres.values()) {
             genreComboBox.getItems().add(genre.getFancyName());
         }
 
-        newArtistList.getChildren().add(genreComboBox);
-
         //artist description
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
-        newArtistList.getChildren().addAll(artistDescriptionLabel, artistDescription);
+
+        newArtistList.getChildren().addAll(artistNameLabel, artistName, artistGenreLabel, genreComboBox, artistDescriptionLabel, artistDescription);
 
         //buttons
-        HBox choice = new HBox();
-        Button stop = new Button("Cancel");
-        stop.setOnAction(e -> this.currentStage.close());
-        choice.getChildren().add(stop);
+        HBox cancelConfirmButtons = new HBox();
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(e -> this.currStage.close());
+        cancelConfirmButtons.getChildren().add(cancelButton);
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
+            if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
                 try {
                     DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue().toString()), artistDescription.getText());
-                    this.currentStage.close();
+                    this.currStage.close();
                 } catch (Exception event) {
                     this.errorList.add("Failed to add the artist.");
-                    new ErrorWindow(this.currentStage, this.errorList);
+                    new ErrorWindow(this.currStage, this.errorList);
                 }
             }
         });
 
-        choice.getChildren().add(confirmButton);
+        cancelConfirmButtons.getChildren().add(confirmButton);
 
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
+        cancelConfirmButtons.setPadding(new Insets(10));
+        cancelConfirmButtons.setSpacing(20);
 
-        newArtistList.getChildren().add(choice);
+        newArtistList.getChildren().add(cancelConfirmButtons);
 
         ScrollPane artistScroller = new ScrollPane();
         artistScroller.setContent(newArtistList);
@@ -111,13 +105,13 @@ public class ArtistWindow {
 
         Scene artistAddScene = new Scene(artistScroller);
         artistAddScene.getStylesheets().add("Window-StyleSheet.css");
-        this.currentStage.setScene(artistAddScene);
-        this.currentStage.show();
+        this.currStage.setScene(artistAddScene);
+        this.currStage.show();
     }
 
     public void artistEditWindow() {
-        this.currentStage.setWidth(275);
-        this.currentStage.setHeight(400);
+        this.currStage.setWidth(275);
+        this.currStage.setHeight(400);
 
         VBox newArtistList = new VBox();
         Label startEdit = new Label("Which artist do you want to edit?");
@@ -175,12 +169,12 @@ public class ArtistWindow {
         //buttons
         HBox choice = new HBox();
         Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> this.currentStage.close());
+        cancelButton.setOnAction(e -> this.currStage.close());
         choice.getChildren().add(cancelButton);
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (newArtistControl(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
+            if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
                 try {
                     for (Show show : DataController.getPlanner().getShows()) {
                         for (Artist artist : show.getArtists()) {
@@ -197,10 +191,10 @@ public class ArtistWindow {
                     this.selectedArtist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));
 
                     DataController.getPlanner().savePlanner();
-                    this.currentStage.close();
+                    this.currStage.close();
                 } catch (Exception event) {
                     this.errorList.add("Failed to edit the artist.");
-                    new ErrorWindow(this.currentStage, this.errorList);
+                    new ErrorWindow(this.currStage, this.errorList);
                 }
             }
         });
@@ -217,19 +211,19 @@ public class ArtistWindow {
 
         Scene artistAddScene = new Scene(artistScrollPane);
         artistAddScene.getStylesheets().add("Window-StyleSheet.css");
-        this.currentStage.setScene(artistAddScene);
+        this.currStage.setScene(artistAddScene);
 
-        this.currentStage.show();
+        this.currStage.show();
     }
 
     public void artistDeleteWindow() {
-        this.currentStage.setWidth(275);
-        this.currentStage.setHeight(400);
+        this.currStage.setWidth(275);
+        this.currStage.setHeight(400);
 
         VBox newArtistList = new VBox();
         newArtistList.setPrefWidth(250);
-        HBox startLine = new HBox();
-        startLine.getChildren().add(new Label("Choose the artist you want to delete:"));
+        HBox header = new HBox();
+        header.getChildren().add(new Label("Choose the artist you want to delete:"));
 
         ComboBox artistComboBox = new ComboBox();
         artistComboBox.getItems().add("Select artist");
@@ -242,54 +236,55 @@ public class ArtistWindow {
             if (!artistComboBox.getValue().equals("Select artist")) {
                 this.selectedArtist = stringToArtist(artistComboBox.getValue().toString());
                 if (selectedArtist != null && !selectedArtist.getName().isEmpty()) {
-                    this.information.textProperty().setValue("Do you want to delete the artist: " + selectedArtist.getName() + '\n' + " with the genre of " + selectedArtist.getGenre().getFancyName() + '\n' + " with the description: " + selectedArtist.getDescription());
+                    this.artistDeleteText.textProperty().setValue("Do you want to delete the artist: " + selectedArtist.getName() + '\n' + " with the genre of " + selectedArtist.getGenre().getFancyName() + '\n' + " with the description: " + selectedArtist.getDescription());
                 }
             } else {
-                this.information.textProperty().setValue("         " + '\n');
-                //something here?
+                this.artistDeleteText.textProperty().setValue("         " + '\n');
+                // TODO: Fix deleting artist when nothing is selected
             }
         });
 
-        startLine.getChildren().add(artistComboBox);
+        header.getChildren().add(artistComboBox);
 
         //buttons
-        HBox choice = new HBox();
+        HBox cancelConfirmButtons = new HBox();
         Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> this.currentStage.close());
-        choice.getChildren().add(cancelButton);
+        cancelButton.setOnAction(e -> this.currStage.close());
+        cancelConfirmButtons.getChildren().add(cancelButton);
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (ArtistDeleteChecker()) {
+            if (canDeleteArtist()) {
                 try {
                     DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
                     DataController.getPlanner().savePlanner();
-                    this.currentStage.close();
+                    this.currStage.close();
                 } catch (Exception exception) {
                     this.errorList.clear();
                     this.errorList.add("The artist could not be deleted.");
-                    new ErrorWindow(this.currentStage, this.errorList);
+                    new ErrorWindow(this.currStage, this.errorList);
                 }
             }
         });
 
-        choice.getChildren().add(confirmButton);
+        cancelConfirmButtons.getChildren().add(confirmButton);
 
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
-        newArtistList.getChildren().add(choice);
+        cancelConfirmButtons.setPadding(new Insets(10));
+        cancelConfirmButtons.setSpacing(20);
+        newArtistList.getChildren().add(cancelConfirmButtons);
 
         BorderPane structure = new BorderPane();
-        structure.setTop(startLine);
-        structure.setCenter(this.information);
-        structure.setBottom(choice);
+        structure.setTop(header);
+        structure.setCenter(this.artistDeleteText);
+        structure.setBottom(cancelConfirmButtons);
 
         Scene artistDeleteScene = new Scene(structure);
         artistDeleteScene.getStylesheets().add("Window-StyleSheet.css");
-        this.currentStage.setScene(artistDeleteScene);
-        this.currentStage.show();
+        this.currStage.setScene(artistDeleteScene);
+        this.currStage.show();
     }
 
+    // TODO: Move this logic perhaps to a static function in the artist class itself
     public Artist stringToArtist(String artistString) {
         for (Artist artist : DataController.getPlanner().getArtists()) {
             if (artistString.equals(artist.getName())) {
@@ -308,37 +303,37 @@ public class ArtistWindow {
      * @param genre
      * @param description
      */
-    public Boolean newArtistControl(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
+    public boolean canAddArtist(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
         this.errorList.clear();
+
         if (artistName.getText().length() == 0) {
             this.errorList.add("The artist's name has not been filled in.");
         } else {
+
             for (Artist artist : DataController.getPlanner().getArtists()) {
                 if (this.selectedArtist != null) {
                     if (!this.selectedArtist.equals(artist) && artistName.getText().equals(artist.getName())) {
-                        this.errorList.add("This Artist already exists.");
+                        this.errorList.add("This artist already exists.");
                     }
                 } else {
                     if (artistName.getText().equals(artist.getName())) {
-                        this.errorList.add("This Artist already exists.");
+                        this.errorList.add("This artist already exists.");
                     }
                 }
             }
         }
 
-        if (artistDescription.getText().length() == 0) {
+        if (artistDescription.getText().length() == 0)
             this.errorList.add("The artist's description has not been filled in.");
-        }
 
-        if (this.errorList.isEmpty()) {
+        if (this.errorList.isEmpty())
             return true;
-        }
 
-        new ErrorWindow(this.currentStage, this.errorList);
+        new ErrorWindow(this.currStage, this.errorList);
         return false;
     }
 
-    public Boolean ArtistDeleteChecker() {
+    public boolean canDeleteArtist() {
         this.errorList.clear();
         for (Show show : DataController.getPlanner().getShows()) {
             for (Artist artist : show.getArtists()) {
@@ -347,11 +342,11 @@ public class ArtistWindow {
                 }
             }
         }
-        if (this.errorList.isEmpty()) {
-            return true;
-        }
 
-        new ErrorWindow(this.currentStage, this.errorList);
+        if (this.errorList.isEmpty())
+            return true;
+
+        new ErrorWindow(this.currStage, this.errorList);
         return false;
     }
 }
