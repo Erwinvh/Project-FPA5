@@ -63,6 +63,9 @@ public class Show implements Serializable {
         }
         return lineUp.toString();
     }
+    public String getGenreFancyName(){
+        return this.genre.getFancyName();
+    }
 
     public int getExpectedPopularity() {
         return this.expectedPopularity;
