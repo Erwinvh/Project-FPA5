@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -26,6 +27,7 @@ public class ArtistWindow {
         this.currStage.initOwner(currParentStage);
         this.currStage.initModality(Modality.WINDOW_MODAL);
         this.currStage.setResizable(false);
+        this.currStage.getIcons().add(new Image("logoA5.jpg"));
 
         switch (screenNumber) {
             case 1:
@@ -47,6 +49,7 @@ public class ArtistWindow {
     public void artistAddWindow() {
         this.currStage.setWidth(275);
         this.currStage.setHeight(400);
+        this.currStage.setTitle("Add Artist");
 
         VBox newArtistList = new VBox();
         newArtistList.setPrefWidth(250);
@@ -111,6 +114,7 @@ public class ArtistWindow {
     public void artistEditWindow() {
         this.currStage.setWidth(275);
         this.currStage.setHeight(400);
+        this.currStage.setTitle("Edit Artist");
 
         VBox newArtistList = new VBox();
         Label startEdit = new Label("Which artist do you want to edit?");
@@ -221,6 +225,7 @@ public class ArtistWindow {
     }
 
     public void artistDeleteWindow() {
+        this.currStage.setTitle("Delete Artist");
         this.currStage.setWidth(275);
         this.currStage.setHeight(400);
 

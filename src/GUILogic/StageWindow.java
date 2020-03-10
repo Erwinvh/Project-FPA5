@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -34,6 +35,7 @@ public class StageWindow {
         this.currentStage.initOwner(currentParentStage);
         this.currentStage.initModality(Modality.WINDOW_MODAL);
         this.currentStage.setResizable(false);
+        this.currentStage.getIcons().add(new Image("logoA5.jpg"));
 
         switch (screenNumber) {
             case 4:
@@ -55,6 +57,7 @@ public class StageWindow {
     public void stageAddWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
+        this.currentStage.setTitle("Add Stage");
 
         VBox newStageList = new VBox();
 
@@ -96,6 +99,7 @@ public class StageWindow {
     public void editStageWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
+        this.currentStage.setTitle("Edit Stage");
 
         VBox newStageList = new VBox();
         Label startEdit = new Label("Which stage do you want to edit?");
@@ -180,6 +184,7 @@ public class StageWindow {
     public void deleteStageWindow() {
         BorderPane borderPane = new BorderPane();
         HBox startLine = new HBox();
+        this.currentStage.setTitle("Delete Stage");
         startLine.getChildren().add(new Label("Choose the stage you want to delete:"));
         ComboBox stageBox = new ComboBox();
         stageBox.getItems().add("Select");

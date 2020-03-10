@@ -27,6 +27,8 @@ public class ErrorWindow {
         errorPopUp.setHeight(250);
         errorPopUp.initOwner(parentStage);
         errorPopUp.initModality(Modality.WINDOW_MODAL);
+        errorPopUp.setTitle("Error");
+        errorPopUp.getIcons().add(new Image("alert.png"));
 
         HBox baseStructure = new HBox();
 

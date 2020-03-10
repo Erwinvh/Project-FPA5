@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -53,6 +54,7 @@ public class ShowWindow {
         this.popUp.initOwner(currParentStage);
         this.popUp.setResizable(false);
         this.popUp.initModality(Modality.WINDOW_MODAL);
+        this.popUp.getIcons().add(new Image("logoA5.jpg"));
 
         try {
             this.stagePopularity = this.selectedShow.getStage().getCapacity();
@@ -72,6 +74,7 @@ public class ShowWindow {
      */
     public void addShowWindow() {
         BorderPane structure = new BorderPane();
+        this.popUp.setTitle("Add Show");
 
         Label addingNew = new Label("What show do you want to add?");
         structure.setTop(addingNew);
@@ -259,6 +262,7 @@ public class ShowWindow {
      */
     public void editShowWindow() {
         BorderPane borderPane = new BorderPane();
+        this.popUp.setTitle("Edit Show");
 
         // Title
         Label editShowLabel = new Label("Edit this show:");
@@ -482,6 +486,7 @@ public class ShowWindow {
      */
     public void deleteShowWindow() {
         BorderPane borderPane = new BorderPane();
+        this.popUp.setTitle("Delete Show");
 
         //title
         Label deleteShowLabel = new Label("Are you sure you want to delete this show?");
