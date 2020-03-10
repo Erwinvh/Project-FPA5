@@ -108,18 +108,14 @@ public class StageWindow {
         }
 
         stageBox.getSelectionModel().selectFirst();
-        newStageList.getChildren().add(stageBox);
 
         Label stageNameLabel = new Label("Stage Name:");
-        newStageList.getChildren().add(stageNameLabel);
 
         TextField stageName = new TextField();
-        newStageList.getChildren().add(stageName);
 
         Label stageCapacityLabel = new Label("Stage Capacity:");
-        newStageList.getChildren().add(stageCapacityLabel);
+
         TextField inputTextField = new TextField();
-        newStageList.getChildren().add(inputTextField);
 
         newStageList.getChildren().addAll(stageBox, stageNameLabel, stageName, stageCapacityLabel, inputTextField);
 
@@ -131,23 +127,30 @@ public class StageWindow {
         Button confirmButton = new Button("Confirm");
         cancelConfirmHBox.getChildren().add(confirmButton);
         confirmButton.setOnAction(e -> {
-            if (canAddStage(stageName, inputTextField)) {
-                for (Show show : DataController.getPlanner().getShows()) {
-                    PlannerData.Stage stage = show.getStage();
-                    if (stage.getName().equals(this.selectedStage.getName())) {
-                        stage.setName(stageName.getText());
-                        stage.setCapacity(Integer.parseInt(inputTextField.getText()));
+            if (!stageBox.getValue().toString().equals("Select")) {
+                if (canAddStage(stageName, inputTextField)) {
+                    for (Show show : DataController.getPlanner().getShows()) {
+                        PlannerData.Stage stage = show.getStage();
+                        if (stage.getName().equals(this.selectedStage.getName())) {
+                            stage.setName(stageName.getText());
+                            stage.setCapacity(Integer.parseInt(inputTextField.getText()));
+                        }
+
+                        if (show.getExpectedPopularity() > stage.getCapacity()) {
+                            show.setExpectedPopularity(stage.getCapacity());
+                        }
                     }
 
-                    if (show.getExpectedPopularity() > stage.getCapacity()) {
-                        show.setExpectedPopularity(stage.getCapacity());
-                    }
+                    this.selectedStage.setName(stageName.getText());
+                    this.selectedStage.setCapacity(Integer.parseInt(inputTextField.getText()));
+                    DataController.getPlanner().savePlanner();
+                    this.currentStage.close();
                 }
-
-                this.selectedStage.setName(stageName.getText());
-                this.selectedStage.setCapacity(Integer.parseInt(inputTextField.getText()));
-                DataController.getPlanner().savePlanner();
-                this.currentStage.close();
+            }
+            else{
+                this.errorList.clear();
+                this.errorList.add("No stage has been Selected");
+                new ErrorWindow(this.currentStage,this.errorList);
             }
         });
 
@@ -209,17 +212,24 @@ public class StageWindow {
         Button confirm = new Button("Confirm");
         cancelConfirmButton.getChildren().add(confirm);
         confirm.setOnAction(e -> {
-            if (stageDeleteChecker()) {
-                try {
-                    DataController.getPlanner().deleteStage(stageBox.getValue().toString());
-                    DataController.getPlanner().savePlanner();
-                    this.currentStage.close();
+            if (!stageBox.getValue().toString().equals("Select")) {
+                if (stageDeleteChecker()) {
+                    try {
+                        DataController.getPlanner().deleteStage(stageBox.getValue().toString());
+                        DataController.getPlanner().savePlanner();
+                        this.currentStage.close();
 
-                } catch (Exception exception) {
-                    this.errorList.clear();
-                    this.errorList.add("The stage could not be deleted.");
-                    new ErrorWindow(this.currentStage, this.errorList);
+                    } catch (Exception exception) {
+                        this.errorList.clear();
+                        this.errorList.add("The stage could not be deleted.");
+                        new ErrorWindow(this.currentStage, this.errorList);
+                    }
                 }
+            }
+            else{
+                this.errorList.clear();
+                this.errorList.add("No stage has been selected.");
+                new ErrorWindow(this.currentStage, this.errorList);
             }
         });
 
