@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 public class ShowWindow {
 
-    private Stage currParentStage;
     private Show selectedShow;
     private ArrayList<String> errorList = new ArrayList<>();
     private ArrayList<String> timeList = new ArrayList<>();
@@ -46,13 +45,12 @@ public class ShowWindow {
      * @param selectedShow
      */
     public ShowWindow(int screenNumber, Stage currParentStage, javafx.collections.ObservableList<Show> data, TableView<Show> table, Show selectedShow) {
-        this.currParentStage = currParentStage;
         this.table = table;
         this.data = data;
         this.selectedShow = selectedShow;
         this.popUp.setWidth(400);
         this.popUp.setHeight(450);
-        this.popUp.initOwner(this.currParentStage);
+        this.popUp.initOwner(currParentStage);
         this.popUp.setResizable(false);
         this.popUp.initModality(Modality.WINDOW_MODAL);
 
