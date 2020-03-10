@@ -17,7 +17,7 @@ public class Show implements Serializable {
     private String description;
     private ArrayList<Artist> artists;
     private Stage stage;
-    private ArrayList<Genres> genre;
+    private Genres genre;
     private int expectedPopularity;
 
     /**
@@ -32,7 +32,7 @@ public class Show implements Serializable {
      * @param genre              the genre of the show
      * @param expectedPopularity the expected popularity of the show
      */
-    public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
+    public Show(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, Genres genre, int expectedPopularity) {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.artists = artists;
@@ -76,7 +76,7 @@ public class Show implements Serializable {
         return this.beginTime;
     }
 
-    public void setGenre(ArrayList<Genres> genre) {
+    public void setGenre(Genres genre) {
         this.genre = genre;
     }
 
@@ -104,7 +104,7 @@ public class Show implements Serializable {
         return this.stage;
     }
 
-    public ArrayList<Genres> getGenre() {
+    public Genres getGenre() {
         return this.genre;
     }
 

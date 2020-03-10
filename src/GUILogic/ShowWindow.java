@@ -188,13 +188,11 @@ public class ShowWindow {
                 LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
                 PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
                 Genres addedGenre = Genres.getGenre(genreComboBox.getValue().toString());
-                ArrayList<Genres> genresList = new ArrayList<>();
-                genresList.add(addedGenre);
 
                 String descriptionShow = descriptionTextArea.getText();
                 int popularityAdded = (int) this.popularitySlider.getValue();
 
-                Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genresList, popularityAdded);
+                Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, addedGenre, popularityAdded);
                 if (!DataController.getPlanner().getShows().contains(show)) {
                     for (Show existingShow : DataController.getPlanner().getShows()) {
                         if (existingShow.getStage().getName().equals(show.getStage().getName())) {
@@ -297,7 +295,7 @@ public class ShowWindow {
         //Genre
         gridPane.add(new Label("Genre:"), 1, 5);
         ComboBox genre = getGenreComboBox();
-        genre.setValue(this.selectedShow.getGenre().get(0).getFancyName());
+        genre.setValue(this.selectedShow.getGenre().getFancyName());
         gridPane.add(genre, 2, 5);
 
         //popularity
@@ -397,12 +395,10 @@ public class ShowWindow {
                 LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
                 PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
                 Genres addedGenre = Genres.getGenre(genre.getValue().toString());
-                ArrayList<Genres> genres = new ArrayList<>();
-                genres.add(addedGenre);
                 String descriptionShow = showDescription.getText();
                 int popularityAdded = (int) this.popularitySlider.getValue();
 
-                this.addedShow = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, genres, popularityAdded);
+                this.addedShow = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, addedGenre, popularityAdded);
                 if (!this.addedShow.equals(this.selectedShow)) {
                     DataController.getPlanner().deleteShow(this.selectedShow);
                     this.table.getItems().remove(this.selectedShow);
@@ -494,7 +490,7 @@ public class ShowWindow {
         //information
         Label information = new Label("Show: " + this.selectedShow.getName() + '\n'
                 + "From " + this.selectedShow.getBeginTimeString() + " to " + this.selectedShow.getEndTimeString() + '\n'
-                + "By " + this.selectedShow.getArtistsNames() + " in the genre of " + this.selectedShow.getGenre() + '\n'
+                + "By " + this.selectedShow.getArtistsNames() + " in the genre of " + this.selectedShow.getGenre().getFancyName() + '\n'
                 + "On stage " + this.selectedShow.getStageName() + '\n'
                 + "Expected popularity is " + this.selectedShow.getExpectedPopularity() + " people."
                 + "with the description: " + '\n' + this.selectedShow.getDescription());

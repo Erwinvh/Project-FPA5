@@ -190,7 +190,7 @@ public class Planner implements Serializable {
                 showBuilder.add("beginTime", show.getBeginTimeString());
                 showBuilder.add("endTime", show.getEndTimeString());
                 showBuilder.add("getShowDescription", show.getDescription());
-                showBuilder.add("genre", show.getGenre().get(0).getFancyName());
+                showBuilder.add("genre", show.getGenre().getFancyName());
                 showBuilder.add("expectedPopularity", show.getExpectedPopularity());
                 showsBuilder.add(showBuilder);
             }

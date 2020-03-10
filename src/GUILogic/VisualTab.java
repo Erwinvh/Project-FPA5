@@ -119,15 +119,10 @@ class VisualTab {
                     artists = artists.substring(0, artists.length() - 2);
 
                     String genres = "";
-                    if (!show.getGenre().isEmpty()) {
-                        genres += "(";
-                        for (Genres genre : show.getGenre()) {
-                            genres += genre.getFancyName() + ", ";
-                        }
-                        genres = genres.substring(0, genres.length() - 2);
-                        genres += ")";
+                    if (show.getGenre()!=null) {
+                        genres = show.getGenre().getFancyName();
                     } else {
-                        genres += "(No specified genre)";
+                        genres += "No specified genre";
                     }
 
                     // Draw the info of the show

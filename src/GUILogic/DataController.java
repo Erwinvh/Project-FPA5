@@ -70,11 +70,9 @@ public class DataController {
                             Genres genre = stringToGenre( show.getString("genre"));
                             String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
-                            ArrayList<Genres> genres =  new ArrayList<>();
-                            genres.add(genre);
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
-                            Show readShow = new Show(beginTime,endTime,artistsInShow,name,stageInShow,description,genres,expectedPopularity);
+                            Show readShow = new Show(beginTime,endTime,artistsInShow,name,stageInShow,description,genre,expectedPopularity);
                             this.planner.getShows().add(readShow);
                         }
                     }
