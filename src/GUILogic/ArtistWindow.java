@@ -249,7 +249,7 @@ public class ArtistWindow {
                 }
             } else {
                 this.artistDeleteText.textProperty().setValue("         " + '\n');
-                // TODO: Fix deleting artist when nothing is selected
+
             }
         });
 
