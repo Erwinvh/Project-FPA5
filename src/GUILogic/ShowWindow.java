@@ -57,7 +57,7 @@ public class ShowWindow {
         try {
             this.stagePopularity = this.selectedShow.getStage().getCapacity();
         } catch (Exception e) {
-            System.out.println("Could not get capacity from selected show.");
+
         }
 
         this.cancelButton.setOnAction(event -> this.popUp.close());
