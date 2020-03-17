@@ -14,16 +14,16 @@ public class PersonLogic {
     private Point2D target;
     private double rotationSpeed;
 //    private String targetMapName;
-    private DistanceMap distanceMap;
+    private NPCLogic.DistanceMap distanceMap;
     private String activity;
-    private Person person;
+    private NPCLogic.Person person;
     private Point2D newPosition;
 
     private int negativeFeedback = 5;
 
     private boolean isArtist;
 
-    public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
+    public PersonLogic(Point2D position, double speed, NPCLogic.Person person, boolean isArtist) {
         this.position = position;
         this.person = person;
         this.angle = 0;
@@ -31,7 +31,7 @@ public class PersonLogic {
         this.rotationSpeed = 100;
         selectRandomMap();
         this.isArtist = isArtist;
-        target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
+        target = NPCLogic.PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
     public void choiceMaker() {
@@ -101,7 +101,7 @@ public class PersonLogic {
    //     return targetMapName;
    // }
 
-    public Person getPerson() {
+    public NPCLogic.Person getPerson() {
         return person;
     }
 
@@ -129,7 +129,7 @@ public class PersonLogic {
         this.rotationSpeed = rotationSpeed;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(NPCLogic.Person person) {
         this.person = person;
     }
 
@@ -156,7 +156,7 @@ public class PersonLogic {
     }
 
     public void setNextTarget() {
-        this.target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
+        this.target = NPCLogic.PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
     /**
@@ -217,7 +217,7 @@ public class PersonLogic {
                 this.position.getY() + this.speed * Math.sin(this.angle));
     }
 
-    public DistanceMap getDistanceMap() {
+    public NPCLogic.DistanceMap getDistanceMap() {
         return this.distanceMap;
     }
 }

@@ -48,16 +48,16 @@ public class Simulator {
         return simulatorLayout;
     }
 
-    public static void main(String[] args) {
-//        launch(Simulator.class);
-
-        DistanceMap distanceMap = MapDataController.getDistanceMap(MapDataController.getTargetAreas()[0]);
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                System.out.println(distanceMap.getMap()[i][j]);
-            }
-        }
-    }
+//    public static void main(String[] args) {
+////        launch(Simulator.class);
+//
+//        DistanceMap distanceMap = MapDataController.getDistanceMap(MapDataController.getTargetAreas()[0]);
+//        for (int i = 0; i < 100; i++) {
+//            for (int j = 0; j < 100; j++) {
+//                System.out.println(distanceMap.getMap()[i][j]);
+//            }
+//        }
+//    }
 
     public void init() {
         mapDataController = new MapDataController();
@@ -125,7 +125,10 @@ public class Simulator {
      */
     public void spawnPeople(int amount) {
         int failedSpawnAttempts = 0;
-
+        for (Artist artist:DataController.getPlanner().getArtists()) {
+            Point2D newSpawnLocation = new Point2D.Double(Math.random() * 100 * 32, Math.random() * 100 * 32);
+            this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
+        }
         for (int i = 0; i < amount; i++) {
 
             Point2D newSpawnLocation = new Point2D.Double(Math.random() * 100 * 32, Math.random() * 100 * 32);
@@ -141,10 +144,7 @@ public class Simulator {
                 }
             }
         }
-        for (Artist artist:DataController.getPlanner().getArtists()) {
-            Point2D newSpawnLocation = new Point2D.Double(Math.random() * 100 * 32, Math.random() * 100 * 32);
-            this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, false));
-        }
+
     }
 
     /**
