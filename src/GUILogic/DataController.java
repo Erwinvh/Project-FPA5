@@ -91,7 +91,7 @@ public class DataController {
         }
     }
 
-    static Planner getPlanner() {
+    public static Planner getPlanner() {
         return planner;
     }
 

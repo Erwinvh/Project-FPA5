@@ -1,5 +1,6 @@
 package NPCLogic;
 
+import Enumerators.Genres;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -20,7 +21,8 @@ public class Person {
     private Genres favoriteGenre;
     private Media soundEffect;
     private MediaPlayer mediaPlayer;
-    private PersonLogic personLogic;
+    private NPCLogic.PersonLogic personLogic;
+    private String name;
 
     private boolean isArtist = false;
 
@@ -33,7 +35,12 @@ public class Person {
      */
     public Person(Point2D position, ArrayList<Integer> genreChanceList, int speed, boolean isArtist) {
         genrePicker(genreChanceList);
-        this.personLogic = new PersonLogic(position, speed, this, isArtist);
+        this.personLogic = new NPCLogic.PersonLogic(position, speed, this, isArtist);
+    }
+    public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, int speed, boolean isArtist) {
+        this.name = name;
+        genrePicker(genreChanceList);
+        this.personLogic = new NPCLogic.PersonLogic(position, speed, this, isArtist);
     }
 
     /**
@@ -99,7 +106,7 @@ public class Person {
         this.mediaPlayer = new MediaPlayer(this.soundEffect);
     }
 
-    public PersonLogic getPersonLogic() {
+    public NPCLogic.PersonLogic getPersonLogic() {
         return personLogic;
     }
 
@@ -121,7 +128,7 @@ public class Person {
         if (!collided) {
             this.personLogic.setPosition(this.personLogic.getNewPosition());
         } else {
-            this.personLogic.setTarget(PathCalculator.findRandomClosestWalkable(this.personLogic.getPosition(), this.personLogic.getDistanceMap()));
+            this.personLogic.setTarget(NPCLogic.PathCalculator.findRandomClosestWalkable(this.personLogic.getPosition(), this.personLogic.getDistanceMap()));
         }
     }
 

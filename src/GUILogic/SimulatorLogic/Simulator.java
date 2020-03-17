@@ -1,8 +1,11 @@
 package GUILogic.SimulatorLogic;
 
+import GUILogic.DataController;
 import MapData.MapDataController;
 import NPCLogic.DistanceMap;
 import NPCLogic.Person;
+import PlannerData.Artist;
+import PlannerData.Show;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +17,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
 
 
 public class Simulator {
@@ -65,7 +67,6 @@ public class Simulator {
         createPredictions();
         spawnPeople(peopleAmount);
     }
-
 
 
     public void start() {
@@ -140,6 +141,10 @@ public class Simulator {
                 }
             }
         }
+        for (Artist artist:DataController.getPlanner().getArtists()) {
+            Point2D newSpawnLocation = new Point2D.Double(Math.random() * 100 * 32, Math.random() * 100 * 32);
+            this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, false));
+        }
     }
 
     /**
@@ -179,6 +184,33 @@ public class Simulator {
         int Pop = 1;
         int electro = 1;
 
+        if (this.predictedGuests){
+            for (Show show : DataController.getPlanner().getShows()) {
+                String showgenre = show.getGenre().getSuperGenre();
+                switch (showgenre) {
+                    case "Metal":
+                        metal++;
+                        break;
+                    case "Country":
+                        Country++;
+                        break;
+                    case "Classic":
+                        classic++;
+                        break;
+                    case "Electro":
+                        electro++;
+                        break;
+                    case "Rap":
+                        Rap++;
+                        break;
+                    case "Pop":
+                        Pop++;
+                        break;
+                }
+                Total++;
+            }
+        }
+
         this.Prediction.add(metal);
         this.Prediction.add(classic);
         this.Prediction.add(Country);
@@ -192,10 +224,10 @@ public class Simulator {
         //Gets inverseTransform from cameraTransform so the correct rectangle can be cleared.
         AffineTransform inverse = this.cameraTransform.getInverseTransform();
         g.clearRect(
-                (int)inverse.getTranslateX(),
-                (int)inverse.getTranslateY(),
-                (int)(inverse.getScaleX() * this.canvas.getWidth() - inverse.getTranslateX()),
-                (int)(inverse.getScaleY() * this.canvas.getHeight() - inverse.getTranslateY())
+                (int) inverse.getTranslateX(),
+                (int) inverse.getTranslateY(),
+                (int) (inverse.getScaleX() * this.canvas.getWidth() - inverse.getTranslateX()),
+                (int) (inverse.getScaleY() * this.canvas.getHeight() - inverse.getTranslateY())
         );
 
         g.setTransform(this.cameraTransform.getTransform());
