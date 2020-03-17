@@ -1,7 +1,7 @@
 package GUILogic;
 
+import GUILogic.SimulatorLogic.Simulator;
 import javafx.scene.control.Tab;
-import SimulatorLogic.Simulator;
 
 class SimulatorTab {
     private Tab simulatorTab;

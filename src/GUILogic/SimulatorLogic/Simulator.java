@@ -1,15 +1,12 @@
-package SimulatorLogic;
+package GUILogic.SimulatorLogic;
 
 import MapData.MapDataController;
 import NPCLogic.DistanceMap;
 import NPCLogic.Person;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
@@ -29,7 +26,7 @@ public class Simulator {
     private int stageAmount = 6;
     private int toiletAmount = 20;
     private int globalSpeed = 4;
-    private SimulatorLogic.CameraTransform cameraTransform;
+    private CameraTransform cameraTransform;
     private boolean predictedGuests = true;
     private ArrayList<Integer> Prediction = new ArrayList<>();
 
@@ -77,7 +74,7 @@ public class Simulator {
         this.simulatorLayout.setCenter(canvas);
 
         FXGraphics2D graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
-        this.cameraTransform = new SimulatorLogic.CameraTransform(canvas);
+        this.cameraTransform = new CameraTransform(canvas);
         new AnimationTimer() {
             long last = -1;
 
@@ -192,14 +189,16 @@ public class Simulator {
     }
 
     public void draw(FXGraphics2D g) {
-        Point2D p2d = this.cameraTransform.getCenterPoint();
-        double zoom = cameraTransform.getZoom();
-        g.clearRect(-(int) p2d.getX(), -(int) p2d.getY(), (int) (canvas.getWidth() / zoom), (int) (canvas.getHeight() / zoom));
-        if (!this.showNull) {
-            g.setTransform(this.cameraTransform.getTransform());
-        } else {
-            g.setTransform(new AffineTransform());
-        }
+        //Gets inverseTransform from cameraTransform so the correct rectangle can be cleared.
+        AffineTransform inverse = this.cameraTransform.getInverseTransform();
+        g.clearRect(
+                (int)inverse.getTranslateX(),
+                (int)inverse.getTranslateY(),
+                (int)(inverse.getScaleX() * this.canvas.getWidth() - inverse.getTranslateX()),
+                (int)(inverse.getScaleY() * this.canvas.getHeight() - inverse.getTranslateY())
+        );
+
+        g.setTransform(this.cameraTransform.getTransform());
         g.setBackground(Color.black);
         g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
