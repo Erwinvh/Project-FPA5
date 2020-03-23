@@ -20,9 +20,10 @@ import java.util.ArrayList;
 public class Simulator {
     private MapDataController mapDataController;
     private ResizableCanvas canvas;
-    private ArrayList<GUILogic.SimulatorLogic.NPCLogic.Person> people;
+    private ArrayList<Person> people;
+    private ArrayList<Person> artists;
 
-    private int peopleAmount = 30;
+    private int peopleAmount = 1;
     private int stageAmount = 6;
     private int toiletAmount = 20;
     private int globalSpeed = 4;
@@ -104,8 +105,11 @@ public class Simulator {
     }
 
     public void update(double frameTime) {
-        for (GUILogic.SimulatorLogic.NPCLogic.Person person : people) {
-            person.update(people);
+        for (Person person : people) {
+            person.update(people,artists);
+        }
+        for (Person artist : artists){
+            artist.update(people, artists);
         }
     }
 
@@ -116,9 +120,9 @@ public class Simulator {
      */
     public void spawnPeople(int amount) {
         int failedSpawnAttempts = 0;
-        for (Artist artist : DataController.getPlanner().getArtists()) {
-            Point2D newSpawnLocation = new Point2D.Double(Math.random() * 100 * 32, Math.random() * 100 * 32);
-            this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
+        for (Artist artist:DataController.getPlanner().getArtists()) {
+            Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
+            this.artists.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
         }
 
         for (int i = 0; i < amount; i++) {
