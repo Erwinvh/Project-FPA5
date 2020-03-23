@@ -26,12 +26,14 @@ import static PlannerData.Planner.saveFileName;
 public class DataController {
 
     private static Planner planner;
+    private static Clock clock;
 
     /**
      * Reads the Json file and creates an instance of Planner
      */
     public DataController() {
         planner = new Planner();
+        clock = new Clock();
 
         try {
             File file = new File(saveFileName);
@@ -68,7 +70,7 @@ public class DataController {
                             Stage stageInShow = new Stage(stage.getInt("capacity"),stage.getString("name"));
                             String name = show.getString("name");
                             Genres genre = stringToGenre( show.getString("genre"));
-                            String description = show.getString("description");
+                            String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
@@ -121,5 +123,9 @@ public class DataController {
             }
         }
         return null;
+    }
+
+    public static Clock getClock() {
+        return clock;
     }
 }

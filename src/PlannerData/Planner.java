@@ -139,6 +139,15 @@ public class Planner implements Serializable {
         return this.artists;
     }
 
+    public void deleteShows(){
+shows.clear();
+    }
+
+    public void deleteAll(){
+        shows.clear();
+        artists.clear();
+        stages.clear();
+    }
     /**
      * Saves the shows, artists and stages in a Json file
      */
@@ -162,7 +171,7 @@ public class Planner implements Serializable {
             for (Artist artist : this.getArtists()) {
                 JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                 artistBuilder.add("name", artist.getName());
-                artistBuilder.add("getShowDescription", artist.getDescription());
+                artistBuilder.add("description", artist.getDescription());
                 artistBuilder.add("genre", artist.getGenre().getFancyName());
                 artistsBuilder.add(artistBuilder);
             }
@@ -177,7 +186,7 @@ public class Planner implements Serializable {
                 for (Artist artist : show.getArtists()) {
                     JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                     artistBuilder.add("name", artist.getName());
-                    artistBuilder.add("getShowDescription", artist.getDescription());
+                    artistBuilder.add("description", artist.getDescription());
                     artistBuilder.add("genre", artist.getGenre().getFancyName());
                     showArtistsBuilder.add(artistBuilder);
                 }

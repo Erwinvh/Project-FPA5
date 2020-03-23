@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class PersonLogic {
 
+    private final double speedMultiplyer;
     private Point2D position;
     private double angle;
     private double speed;
@@ -27,14 +28,18 @@ public class PersonLogic {
     private boolean isArtist;
 
     public PersonLogic(Point2D position, double speed, NPCLogic.Person person, boolean isArtist) {
+        Random random = new Random();
+        this.speedMultiplyer = ((120.0-random.nextInt(40))/100);
+
         this.position = position;
         this.person = person;
         this.angle = 0;
-        this.speed = speed;
+        this.speed = speed * speedMultiplyer;
         this.rotationSpeed = 100;
         selectRandomMap();
         this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
+
     }
 
     public void choiceMaker() {

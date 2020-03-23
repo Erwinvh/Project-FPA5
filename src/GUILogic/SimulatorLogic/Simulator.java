@@ -22,7 +22,7 @@ public class Simulator {
     private MapDataController mapDataController;
     private ResizableCanvas canvas;
     private ArrayList<Person> people;
-    private ArrayList<Person> artists;
+    private ArrayList<Artist> artists;
 
     private int peopleAmount = 1;
     private int globalSpeed = 4;
@@ -46,8 +46,8 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
 
+        DataController.getClock().setToMidnight();
         createPredictions();
-        spawnPeople(peopleAmount);
     }
 
     public void start() {
@@ -75,39 +75,55 @@ public class Simulator {
         draw(graphics);
     }
 
-    public void update(double frameTime) {
-        for (Person person : people)
-            person.update(people, artists);
+    /**
+     * updates the persons and sets their speed relative to the time passed
+     * @param deltaTime time passed in seconds
+     */
+    public void update(double deltaTime) {
+        DataController.getClock().update(deltaTime);
 
-        for (Person artist : artists)
-            artist.update(people, artists);
+        double speed = DataController.getClock().getSimulatorSpeed() * 60;
+
+        if (artists.size()<DataController.getPlanner().getArtists().size()){
+            peopleAmount++;
+            artists = DataController.getPlanner().getArtists();
+        }
+
+        if (people.size() < peopleAmount)
+            spawnPerson();
+
+        for (Person person : people) {
+            person.setSpeed(speed*deltaTime);
+            person.update(people);
+        }
+
     }
 
     /**
-     * Spawns a amount of people, stops spawning after 10% failed spawnAttempts of the amount
-     *
-     * @param amount the amount of people to be spawned
+     * Spawns a person, if all the artists are spawned then spawning visitors
      */
-    public void spawnPeople(int amount) {
-        int failedSpawnAttempts = 0;
-        for (Artist artist : DataController.getPlanner().getArtists()) {
-            Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
-            this.artists.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
-        }
+    public void spawnPerson() {
+        Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
 
-        for (int i = 0; i < amount; i++) {
-            Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
-            if (canSpawn(newSpawnLocation)) {
-                this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
-                        newSpawnLocation.getY()), this.Prediction, this.globalSpeed, false));
-                failedSpawnAttempts = 0;
-            } else {
-                failedSpawnAttempts++;
-                i--;
-                if (failedSpawnAttempts > amount * 0.1) {
+        if (canSpawn(newSpawnLocation)) {
+            //loop trough all the artists to see if they are spawned already
+            for (Artist artist : DataController.getPlanner().getArtists()) {
+                boolean hasBeenSpawned = false;
+                for (Person person : people) {
+                    if (person.getName() != null)
+                        if (person.getName().equals(artist.getName()))
+                            hasBeenSpawned = true;
+                }
+
+                if (!hasBeenSpawned) {
+                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
                     return;
                 }
             }
+
+            //if all the artists have been spawned then we spawn visitors
+            this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
+                    newSpawnLocation.getY()), this.Prediction, this.globalSpeed, false));
         }
     }
 
@@ -201,9 +217,7 @@ public class Simulator {
 
         for (Person person : people)
             person.draw(g);
-
-        for (Person person : artists)
-            person.draw(g);
+        }
     }
 
     public void setPeopleAmount(int peopleAmount) {
