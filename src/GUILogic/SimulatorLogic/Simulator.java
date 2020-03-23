@@ -65,7 +65,7 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         distanceMaps = new DistanceMap[stageAmount + toiletAmount];
-        DataController.getClock().setToMidnight();
+
         createPredictions();
     }
 
@@ -90,7 +90,21 @@ public class Simulator {
             }
         }.start();
 
-        canvas.setOnMouseClicked(this::clickAction);
+        canvas.setOnMouseClicked(e -> {
+            clickAction(e);
+//            if (e.getButton() == MouseButton.SECONDARY){
+//                this.showNull = !this.showNull;
+//                if (this.showNull){
+//                    System.out.println("Shows: Non CameraTransformed");
+//                } else {
+//                    System.out.println("Shows: CameraTransformed");
+//                }
+//            } else
+
+            if (e.getButton() == MouseButton.PRIMARY) {
+                this.init();
+            }
+        });
 
 //        stage.setScene(new Scene(this.simulatorLayout));
 //        stage.setTitle("A5 FP");

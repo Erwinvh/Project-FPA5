@@ -22,8 +22,6 @@ public class GUI extends Application {
         tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
             if (newTab == visualTab.getVisualTab()) {
                 visualTab.update();
-            } else if (newTab == simulatorTab.getSimulatorTab()){
-                simulatorTab.getSimulator().init();
             }
         });
 
