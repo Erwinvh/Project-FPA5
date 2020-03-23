@@ -23,7 +23,7 @@ public class Simulator {
     private MapDataController mapDataController;
     private ResizableCanvas canvas;
     private ArrayList<Person> people;
-    private ArrayList<Person> artists;
+    private ArrayList<Artist> artists;
 
     private int peopleAmount = 100;
     private int stageAmount = 6;
@@ -114,15 +114,16 @@ public class Simulator {
     }
 
     public void update(double frameTime) {
+        if (artists.size()<DataController.getPlanner().getArtists().size()){
+            peopleAmount++;
+            artists = DataController.getPlanner().getArtists();
+        }
+
         if (people.size() < peopleAmount)
             spawnPerson();
 
         for (Person person : people) {
-            person.update(people, artists);
-        }
-
-        for (Person artist : artists) {
-            artist.update(people, artists);
+            person.update(people);
         }
     }
 
@@ -241,9 +242,6 @@ public class Simulator {
         mapDataController.draw(g);
 
         for (Person person : people) {
-            person.draw(g);
-        }
-        for (Person person : artists) {
             person.draw(g);
         }
     }

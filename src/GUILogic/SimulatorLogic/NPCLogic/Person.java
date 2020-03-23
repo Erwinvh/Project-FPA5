@@ -119,18 +119,13 @@ public class Person {
     /**
      * decides the behavior of the Person
      */
-    public void update(ArrayList<Person> people, ArrayList<Person> artitsts) {
+    public void update(ArrayList<Person> people) {
 
         this.personLogic.update();
         //colliding handler
         boolean collided = false;
 
         for (Person other : people) {
-            if (other != this && this.personLogic.getNewPosition().distance(other.personLogic.getPosition()) < 32) {
-                collided = true;
-            }
-        }
-        for (Person other : artitsts) {
             if (other != this && this.personLogic.getNewPosition().distance(other.personLogic.getPosition()) < 32) {
                 collided = true;
             }
