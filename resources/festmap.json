@@ -270,7 +270,7 @@
         {
          "columns":10,
          "firstgid":1,
-         "image":"..\/..\/New folder\/Tilesheet-land-v5.png",
+         "image":"Tilesheet-land-v5.png",
          "imageheight":384,
          "imagewidth":320,
          "margin":0,
@@ -283,7 +283,7 @@
         {
          "columns":8,
          "firstgid":121,
-         "image":"..\/..\/New folder\/Tilesheet-water.png",
+         "image":"Tilesheet-water.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,
@@ -296,7 +296,7 @@
         {
          "columns":7,
          "firstgid":185,
-         "image":"..\/..\/New folder\/preview.png",
+         "image":"preview.png",
          "imageheight":128,
          "imagewidth":224,
          "margin":0,
@@ -309,7 +309,7 @@
         {
          "columns":2,
          "firstgid":213,
-         "image":"..\/..\/New folder\/Collission.png",
+         "image":"Collission.png",
          "imageheight":32,
          "imagewidth":64,
          "margin":0,
@@ -322,7 +322,7 @@
         {
          "columns":32,
          "firstgid":215,
-         "image":"..\/..\/New folder\/terrain_atlas.png",
+         "image":"terrain_atlas.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -335,7 +335,7 @@
         {
          "columns":8,
          "firstgid":1239,
-         "image":"..\/..\/New folder\/adobe.png",
+         "image":"adobe.png",
          "imageheight":384,
          "imagewidth":256,
          "margin":0,
@@ -348,7 +348,7 @@
         {
          "columns":2,
          "firstgid":1335,
-         "image":"..\/..\/New folder\/bazaar_table-ns-blue.png",
+         "image":"bazaar_table-ns-blue.png",
          "imageheight":64,
          "imagewidth":64,
          "margin":0,
@@ -361,7 +361,7 @@
         {
          "columns":2,
          "firstgid":1339,
-         "image":"..\/..\/New folder\/bazaar_table-ns-red.png",
+         "image":"bazaar_table-ns-red.png",
          "imageheight":64,
          "imagewidth":64,
          "margin":0,
@@ -374,7 +374,7 @@
         {
          "columns":16,
          "firstgid":1343,
-         "image":"..\/..\/New folder\/decorations-medieval.png",
+         "image":"decorations-medieval.png",
          "imageheight":2048,
          "imagewidth":512,
          "margin":0,
@@ -387,7 +387,7 @@
         {
          "columns":16,
          "firstgid":2367,
-         "image":"..\/..\/New folder\/fence_medieval.png",
+         "image":"fence_medieval.png",
          "imageheight":1024,
          "imagewidth":512,
          "margin":0,
@@ -400,7 +400,7 @@
         {
          "columns":6,
          "firstgid":2879,
-         "image":"..\/..\/New folder\/flower.png",
+         "image":"flower.png",
          "imageheight":96,
          "imagewidth":192,
          "margin":0,
@@ -433,7 +433,7 @@
         {
          "columns":1,
          "firstgid":2897,
-         "image":"..\/..\/New folder\/PNG\/32x32\/lamp-2-post-1\/lamp-2-post-1-short-single.png",
+         "image":"lamp-2-post-1-short-single.png",
          "imageheight":96,
          "imagewidth":32,
          "margin":0,
