@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class PersonLogic {
 
-    private final double speedMultiplyer;
+    private final double speedMultiplier;
     private Point2D position;
     private double angle;
     private double speed;
@@ -18,7 +18,7 @@ public class PersonLogic {
     private double rotationSpeed;
     private DistanceMap distanceMap;
     private String activity;
-    private NPCLogic.Person person;
+    private Person person;
     private Point2D newPosition;
 
     private boolean isRoaming = false;
@@ -27,14 +27,14 @@ public class PersonLogic {
 
     private boolean isArtist;
 
-    public PersonLogic(Point2D position, double speed, NPCLogic.Person person, boolean isArtist) {
+    public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
         Random random = new Random();
-        this.speedMultiplyer = ((120.0-random.nextInt(40))/100);
+        this.speedMultiplier = ((120.0-random.nextInt(40))/100);
 
         this.position = position;
         this.person = person;
         this.angle = 0;
-        this.speed = speed * speedMultiplyer;
+        this.speed = speed * speedMultiplier;
         this.rotationSpeed = 100;
         selectRandomMap();
         this.isArtist = isArtist;
@@ -198,26 +198,6 @@ public class PersonLogic {
         this.activity = activity;
     }
 
-    public double getAngle() {
-        return angle;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public Point2D getTarget() {
-        return target;
-    }
-
-    public double getRotationSpeed() {
-        return rotationSpeed;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
     public int getNegativeFeedback() {
         return negativeFeedback;
     }
@@ -228,10 +208,6 @@ public class PersonLogic {
 
     public void setPosition(Point2D position) {
         this.position = position;
-    }
-
-    public void setRotationSpeed(double rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
     }
 
     public void setNegativeFeedback(int negativeFeedback) {

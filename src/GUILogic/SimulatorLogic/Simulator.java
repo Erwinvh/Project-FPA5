@@ -23,7 +23,7 @@ public class Simulator {
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
 
-    private int peopleAmount = 1;
+    private int peopleAmount = 5;
     private int globalSpeed = 4;
     private CameraTransform cameraTransform;
     private boolean predictedGuests = true;
