@@ -163,7 +163,7 @@ public class StageWindow {
 
         stageBox.setOnAction(event -> {
             if (!stageBox.getValue().equals("Select")) {
-                this.selectedStage = stringToStage(stageBox.getValue().toString());
+                this.selectedStage = DataController.getPlanner().getStage(stageBox.getValue().toString());
                 stageName.setText(this.selectedStage.getName());
                 inputTextField.setText("" + this.selectedStage.getCapacity());
             } else {
@@ -195,7 +195,7 @@ public class StageWindow {
         stageBox.getSelectionModel().selectFirst();
         stageBox.setOnAction(event -> {
             if (!stageBox.getValue().equals("Select")) {
-                this.selectedStage = stringToStage(stageBox.getValue().toString());
+                this.selectedStage = DataController.getPlanner().getStage(stageBox.getValue().toString());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
                     this.information.textProperty().setValue("Do you want to delete the stage: " + selectedStage.getName() + '\n' + " with the capacity of " + selectedStage.getCapacity());
                 }
@@ -247,19 +247,6 @@ public class StageWindow {
         this.currentStage.setScene(stageDeleteScene);
 
         this.currentStage.show();
-    }
-
-    // TODO: Move logic to stage class
-    public PlannerData.Stage stringToStage(String stageString) {
-        if (stageString == null || stageString.isEmpty()) {
-            return null;
-        }
-        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
-            if (stageString.equals(stage.getName())) {
-                return stage;
-            }
-        }
-        return null;
     }
 
     /**

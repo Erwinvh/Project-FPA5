@@ -3,7 +3,6 @@ package GUILogic.SimulatorLogic;
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.NPCLogic.DistanceMap;
-
 import NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
@@ -24,9 +23,9 @@ public class Simulator {
     private MapDataController mapDataController;
     private ResizableCanvas canvas;
     private ArrayList<Person> people;
-    private ArrayList<Person> artists;
+    private ArrayList<Artist> artists;
 
-    private int peopleAmount = 1;
+    private int peopleAmount = 100;
     private int stageAmount = 6;
     private int toiletAmount = 20;
     private int globalSpeed = 4;
@@ -68,7 +67,6 @@ public class Simulator {
         distanceMaps = new DistanceMap[stageAmount + toiletAmount];
 
         createPredictions();
-        spawnPeople(peopleAmount);
     }
 
 
@@ -115,50 +113,45 @@ public class Simulator {
         draw(graphics);
     }
 
-    /**
-     * updates the persons and sets their speed relative to the time passed
-     * @param deltaTime time passed in seconds
-     */
-    public void update(double deltaTime) {
-        DataController.getClock().update(deltaTime);
+    public void update(double frameTime) {
+        if (artists.size()<DataController.getPlanner().getArtists().size()){
+            peopleAmount++;
+            artists = DataController.getPlanner().getArtists();
+        }
 
-        double speed = DataController.getClock().getSimulatorSpeed() * 60;
+        if (people.size() < peopleAmount)
+            spawnPerson();
 
         for (Person person : people) {
-            person.setSpeed(speed);
-            person.update(people,artists);
-        }
-        for (Person artist : artists){
-            artist.setSpeed(speed);
-            artist.update(people, artists);
+            person.update(people);
         }
     }
 
     /**
-     * Spawns a amount of people, stops spawning after 10% failed spawnAttempts of the amount
-     *
-     * @param amount the amount of people to be spawned
+     * Spawns a person, if all the artists are spawned then spawning visitors
      */
-    public void spawnPeople(int amount) {
-        int failedSpawnAttempts = 0;
-        for (Artist artist:DataController.getPlanner().getArtists()) {
-            Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
-            this.artists.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
-        }
-        for (int i = 0; i < amount; i++) {
+    public void spawnPerson() {
+        Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
 
-            Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
-            if (canSpawn(newSpawnLocation)) {
-                this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
-                        newSpawnLocation.getY()), this.Prediction, this.globalSpeed, false));
-                failedSpawnAttempts = 0;
-            } else {
-                failedSpawnAttempts++;
-                i--;
-                if (failedSpawnAttempts > amount * 0.1) {
+        if (canSpawn(newSpawnLocation)) {
+            //loop trough all the artists to see if they are spawned already
+            for (Artist artist : DataController.getPlanner().getArtists()) {
+                boolean hasBeenSpawned = false;
+                for (Person person : people) {
+                    if (person.getName() != null)
+                        if (person.getName().equals(artist.getName()))
+                            hasBeenSpawned = true;
+                }
+
+                if (!hasBeenSpawned) {
+                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
                     return;
                 }
             }
+
+            //if all the artists have been spawned then we spawn visitors
+            this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
+                    newSpawnLocation.getY()), this.Prediction, this.globalSpeed, false));
         }
 
     }
@@ -170,10 +163,6 @@ public class Simulator {
      * @return true if empty, false if occupied
      */
     public boolean canSpawn(Point2D spawnPosition) {
-        if (this.people.size() <= 0) {
-            return true;
-        }
-
         for (Person person : people) {
             if (spawnPosition.distance(person.getPersonLogic().getPosition()) <= 64) {
                 return false;
@@ -200,7 +189,7 @@ public class Simulator {
         int Pop = 1;
         int electro = 1;
 
-        if (this.predictedGuests){
+        if (this.predictedGuests) {
             for (Show show : DataController.getPlanner().getShows()) {
                 String showgenre = show.getGenre().getSuperGenre();
                 switch (showgenre) {
@@ -253,9 +242,6 @@ public class Simulator {
         mapDataController.draw(g);
 
         for (Person person : people) {
-            person.draw(g);
-        }
-        for (Person person : artists) {
             person.draw(g);
         }
     }

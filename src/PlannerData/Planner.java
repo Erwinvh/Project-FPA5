@@ -1,6 +1,7 @@
 package PlannerData;
 
 import Enumerators.Genres;
+import GUILogic.DataController;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -205,6 +206,30 @@ public class Planner implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Stage getStage(String stageName) {
+        if (stageName == null || stageName.isEmpty()) {
+            return null;
+        }
+
+        for (Stage stage : getStages()) {
+            if (stageName.equals(stage.getName())) {
+                return stage;
+            }
+        }
+
+        return null;
+    }
+
+    public Artist getArtist(String artistName) {
+        for (Artist artist : DataController.getPlanner().getArtists()) {
+            if (artistName.equals(artist.getName())) {
+                return artist;
+            }
+        }
+
+        return null;
     }
 
     @Override

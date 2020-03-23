@@ -48,7 +48,7 @@ public class ArtistWindow {
      */
     public void artistAddWindow() {
         this.currStage.setWidth(275);
-        this.currStage.setHeight(400);
+        this.currStage.setHeight(450);
         this.currStage.setTitle("Add Artist");
 
         VBox newArtistList = new VBox();
@@ -72,6 +72,7 @@ public class ArtistWindow {
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
+        artistDescription.setPrefHeight(200);
 
         newArtistList.getChildren().addAll(artistNameLabel, artistName, artistGenreLabel, genreComboBox, artistDescriptionLabel, artistDescription);
 
@@ -113,7 +114,7 @@ public class ArtistWindow {
 
     public void artistEditWindow() {
         this.currStage.setWidth(275);
-        this.currStage.setHeight(400);
+        this.currStage.setHeight(450);
         this.currStage.setTitle("Edit Artist");
 
         VBox newArtistList = new VBox();
@@ -152,11 +153,12 @@ public class ArtistWindow {
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
+        artistDescription.setPrefHeight(150);
         newArtistList.getChildren().addAll(artistDescriptionLabel, artistDescription);
 
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("Select artist")) {
-                this.selectedArtist = stringToArtist(artistComboBox.getValue().toString());
+                this.selectedArtist = DataController.getPlanner().getArtist(artistComboBox.getValue().toString());
                 artistName.setText(this.selectedArtist.getName());
                 artistDescription.setText(this.selectedArtist.getDescription());
                 genreComboBox.setValue(this.selectedArtist.getGenre().getFancyName());
@@ -243,7 +245,7 @@ public class ArtistWindow {
         artistComboBox.getSelectionModel().selectFirst();
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("Select artist")) {
-                this.selectedArtist = stringToArtist(artistComboBox.getValue().toString());
+                this.selectedArtist = DataController.getPlanner().getArtist(artistComboBox.getValue().toString());
                 if (selectedArtist != null && !selectedArtist.getName().isEmpty()) {
                     this.artistDeleteText.textProperty().setValue("Do you want to delete the artist: " + selectedArtist.getName() + '\n' + " with the genre of " + selectedArtist.getGenre().getFancyName() + '\n' + " with the description: " + selectedArtist.getDescription());
                 }
@@ -299,16 +301,6 @@ public class ArtistWindow {
         artistDeleteScene.getStylesheets().add("Window-StyleSheet.css");
         this.currStage.setScene(artistDeleteScene);
         this.currStage.show();
-    }
-
-    // TODO: Move this logic perhaps to a static function in the artist class itself
-    public Artist stringToArtist(String artistString) {
-        for (Artist artist : DataController.getPlanner().getArtists()) {
-            if (artistString.equals(artist.getName())) {
-                return artist;
-            }
-        }
-        return null;
     }
 
     /**

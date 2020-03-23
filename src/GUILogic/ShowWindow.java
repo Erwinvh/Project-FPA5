@@ -175,7 +175,7 @@ public class ShowWindow {
                         }
                     }
 
-                    Artist artist = stringToArtist(comboBoxString);
+                    Artist artist = DataController.getPlanner().getArtist(comboBoxString);
                     if (artist != null) {
                         addedArtists.add(artist);
                     }
@@ -189,7 +189,7 @@ public class ShowWindow {
                 String showNameAdding = inputShowName.getText();
                 LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
                 LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
-                PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
+                PlannerData.Stage stageAdded = DataController.getPlanner().getStage((String) stage.getValue());
                 Genres addedGenre = Genres.getGenre(genreComboBox.getValue().toString());
 
                 String descriptionShow = descriptionTextArea.getText();
@@ -383,7 +383,7 @@ public class ShowWindow {
                         }
                     }
 
-                    Artist artist = stringToArtist(comboBoxString);
+                    Artist artist = DataController.getPlanner().getArtist(comboBoxString);
                     if (artist != null) {
                         addedArtists.add(artist);
                     }
@@ -397,7 +397,7 @@ public class ShowWindow {
                 String showNameAdding = inputShowName.getText();
                 LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
                 LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
-                PlannerData.Stage stageAdded = stringToStage((String) stage.getValue());
+                PlannerData.Stage stageAdded = DataController.getPlanner().getStage((String) stage.getValue());
                 Genres addedGenre = Genres.getGenre(genre.getValue().toString());
                 String descriptionShow = showDescription.getText();
                 int popularityAdded = (int) this.popularitySlider.getValue();
@@ -606,7 +606,7 @@ public class ShowWindow {
         stageBox.setOnAction(event -> {
             int stageCapacity = 100;
             if (!stageBox.getValue().equals("Select stage")) {
-                PlannerData.Stage selectedStage = stringToStage(stageBox.getValue().toString());
+                PlannerData.Stage selectedStage = DataController.getPlanner().getStage(stageBox.getValue().toString());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
                     stageCapacity = selectedStage.getCapacity();
                 }
@@ -689,29 +689,6 @@ public class ShowWindow {
         }
         time = time.plusHours(hours);
         return time;
-    }
-
-    // TODO: Make stringToStage logic in Stage
-    public PlannerData.Stage stringToStage(String stageString) {
-        if (stageString == null || stageString.isEmpty()) {
-            return null;
-        }
-        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
-            if (stageString.equals(stage.getName())) {
-                return stage;
-            }
-        }
-        return null;
-    }
-
-    // TODO: Move logic to Artist
-    public Artist stringToArtist(String artistString) {
-        for (Artist artist : DataController.getPlanner().getArtists()) {
-            if (artistString.equals(artist.getName())) {
-                return artist;
-            }
-        }
-        return null;
     }
 
     public int localTimeToIndex(LocalTime time) {
