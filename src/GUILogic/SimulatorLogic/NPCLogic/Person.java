@@ -40,7 +40,7 @@ public class Person {
         genrePicker(genreChanceList);
         this.personLogic = new PersonLogic(position, speed, this, isArtist);
     }
-    public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, int speed, boolean isArtist) {
+    public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, double speed, boolean isArtist) {
         this.name = name;
         this.isArtist = isArtist;
         genrePicker(genreChanceList);
@@ -167,5 +167,9 @@ public class Person {
 
     public Genres getFavoriteGenre() {
         return favoriteGenre;
+    }
+
+    public void setSpeed(double speed){
+        this.personLogic.setSpeed(speed);
     }
 }

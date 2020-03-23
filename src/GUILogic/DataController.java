@@ -26,12 +26,14 @@ import static PlannerData.Planner.saveFileName;
 public class DataController {
 
     private static Planner planner;
+    private static Clock clock;
 
     /**
      * Reads the Json file and creates an instance of Planner
      */
     public DataController() {
         planner = new Planner();
+        clock = new Clock(LocalTime.now());
 
         try {
             File file = new File(saveFileName);
@@ -121,5 +123,9 @@ public class DataController {
             }
         }
         return null;
+    }
+
+    public static Clock getClock() {
+        return clock;
     }
 }
