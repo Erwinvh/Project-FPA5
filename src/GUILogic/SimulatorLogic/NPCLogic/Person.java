@@ -165,4 +165,8 @@ public class Person {
     public String getName() {
         return name;
     }
+
+    public void setSpeed(double speed){
+        this.personLogic.setSpeed(speed);
+    }
 }

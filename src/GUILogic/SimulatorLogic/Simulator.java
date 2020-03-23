@@ -65,7 +65,7 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         distanceMaps = new DistanceMap[stageAmount + toiletAmount];
-
+        DataController.getClock().setToMidnight();
         createPredictions();
     }
 
@@ -90,21 +90,7 @@ public class Simulator {
             }
         }.start();
 
-        canvas.setOnMouseClicked(e -> {
-            clickAction(e);
-//            if (e.getButton() == MouseButton.SECONDARY){
-//                this.showNull = !this.showNull;
-//                if (this.showNull){
-//                    System.out.println("Shows: Non CameraTransformed");
-//                } else {
-//                    System.out.println("Shows: CameraTransformed");
-//                }
-//            } else
-
-            if (e.getButton() == MouseButton.PRIMARY) {
-                this.init();
-            }
-        });
+        canvas.setOnMouseClicked(this::clickAction);
 
 //        stage.setScene(new Scene(this.simulatorLayout));
 //        stage.setTitle("A5 FP");
@@ -113,7 +99,15 @@ public class Simulator {
         draw(graphics);
     }
 
-    public void update(double frameTime) {
+    /**
+     * updates the persons and sets their speed relative to the time passed
+     * @param deltaTime time passed in seconds
+     */
+    public void update(double deltaTime) {
+        DataController.getClock().update(deltaTime);
+
+        double speed = DataController.getClock().getSimulatorSpeed() * 60;
+
         if (artists.size()<DataController.getPlanner().getArtists().size()){
             peopleAmount++;
             artists = DataController.getPlanner().getArtists();
@@ -123,8 +117,10 @@ public class Simulator {
             spawnPerson();
 
         for (Person person : people) {
+            person.setSpeed(speed*deltaTime);
             person.update(people);
         }
+
     }
 
     /**
