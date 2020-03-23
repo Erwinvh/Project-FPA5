@@ -4,13 +4,16 @@ public class Clock {
     private int hours, minutes;
     private double seconds;
     private double simulatorSpeed;
+    private double counter;
+    private boolean halfHourPassed;
 
-    public Clock() {
-        this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
-        this.simulatorSpeed = 4;
+    public Clock(LocalTime localTime) {
+        this.localTime = localTime;
+        this.simulatorSpeed = 60;
+        this.counter = 0;
+        this.halfHourPassed = false;
     }
+
 
     /**
      * function adds the corresponding time by calculating how much time has passed
@@ -18,11 +21,13 @@ public class Clock {
      * @param deltaTime in seconds
      */
     public void update(double deltaTime) {
-        seconds += deltaTime * simulatorSpeed;
-        if (seconds == 60) {
-            minutes++;
-            seconds = 0;
-            if (minutes == 30)
+        if(halfHourPassed){
+            halfHourPassed = false;
+        }
+        counter += deltaTime * simulatorSpeed;
+        if (counter >= 1) {
+            localTime = localTime.plusSeconds(1);
+            if (localTime.getMinute()==0||localTime.getMinute()==30){
                 pulse();
             if (minutes == 60) {
                 pulse();
@@ -36,7 +41,14 @@ public class Clock {
 
     }
 
+    public boolean isHalfHourPassed() {
+        return halfHourPassed;
+    }
+
     private void pulse() {
+        System.out.println("Tick!");
+        this.halfHourPassed = true;
+    }
 
     }
 

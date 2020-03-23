@@ -293,4 +293,5 @@ public class PersonLogic {
     public void setNegativeFeedback(int negativeFeedback) {
         this.negativeFeedback = negativeFeedback;
     }
+
 }

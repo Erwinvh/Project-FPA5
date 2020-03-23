@@ -174,7 +174,4 @@ public class Person {
         return name;
     }
 
-    public void setSpeed(double speed){
-        this.personLogic.setSpeed(speed);
-    }
 }
