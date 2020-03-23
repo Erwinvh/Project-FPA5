@@ -94,6 +94,10 @@ public class MapDataController {
         }
     }
 
+    public static DistanceMap[] getDistanceMaps() {
+        return distanceMaps;
+    }
+
     /**
      * This function sets the value of WalkableMap at index i,j to true when at that position the id 214 is found
      *

@@ -125,11 +125,11 @@ public class Simulator {
         double speed = DataController.getClock().getSimulatorSpeed() * 60;
 
         for (Person person : people) {
-            person.setSpeed(speed*deltaTime);
+            person.setSpeed(speed);
             person.update(people,artists);
         }
         for (Person artist : artists){
-            artist.setSpeed(speed*deltaTime);
+            artist.setSpeed(speed);
             artist.update(people, artists);
         }
     }

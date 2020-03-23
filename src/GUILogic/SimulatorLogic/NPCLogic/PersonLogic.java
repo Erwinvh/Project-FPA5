@@ -1,12 +1,17 @@
 package GUILogic.SimulatorLogic.NPCLogic;
 
+import GUILogic.Clock;
+import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.MapData.TargetArea;
 import NPCLogic.Person;
+import PlannerData.Planner;
 import PlannerData.Show;
+import PlannerData.Stage;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -34,7 +39,7 @@ public class PersonLogic {
         this.angle = 0;
         this.speed = speed;
         this.rotationSpeed = 100;
-        selectRandomMap();
+        selectNewMap();
         this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
@@ -110,20 +115,40 @@ public class PersonLogic {
         }
     }
 
+    /**
+     * sets the distanceMap to a new map depending on the isGoingToShow method
+     */
     public void selectNewMap(){
-       ArrayList<Show> activeShows = null;
-       //activeShows = getActiveShows();
+        this.isRoaming = false;
+       ArrayList<Show> activeShows = DataController.getActiveShows();
         for(Show show : activeShows){
             if(isGoingToShow(show)){
-                this.distanceMap = MapDataController.getDistanceMap(show.getStageName());
-                return;
+                DistanceMap targetMap = getDistanceMap(show.getStage());
+                if(targetMap != null){
+                    this.distanceMap = targetMap;
+                    return;
+                }
             }
         }
-        String idleName = "Idle" + (int) (Math.random() * 9);
+        String idleName = "Idle" + (int) (Math.random() * 5 +1);
         this.distanceMap = MapDataController.getDistanceMap(idleName);
     }
 
+    public DistanceMap getDistanceMap(Stage stage){
+        int stageIndex = DataController.getPlanner().getStages().indexOf(stage);
+        for(DistanceMap distanceMap : MapDataController.getDistanceMaps()){
+            if(distanceMap.getMapName().equals( "Stage"+stageIndex+1)){
+                return distanceMap;
+            }
+        }
+        return null;
+    }
 
+    /**
+     * Determines if a person is going to a show
+     * @param show the show the person is deciding to go to
+     * @return true if the persone wants to go to the show
+     */
     private boolean isGoingToShow(Show show){
         if(person.getFavoriteGenre().getFancyName() == show.getGenre().getSuperGenre()){
             if(Math.random() >= 0.1){
