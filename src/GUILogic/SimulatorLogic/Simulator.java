@@ -14,7 +14,6 @@ import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -77,6 +76,7 @@ public class Simulator {
 
     /**
      * updates the persons and sets their speed relative to the time passed
+     *
      * @param deltaTime time passed in seconds
      */
     public void update(double deltaTime) {
@@ -84,7 +84,7 @@ public class Simulator {
 
         double speed = DataController.getClock().getSimulatorSpeed() * 60;
 
-        if (artists.size()<DataController.getPlanner().getArtists().size()){
+        if (artists.size() < DataController.getPlanner().getArtists().size()) {
             peopleAmount++;
             artists = DataController.getPlanner().getArtists();
         }
@@ -93,10 +93,9 @@ public class Simulator {
             spawnPerson();
 
         for (Person person : people) {
-            person.setSpeed(speed*deltaTime);
+            person.setSpeed(speed * deltaTime);
             person.update(people);
         }
-
     }
 
     /**
@@ -217,7 +216,6 @@ public class Simulator {
 
         for (Person person : people)
             person.draw(g);
-        }
     }
 
     public void setPeopleAmount(int peopleAmount) {
