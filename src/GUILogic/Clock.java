@@ -9,7 +9,7 @@ public class Clock {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
-        this.simulatorSpeed = 4;
+        this.simulatorSpeed = 60;
     }
 
     /**
@@ -42,13 +42,8 @@ public class Clock {
 
     /**
      * set the speed 1 real second is how many seconds in the simulator
-     *
-     * @param simulatorSpeed limited to 30, higher then 30 makes the simulator not runnable
      */
     public void setSimulatorSpeed(double simulatorSpeed) throws Exception {
-        if (simulatorSpeed > 30)
-            throw new Exception("speed out of bounds");
-
         this.simulatorSpeed = simulatorSpeed;
     }
 
