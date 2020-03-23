@@ -70,7 +70,7 @@ public class DataController {
                             Stage stageInShow = new Stage(stage.getInt("capacity"),stage.getString("name"));
                             String name = show.getString("name");
                             Genres genre = stringToGenre( show.getString("genre"));
-                            String description = show.getString("description");
+                            String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
