@@ -113,7 +113,15 @@ public class Simulator {
         draw(graphics);
     }
 
-    public void update(double frameTime) {
+    /**
+     * updates the persons and sets their speed relative to the time passed
+     * @param deltaTime time passed in seconds
+     */
+    public void update(double deltaTime) {
+        DataController.getClock().update(deltaTime);
+
+        double speed = DataController.getClock().getSimulatorSpeed() * 60;
+
         if (artists.size()<DataController.getPlanner().getArtists().size()){
             peopleAmount++;
             artists = DataController.getPlanner().getArtists();
@@ -123,8 +131,10 @@ public class Simulator {
             spawnPerson();
 
         for (Person person : people) {
+            person.setSpeed(speed*deltaTime);
             person.update(people);
         }
+
     }
 
     /**
