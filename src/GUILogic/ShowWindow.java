@@ -175,7 +175,7 @@ public class ShowWindow {
                         }
                     }
 
-                    Artist artist = stringToArtist(comboBoxString);
+                    Artist artist = DataController.getPlanner().getArtist(comboBoxString);
                     if (artist != null) {
                         addedArtists.add(artist);
                     }
@@ -383,7 +383,7 @@ public class ShowWindow {
                         }
                     }
 
-                    Artist artist = stringToArtist(comboBoxString);
+                    Artist artist = DataController.getPlanner().getArtist(comboBoxString);
                     if (artist != null) {
                         addedArtists.add(artist);
                     }
@@ -699,16 +699,6 @@ public class ShowWindow {
         for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
             if (stageString.equals(stage.getName())) {
                 return stage;
-            }
-        }
-        return null;
-    }
-
-    // TODO: Move logic to Artist
-    public Artist stringToArtist(String artistString) {
-        for (Artist artist : DataController.getPlanner().getArtists()) {
-            if (artistString.equals(artist.getName())) {
-                return artist;
             }
         }
         return null;
