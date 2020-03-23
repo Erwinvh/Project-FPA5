@@ -253,7 +253,7 @@ createTable();
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
             if (DataController.getPlanner().getStages().size() <= 5) {
-                new StageWindow(4, this.primaryStage);
+                new StageWindow(4, this.primaryStage,this);
             } else {
                 this.errorList.clear();
                 this.errorList.add("You cannot exceed the maximum of 6 stages.");
@@ -268,7 +268,7 @@ createTable();
                 this.errorList.add("There is no stage to edit.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new StageWindow(5, this.primaryStage);
+                new StageWindow(5, this.primaryStage,this);
             }
         });
 
@@ -279,7 +279,7 @@ createTable();
                 this.errorList.add("There is no stage to delete.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new StageWindow(6, this.primaryStage);
+                new StageWindow(6, this.primaryStage,this);
             }
         });
 
