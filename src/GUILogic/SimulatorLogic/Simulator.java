@@ -65,7 +65,7 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         distanceMaps = new DistanceMap[stageAmount + toiletAmount];
-
+        DataController.getClock().setToMidnight();
         createPredictions();
     }
 
