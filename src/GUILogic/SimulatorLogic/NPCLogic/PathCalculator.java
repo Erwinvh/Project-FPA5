@@ -69,18 +69,4 @@ public class PathCalculator {
 
         return currentPosition;
     }
-
-    public static boolean isWalkable(Point2D currentPosition) {
-        DistanceMap[] distanceMaps = null;//Main.getDistanceMaps();
-        boolean[][] walkableMap = distanceMaps[1].getWalkableMap();
-        int xPos = (int) currentPosition.getX() / 32;
-        int yPos = (int) currentPosition.getY() / 32;
-        xPos = Math.min(xPos, 99);
-        xPos = Math.max(0, xPos);
-        yPos = Math.min(yPos, 99);
-        yPos = Math.max(0, yPos);
-        if (walkableMap[xPos][yPos]) {
-            return true;
-        } else return false;
-    }
 }

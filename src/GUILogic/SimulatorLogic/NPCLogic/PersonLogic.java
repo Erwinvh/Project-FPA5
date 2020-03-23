@@ -9,16 +9,18 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 
 public class PersonLogic {
+
     private Point2D position;
     private double angle;
     private double speed;
     private Point2D target;
     private double rotationSpeed;
-    //    private String targetMapName;
     private DistanceMap distanceMap;
     private String activity;
     private NPCLogic.Person person;
     private Point2D newPosition;
+
+    private boolean isRoaming = false;
 
     private int negativeFeedback = 5;
 
@@ -57,85 +59,6 @@ public class PersonLogic {
                 this.negativeFeedback = 5;
             }
         }
-    }
-
-    public Point2D getPosition() {
-        return position;
-    }
-
-    public AffineTransform getTransform() {
-        AffineTransform tx = new AffineTransform();
-        tx.translate(position.getX() - this.person.getSprite().getWidth() / 2, position.getY() - this.person.getSprite().getHeight() / 2);
-        tx.rotate(this.angle, this.person.getSprite().getWidth() / 2, this.person.getSprite().getHeight() / 2);
-        return tx;
-    }
-
-    public void setTarget(Point2D target) {
-        this.target = target;
-    }
-
-    public String getActivity() {
-        return activity;
-    }
-
-    public void setActivity(String activity) {
-        this.activity = activity;
-    }
-
-    public double getAngle() {
-        return angle;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public Point2D getTarget() {
-        return target;
-    }
-
-    public double getRotationSpeed() {
-        return rotationSpeed;
-    }
-
-    //public String getTargetMapName() {
-    //     return targetMapName;
-    // }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public int getNegativeFeedback() {
-        return negativeFeedback;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-//    public void setTargetMapName(String mapName) {
-//        this.targetMapName = mapName;
-//    }
-
-    public void setPosition(Point2D position) {
-        this.position = position;
-    }
-
-    public void setAngle(double angle) {
-        this.angle = angle;
-    }
-
-    public void setRotationSpeed(double rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public void setNegativeFeedback(int negativeFeedback) {
-        this.negativeFeedback = negativeFeedback;
     }
 
     /**
@@ -191,9 +114,12 @@ public class PersonLogic {
 
     public void update() {
         if (hasArrivedAtDestination()) {
-            selectRandomMap();
-            //targetMapName = selectRandomMap();
-            setNextTarget();
+            isRoaming = true;
+            roamInTargetArea();
+//            selectRandomMap();
+//            setNextTarget();
+        } else if (isRoaming && hasArrivedAtTarget()) {
+            roamInTargetArea();
         } else if (hasArrivedAtTarget()) {
             setNextTarget();
         }
@@ -218,7 +144,92 @@ public class PersonLogic {
                 this.position.getY() + this.speed * Math.sin(this.angle));
     }
 
+    /**
+     * This function sets the target of this Person to be within it's targetArea, thus allowing it to walk around a certain targetArea
+     */
+    private void roamInTargetArea() {
+        if (isRoaming) {
+            Point2D minPos = distanceMap.getTarget().getPosition();
+
+            double randomX = Math.random() * distanceMap.getTarget().getSize().getX();
+            double randomY = Math.random() * distanceMap.getTarget().getSize().getY();
+
+            this.setTarget(new Point2D.Double(minPos.getX() + randomX, minPos.getY() + randomY));
+        }
+    }
+
+    public boolean isRoaming() {
+        return isRoaming;
+    }
+
+    public void setRoaming(boolean roaming) {
+        isRoaming = roaming;
+    }
+
     public DistanceMap getDistanceMap() {
         return this.distanceMap;
+    }
+
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public AffineTransform getTransform() {
+        AffineTransform tx = new AffineTransform();
+        tx.translate(position.getX() - this.person.getSprite().getWidth() * 0.5, position.getY() - this.person.getSprite().getHeight() * 0.5);
+        tx.rotate(this.angle, this.person.getSprite().getWidth() * 0.5, this.person.getSprite().getHeight() * 0.5);
+        return tx;
+    }
+
+    public void setTarget(Point2D target) {
+        this.target = target;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public Point2D getTarget() {
+        return target;
+    }
+
+    public double getRotationSpeed() {
+        return rotationSpeed;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public int getNegativeFeedback() {
+        return negativeFeedback;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public void setPosition(Point2D position) {
+        this.position = position;
+    }
+
+    public void setRotationSpeed(double rotationSpeed) {
+        this.rotationSpeed = rotationSpeed;
+    }
+
+    public void setNegativeFeedback(int negativeFeedback) {
+        this.negativeFeedback = negativeFeedback;
     }
 }
