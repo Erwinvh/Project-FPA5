@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "shows": [
     {
@@ -34,3 +35,6 @@
     }
   ]
 }
+=======
+{"shows":[],"artists":[],"stages":[]}
+>>>>>>> refactor
