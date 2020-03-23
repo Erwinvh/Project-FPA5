@@ -1,5 +1,5 @@
 { "compressionlevel":0,
- "height": 100,
+ "height":100,
  "infinite":false,
  "layers":[
         {
@@ -145,13 +145,13 @@
                  "y":414
                 }, 
                 {
-                 "height":358.666666666667,
+                 "height":358.667,
                  "id":19,
                  "name":"Stage2",
                  "rotation":0,
                  "type":"Artist",
                  "visible":true,
-                 "width":71.3333333333333,
+                 "width":71.3333,
                  "x":576,
                  "y":1466
                 }, 
@@ -178,42 +178,6 @@
                  "y":1282
                 }, 
                 {
-                 "height":0,
-                 "id":26,
-                 "name":"Stage6",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":-1,
-                         "y":83
-                        }, 
-                        {
-                         "x":353,
-                         "y":85
-                        }, 
-                        {
-                         "x":353,
-                         "y":-256
-                        }, 
-                        {
-                         "x":242,
-                         "y":-255
-                        }, 
-                        {
-                         "x":241,
-                         "y":0
-                        }],
-                 "rotation":0,
-                 "type":"Artist",
-                 "visible":true,
-                 "width":0,
-                 "x":2591,
-                 "y":2874
-                }, 
-                {
                  "height":334,
                  "id":27,
                  "name":"Stage5",
@@ -225,192 +189,70 @@
                  "y":97
                 }, 
                 {
-                 "height":0,
-                 "id":28,
+                 "height":778.666666666667,
+                 "id":37,
                  "name":"Idle3",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":380,
-                         "y":-10
-                        }, 
-                        {
-                         "x":584,
-                         "y":108
-                        }, 
-                        {
-                         "x":626,
-                         "y":272
-                        }, 
-                        {
-                         "x":566,
-                         "y":612
-                        }, 
-                        {
-                         "x":396,
-                         "y":866
-                        }, 
-                        {
-                         "x":-14,
-                         "y":854
-                        }],
                  "rotation":0,
                  "type":"All",
                  "visible":true,
-                 "width":0,
-                 "x":1698,
-                 "y":262
+                 "width":526.666666666667,
+                 "x":1708,
+                 "y":320
                 }, 
                 {
-                 "height":0,
-                 "id":29,
+                 "height":684,
+                 "id":38,
                  "name":"Idle2",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":-100,
-                         "y":116
-                        }, 
-                        {
-                         "x":-136,
-                         "y":310
-                        }, 
-                        {
-                         "x":-136,
-                         "y":658
-                        }, 
-                        {
-                         "x":-50,
-                         "y":872
-                        }, 
-                        {
-                         "x":106,
-                         "y":870
-                        }, 
-                        {
-                         "x":108,
-                         "y":-8
-                        }],
                  "rotation":0,
                  "type":"All",
                  "visible":true,
-                 "width":0,
-                 "x":1496,
-                 "y":976
+                 "width":192,
+                 "x":1400,
+                 "y":1080
                 }, 
                 {
-                 "height":0,
-                 "id":30,
-                 "name":"Idle4",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":274,
-                         "y":-584
-                        }, 
-                        {
-                         "x":1012,
-                         "y":-582
-                        }, 
-                        {
-                         "x":1006,
-                         "y":-244
-                        }, 
-                        {
-                         "x":780,
-                         "y":-18
-                        }, 
-                        {
-                         "x":446,
-                         "y":108
-                        }, 
-                        {
-                         "x":-2,
-                         "y":106
-                        }],
-                 "rotation":0,
-                 "type":"All",
-                 "visible":true,
-                 "width":0,
-                 "x":1364,
-                 "y":2830
-                }, 
-                {
-                 "height":0,
-                 "id":31,
+                 "height":505.333333333333,
+                 "id":39,
                  "name":"Idle1",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":210,
-                         "y":-166
-                        }, 
-                        {
-                         "x":432,
-                         "y":-170
-                        }, 
-                        {
-                         "x":508,
-                         "y":36
-                        }, 
-                        {
-                         "x":512,
-                         "y":528
-                        }, 
-                        {
-                         "x":-66,
-                         "y":524
-                        }, 
-                        {
-                         "x":-70,
-                         "y":76
-                        }],
                  "rotation":0,
                  "type":"All",
                  "visible":true,
-                 "width":0,
-                 "x":138,
-                 "y":676
+                 "width":505.333333333333,
+                 "x":136,
+                 "y":693.333333333333
                 }, 
                 {
-                 "height":0,
-                 "id":35,
-                 "name":"Idle5",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":480,
-                         "y":-2
-                        }, 
-                        {
-                         "x":480,
-                         "y":1776
-                        }, 
-                        {
-                         "x":-22,
-                         "y":1782
-                        }],
+                 "height":588,
+                 "id":41,
+                 "name":"Idle4",
                  "rotation":0,
                  "type":"All",
                  "visible":true,
-                 "width":0,
-                 "x":2656,
-                 "y":630
+                 "width":949.333333333333,
+                 "x":1402.66666666667,
+                 "y":2262.66666666667
+                }, 
+                {
+                 "height":1769.69696969697,
+                 "id":42,
+                 "name":"Idle5",
+                 "rotation":0,
+                 "type":"All",
+                 "visible":true,
+                 "width":500,
+                 "x":2642.42424242424,
+                 "y":639.393939393939
+                }, 
+                {
+                 "height":100,
+                 "id":43,
+                 "name":"Stage6",
+                 "rotation":0,
+                 "type":"Artist",
+                 "visible":true,
+                 "width":135,
+                 "x":2827,
+                 "y":2866
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -419,7 +261,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":36,
+ "nextobjectid":44,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.2",
@@ -428,7 +270,7 @@
         {
          "columns":10,
          "firstgid":1,
-         "image":"Tilesheet-land-v5.png",
+         "image":"..\/..\/New folder\/Tilesheet-land-v5.png",
          "imageheight":384,
          "imagewidth":320,
          "margin":0,
@@ -441,7 +283,7 @@
         {
          "columns":8,
          "firstgid":121,
-         "image":"Tilesheet-water.png",
+         "image":"..\/..\/New folder\/Tilesheet-water.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,
@@ -454,7 +296,7 @@
         {
          "columns":7,
          "firstgid":185,
-         "image":"preview.png",
+         "image":"..\/..\/New folder\/preview.png",
          "imageheight":128,
          "imagewidth":224,
          "margin":0,
@@ -467,7 +309,7 @@
         {
          "columns":2,
          "firstgid":213,
-         "image":"Collission.png",
+         "image":"..\/..\/New folder\/Collission.png",
          "imageheight":32,
          "imagewidth":64,
          "margin":0,
@@ -480,7 +322,7 @@
         {
          "columns":32,
          "firstgid":215,
-         "image":"terrain_atlas.png",
+         "image":"..\/..\/New folder\/terrain_atlas.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -493,7 +335,7 @@
         {
          "columns":8,
          "firstgid":1239,
-         "image":"adobe.png",
+         "image":"..\/..\/New folder\/adobe.png",
          "imageheight":384,
          "imagewidth":256,
          "margin":0,
@@ -506,7 +348,7 @@
         {
          "columns":2,
          "firstgid":1335,
-         "image":"bazaar_table-ns-blue.png",
+         "image":"..\/..\/New folder\/bazaar_table-ns-blue.png",
          "imageheight":64,
          "imagewidth":64,
          "margin":0,
@@ -519,7 +361,7 @@
         {
          "columns":2,
          "firstgid":1339,
-         "image":"bazaar_table-ns-red.png",
+         "image":"..\/..\/New folder\/bazaar_table-ns-red.png",
          "imageheight":64,
          "imagewidth":64,
          "margin":0,
@@ -532,7 +374,7 @@
         {
          "columns":16,
          "firstgid":1343,
-         "image":"decorations-medieval.png",
+         "image":"..\/..\/New folder\/decorations-medieval.png",
          "imageheight":2048,
          "imagewidth":512,
          "margin":0,
@@ -545,7 +387,7 @@
         {
          "columns":16,
          "firstgid":2367,
-         "image":"fence_medieval.png",
+         "image":"..\/..\/New folder\/fence_medieval.png",
          "imageheight":1024,
          "imagewidth":512,
          "margin":0,
@@ -558,7 +400,7 @@
         {
          "columns":6,
          "firstgid":2879,
-         "image":"flower.png",
+         "image":"..\/..\/New folder\/flower.png",
          "imageheight":96,
          "imagewidth":192,
          "margin":0,
@@ -566,12 +408,32 @@
          "spacing":0,
          "tilecount":18,
          "tileheight":32,
-         "tilewidth":32
+         "tilewidth":32,
+         "wangsets":[
+                {
+                 "cornercolors":[
+                        {
+                         "color":"#ff0000",
+                         "name":"",
+                         "probability":1,
+                         "tile":-1
+                        }, 
+                        {
+                         "color":"#00ff00",
+                         "name":"",
+                         "probability":1,
+                         "tile":-1
+                        }],
+                 "edgecolors":[],
+                 "name":"New Wang Set",
+                 "tile":-1,
+                 "wangtiles":[]
+                }]
         }, 
         {
          "columns":1,
          "firstgid":2897,
-         "image":"lamp-2-post-1-short-single.png",
+         "image":"..\/..\/New folder\/PNG\/32x32\/lamp-2-post-1\/lamp-2-post-1-short-single.png",
          "imageheight":96,
          "imagewidth":32,
          "margin":0,
