@@ -90,21 +90,7 @@ public class Simulator {
             }
         }.start();
 
-        canvas.setOnMouseClicked(e -> {
-            clickAction(e);
-//            if (e.getButton() == MouseButton.SECONDARY){
-//                this.showNull = !this.showNull;
-//                if (this.showNull){
-//                    System.out.println("Shows: Non CameraTransformed");
-//                } else {
-//                    System.out.println("Shows: CameraTransformed");
-//                }
-//            } else
-
-            if (e.getButton() == MouseButton.PRIMARY) {
-                this.init();
-            }
-        });
+        canvas.setOnMouseClicked(this::clickAction);
 
 //        stage.setScene(new Scene(this.simulatorLayout));
 //        stage.setTitle("A5 FP");
