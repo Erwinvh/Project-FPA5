@@ -1,5 +1,6 @@
 package GUILogic;
 
+import PlannerData.Planner;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
@@ -19,6 +20,7 @@ public class SettingsTab {
     private int speed;
     private int amountPerNPC;
     private Tab settingsTab;
+    private Planner planning = DataController.getPlanner();
 
     public SettingsTab(Stage primaryStage) {
 //        this.amountPerNPC = amount;
@@ -142,6 +144,8 @@ public class SettingsTab {
 
         Button confirm = new Button("Confirm");
         confirm.setOnAction(e -> {
+            DataController.getPlanner().deleteAll();
+            DataController.getPlanner().savePlanner();
             DeleteAll.close();
         });
         Buttons.getChildren().add(confirm);
@@ -176,6 +180,8 @@ public class SettingsTab {
 
         Button confirm = new Button("Confirm");
         confirm.setOnAction(e -> {
+            DataController.getPlanner().deleteShows();
+            DataController.getPlanner().savePlanner();
             DeleteShow.close();
         });
         Buttons.getChildren().add(confirm);

@@ -87,6 +87,7 @@ public class ArtistWindow {
             if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
                 try {
                     DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue().toString()), artistDescription.getText());
+                    DataController.getPlanner().savePlanner();
                     this.currStage.close();
                 } catch (Exception event) {
                     this.errorList.add("Failed to add the artist.");
