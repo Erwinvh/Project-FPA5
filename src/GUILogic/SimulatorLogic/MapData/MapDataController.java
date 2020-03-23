@@ -31,8 +31,8 @@ public class MapDataController {
     //arraylist where the layers are stored
     private ArrayList<TiledLayer> tiledLayers;
 
-    private BufferedImage mapImage;
-    private WalkableMap walkableMap;
+    private static BufferedImage mapImage;
+    private static WalkableMap walkableMap;
     private static TargetArea[] targetAreas;
     private static DistanceMap[] distanceMaps;
 
@@ -193,5 +193,9 @@ public class MapDataController {
 
     public static int getTileSize() {
         return TILE_SIZE;
+    }
+
+    public static BufferedImage getMapImage() {
+        return mapImage;
     }
 }

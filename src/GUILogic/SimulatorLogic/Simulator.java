@@ -14,6 +14,7 @@ import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class Simulator {
     private ArrayList<Person> people;
     private ArrayList<Person> artists;
 
-    private int peopleAmount = 30;
+    private int peopleAmount = 1;
     private int globalSpeed = 4;
     private CameraTransform cameraTransform;
     private boolean predictedGuests = true;
@@ -185,16 +186,16 @@ public class Simulator {
     public void draw(FXGraphics2D g) {
         //Gets inverseTransform from cameraTransform so the correct rectangle can be cleared.
         AffineTransform inverse = this.cameraTransform.getInverseTransform();
+
         g.clearRect(
-                (int) inverse.getTranslateX(),
-                (int) inverse.getTranslateY(),
-                (int) (inverse.getScaleX() * this.canvas.getWidth() - inverse.getTranslateX()),
-                (int) (inverse.getScaleY() * this.canvas.getHeight() - inverse.getTranslateY())
+                (int) (inverse.getTranslateX()),
+                (int) (inverse.getTranslateY()),
+                (int) (MapDataController.getMapWidth() * 16 * inverse.getScaleX()),
+                (int) (MapDataController.getMapHeight() * 8 * inverse.getScaleY())
         );
 
         g.setTransform(this.cameraTransform.getTransform());
         g.setBackground(Color.black);
-        g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
         mapDataController.draw(g);
 
