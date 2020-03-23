@@ -22,7 +22,11 @@ public class GUI extends Application {
             if (newTab == visualTab.getVisualTab()) {
                 visualTab.update();
             } else if (newTab == simulatorTab.getSimulatorTab()){
+
                 simulatorTab.getSimulator().init();
+            }
+            else if (newTab == scheduleTab.getScheduleTab()){
+scheduleTab.resetData();
             }
         });
 

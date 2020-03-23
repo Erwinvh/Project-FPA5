@@ -167,6 +167,11 @@ public class ScheduleTab {
         }
     }
 
+    public void resetData(){
+        this.data = FXCollections.observableArrayList();
+createTable();
+    }
+
     /**
      * This method creates the base Layout of the Schedule tab by calling the separate pieces.
      */
@@ -221,7 +226,7 @@ public class ScheduleTab {
         });
 
         Button addArtistButton = new Button("Add Artist");
-        addArtistButton.setOnAction(event -> new ArtistWindow(1, this.primaryStage));
+        addArtistButton.setOnAction(event -> new ArtistWindow(1, this.primaryStage,this));
 
         Button editArtistButton = new Button("Edit Artist");
         editArtistButton.setOnAction(event -> {
@@ -230,7 +235,7 @@ public class ScheduleTab {
                 this.errorList.add("There is no Artist to edit.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new ArtistWindow(2, this.primaryStage);
+                new ArtistWindow(2, this.primaryStage,this);
             }
         });
 
@@ -241,7 +246,7 @@ public class ScheduleTab {
                 this.errorList.add("There is no Artist to delete.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new ArtistWindow(3, this.primaryStage);
+                new ArtistWindow(3, this.primaryStage,this);
             }
         });
 
