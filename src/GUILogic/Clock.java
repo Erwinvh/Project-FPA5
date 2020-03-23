@@ -9,7 +9,7 @@ public class Clock {
 
     public Clock(LocalTime localTime) {
         this.localTime = localTime;
-        this.simulatorSpeed = 30;
+        this.simulatorSpeed = 4;
         this.counter = 0;
     }
 
@@ -22,8 +22,15 @@ public class Clock {
         counter += deltaTime * simulatorSpeed;
         if (counter >= 1) {
             localTime = localTime.plusSeconds(1);
+            if (localTime.getMinute()==0||localTime.getMinute()==30){
+                pulse();
+            }
             counter--;
         }
+    }
+
+    private void pulse() {
+        
     }
 
     public LocalTime getLocalTime() {
