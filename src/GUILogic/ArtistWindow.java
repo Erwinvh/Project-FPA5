@@ -48,7 +48,7 @@ public class ArtistWindow {
      */
     public void artistAddWindow() {
         this.currStage.setWidth(275);
-        this.currStage.setHeight(400);
+        this.currStage.setHeight(450);
         this.currStage.setTitle("Add Artist");
 
         VBox newArtistList = new VBox();
@@ -72,6 +72,7 @@ public class ArtistWindow {
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
+        artistDescription.setPrefHeight(200);
 
         newArtistList.getChildren().addAll(artistNameLabel, artistName, artistGenreLabel, genreComboBox, artistDescriptionLabel, artistDescription);
 
@@ -113,7 +114,7 @@ public class ArtistWindow {
 
     public void artistEditWindow() {
         this.currStage.setWidth(275);
-        this.currStage.setHeight(400);
+        this.currStage.setHeight(450);
         this.currStage.setTitle("Edit Artist");
 
         VBox newArtistList = new VBox();
@@ -152,6 +153,7 @@ public class ArtistWindow {
         Label artistDescriptionLabel = new Label("Artist's description:");
         TextArea artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
+        artistDescription.setPrefHeight(150);
         newArtistList.getChildren().addAll(artistDescriptionLabel, artistDescription);
 
         artistComboBox.setOnAction(event -> {
