@@ -81,6 +81,9 @@ public class Simulator {
     public void update(double deltaTime) {
         DataController.getClock().update(deltaTime);
 
+        if(DataController.getClock().isHalfHourPassed()){
+            pulse();
+        }
         double speed = DataController.getClock().getSimulatorSpeed() * 60;
 
         if (artists.size() < DataController.getPlanner().getArtists().size()) {
@@ -227,5 +230,11 @@ public class Simulator {
 
     public void setPredictedGuests(boolean predictedGuests) {
         this.predictedGuests = predictedGuests;
+    }
+
+    public void pulse() {
+        for(Person person: people){
+            person.getPersonLogic().selectNewMap();
+        }
     }
 }

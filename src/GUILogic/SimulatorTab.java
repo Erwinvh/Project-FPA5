@@ -16,6 +16,4 @@ class SimulatorTab {
     Tab getSimulatorTab() {
         return simulatorTab;
     }
-
-    Simulator getSimulator(){ return this.simulator; }
 }
