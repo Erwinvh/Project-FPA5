@@ -164,4 +164,8 @@ public class Person {
     public BufferedImage getSprite() {
         return sprite;
     }
+
+    public Genres getFavoriteGenre() {
+        return favoriteGenre;
+    }
 }

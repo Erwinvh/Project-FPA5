@@ -3,9 +3,11 @@ package GUILogic.SimulatorLogic.NPCLogic;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.MapData.TargetArea;
 import NPCLogic.Person;
+import PlannerData.Show;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class PersonLogic {
@@ -105,6 +107,35 @@ public class PersonLogic {
             if (targetAreaType.equals(TargetArea.TargetAreaType.ALL) || targetAreaType.equals(TargetArea.TargetAreaType.VISITOR)) {
                 this.distanceMap = MapDataController.getDistanceMap(targetAreas[index]);
             } else selectRandomMap();
+        }
+    }
+
+    public void selectNewMap(){
+       ArrayList<Show> activeShows = null;
+       //activeShows = getActiveShows();
+        for(Show show : activeShows){
+            if(isGoingToShow(show)){
+                this.distanceMap = MapDataController.getDistanceMap(show.getStageName());
+                return;
+            }
+        }
+        String idleName = "Idle" + (int) (Math.random() * 9);
+        this.distanceMap = MapDataController.getDistanceMap(idleName);
+    }
+
+
+    private boolean isGoingToShow(Show show){
+        if(person.getFavoriteGenre().getFancyName() == show.getGenre().getSuperGenre()){
+            if(Math.random() >= 0.1){
+                return true;
+            }else {
+                return false;
+            }
+        }
+        if(Math.random() >= 0.33){
+            return true;
+        }else {
+            return false;
         }
     }
 
