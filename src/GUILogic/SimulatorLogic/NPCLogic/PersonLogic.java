@@ -1,11 +1,19 @@
 package GUILogic.SimulatorLogic.NPCLogic;
 
+import GUILogic.Clock;
+import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.MapData.TargetArea;
 import NPCLogic.Person;
+import PlannerData.Artist;
+import PlannerData.Planner;
+import PlannerData.Show;
+import PlannerData.Stage;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class PersonLogic {
@@ -36,7 +44,7 @@ public class PersonLogic {
         this.angle = 0;
         this.speed = speed * speedMultiplyer;
         this.rotationSpeed = 100;
-        selectRandomMap();
+        selectNewMap();
         this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
 
@@ -110,6 +118,69 @@ public class PersonLogic {
             if (targetAreaType.equals(TargetArea.TargetAreaType.ALL) || targetAreaType.equals(TargetArea.TargetAreaType.VISITOR)) {
                 this.distanceMap = MapDataController.getDistanceMap(targetAreas[index]);
             } else selectRandomMap();
+        }
+    }
+
+    /**
+     * sets the distanceMap to a new map depending on the isGoingToShow method
+     */
+    public void selectNewMap(){
+        this.isRoaming = false;
+       ArrayList<Show> activeShows = DataController.getActiveShows();
+        for(Show show : activeShows){
+            if(isGoingToShow(show)){
+                DistanceMap targetMap = getDistanceMap(show.getStage());
+                if(targetMap != null){
+                    this.distanceMap = targetMap;
+                    return;
+                }
+            }
+        }
+        String idleName = "Idle" + (int) (Math.random() * 5 +1);
+        this.distanceMap = MapDataController.getDistanceMap(idleName);
+    }
+
+    public DistanceMap getDistanceMap(Stage wantedStage){
+        Stage searchingStage = null;
+        for(Stage stage : DataController.getPlanner().getStages()){
+            if(stage.getName().equals(wantedStage.getName())){
+                searchingStage = stage;
+            }
+        }
+        int stageIndex = DataController.getPlanner().getStages().indexOf(searchingStage);
+        for(DistanceMap distanceMap : MapDataController.getDistanceMaps()){
+            if(distanceMap.getMapName().equals( "Stage"+(stageIndex+1))){
+                return distanceMap;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Determines if a person is going to a show
+     * @param show the show the person is deciding to go to
+     * @return true if the persone wants to go to the show
+     */
+    private boolean isGoingToShow(Show show){
+        if(person.isArtist()){
+            for(Artist artist :  show.getArtists()){
+                if(person.getName().equals(artist.getName())){
+                    return true;
+                }
+            }
+            return false;
+        }
+        if(person.getFavoriteGenre().getFancyName() == show.getGenre().getSuperGenre()){
+            if(Math.random() >= 0.1){
+                return true;
+            }else {
+                return false;
+            }
+        }
+        if(Math.random() >= 0.90){
+            return true;
+        }else {
+            return false;
         }
     }
 
@@ -237,4 +308,5 @@ public class PersonLogic {
     public void setNegativeFeedback(int negativeFeedback) {
         this.negativeFeedback = negativeFeedback;
     }
+
 }

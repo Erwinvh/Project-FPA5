@@ -36,13 +36,13 @@ public class Person {
      * @param genreChanceList a list for the probability of liking a Genre
      * @param speed           the movement speed of the NPCLogic.Person
      */
-    public Person(Point2D position, ArrayList<Integer> genreChanceList, int speed, boolean isArtist) {
+    public Person(Point2D position, ArrayList<Integer> genreChanceList, double speed, boolean isArtist) {
         this.isArtist = isArtist;
         genrePicker(genreChanceList);
         this.personLogic = new PersonLogic(position, speed, this, isArtist);
     }
 
-    public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, int speed, boolean isArtist) {
+    public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, double speed, boolean isArtist) {
         this.name = name;
         this.isArtist = isArtist;
         genrePicker(genreChanceList);
@@ -162,11 +162,19 @@ public class Person {
         return sprite;
     }
 
-    public String getName() {
-        return name;
+    public Genres getFavoriteGenre() {
+        return favoriteGenre;
     }
 
     public void setSpeed(double speed){
         this.personLogic.setSpeed(speed);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isArtist() {
+        return isArtist;
     }
 }
