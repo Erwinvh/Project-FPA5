@@ -1,4 +1,4 @@
-package MapData;
+package GUILogic.SimulatorLogic.MapData;
 
 import org.jfree.fx.FXGraphics2D;
 
@@ -54,8 +54,8 @@ public class TiledLayer implements Drawable {
         }
     }
 
-    public void drawG(Graphics graphics){
-        for (TiledTile tile : tiles){
+    public void drawG(Graphics graphics) {
+        for (TiledTile tile : tiles) {
             tile.drawG(graphics);
         }
     }

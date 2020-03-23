@@ -1,4 +1,4 @@
-package MapData;
+package GUILogic.SimulatorLogic.MapData;
 
 import org.jfree.fx.FXGraphics2D;
 
@@ -17,10 +17,10 @@ public class TiledTile implements Drawable {
     private Point2D position;
 
     /**
-     *  simple constructor that sets the attributes
+     * simple constructor that sets the attributes
      *
      * @param tileImage sprite that needs to be drawn
-     * @param position Point2d with an x and y coordinate
+     * @param position  Point2d with an x and y coordinate
      */
     public TiledTile(BufferedImage tileImage, Point2D position) {
         this.tileImage = tileImage;
@@ -29,10 +29,10 @@ public class TiledTile implements Drawable {
 
     @Override
     public void draw(FXGraphics2D graphics) {
-        graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(),  MapDataController.getTileSize(),  MapDataController.getTileSize(), null);
+        graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(), MapDataController.getTileSize(), MapDataController.getTileSize(), null);
     }
 
-    public void drawG(Graphics graphics){
-        graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(),  MapDataController.getTileSize(),  MapDataController.getTileSize(), null);
+    public void drawG(Graphics graphics) {
+        graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(), MapDataController.getTileSize(), MapDataController.getTileSize(), null);
     }
 }

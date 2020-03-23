@@ -1,7 +1,6 @@
-package MapData;
+package GUILogic.SimulatorLogic.MapData;
 
-import NPCLogic.DistanceMap;
-import org.jfree.fx.FXGraphics2D;
+import GUILogic.SimulatorLogic.NPCLogic.DistanceMap;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
  * this object is the mother object of the map
  * all the tiled layers are stored here
  */
-public class MapDataController  {
+public class MapDataController {
     //static finals for where you can find the sprites and the layout json file
     private final static String SPRITESHEETS_DIR = "Resources/spritesheets/";
     private final static String MAP_LAYOUT_DIR = "Resources/festmap.json";

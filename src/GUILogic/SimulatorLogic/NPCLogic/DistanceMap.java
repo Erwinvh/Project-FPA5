@@ -1,7 +1,7 @@
-package NPCLogic;
+package GUILogic.SimulatorLogic.NPCLogic;
 
-import MapData.TargetArea;
-import MapData.WalkableMap;
+import GUILogic.SimulatorLogic.MapData.TargetArea;
+import GUILogic.SimulatorLogic.MapData.WalkableMap;
 
 import java.awt.geom.Point2D;
 import java.util.LinkedList;

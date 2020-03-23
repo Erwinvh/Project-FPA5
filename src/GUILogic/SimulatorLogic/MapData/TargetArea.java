@@ -1,4 +1,4 @@
-package MapData;
+package GUILogic.SimulatorLogic.MapData;
 
 import java.awt.geom.Point2D;
 

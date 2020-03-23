@@ -1,4 +1,4 @@
-package MapData;
+package GUILogic.SimulatorLogic.MapData;
 
 public class WalkableMap {
     private boolean[][] walkableMap;

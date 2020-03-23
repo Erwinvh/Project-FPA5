@@ -1,7 +1,7 @@
-package NPCLogic;
+package GUILogic.SimulatorLogic.NPCLogic;
 
-import MapData.MapDataController;
-import MapData.TargetArea;
+import GUILogic.SimulatorLogic.MapData.MapDataController;
+import GUILogic.SimulatorLogic.MapData.TargetArea;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -13,17 +13,17 @@ public class PersonLogic {
     private double speed;
     private Point2D target;
     private double rotationSpeed;
-//    private String targetMapName;
-    private NPCLogic.DistanceMap distanceMap;
+    //    private String targetMapName;
+    private DistanceMap distanceMap;
     private String activity;
-    private NPCLogic.Person person;
+    private Person person;
     private Point2D newPosition;
 
     private int negativeFeedback = 5;
 
     private boolean isArtist;
 
-    public PersonLogic(Point2D position, double speed, NPCLogic.Person person, boolean isArtist) {
+    public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
         this.position = position;
         this.person = person;
         this.angle = 0;
@@ -31,7 +31,7 @@ public class PersonLogic {
         this.rotationSpeed = 100;
         selectRandomMap();
         this.isArtist = isArtist;
-        target = NPCLogic.PathCalculator.nextPositionToTarget(this.position, distanceMap);
+        target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
     public void choiceMaker() {
@@ -98,10 +98,10 @@ public class PersonLogic {
     }
 
     //public String getTargetMapName() {
-   //     return targetMapName;
-   // }
+    //     return targetMapName;
+    // }
 
-    public NPCLogic.Person getPerson() {
+    public Person getPerson() {
         return person;
     }
 
@@ -129,7 +129,7 @@ public class PersonLogic {
         this.rotationSpeed = rotationSpeed;
     }
 
-    public void setPerson(NPCLogic.Person person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 
@@ -156,7 +156,7 @@ public class PersonLogic {
     }
 
     public void setNextTarget() {
-        this.target = NPCLogic.PathCalculator.nextPositionToTarget(this.position, distanceMap);
+        this.target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
     /**
@@ -169,7 +169,7 @@ public class PersonLogic {
 
         //TODO: Rename this function and check if it is an artist or visitor with isArtist boolean
 
-        if (isArtist){
+        if (isArtist) {
             // Not a random target unless artist doesn't have anything in his schedule at this time
             // TODO: Add artist logic to assign a target stage
         } else {
@@ -217,7 +217,7 @@ public class PersonLogic {
                 this.position.getY() + this.speed * Math.sin(this.angle));
     }
 
-    public NPCLogic.DistanceMap getDistanceMap() {
+    public DistanceMap getDistanceMap() {
         return this.distanceMap;
     }
 }

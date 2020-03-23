@@ -1,4 +1,4 @@
-package NPCLogic;
+package GUILogic.SimulatorLogic.NPCLogic;
 
 import java.awt.geom.Point2D;
 
@@ -7,7 +7,7 @@ public class PathCalculator {
     /**
      * Calculates the next target for a NPCLogic.Person, allows movement in 8 directions
      *
-     * @param currPos the current position of the character
+     * @param currPos     the current position of the character
      * @param distanceMap map of all distances relative to target position
      * @return the next position the character moves to
      */
@@ -48,7 +48,7 @@ public class PathCalculator {
      * Finds a random tile that is walkable and closest to a point
      *
      * @param currentPosition the position the character is currently on
-     * @param distanceMap the DistanceMap it is walking on
+     * @param distanceMap     the DistanceMap it is walking on
      * @return the available tile, if not found return the currentPosition
      */
     public static Point2D findRandomClosestWalkable(Point2D currentPosition, DistanceMap distanceMap) {
@@ -71,7 +71,7 @@ public class PathCalculator {
     }
 
     public static boolean isWalkable(Point2D currentPosition) {
-        NPCLogic.DistanceMap[] distanceMaps = null;//Main.getDistanceMaps();
+        DistanceMap[] distanceMaps = null;//Main.getDistanceMaps();
         boolean[][] walkableMap = distanceMaps[1].getWalkableMap();
         int xPos = (int) currentPosition.getX() / 32;
         int yPos = (int) currentPosition.getY() / 32;
