@@ -5,6 +5,7 @@ import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.MapData.TargetArea;
 import NPCLogic.Person;
+import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
 import PlannerData.Stage;
@@ -139,10 +140,16 @@ public class PersonLogic {
         this.distanceMap = MapDataController.getDistanceMap(idleName);
     }
 
-    public DistanceMap getDistanceMap(Stage stage){
-        int stageIndex = DataController.getPlanner().getStages().indexOf(stage);
+    public DistanceMap getDistanceMap(Stage wantedStage){
+        Stage searchingStage = null;
+        for(Stage stage : DataController.getPlanner().getStages()){
+            if(stage.getName().equals(wantedStage.getName())){
+                searchingStage = stage;
+            }
+        }
+        int stageIndex = DataController.getPlanner().getStages().indexOf(searchingStage);
         for(DistanceMap distanceMap : MapDataController.getDistanceMaps()){
-            if(distanceMap.getMapName().equals( "Stage"+stageIndex+1)){
+            if(distanceMap.getMapName().equals( "Stage"+(stageIndex+1))){
                 return distanceMap;
             }
         }
@@ -155,6 +162,14 @@ public class PersonLogic {
      * @return true if the persone wants to go to the show
      */
     private boolean isGoingToShow(Show show){
+        if(person.isArtist()){
+            for(Artist artist :  show.getArtists()){
+                if(person.getName().equals(artist.getName())){
+                    return true;
+                }
+            }
+            return false;
+        }
         if(person.getFavoriteGenre().getFancyName() == show.getGenre().getSuperGenre()){
             if(Math.random() >= 0.1){
                 return true;
@@ -162,7 +177,7 @@ public class PersonLogic {
                 return false;
             }
         }
-        if(Math.random() >= 0.33){
+        if(Math.random() >= 0.90){
             return true;
         }else {
             return false;

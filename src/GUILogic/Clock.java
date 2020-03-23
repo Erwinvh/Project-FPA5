@@ -28,6 +28,7 @@ public class Clock {
         }
         seconds += deltaTime * simulatorSpeed;
         if (seconds >= 60) {
+            System.out.println(minutes);
             minutes++;
             seconds = 0;
             if (minutes == 30)
