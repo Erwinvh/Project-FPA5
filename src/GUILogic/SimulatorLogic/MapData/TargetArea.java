@@ -40,4 +40,8 @@ public class TargetArea {
     public Point2D getSize() {
         return size;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

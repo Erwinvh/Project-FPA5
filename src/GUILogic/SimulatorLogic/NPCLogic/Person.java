@@ -162,11 +162,16 @@ public class Person {
         return sprite;
     }
 
-    public String getName() {
-        return name;
+    public Genres getFavoriteGenre() {
+        return favoriteGenre;
     }
 
     public void setSpeed(double speed){
         this.personLogic.setSpeed(speed);
     }
+
+    public String getName() {
+        return name;
+    }
+
 }
