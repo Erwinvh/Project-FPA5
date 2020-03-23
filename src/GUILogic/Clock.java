@@ -2,16 +2,17 @@ package GUILogic;
 
 import java.time.LocalTime;
 
-public class Clock {
-    private LocalTime localTime;
+public class Clock {    
+    private int hours, minutes;
+    private double seconds;
     private double simulatorSpeed;
-    private double counter;
     private boolean halfHourPassed;
 
-    public Clock(LocalTime localTime) {
-        this.localTime = localTime;
-        this.simulatorSpeed = 60;
-        this.counter = 0;
+    public Clock() {
+        this.hours = 0;
+        this.minutes = 0;
+        this.seconds = 0;
+        this.simulatorSpeed = 30;
         this.halfHourPassed = false;
     }
 
@@ -25,14 +26,22 @@ public class Clock {
         if(halfHourPassed){
             halfHourPassed = false;
         }
-        counter += deltaTime * simulatorSpeed;
-        if (counter >= 1) {
-            localTime = localTime.plusSeconds(1);
-            if (localTime.getMinute()==0||localTime.getMinute()==30){
+        seconds += deltaTime * simulatorSpeed;
+        if (seconds >= 60) {
+            minutes++;
+            seconds = 0;
+            if (minutes == 30)
                 pulse();
+            if (minutes == 60) {
+                pulse();
+                hours++;
+                minutes = 0;
+                if (hours == 24) {
+                    hours = 0;
+                }
             }
-            counter--;
         }
+
     }
 
     public boolean isHalfHourPassed() {
@@ -44,22 +53,44 @@ public class Clock {
         this.halfHourPassed = true;
     }
 
-    public LocalTime getLocalTime() {
-        return localTime;
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    public double getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(double seconds) {
+        this.seconds = seconds;
     }
 
     /**
      * set the speed 1 real second is how many seconds in the simulator
-     * @param simulatorSpeed limited to 30, higher then 30 makes the simulator not runnable
      */
     public void setSimulatorSpeed(double simulatorSpeed) throws Exception {
-        if (simulatorSpeed>30)
-            throw new Exception("speed out of bounds");
-
         this.simulatorSpeed = simulatorSpeed;
     }
 
     public double getSimulatorSpeed() {
         return simulatorSpeed;
+    }
+    
+        public void setToMidnight() {
+        this.hours = 0;
+        this.minutes = 0;
+        this.seconds = 0;
     }
 }

@@ -33,7 +33,7 @@ public class DataController {
      */
     public DataController() {
         planner = new Planner();
-        clock = new Clock(LocalTime.now());
+        clock = new Clock();
 
         try {
             File file = new File(saveFileName);
@@ -70,7 +70,7 @@ public class DataController {
                             Stage stageInShow = new Stage(stage.getInt("capacity"),stage.getString("name"));
                             String name = show.getString("name");
                             Genres genre = stringToGenre( show.getString("genre"));
-                            String description = show.getString("description");
+                            String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
@@ -94,7 +94,9 @@ public class DataController {
     }
 
     public static ArrayList<Show> getActiveShows(){
-        LocalTime currentTime = getClock().getLocalTime();
+        LocalTime currentTime = LocalTime.MIDNIGHT;
+        currentTime.plusHours(DataController.getClock().getHours());
+        currentTime.plusMinutes(DataController.getClock().getMinutes());
         ArrayList<Show> allShows = getPlanner().getShows();
         ArrayList<Show> activeShows = new ArrayList<>();
 

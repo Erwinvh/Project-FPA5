@@ -2,7 +2,6 @@ package GUILogic.SimulatorLogic;
 
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
-import GUILogic.SimulatorLogic.NPCLogic.DistanceMap;
 import NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
@@ -18,7 +17,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-
 public class Simulator {
     private MapDataController mapDataController;
     private ResizableCanvas canvas;
@@ -26,19 +24,11 @@ public class Simulator {
     private ArrayList<Artist> artists;
 
     private int peopleAmount = 100;
-    private int stageAmount = 6;
-    private int toiletAmount = 20;
-    private int globalSpeed = 4;
     private CameraTransform cameraTransform;
     private boolean predictedGuests = true;
     private ArrayList<Integer> Prediction = new ArrayList<>();
 
-    private boolean showNull = false;
-
-    private static DistanceMap[] distanceMaps;
-
     private BorderPane simulatorLayout;
-
 
     public Simulator() {
         init();
@@ -49,26 +39,14 @@ public class Simulator {
         return simulatorLayout;
     }
 
-//    public static void main(String[] args) {
-////        launch(Simulator.class);
-//
-//        DistanceMap distanceMap = MapDataController.getDistanceMap(MapDataController.getTargetAreas()[0]);
-//        for (int i = 0; i < 100; i++) {
-//            for (int j = 0; j < 100; j++) {
-//                System.out.println(distanceMap.getMap()[i][j]);
-//            }
-//        }
-//    }
-
     public void init() {
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
-        distanceMaps = new DistanceMap[stageAmount + toiletAmount];
 
+        DataController.getClock().setToMidnight();
         createPredictions();
     }
-
 
     public void start() {
         this.simulatorLayout = new BorderPane();
@@ -90,31 +68,14 @@ public class Simulator {
             }
         }.start();
 
-        canvas.setOnMouseClicked(e -> {
-            clickAction(e);
-//            if (e.getButton() == MouseButton.SECONDARY){
-//                this.showNull = !this.showNull;
-//                if (this.showNull){
-//                    System.out.println("Shows: Non CameraTransformed");
-//                } else {
-//                    System.out.println("Shows: CameraTransformed");
-//                }
-//            } else
-
-            if (e.getButton() == MouseButton.PRIMARY) {
-                this.init();
-            }
-        });
-
-//        stage.setScene(new Scene(this.simulatorLayout));
-//        stage.setTitle("A5 FP");
-//        stage.show();
+        canvas.setOnMouseClicked(this::onMousePressed);
 
         draw(graphics);
     }
 
     /**
      * updates the persons and sets their speed relative to the time passed
+     *
      * @param deltaTime time passed in seconds
      */
     public void update(double deltaTime) {
@@ -125,7 +86,7 @@ public class Simulator {
         }
         double speed = DataController.getClock().getSimulatorSpeed() * 60;
 
-        if (artists.size()<DataController.getPlanner().getArtists().size()){
+        if (artists.size() < DataController.getPlanner().getArtists().size()) {
             peopleAmount++;
             artists = DataController.getPlanner().getArtists();
         }
@@ -134,6 +95,7 @@ public class Simulator {
             spawnPerson();
 
         for (Person person : people) {
+            person.setSpeed(speed * deltaTime);
             person.update(people);
         }
     }
@@ -155,16 +117,15 @@ public class Simulator {
                 }
 
                 if (!hasBeenSpawned) {
-                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
+                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true));
                     return;
                 }
             }
 
             //if all the artists have been spawned then we spawn visitors
             this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
-                    newSpawnLocation.getY()), this.Prediction, this.globalSpeed, false));
+                    newSpawnLocation.getY()), this.Prediction, DataController.getClock().getSimulatorSpeed(), false));
         }
-
     }
 
     /**
@@ -183,7 +144,10 @@ public class Simulator {
         return true;
     }
 
-    public void clickAction(MouseEvent e) {
+    public void onMousePressed(MouseEvent e) {
+        if (e.getButton() == MouseButton.PRIMARY)
+            this.init();
+
         for (Person person : this.people) {
             if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 32) {
                 person.playSoundEffect();
@@ -239,38 +203,29 @@ public class Simulator {
     public void draw(FXGraphics2D g) {
         //Gets inverseTransform from cameraTransform so the correct rectangle can be cleared.
         AffineTransform inverse = this.cameraTransform.getInverseTransform();
+
         g.clearRect(
-                (int) inverse.getTranslateX(),
-                (int) inverse.getTranslateY(),
-                (int) (inverse.getScaleX() * this.canvas.getWidth() - inverse.getTranslateX()),
-                (int) (inverse.getScaleY() * this.canvas.getHeight() - inverse.getTranslateY())
+                (int) (inverse.getTranslateX()),
+                (int) (inverse.getTranslateY()),
+                (int) (MapDataController.getMapWidth() * 16 * inverse.getScaleX()),
+                (int) (MapDataController.getMapHeight() * 8 * inverse.getScaleY())
         );
 
         g.setTransform(this.cameraTransform.getTransform());
         g.setBackground(Color.black);
-        g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
         mapDataController.draw(g);
 
-        for (Person person : people) {
+        for (Person person : people)
             person.draw(g);
-        }
     }
 
     public void setPeopleAmount(int peopleAmount) {
         this.peopleAmount = peopleAmount;
     }
 
-    public int getGlobalSpeed() {
-        return globalSpeed;
-    }
-
     public int getPeopleAmount() {
         return peopleAmount;
-    }
-
-    public void setGlobalSpeed(int globalSpeed) {
-        this.globalSpeed = globalSpeed;
     }
 
     public void setPredictedGuests(boolean predictedGuests) {
