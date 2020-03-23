@@ -13,6 +13,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class to represent a visitor or artist
@@ -40,6 +41,7 @@ public class Person {
         genrePicker(genreChanceList);
         this.personLogic = new PersonLogic(position, speed, this, isArtist);
     }
+
     public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, int speed, boolean isArtist) {
         this.name = name;
         this.isArtist = isArtist;
@@ -163,5 +165,9 @@ public class Person {
 
     public BufferedImage getSprite() {
         return sprite;
+    }
+
+    public String getName() {
+        return name;
     }
 }
