@@ -9,7 +9,7 @@ public class Clock {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
-        this.simulatorSpeed = 60;
+        this.simulatorSpeed = 10;
     }
 
     /**
