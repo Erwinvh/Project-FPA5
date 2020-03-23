@@ -1,13 +1,11 @@
 package GUILogic;
 
-import java.time.LocalTime;
-
 public class Clock {
     private int hours, minutes;
     private double seconds;
     private double simulatorSpeed;
 
-    public Clock(LocalTime localTime) {
+    public Clock() {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;

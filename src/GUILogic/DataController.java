@@ -33,7 +33,7 @@ public class DataController {
      */
     public DataController() {
         planner = new Planner();
-        clock = new Clock(LocalTime.now());
+        clock = new Clock();
 
         try {
             File file = new File(saveFileName);
