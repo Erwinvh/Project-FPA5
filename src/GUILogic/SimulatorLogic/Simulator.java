@@ -23,8 +23,7 @@ public class Simulator {
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
 
-    private int peopleAmount = 5;
-    private int globalSpeed = 4;
+    private int peopleAmount = 100;
     private CameraTransform cameraTransform;
     private boolean predictedGuests = true;
     private ArrayList<Integer> Prediction = new ArrayList<>();
@@ -115,14 +114,14 @@ public class Simulator {
                 }
 
                 if (!hasBeenSpawned) {
-                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), this.globalSpeed, true));
+                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true));
                     return;
                 }
             }
 
             //if all the artists have been spawned then we spawn visitors
             this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
-                    newSpawnLocation.getY()), this.Prediction, this.globalSpeed, false));
+                    newSpawnLocation.getY()), this.Prediction, DataController.getClock().getSimulatorSpeed(), false));
         }
     }
 
@@ -222,16 +221,8 @@ public class Simulator {
         this.peopleAmount = peopleAmount;
     }
 
-    public int getGlobalSpeed() {
-        return globalSpeed;
-    }
-
     public int getPeopleAmount() {
         return peopleAmount;
-    }
-
-    public void setGlobalSpeed(int globalSpeed) {
-        this.globalSpeed = globalSpeed;
     }
 
     public void setPredictedGuests(boolean predictedGuests) {
