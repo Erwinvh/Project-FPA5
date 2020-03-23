@@ -1,16 +1,5 @@
 package Enumerators;
 
-//public enum Constants{
-//    YES("y"), NO("N")
-//
-//    // No changes
-//
-//    @Override
-//    public String toString() {
-//        return value;
-//    }
-//    }
-
 public enum Genres {
     ALTERNATIVE_ROCK("Alternative rock", "Metal"),
     BLUES("Blues","Classic"),
@@ -36,11 +25,11 @@ public enum Genres {
     SOUL("Soul", "Classic");
 
     private String fancyName;
-    private String SuperGenre;
+    private String superGenre;
 
-    Genres(String fancyName, String SuperGenre) {
+    Genres(String fancyName, String superGenre) {
         this.fancyName = fancyName;
-        this.SuperGenre = SuperGenre;
+        this.superGenre = superGenre;
     }
 
     public String getFancyName(){
@@ -48,7 +37,7 @@ public enum Genres {
     }
 
     public String getSuperGenre() {
-        return SuperGenre;
+        return superGenre;
     }
 
     public static Genres getGenre(String name){

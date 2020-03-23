@@ -11,7 +11,6 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.management.Descriptor;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,10 +20,16 @@ import java.util.ArrayList;
 
 import static PlannerData.Planner.saveFileName;
 
+/**
+ * Reads the Json file and converts it into the instance of Planner
+ */
 public class DataController {
 
     private static Planner planner;
 
+    /**
+     * Reads the Json file and creates an instance of Planner
+     */
     public DataController() {
         planner = new Planner();
 
@@ -47,7 +52,7 @@ public class DataController {
                         }
                         for(JsonObject artist : artists.getValuesAs(JsonObject.class)){
                             String name = artist.getString("name");
-                            String description = artist.getString("description");
+                            String description = artist.getString("getShowDescription");
                             Genres genre = stringToGenre(artist.getString("genre"));
                             this.planner.getArtists().add(new Artist(name, genre, description));
                         }
@@ -57,19 +62,17 @@ public class DataController {
 
                             ArrayList<Artist> artistsInShow = new ArrayList<>();
                             for(JsonObject artist : showArtists.getValuesAs(JsonObject.class)){
-                                artistsInShow.add(new Artist(artist.getString("name"),stringToGenre(artist.getString("genre")),artist.getString("description")));
+                                artistsInShow.add(new Artist(artist.getString("name"),stringToGenre(artist.getString("genre")),artist.getString("getShowDescription")));
                             }
 
                             Stage stageInShow = new Stage(stage.getInt("capacity"),stage.getString("name"));
                             String name = show.getString("name");
                             Genres genre = stringToGenre( show.getString("genre"));
-                            String description = show.getString("description");
+                            String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
-                            ArrayList<Genres> genres =  new ArrayList<>();
-                            genres.add(genre);
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
-                            Show readShow = new Show(beginTime,endTime,artistsInShow,name,stageInShow,description,genres,expectedPopularity);
+                            Show readShow = new Show(beginTime,endTime,artistsInShow,name,stageInShow,description,genre,expectedPopularity);
                             this.planner.getShows().add(readShow);
                         }
                     }
@@ -86,33 +89,17 @@ public class DataController {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
             e.printStackTrace();
         }
-
-//        Artist lars = new Artist("Lars", Genres.BLUES, "Gekke man");
-//        Stage stage = new Stage(100, "Main stage");
-//        ArrayList<Genres> genres = new ArrayList<>();
-//        genres.add(Genres.DANCE);
-//        genres.add(Genres.NIGHTCORE);
-//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusHours(1), lars, "De ochtendshow van Lars", stage, "Lars die jamt", genres, 100000));
-//        planner.savePlanner();
-
-//        ArrayList<Artist> artists = new ArrayList<>();
-//        artists.add(new Artist("Arne de Beer", Genres.BLUES, "Smoking hot"));
-//        artists.add(new Artist("Lars Giskes", Genres.PUNK_ROCK, "The legend of Spoderman"));
-//        artists.add(new Artist("Henk", Genres.METAL, "Dit is Henk"));
-//
-//        ArrayList<Stage> stages = new ArrayList<>();
-//        stages.add(new Stage(500, "Main Stage"));
-//        stages.add(new Stage(100, "Second Stage"));
-//
-//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
-//        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
-//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
     }
 
-    static Planner getPlanner() {
+    public static Planner getPlanner() {
         return planner;
     }
 
+    /**
+     * Converts a String to a LocalTime
+     * @param time the string indicating a time
+     * @return the time in LocalTime
+     */
     private LocalTime stringToLocalTime(String time){
         int hours = Integer.parseInt( time.charAt(0) + "") * 10 + Integer.parseInt( time.charAt(1)+"");
         int minutes = Integer.parseInt( time.charAt(3) + "") * 10 + Integer.parseInt( time.charAt(4)+"");
@@ -122,6 +109,11 @@ public class DataController {
         return  localTime;
     }
 
+    /**
+     * Converts a String to a Fancy name Genre
+     * @param text the String value of a Genre
+     * @return the genre in the instance of Genres
+     */
     private Genres stringToGenre(String text){
         for(Genres genre : Genres.values()){
             if( text.equals(genre.getFancyName())){

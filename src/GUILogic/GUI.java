@@ -1,23 +1,20 @@
 package GUILogic;
 
-import PlannerData.Planner;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class GUI extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         TabPane tabPane = new TabPane();
         ScheduleTab scheduleTab = new ScheduleTab(primaryStage);
         SimulatorTab simulatorTab = new SimulatorTab();
         SettingsTab settingsTab = new SettingsTab(primaryStage);
         VisualTab visualTab = new VisualTab();
-
 
         tabPane.getTabs().addAll(scheduleTab.getScheduleTab(), visualTab.getVisualTab(), simulatorTab.getSimulatorTab(), settingsTab.getSettingsTab());
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

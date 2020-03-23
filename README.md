@@ -1,3 +1,3 @@
 Project FPA5
 
-![Class diagram](Resources/ClassDiagram.jpg)
+![Class diagram](resources/ClassDiagram.jpg)

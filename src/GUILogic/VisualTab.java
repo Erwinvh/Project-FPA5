@@ -61,12 +61,12 @@ class VisualTab {
         graphics.clearRect(0, 0, (int) this.canvasStages.getWidth(), (int) this.canvasStages.getHeight());
         graphics.translate(TIME_COLUMN_WIDTH, STAGE_HEIGHT);
 
-        // Add axis lines to stages layout
+        // Add axis lines to stages createLayout
         graphics.draw(new Line2D.Double(-TIME_COLUMN_WIDTH, 0, this.canvasStages.getWidth() - TIME_COLUMN_WIDTH, 0));
 
         this.columnWidth = (int) ((this.canvas.getWidth() - TIME_COLUMN_WIDTH) / this.planner.getStages().size());
 
-        // Add all divider lines to stages layout
+        // Add all divider lines to stages createLayout
         for (int i = 0; i < planner.getStages().size(); i++) {
             graphics.draw(new Line2D.Double(i * this.columnWidth + 1, 0, i * this.columnWidth + 1, -STAGE_HEIGHT));
             graphics.drawString(this.planner.getStages().get(i).getName() + "\n" + "(cap. " + this.planner.getStages().get(i).getCapacity() + ")", (i * this.columnWidth + 10), -STAGE_HEIGHT + 15);
@@ -87,7 +87,7 @@ class VisualTab {
             graphics.draw(new Line2D.Double(i * this.columnWidth, 0, i * this.columnWidth, this.canvas.getHeight()));
         }
 
-        // Draw all times to the layout
+        // Draw all times to the createLayout
         for (int j = 1; j < 24; j++) {
             graphics.drawString(j + ":00", -50, (int) (j * this.canvas.getHeight() / 24));
             graphics.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0, new float[]{25, 25}, 40));
@@ -99,8 +99,6 @@ class VisualTab {
     private void drawPlanning(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.translate(TIME_COLUMN_WIDTH, 0);
-
-        //System.out.println(this.planner.getShows().size());
 
         for (Stage stage : this.planner.getStages()) {
             for (Show show : this.planner.getShows()) {
@@ -121,17 +119,12 @@ class VisualTab {
                     artists = artists.substring(0, artists.length() - 2);
 
                     String genres = "";
-                    if (!show.getGenre().isEmpty()) {
-                        genres += "(";
-                        for (Genres genre : show.getGenre()) {
-                            genres += genre.getFancyName() + ", ";
-                        }
-                        genres = genres.substring(0, genres.length()-2);
-                        genres += ")";
+                    if (show.getGenre()!=null) {
+                        genres = show.getGenre().getFancyName();
+                    } else {
+                        genres += "No specified genre";
                     }
-                    else {
-                        genres += "(No specified genre)";
-                    }
+
                     // Draw the info of the show
                     graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " " + genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
                 }

@@ -1,10 +1,12 @@
 package PlannerData;
 
 import Enumerators.Genres;
-import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
+/**
+ * A class that saves attributes concerning an Artist
+ */
 public class Artist implements Serializable {
 
 	private String name;
