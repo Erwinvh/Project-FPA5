@@ -1,6 +1,8 @@
-package GUILogic.SimulatorLogic.NPCLogic;
+package NPCLogic;
 
 import Enumerators.Genres;
+import GUILogic.SimulatorLogic.NPCLogic.PathCalculator;
+import GUILogic.SimulatorLogic.NPCLogic.PersonLogic;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -34,12 +36,13 @@ public class Person {
      * @param speed           the movement speed of the NPCLogic.Person
      */
     public Person(Point2D position, ArrayList<Integer> genreChanceList, int speed, boolean isArtist) {
+        this.isArtist = isArtist;
         genrePicker(genreChanceList);
         this.personLogic = new PersonLogic(position, speed, this, isArtist);
     }
-
     public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, int speed, boolean isArtist) {
         this.name = name;
+        this.isArtist = isArtist;
         genrePicker(genreChanceList);
         this.personLogic = new PersonLogic(position, speed, this, isArtist);
     }
@@ -54,7 +57,7 @@ public class Person {
         String spriteSheetPath;
         String soundEffectPath;
 
-        if (isArtist) {
+        if (this.isArtist) {
             //TODO: add artist sound effect.
             spriteSheetPath = "Artist.png";
             soundEffectPath = "ClassicLaugh.mp3";
@@ -114,7 +117,7 @@ public class Person {
     /**
      * decides the behavior of the Person
      */
-    public void update(ArrayList<Person> people) {
+    public void update(ArrayList<Person> people, ArrayList<Person> artitsts) {
 
         this.personLogic.update();
         //colliding handler
@@ -125,8 +128,14 @@ public class Person {
                 collided = true;
             }
         }
+        for (Person other : artitsts) {
+            if (other != this && this.personLogic.getNewPosition().distance(other.personLogic.getPosition()) < 32) {
+                collided = true;
+            }
+        }
 
         if (!collided) {
+
             this.personLogic.setPosition(this.personLogic.getNewPosition());
         } else {
             this.personLogic.setTarget(PathCalculator.findRandomClosestWalkable(this.personLogic.getPosition(), this.personLogic.getDistanceMap()));

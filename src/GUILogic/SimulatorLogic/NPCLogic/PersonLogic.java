@@ -2,6 +2,7 @@ package GUILogic.SimulatorLogic.NPCLogic;
 
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.MapData.TargetArea;
+import NPCLogic.Person;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -16,14 +17,14 @@ public class PersonLogic {
     //    private String targetMapName;
     private DistanceMap distanceMap;
     private String activity;
-    private Person person;
+    private NPCLogic.Person person;
     private Point2D newPosition;
 
     private int negativeFeedback = 5;
 
     private boolean isArtist;
 
-    public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
+    public PersonLogic(Point2D position, double speed, NPCLogic.Person person, boolean isArtist) {
         this.position = position;
         this.person = person;
         this.angle = 0;
