@@ -9,7 +9,7 @@ public class Clock {
 
     public Clock(LocalTime localTime) {
         this.localTime = localTime;
-        this.simulatorSpeed = 30;
+        this.simulatorSpeed = 4;
         this.counter = 0;
     }
 
