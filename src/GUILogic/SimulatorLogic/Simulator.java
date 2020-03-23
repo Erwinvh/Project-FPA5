@@ -26,7 +26,7 @@ public class Simulator {
     private ArrayList<Person> people;
     private ArrayList<Person> artists;
 
-    private int peopleAmount = 1;
+    private int peopleAmount = 20;
     private int stageAmount = 6;
     private int toiletAmount = 20;
     private int globalSpeed = 4;
@@ -116,6 +116,9 @@ public class Simulator {
     }
 
     public void update(double frameTime) {
+        if (people.size()<peopleAmount)
+            spawnPeople(1);
+
         for (Person person : people) {
             person.update(people,artists);
         }
@@ -160,10 +163,6 @@ public class Simulator {
      * @return true if empty, false if occupied
      */
     public boolean canSpawn(Point2D spawnPosition) {
-        if (this.people.size() <= 0) {
-            return true;
-        }
-
         for (Person person : people) {
             if (spawnPosition.distance(person.getPersonLogic().getPosition()) <= 64) {
                 return false;
