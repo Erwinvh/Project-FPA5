@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * A class that indicates a show
  */
-public class Show implements Serializable {
+public class Show implements Serializable, Comparable<Show> {
 
     private LocalTime beginTime;
     private LocalTime endTime;
@@ -143,5 +143,20 @@ public class Show implements Serializable {
         else timeString += time.getMinute();
 
         return timeString;
+    }
+
+    /**
+     * A method that compares shows based on the expectedPopularity
+     * @param otherShow the show this show is compared to
+     * @return 1 if this show has higher expectedPopularity, 0 if equal, -1 if less
+     */
+    public int compareTo(Show otherShow){
+        if(this.expectedPopularity > otherShow.expectedPopularity){
+            return 1;
+        }
+        if(this.expectedPopularity < otherShow.expectedPopularity){
+            return -1;
+        }
+        return 0;
     }
 }

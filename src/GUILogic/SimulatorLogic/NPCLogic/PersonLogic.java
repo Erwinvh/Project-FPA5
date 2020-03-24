@@ -11,6 +11,7 @@ import PlannerData.Stage;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class PersonLogic {
@@ -89,6 +90,9 @@ public class PersonLogic {
         return this.target.distance(new Point2D.Double(-1, -1)) < distanceAmount;
     }
 
+    /**
+     * sets the next target of the person of all adjacent tiles
+     */
     public void setNextTarget() {
         this.target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
@@ -99,8 +103,14 @@ public class PersonLogic {
      */
     public void selectNewMap(ArrayList<Show> activeShows) {
         this.isRoaming = false;
+        Collections.sort(activeShows);
+        int totalExpectedPopularity = 0;
+        for(Show show : activeShows){
+            totalExpectedPopularity += show.getExpectedPopularity();
+        }
         for (Show show : activeShows) {
-            if (isGoingToShow(show)) {
+            if (isGoingToShow(show, totalExpectedPopularity)) {
+                System.out.println("Is going to " + show.getName());
                 DistanceMap targetMap = getDistanceMap(show.getStage(), person.isArtist());
                 if (targetMap != null) {
                     this.distanceMap = targetMap;
@@ -151,7 +161,7 @@ public class PersonLogic {
      * @param show the show the person is deciding to go to
      * @return true if the persone wants to go to the show
      */
-    private boolean isGoingToShow(Show show) {
+    private boolean isGoingToShow(Show show, int totalExpectedPopularity) {
         if (person.isArtist()) {
             for (Artist artist : show.getArtists()) {
                 if (person.getName().equals(artist.getName())) {
@@ -161,11 +171,12 @@ public class PersonLogic {
             return false;
         }
 
+        double chance = Math.random();
         if (person.getFavoriteGenre().getFancyName().equals(show.getGenre().getSuperGenre())) {
-            return Math.random() >= 0.1;
+            return chance <= ( ( show.getExpectedPopularity() *3.0)) /  ((double) totalExpectedPopularity);
         }
 
-        return Math.random() >= 0.90;
+        return chance <= ((double) (show.getExpectedPopularity())  /((double) ((totalExpectedPopularity)) * 2.0)) ;
     }
 
     public Point2D getNewPosition() {

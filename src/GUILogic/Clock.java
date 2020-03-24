@@ -1,19 +1,17 @@
 package GUILogic;
 
-import java.time.LocalTime;
-
-public class Clock {    
+public class Clock {
     private int hours, minutes;
     private double seconds;
     private double simulatorSpeed;
-    private boolean halfHourPassed;
+    private boolean intervalPassed;
 
     public Clock() {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
-        this.simulatorSpeed = 30;
-        this.halfHourPassed = false;
+        this.simulatorSpeed = 180;
+        this.intervalPassed = false;
     }
 
 
@@ -23,18 +21,16 @@ public class Clock {
      * @param deltaTime in seconds
      */
     public void update(double deltaTime) {
-        if(halfHourPassed){
-            halfHourPassed = false;
+        if(intervalPassed){
+            intervalPassed = false;
         }
         seconds += deltaTime * simulatorSpeed;
         if (seconds >= 60) {
-            System.out.println(minutes);
             minutes++;
             seconds = 0;
-            if (minutes == 30)
+            if (minutes % 15 == 0)
                 pulse();
             if (minutes == 60) {
-                pulse();
                 hours++;
                 minutes = 0;
                 if (hours == 24) {
@@ -45,13 +41,13 @@ public class Clock {
 
     }
 
-    public boolean isHalfHourPassed() {
-        return halfHourPassed;
+    public boolean isIntervalPassed() {
+        return intervalPassed;
     }
 
     private void pulse() {
         System.out.println("Tick!");
-        this.halfHourPassed = true;
+        this.intervalPassed = true;
     }
 
     public int getHours() {
