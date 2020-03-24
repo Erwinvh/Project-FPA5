@@ -93,4 +93,20 @@ public class Clock {
         this.minutes = 0;
         this.seconds = 0;
     }
+
+    public String toString(){
+        String h, m;
+        if (hours < 10){
+            h = "0" + hours;
+        } else {
+            h = "" + hours;
+        }
+
+        if (minutes < 10){
+            m = "0" + minutes;
+        } else {
+            m = "" + minutes;
+        }
+        return h + ":" + m;
+    }
 }
