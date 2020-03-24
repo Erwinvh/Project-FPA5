@@ -46,6 +46,7 @@ public class PersonLogic {
 
     }
 
+
     public void choiceMaker() {
         Random random = new Random();
         int number = random.nextInt(11);
@@ -93,7 +94,8 @@ public class PersonLogic {
     }
 
     /**
-     * sets the distanceMap to a new map depending on the isGoingToShow method
+     * sets the DistanceMap to a map determined by the isGoingToShow method
+     * @param activeShows a list of shows being performed on the current time of the Clock
      */
     public void selectNewMap(ArrayList<Show> activeShows) {
         this.isRoaming = false;
@@ -111,7 +113,15 @@ public class PersonLogic {
         this.distanceMap = MapDataController.getDistanceMap(idleName);
     }
 
-    public DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist) {
+    /**
+     * Gets the distanceMap of a stage depending if the person is an artist
+     * If the person is an artist the distance map will be located on the stage itself
+     * If the person is not an artist the distance map destination will be the viewing area
+     * @param wantedStage the desired stage
+     * @param isArtist true if the person is an artists
+     * @return the correct DistanceMap of the stage
+     */
+    public DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist){
         Stage searchingStage = null;
         for (Stage stage : DataController.getPlanner().getStages()) {
             if (stage.getName().equals(wantedStage.getName())) {
