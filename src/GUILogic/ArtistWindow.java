@@ -22,8 +22,10 @@ public class ArtistWindow {
     private ArrayList<String> errorList = new ArrayList<>();
     private Label artistDeleteText = new Label();
     private Artist selectedArtist;
+    private ScheduleTab ST;
 
-    public ArtistWindow(int screenNumber, Stage currParentStage) {
+    public ArtistWindow(int screenNumber, Stage currParentStage,ScheduleTab ST) {
+        this.ST=ST;
         this.currStage.initOwner(currParentStage);
         this.currStage.initModality(Modality.WINDOW_MODAL);
         this.currStage.setResizable(false);
@@ -197,6 +199,7 @@ public class ArtistWindow {
                         this.selectedArtist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));
 
                         DataController.getPlanner().savePlanner();
+                        ST.resetData();
                         this.currStage.close();
                     } catch (Exception event) {
                         this.errorList.add("Failed to edit the artist.");

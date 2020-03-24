@@ -93,6 +93,22 @@ public class DataController {
         }
     }
 
+    public static ArrayList<Show> getActiveShows(){
+        LocalTime currentTime = LocalTime.MIDNIGHT;
+        currentTime = currentTime.plusHours(DataController.getClock().getHours());
+        currentTime = currentTime.plusMinutes(DataController.getClock().getMinutes());
+        ArrayList<Show> allShows = getPlanner().getShows();
+        ArrayList<Show> activeShows = new ArrayList<>();
+
+        for(Show show  : allShows){
+            if((currentTime.equals(show.getBeginTime())) || (currentTime.isAfter(show.getBeginTime()) && currentTime.isBefore(show.getEndTime()))){
+                activeShows.add(show);
+            }
+        }
+
+        return activeShows;
+    }
+
     public static Planner getPlanner() {
         return planner;
     }

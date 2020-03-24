@@ -23,6 +23,7 @@ public class StageWindow {
     private ArrayList<String> errorList = new ArrayList<>();
     private Label information = new Label();
     private PlannerData.Stage selectedStage;
+    private ScheduleTab ST;
 
     /**
      * This is the constructor of the base of the submenus.
@@ -31,7 +32,8 @@ public class StageWindow {
      * @param screenNumber
      * @param currentParentStage
      */
-    public StageWindow(int screenNumber, Stage currentParentStage) {
+    public StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
+        this.ST =ST;
         this.currentStage.initOwner(currentParentStage);
         this.currentStage.initModality(Modality.WINDOW_MODAL);
         this.currentStage.setResizable(false);
@@ -148,6 +150,7 @@ public class StageWindow {
                     this.selectedStage.setName(stageName.getText());
                     this.selectedStage.setCapacity(Integer.parseInt(inputTextField.getText()));
                     DataController.getPlanner().savePlanner();
+                    this.ST.resetData();
                     this.currentStage.close();
                 }
             }

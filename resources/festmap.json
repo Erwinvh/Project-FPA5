@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"fastmap.json"
+         "target":"festmap.json"
         }
     },
  "height":100,
@@ -65,7 +65,7 @@
          "name":"Walkable",
          "opacity":0.53,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":100,
          "x":0,
          "y":0
@@ -78,7 +78,7 @@
                 {
                  "height":234,
                  "id":4,
-                 "name":"Stage3",
+                 "name":"VisitorStage3",
                  "rotation":0,
                  "type":"Visitor",
                  "visible":true,
@@ -89,7 +89,7 @@
                 {
                  "height":518,
                  "id":5,
-                 "name":"Stage2",
+                 "name":"VisitorStage2",
                  "rotation":0,
                  "type":"Visitor",
                  "visible":true,
@@ -100,7 +100,7 @@
                 {
                  "height":687,
                  "id":10,
-                 "name":"Stage4",
+                 "name":"VisitorStage4",
                  "rotation":0,
                  "type":"Visitor",
                  "visible":true,
@@ -111,7 +111,7 @@
                 {
                  "height":403,
                  "id":11,
-                 "name":"Stage5",
+                 "name":"VisitorStage5",
                  "rotation":0,
                  "type":"Visitor",
                  "visible":true,
@@ -122,7 +122,7 @@
                 {
                  "height":220,
                  "id":12,
-                 "name":"Stage6",
+                 "name":"VisitorStage6",
                  "rotation":0,
                  "type":"Visitor",
                  "visible":true,
@@ -133,7 +133,7 @@
                 {
                  "height":133,
                  "id":15,
-                 "name":"Stage1",
+                 "name":"VisitorStage1",
                  "rotation":0,
                  "type":"Visitor",
                  "visible":true,
@@ -144,7 +144,7 @@
                 {
                  "height":58,
                  "id":18,
-                 "name":"Stage1",
+                 "name":"ArtistStage1",
                  "rotation":0,
                  "type":"Artist",
                  "visible":true,
@@ -155,7 +155,7 @@
                 {
                  "height":358.667,
                  "id":19,
-                 "name":"Stage2",
+                 "name":"ArtistStage2",
                  "rotation":0,
                  "type":"Artist",
                  "visible":true,
@@ -166,7 +166,7 @@
                 {
                  "height":89,
                  "id":23,
-                 "name":"Stage3",
+                 "name":"ArtistStage3",
                  "rotation":0,
                  "type":"Artist",
                  "visible":true,
@@ -177,7 +177,7 @@
                 {
                  "height":578,
                  "id":25,
-                 "name":"Stage4",
+                 "name":"ArtistStage4",
                  "rotation":0,
                  "type":"Artist",
                  "visible":true,
@@ -188,7 +188,7 @@
                 {
                  "height":334,
                  "id":27,
-                 "name":"Stage5",
+                 "name":"ArtistStage5",
                  "rotation":0,
                  "type":"Artist",
                  "visible":true,

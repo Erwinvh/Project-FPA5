@@ -16,13 +16,18 @@ public class GUI extends Application {
         SettingsTab settingsTab = new SettingsTab(primaryStage);
         VisualTab visualTab = new VisualTab();
 
+
         tabPane.getTabs().addAll(scheduleTab.getScheduleTab(), visualTab.getVisualTab(), simulatorTab.getSimulatorTab(), settingsTab.getSettingsTab());
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
             if (newTab == visualTab.getVisualTab()) {
                 visualTab.update();
             } else if (newTab == simulatorTab.getSimulatorTab()){
+
                 simulatorTab.getSimulator().init();
+            }
+            else if (newTab == scheduleTab.getScheduleTab()){
+scheduleTab.resetData();
             }
         });
 
