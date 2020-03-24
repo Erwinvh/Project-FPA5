@@ -13,6 +13,10 @@ class SimulatorTab {
         this.simulatorTab.setContent(this.simulator.getSimulatorLayout());
     }
 
+    Simulator getSimulator() {
+        return simulator;
+    }
+
     Tab getSimulatorTab() {
         return simulatorTab;
     }
