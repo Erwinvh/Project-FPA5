@@ -44,7 +44,7 @@ public class PersonLogic {
         this.angle = 0;
         this.speed = speed * speedMultiplyer;
         this.rotationSpeed = 100;
-        selectNewMap();
+        selectNewMap(DataController.getActiveShows());
         this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
 
@@ -124,12 +124,11 @@ public class PersonLogic {
     /**
      * sets the distanceMap to a new map depending on the isGoingToShow method
      */
-    public void selectNewMap(){
+    public void selectNewMap(ArrayList<Show> activeShows){
         this.isRoaming = false;
-       ArrayList<Show> activeShows = DataController.getActiveShows();
         for(Show show : activeShows){
             if(isGoingToShow(show)){
-                DistanceMap targetMap = getDistanceMap(show.getStage());
+                DistanceMap targetMap = getDistanceMap(show.getStage(),person.isArtist());
                 if(targetMap != null){
                     this.distanceMap = targetMap;
                     return;
@@ -140,7 +139,7 @@ public class PersonLogic {
         this.distanceMap = MapDataController.getDistanceMap(idleName);
     }
 
-    public DistanceMap getDistanceMap(Stage wantedStage){
+    public DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist){
         Stage searchingStage = null;
         for(Stage stage : DataController.getPlanner().getStages()){
             if(stage.getName().equals(wantedStage.getName())){
@@ -149,8 +148,15 @@ public class PersonLogic {
         }
         int stageIndex = DataController.getPlanner().getStages().indexOf(searchingStage);
         for(DistanceMap distanceMap : MapDataController.getDistanceMaps()){
-            if(distanceMap.getMapName().equals( "Stage"+(stageIndex+1))){
-                return distanceMap;
+            if(isArtist) {
+                if (distanceMap.getMapName().equals("ArtistStage" + (stageIndex + 1))) {
+                    return distanceMap;
+                }
+            }
+            else{
+                if (distanceMap.getMapName().equals("VisitorStage" + (stageIndex + 1))) {
+                    return distanceMap;
+                }
             }
         }
         return null;

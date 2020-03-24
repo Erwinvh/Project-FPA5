@@ -245,8 +245,9 @@ public class Simulator {
     }
 
     public void pulse() {
+        ArrayList<Show> currentShows = DataController.getActiveShows();
         for(Person person: people){
-            person.getPersonLogic().selectNewMap();
+            person.getPersonLogic().selectNewMap(currentShows);
         }
     }
 }
