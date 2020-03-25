@@ -87,8 +87,8 @@ public class MapDataController {
 
         initializeDistanceMaps();
 
-        this.mapImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = this.mapImage.getGraphics();
+        mapImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = mapImage.getGraphics();
         for (TiledLayer tiledLayer : tiledLayers) {
             tiledLayer.drawG(graphics);
         }
@@ -116,7 +116,7 @@ public class MapDataController {
             walkableArray[i % MAP_WIDTH][i / MAP_HEIGHT] = isWalkable;
         }
 
-        this.walkableMap = new WalkableMap(walkableArray);
+        walkableMap = new WalkableMap(walkableArray);
     }
 
     private void populateTargetAreas(JsonObject objectsJsonObject) {
@@ -172,7 +172,7 @@ public class MapDataController {
     }
 
     public void draw(Graphics2D graphics) {
-        graphics.drawImage(this.mapImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
+        graphics.drawImage(mapImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
     }
 
     public WalkableMap getWalkableMap() {
