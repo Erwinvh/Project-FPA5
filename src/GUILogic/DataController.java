@@ -58,7 +58,7 @@ public class DataController {
         clock = new Clock();
 
         try {
-            clock.setSimulatorSpeed(Math.round(settings.getSimulatorSpeed()));
+            clock.setSimulatorSpeed((settings.getSimulatorSpeed()));
         }
         catch (Exception e){
             e.printStackTrace();
