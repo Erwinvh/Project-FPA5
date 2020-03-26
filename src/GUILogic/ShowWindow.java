@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.collections.ObservableList;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class ShowWindow {
     private TextArea descriptionArea;
     private VBox additionalArtists;
     private ComboBox artistBox;
-
+    private GridPane gridpaneShows;
 
     /**
      * This is the constructor of the base createLayout of the windows of the three Menus.
@@ -72,6 +73,7 @@ public class ShowWindow {
         setupTimeList();
         endingTime = getTimestampsComboBox(0);
         startingTime = getTimestampsComboBox(0);
+        gridpaneShows = new GridPane();
         try {
             this.stagePopularity = this.selectedShow.getStage().getCapacity();
         } catch (Exception e) {
@@ -87,39 +89,41 @@ public class ShowWindow {
 
     }
 
+    /**
+     * @return
+     */
+    public ScrollPane AddEditSetup() {
+        gridpaneShows.setHgap(10);
+        gridpaneShows.setVgap(10);
 
-    public ScrollPane AddEditSetup(){
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
         //showname
         Label showNameLabel = new Label("Show name:");
-        gridPane.add(showNameLabel, 1, 1);
-        gridPane.add(this.nameField, 2, 1);
+        gridpaneShows.add(showNameLabel, 1, 1);
+        gridpaneShows.add(this.nameField, 2, 1);
 
         //time
-        gridPane.add(new Label("Begin time:"), 1, 2);
-        gridPane.add(new Label("End time:"), 1, 3);
-        gridPane.add(this.startingTime, 2, 2);
-        gridPane.add(this.endingTime, 2, 3);
-        startingTime.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("listener called");
-            System.out.println(newValue);
-            System.out.println(timeList.indexOf(newValue));
-            ComboBox updatedEndingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1));
-            gridPane.add(updatedEndingTime, 2, 3);
-        });
+        gridpaneShows.add(new Label("Begin time:"), 1, 2);
+        gridpaneShows.add(new Label("End time:"), 1, 3);
+        gridpaneShows.add(this.startingTime, 2, 2);
+        gridpaneShows.add(this.endingTime, 2, 3);
+//        startingTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            System.out.println("listener called");
+//            System.out.println(newValue);
+//            System.out.println(timeList.indexOf(newValue));
+//            ComboBox updatedEndingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1));
+//            gridpaneShows.add(updatedEndingTime, 2, 3);
+//        });
 
         //stage
-        gridPane.add(new Label("Stage:"), 1, 4);
-        gridPane.add(this.stageBox, 2, 4);
+        gridpaneShows.add(new Label("Stage:"), 1, 4);
+        gridpaneShows.add(this.stageBox, 2, 4);
 
         //genre
-        gridPane.add(new Label("Genre:"), 1, 5);
-        gridPane.add(this.genreBox, 2, 5);
+        gridpaneShows.add(new Label("Genre:"), 1, 5);
+        gridpaneShows.add(this.genreBox, 2, 5);
 
         //popularity
-        gridPane.add(new Label("Popularity:"), 1, 6);
+        gridpaneShows.add(new Label("Popularity:"), 1, 6);
         this.popularitySlider.setMin(0);
         this.popularitySlider.setMax(100);
         this.popularitySlider.setValue(0);
@@ -130,18 +134,18 @@ public class ShowWindow {
         this.popularitySlider.setBlockIncrement(10);
 
 
-        gridPane.add(this.popularitySlider, 2, 6);
+        gridpaneShows.add(this.popularitySlider, 2, 6);
         this.popularitySlider.valueProperty().addListener((observableValue, oldValue, newValue) -> this.popularityLabel.textProperty().setValue(String.valueOf((newValue.intValue()))));
         this.popularityLabel.textProperty().setValue("0");
-        gridPane.add(this.popularityLabel, 3, 6);
+        gridpaneShows.add(this.popularityLabel, 3, 6);
 
         //artists
-        gridPane.add(new Label("Artists:"), 1, 7);
+        gridpaneShows.add(new Label("Artists:"), 1, 7);
         this.additionalArtists.getChildren().add(this.artistBox);
 
         //add more artists button
         Button showArtistAdder = new Button("+");
-        gridPane.add(showArtistAdder, 3, 7);
+        gridpaneShows.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
             ComboBox artistAdded = getAllArtistsComboBox();
             artistAdded.getItems().add("None");
@@ -152,11 +156,11 @@ public class ShowWindow {
                 }
             });
         });
-        gridPane.add(this.additionalArtists, 2, 7);
+        gridpaneShows.add(this.additionalArtists, 2, 7);
 
         //Description
         VBox showDescriptionVBox = new VBox();
-        showDescriptionVBox.getChildren().add(gridPane);
+        showDescriptionVBox.getChildren().add(gridpaneShows);
         showDescriptionVBox.getChildren().add(new Label("Show description:"));
         showDescriptionVBox.getChildren().add(this.descriptionArea);
 
@@ -175,90 +179,17 @@ public class ShowWindow {
         Label addingNew = new Label("What show do you want to add?");
         structure.setTop(addingNew);
 
-
         structure.setCenter(AddEditSetup());
 
-        //buttons
         HBox cancelConfirmHBox = new HBox();
-
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(event -> {
-            ArrayList<Artist> addedArtists = new ArrayList<>();
-            for (Node artistBox : this.additionalArtists.getChildren()) {
-                ComboBox artistCombo = (ComboBox) artistBox;
-                if (artistCombo.getSelectionModel().getSelectedItem() != null) {
-                    String comboBoxString = artistCombo.getSelectionModel().getSelectedItem().toString();
-
-                    for (Artist artist : addedArtists) {
-                        if (artist.getName().equals(comboBoxString)) {
-                            return;
-                        }
-                    }
-
-                    Artist artist = DataController.getPlanner().getArtist(comboBoxString);
-                    if (artist != null) {
-                        addedArtists.add(artist);
-                    }
-                } else {
-                    addedArtists = null;
-                    // TODO: This is not necessary, so dubble check if it is removable
-                }
-            }
-
-            if (verifyInput(this.startingTime, this.endingTime, this.stageBox, this.genreBox, this.nameField, this.artistBox)) {
-                String showNameAdding = this.nameField.getText();
-                LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
-                LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
-                PlannerData.Stage stageAdded = DataController.getPlanner().getStage((String) stageBox.getValue());
-
-
-
-                Show show = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, addedGenre, popularityAdded);
-                if (!DataController.getPlanner().getShows().contains(show)) {
-                    for (Show existingShow : DataController.getPlanner().getShows()) {
-                        if (existingShow.getStage().getName().equals(show.getStage().getName())) {
-                            if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals(existingShow.getBeginTime())) {
-                                this.errorList.clear();
-                                this.errorList.add("A show cannot begin at the same time or during another show on the same stage.");
-                                new ErrorWindow(this.popUp, this.errorList);
-                                return;
-                            }
-
-                            if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime()) || (show.getBeginTime().isBefore(existingShow.getBeginTime()) && show.getEndTime().isAfter(existingShow.getEndTime()))) {
-                                this.errorList.clear();
-                                this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
-                                new ErrorWindow(this.popUp, this.errorList);
-                                return;
-                            }
-                        }
-
-                        for (Artist existingArtist : existingShow.getArtists()) {
-                            for (Artist showArtist : show.getArtists()) {
-                                if (existingArtist.getName().equals(showArtist.getName())) {
-                                    if (show.getBeginTime().isAfter(existingShow.getBeginTime()) && show.getBeginTime().isBefore(existingShow.getEndTime()) || show.getBeginTime().equals(existingShow.getBeginTime())) {
-                                        this.errorList.clear();
-                                        this.errorList.add("An artist cannot be at two shows at the same time");
-                                        new ErrorWindow(this.popUp, this.errorList);
-                                        return;
-                                    }
-
-                                    if (show.getEndTime().isAfter(existingShow.getBeginTime()) && show.getEndTime().isBefore(existingShow.getEndTime()) || show.getEndTime().equals(existingShow.getEndTime())) {
-                                        this.errorList.clear();
-                                        this.errorList.add("An artist cannot be at two shows at the same time");
-                                        new ErrorWindow(this.popUp, this.errorList);
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    DataController.getPlanner().addShow(show);
-                    DataController.getPlanner().savePlanner();
-                    ST.resetData();
-                    this.popUp.close();
-                }
-
+            Show Addedshow = inputcheck();
+            if (Addedshow != null && this.errorList.isEmpty()) {
+                DataController.getPlanner().addShow(Addedshow);
+                DataController.getPlanner().savePlanner();
+                ST.resetData();
+                this.popUp.close();
             } else {
                 new ErrorWindow(this.popUp, this.errorList);
             }
@@ -283,7 +214,6 @@ public class ShowWindow {
         BorderPane borderPane = new BorderPane();
         this.popUp.setTitle("Edit Show");
 
-        // Title
         Label editShowLabel = new Label("Edit this show:");
         borderPane.setTop(editShowLabel);
 
@@ -292,28 +222,16 @@ public class ShowWindow {
         gridPane.setVgap(10);
         ScrollPane artistScroller = new ScrollPane();
         artistScroller.setContent(AddEditSetup());
-        // Show name
-        this.nameField.setText(this.selectedShow.getName());
 
-        //time
+        this.nameField.setText(this.selectedShow.getName());
         this.startingTime.getSelectionModel().select(localTimeToIndex(this.selectedShow.getBeginTime()));
         this.endingTime.getSelectionModel().select(localTimeToIndex(this.selectedShow.getEndTime()));
-
-        //stage
         this.stageBox.setValue(this.selectedShow.getStage().getName());
-
-        //Genre
         this.genreBox.setValue(this.selectedShow.getGenre().getFancyName());
-
-        //popularity
         this.popularitySlider.setMax(this.stagePopularity);
         this.popularitySlider.setValue(this.selectedShow.getExpectedPopularity());
         popularityLabel.textProperty().setValue(String.valueOf(this.selectedShow.getExpectedPopularity()));
-
-        //artists
         this.artistBox.setValue(this.selectedShow.getArtists().get(0).getName());
-
-        //add more artists
         for (int i = 1; i < this.selectedShow.getArtists().size(); i++) {
             ComboBox addedArtist = getAllArtistsComboBox();
 //            addedArtist.
@@ -326,100 +244,27 @@ public class ShowWindow {
                 }
             });
         }
-
-        //Description
         this.descriptionArea.setText(this.selectedShow.getDescription());
-
-        // Buttons
 
         borderPane.setCenter(artistScroller);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
-            ArrayList<Artist> addedArtists = new ArrayList<>();
-            for (Node artistBox : additionalArtists.getChildren()) {
-                ComboBox artistCombo = (ComboBox) artistBox;
-                if (artistCombo.getSelectionModel().getSelectedItem() != null) {
-                    String comboBoxString = artistCombo.getSelectionModel().getSelectedItem().toString();
+            Show Editedshow = inputcheck();
+            if (Editedshow != null && this.errorList.isEmpty()) {
+                int index = DataController.getPlanner().getShows().indexOf(selectedShow);
 
-                    for (Artist artist : addedArtists) {
-                        if (artist.getName().equals(comboBoxString)) {
-                            return;
-                        }
-                    }
-
-                    Artist artist = DataController.getPlanner().getArtist(comboBoxString);
-                    if (artist != null) {
-                        addedArtists.add(artist);
-                    }
-                } else {
-                    addedArtists = null;
-                    // TODO: Check whether this is obsolete
-                }
-            }
-
-            if (verifyInput(startingTime, endingTime, this.stageBox, this.genreBox, this.nameField, this.artistBox)) {
-                LocalTime beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
-                LocalTime endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
-                PlannerData.Stage stageAdded = DataController.getPlanner().getStage((String) this.stageBox.getValue());
-
-
-                this.addedShow = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, addedGenre, popularityAdded);
-                if (!this.addedShow.equals(this.selectedShow)) {
-                    DataController.getPlanner().deleteShow(this.selectedShow);
-                    DataController.getPlanner().savePlanner();
-
-                    for (Show existingShow : DataController.getPlanner().getShows()) {
-                        if (existingShow.getStage().getName().equals(addedShow.getStage().getName())) {
-                            if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime()) || (addedShow.getBeginTime().isBefore(existingShow.getBeginTime()) && addedShow.getEndTime().isAfter(existingShow.getEndTime()))) {
-                                DataController.getPlanner().addShow(this.selectedShow);
-                                DataController.getPlanner().savePlanner();
-                                this.errorList.clear();
-                                this.errorList.add("A show cannot begin at the same time or during another show on the same stage.");
-                                new ErrorWindow(this.popUp, this.errorList);
-                                return;
-                            }
-
-                            if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals(existingShow.getEndTime())) {
-                                DataController.getPlanner().addShow(this.selectedShow);
-                                DataController.getPlanner().savePlanner();
-                                this.errorList.clear();
-                                this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
-                                new ErrorWindow(this.popUp, this.errorList);
-                                return;
-                            }
-                        }
-
-                        for (Artist existingArtist : existingShow.getArtists()) {
-                            for (Artist showArtist : addedShow.getArtists()) {
-                                if (existingArtist.getName().equals(showArtist.getName())) {
-                                    if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime())) {
-                                        DataController.getPlanner().addShow(this.selectedShow);
-                                        DataController.getPlanner().savePlanner();
-                                        this.errorList.clear();
-                                        this.errorList.add("An artist cannot be at two shows at the same time");
-                                        new ErrorWindow(this.popUp, this.errorList);
-                                        return;
-                                    }
-
-                                    if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals(existingShow.getEndTime())) {
-                                        DataController.getPlanner().addShow(this.selectedShow);
-                                        DataController.getPlanner().savePlanner();
-                                        this.errorList.clear();
-                                        this.errorList.add("An artist cannot be at two shows at the same time");
-                                        new ErrorWindow(this.popUp, this.errorList);
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    DataController.getPlanner().addShow(this.addedShow);
-                    DataController.getPlanner().savePlanner();
-                    this.ST.resetData();
-                    this.popUp.close();
-                }
+                DataController.getPlanner().getShows().get(index).setName(Editedshow.getName());
+                DataController.getPlanner().getShows().get(index).setExpectedPopularity(Editedshow.getExpectedPopularity());
+                DataController.getPlanner().getShows().get(index).setDescription(Editedshow.getDescription());
+                DataController.getPlanner().getShows().get(index).setBeginTime(Editedshow.getBeginTime());
+                DataController.getPlanner().getShows().get(index).setEndTime(Editedshow.getEndTime());
+                DataController.getPlanner().getShows().get(index).setArtists(Editedshow.getArtists());
+                DataController.getPlanner().getShows().get(index).setGenre(Editedshow.getGenre());
+                DataController.getPlanner().getShows().get(index).setStage(Editedshow.getStage());
+                DataController.getPlanner().savePlanner();
+                this.ST.resetData();
+                this.popUp.close();
             } else {
                 new ErrorWindow(this.popUp, this.errorList);
             }
@@ -438,77 +283,165 @@ public class ShowWindow {
     }
 
     /**
-     *
      * @return
      */
-    public Show inputcheck(){
+    public Show inputcheck() {
+//        ObservableList<Node> childrens = this.gridpaneShows.getChildren();
+//
+//        for (Node node : childrens) {
+//            if (gridpaneShows.getRowIndex(node) == 3 && gridpaneShows.getColumnIndex(node) == 2) {
+//                this.endingTime = (ComboBox) node;
+//                System.out.println(((ComboBox) node).getValue());
+//                break;
+//            }
+//        }
+        System.out.println(this.endingTime.getValue());
         errorList.clear();
         //name
+        String showName = null;
+        LocalTime beginTime = null;
+        LocalTime endTime = null;
+        PlannerData.Stage addedStage = null;
+        Genres addedGenre = null;
+        int popularityAdded = -2;
+        String descriptionShow = null;
+
         if (this.nameField.getText().length() == 0) {
             this.errorList.add("The show name has not been filled in.");
-        }
-        else {
-            String showName = this.nameField.getText();
+        } else {
+            showName = this.nameField.getText();
             for (Show show : DataController.getPlanner().getShows()) {
-                if (!this.selectedShow.equals(show) && showName.equals(show.getName())) {
-                    this.errorList.add("There is already a show with that name");
+                if (this.selectedShow == null) {
+                    if (showName.equals(show.getName())) {
+                        this.errorList.add("There is already a show with that name");
+                    }
+                } else {
+                    if (!this.selectedShow.getName().equals(show.getName()) && showName.equals(show.getName())) {
+                        this.errorList.add("There is already a show with that name");
+                    }
                 }
             }
         }
-            //startime & endtime
-            if (startingTime.getValue() == null || endingTime.getValue() == null) {
+        //startime & endtime
+        if (startingTime.getValue() == null || endingTime.getValue() == null || startingTime.getValue().equals("Select") || endingTime.getValue().equals("Select")) {
             if (startingTime.getValue() == null || startingTime.getValue().equals("Select")) {
                 this.errorList.add("The begintime has not been filled in.");
             }
             if (endingTime.getValue() == null || endingTime.getValue().equals("Select")) {
                 this.errorList.add("The endtime has not been filled in.");
+            } else {
+
             }
+        } else {
+            beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
+            endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
         }
 
         //stage
         if (this.stageBox.getValue() == null || this.stageBox.getValue().equals("Select")) {
             this.errorList.add("The stage has not been filled in.");
-        }
-        else {
-
-
-
+        } else {
+            addedStage = DataController.getPlanner().getStage((String) stageBox.getValue());
         }
 //genre
         if (genreBox.getValue() == null || genreBox.getValue().equals("Select")) {
             this.errorList.add("The genre has not been filled in.");
-        }
-        else{
-            Genres addedGenre = Genres.getGenre(genreBox.getValue().toString());
+        } else {
+            addedGenre = Genres.getGenre(genreBox.getValue().toString());
         }
         //artist
-        if (artist.getValue() == null || artist.getValue().equals("Select")) {
-            this.errorList.add("An artist has not been added yet");
+        if (artistBox.getValue() == null || artistBox.getValue().equals("Select")) {
+            this.errorList.add("An artist has not been chosen yet");
+        }
+        ArrayList<Artist> addedArtists = new ArrayList<>();
+        for (Node artistBox : additionalArtists.getChildren()) {
+            ComboBox artistCombo = (ComboBox) artistBox;
+            if (artistCombo.getSelectionModel().getSelectedItem() != null) {
+                String comboBoxString = artistCombo.getSelectionModel().getSelectedItem().toString();
+
+                for (Artist artist : addedArtists) {
+                    if (artist.getName().equals(comboBoxString)) {
+                        this.errorList.add("you have a duplicate artist in the artists.");
+                    }
+                }
+
+                Artist artist = DataController.getPlanner().getArtist(comboBoxString);
+                if (artist != null) {
+                    addedArtists.add(artist);
+                }
+            }
         }
 
         //pop
         if ((int) this.popularitySlider.getValue() == 0) {
             this.errorList.add("The popularity cannot be zero.");
-        }
-        else {
-            int popularityAdded = (int) this.popularitySlider.getValue();
+        } else {
+            popularityAdded = (int) this.popularitySlider.getValue();
         }
         //description
-        if (this.descriptionArea.getText().length() == 0){
+        if (this.descriptionArea.getText().length() == 0) {
             this.errorList.add("No Description ahs been added.");
-        }
-        else {
-            String descriptionShow = descriptionArea.getText();
+        } else {
+            descriptionShow = descriptionArea.getText();
         }
         Show newshow;
-        if (errorList.isEmpty()){
-            newshow = new Show();
-        }
-else {
-    newshow = null;
+        if (errorList.isEmpty()) {
+            newshow = new Show(beginTime, endTime, addedArtists, showName, addedStage, descriptionShow, addedGenre, popularityAdded);
+            for (Show existingShow : DataController.getPlanner().getShows()) {
+                if (selectedShow==null){
+                    if (existingShow.getStage().getName().equals(newshow.getStage().getName())) {
+                        if (newshow.getBeginTime().isAfter(existingShow.getBeginTime()) && newshow.getBeginTime().isBefore(existingShow.getEndTime()) || newshow.getBeginTime().equals(existingShow.getBeginTime())) {
+                            this.errorList.add("A show cannot begin at the same time or during another show on the same stage.");
+                        }
+                        if (newshow.getEndTime().isAfter(existingShow.getBeginTime()) && newshow.getEndTime().isBefore(existingShow.getEndTime()) || newshow.getEndTime().equals(existingShow.getEndTime()) || (newshow.getBeginTime().isBefore(existingShow.getBeginTime()) && newshow.getEndTime().isAfter(existingShow.getEndTime()))) {
+                            this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
+                        }
+                    }
+
+                    for (Artist existingArtist : existingShow.getArtists()) {
+                        for (Artist showArtist : newshow.getArtists()) {
+                            if (existingArtist.getName().equals(showArtist.getName())) {
+                                if (newshow.getBeginTime().isAfter(existingShow.getBeginTime()) && newshow.getBeginTime().isBefore(existingShow.getEndTime()) || newshow.getBeginTime().equals(existingShow.getBeginTime())) {
+                                    this.errorList.add("An artist cannot be at two shows at the same time");
+                                }
+
+                                if (newshow.getEndTime().isAfter(existingShow.getBeginTime()) && newshow.getEndTime().isBefore(existingShow.getEndTime()) || newshow.getEndTime().equals(existingShow.getEndTime())) {
+                                    this.errorList.add("An artist cannot be at two shows at the same time");
+                                }}}}
+                }
+                else{
+                if (!existingShow.getName().equals(selectedShow.getName())) {
+                    if (existingShow.getStage().getName().equals(newshow.getStage().getName())) {
+                        if (newshow.getBeginTime().isAfter(existingShow.getBeginTime()) && newshow.getBeginTime().isBefore(existingShow.getEndTime()) || newshow.getBeginTime().equals(existingShow.getBeginTime())) {
+                            this.errorList.add("A show cannot begin at the same time or during another show on the same stage.");
+                        }
+                        if (newshow.getEndTime().isAfter(existingShow.getBeginTime()) && newshow.getEndTime().isBefore(existingShow.getEndTime()) || newshow.getEndTime().equals(existingShow.getEndTime()) || (newshow.getBeginTime().isBefore(existingShow.getBeginTime()) && newshow.getEndTime().isAfter(existingShow.getEndTime()))) {
+                            this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
+                        }
+                    }
+
+                    for (Artist existingArtist : existingShow.getArtists()) {
+                        for (Artist showArtist : newshow.getArtists()) {
+                            if (existingArtist.getName().equals(showArtist.getName())) {
+                                if (newshow.getBeginTime().isAfter(existingShow.getBeginTime()) && newshow.getBeginTime().isBefore(existingShow.getEndTime()) || newshow.getBeginTime().equals(existingShow.getBeginTime())) {
+                                    this.errorList.add("An artist cannot be at two shows at the same time");
+                                }
+
+                                if (newshow.getEndTime().isAfter(existingShow.getBeginTime()) && newshow.getEndTime().isBefore(existingShow.getEndTime()) || newshow.getEndTime().equals(existingShow.getEndTime())) {
+                                    this.errorList.add("An artist cannot be at two shows at the same time");
+                                }
+                            }
+                        }
+                    }
+                }
+            }}
+
+        } else {
+            newshow = null;
         }
         return newshow;
     }
+
 
     /**
      * This method allows the user to see the selected show that they wish to delete.
@@ -634,7 +567,7 @@ else {
         return timeBox;
     }
 
-    private void setupTimeList(){
+    private void setupTimeList() {
         timeList = new ArrayList<>();
         String time;
         String halftime = "";
@@ -656,7 +589,7 @@ else {
                     this.timeList.add(time);
                 }
 
-               // timeBox.getItems().add(time);
+                // timeBox.getItems().add(time);
             }
         }
     }
@@ -671,6 +604,7 @@ else {
 
     /**
      * converts the index of the time Combobox to the corresponding time
+     *
      * @param index the index of the time selected
      * @return
      */
@@ -686,6 +620,7 @@ else {
 
     /**
      * converts the time to the index of the Time Combobox
+     *
      * @param time
      * @return
      */

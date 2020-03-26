@@ -169,4 +169,20 @@ public class Show implements Serializable, Comparable<Show> {
         return this.beginTime.compareTo(otherShow.beginTime);
         //return this.beginTime - otherShow.beginTime;
     }
+
+    public void setBeginTime(LocalTime beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setArtists(ArrayList<Artist> artists) {
+        this.artists = artists;
+    }
 }
