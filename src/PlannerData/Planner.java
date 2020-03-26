@@ -23,6 +23,9 @@ public class Planner implements Serializable {
 
     public final static String saveFileName = "Resources/saveFile.json";
 
+    /**
+     * The constructor of the planner
+     */
     public Planner() {
         this.shows = new ArrayList<>();
         this.stages = new ArrayList<>();
@@ -127,22 +130,40 @@ public class Planner implements Serializable {
         return false;
     }
 
+    /**
+     * The getter for the arraylist of shows
+     * @return Arraylist of shows
+     */
     public ArrayList<Show> getShows() {
         return this.shows;
     }
 
+    /**
+     * The getter for the arraylist of stages
+     * @return Arraylist of stages
+     */
     public ArrayList<Stage> getStages() {
         return this.stages;
     }
 
+    /**
+     * The getter for the arraylist of artists
+     * @return Arraylist of artists
+     */
     public ArrayList<Artist> getArtists() {
         return this.artists;
     }
 
+    /**
+     * A methode to clear all planned shows out of the planner
+     */
     public void deleteShows(){
 shows.clear();
     }
 
+    /**
+     * A methode to clear all data in the planner
+     */
     public void deleteAll(){
         shows.clear();
         artists.clear();
@@ -217,6 +238,11 @@ shows.clear();
         }
     }
 
+    /**
+     * The getter for a stage by name
+     * @param stageName Searched stage name
+     * @return Searched stage if found, else Null.
+     */
     public Stage getStage(String stageName) {
         if (stageName == null || stageName.isEmpty()) {
             return null;
@@ -231,6 +257,11 @@ shows.clear();
         return null;
     }
 
+    /**
+     * The getter for an artist by name
+     * @param artistName Searched artist name
+     * @return Searched artist if found else Null.
+     */
     public Artist getArtist(String artistName) {
         for (Artist artist : DataController.getPlanner().getArtists()) {
             if (artistName.equals(artist.getName())) {

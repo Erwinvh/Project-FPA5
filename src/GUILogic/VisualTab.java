@@ -1,6 +1,5 @@
 package GUILogic;
 
-import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -119,7 +118,7 @@ class VisualTab {
                     artists = artists.substring(0, artists.length() - 2);
 
                     String genres = "";
-                    if (show.getGenre()!=null) {
+                    if (show.getGenre() != null) {
                         genres = show.getGenre().getFancyName();
                     } else {
                         genres += "No specified genre";

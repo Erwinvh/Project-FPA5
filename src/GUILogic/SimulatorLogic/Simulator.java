@@ -30,6 +30,7 @@ public class Simulator {
 
     private BorderPane simulatorLayout;
 
+    
     public Simulator() {
         init();
         start();
@@ -81,10 +82,10 @@ public class Simulator {
     public void update(double deltaTime) {
         DataController.getClock().update(deltaTime);
 
-        if(DataController.getClock().isHalfHourPassed()){
+        if(DataController.getClock().isIntervalPassed()){
             pulse();
         }
-        double speed = DataController.getClock().getSimulatorSpeed() * 60;
+        double speed = DataController.getClock().getSimulatorSpeed() * 10;
 
         if (artists.size() < DataController.getPlanner().getArtists().size()) {
             peopleAmount++;
@@ -218,6 +219,19 @@ public class Simulator {
 
         for (Person person : people)
             person.draw(g);
+
+        g.setTransform(new AffineTransform());
+        String time = DataController.getClock().toString();
+        Font font = new Font("Arial", Font.PLAIN, 30);
+        Shape timeShape = font.createGlyphVector(g.getFontRenderContext(), time).getOutline();
+        timeShape = AffineTransform.getTranslateInstance(0, 30).createTransformedShape(timeShape);
+
+        g.setColor(Color.BLACK);
+        g.fill(timeShape);
+        g.setColor(Color.WHITE);
+        g.draw(timeShape);
+
+        g.setTransform(this.cameraTransform.getTransform());
     }
 
     public void setPeopleAmount(int peopleAmount) {
@@ -233,8 +247,9 @@ public class Simulator {
     }
 
     public void pulse() {
+        ArrayList<Show> currentShows = DataController.getActiveShows();
         for(Person person: people){
-            person.getPersonLogic().selectNewMap();
+            person.getPersonLogic().selectNewMap(currentShows);
         }
     }
 }

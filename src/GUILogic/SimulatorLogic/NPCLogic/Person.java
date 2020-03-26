@@ -174,4 +174,7 @@ public class Person {
         return name;
     }
 
+    public boolean isArtist() {
+        return isArtist;
+    }
 }

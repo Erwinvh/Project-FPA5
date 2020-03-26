@@ -1,23 +1,21 @@
 package GUILogic.SimulatorLogic.NPCLogic;
 
-import GUILogic.Clock;
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.MapData.TargetArea;
 import NPCLogic.Person;
-import PlannerData.Planner;
+import PlannerData.Artist;
 import PlannerData.Show;
 import PlannerData.Stage;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class PersonLogic {
 
-    private final double speedMultiplyer;
     private Point2D position;
     private double angle;
     private double speed;
@@ -25,7 +23,7 @@ public class PersonLogic {
     private double rotationSpeed;
     private DistanceMap distanceMap;
     private String activity;
-    private NPCLogic.Person person;
+    private Person person;
     private Point2D newPosition;
 
     private boolean isRoaming = false;
@@ -34,20 +32,21 @@ public class PersonLogic {
 
     private boolean isArtist;
 
-    public PersonLogic(Point2D position, double speed, NPCLogic.Person person, boolean isArtist) {
+    public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
         Random random = new Random();
-        this.speedMultiplyer = ((120.0-random.nextInt(40))/100);
+        double speedMultiplier = ((120.0 - random.nextInt(40)) / 100);
 
         this.position = position;
         this.person = person;
         this.angle = 0;
-        this.speed = speed * speedMultiplyer;
+        this.speed = speed * speedMultiplier;
         this.rotationSpeed = 100;
-        selectNewMap();
+        selectNewMap(DataController.getActiveShows());
         this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
 
     }
+
 
     public void choiceMaker() {
         Random random = new Random();
@@ -74,9 +73,9 @@ public class PersonLogic {
     }
 
     /**
-     * checks if the NPCLogic.Person has arrived at the target
+     * checks if the Person has arrived at the target
      *
-     * @return
+     * @return true or false depending on distance between target and current position
      */
     public boolean hasArrivedAtTarget() {
         double distanceAmount = 17;
@@ -91,82 +90,93 @@ public class PersonLogic {
         return this.target.distance(new Point2D.Double(-1, -1)) < distanceAmount;
     }
 
+    /**
+     * sets the next target of the person of all adjacent tiles
+     */
     public void setNextTarget() {
         this.target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
     /**
-     * For testing purposes!
-     * Selects a random distanceMap
-     *
-     * @return the name of the map
+     * sets the DistanceMap to a map determined by the isGoingToShow method
+     * @param activeShows a list of shows being performed on the current time of the Clock
      */
-    public void selectRandomMap() {
-
-        //TODO: Rename this function and check if it is an artist or visitor with isArtist boolean
-
-        if (isArtist) {
-            // Not a random target unless artist doesn't have anything in his schedule at this time
-            // TODO: Add artist logic to assign a target stage
-        } else {
-            TargetArea[] targetAreas = MapDataController.getTargetAreas();
-            Random random = new Random();
-            int index = random.nextInt(targetAreas.length);
-
-            TargetArea.TargetAreaType targetAreaType = targetAreas[index].getTargetAreaType();
-            if (targetAreaType.equals(TargetArea.TargetAreaType.ALL) || targetAreaType.equals(TargetArea.TargetAreaType.VISITOR)) {
-                this.distanceMap = MapDataController.getDistanceMap(targetAreas[index]);
-            } else selectRandomMap();
-        }
-    }
-
-    /**
-     * sets the distanceMap to a new map depending on the isGoingToShow method
-     */
-    public void selectNewMap(){
+    public void selectNewMap(ArrayList<Show> activeShows) {
         this.isRoaming = false;
-       ArrayList<Show> activeShows = DataController.getActiveShows();
+        Collections.sort(activeShows);
+        int totalExpectedPopularity = 0;
         for(Show show : activeShows){
-            if(isGoingToShow(show)){
-                DistanceMap targetMap = getDistanceMap(show.getStage());
-                if(targetMap != null){
+            totalExpectedPopularity += show.getExpectedPopularity();
+        }
+        for (Show show : activeShows) {
+            if (isGoingToShow(show, totalExpectedPopularity)) {
+                System.out.println("Is going to " + show.getName());
+                DistanceMap targetMap = getDistanceMap(show.getStage(), person.isArtist());
+                if (targetMap != null) {
                     this.distanceMap = targetMap;
                     return;
                 }
             }
         }
-        String idleName = "Idle" + (int) (Math.random() * 5 +1);
+
+        String idleName = "Idle" + (int) (Math.random() * 5 + 1);
         this.distanceMap = MapDataController.getDistanceMap(idleName);
     }
 
-    public DistanceMap getDistanceMap(Stage stage){
-        int stageIndex = DataController.getPlanner().getStages().indexOf(stage);
-        for(DistanceMap distanceMap : MapDataController.getDistanceMaps()){
-            if(distanceMap.getMapName().equals( "Stage"+stageIndex+1)){
-                return distanceMap;
+    /**
+     * Gets the distanceMap of a stage depending if the person is an artist
+     * If the person is an artist the distance map will be located on the stage itself
+     * If the person is not an artist the distance map destination will be the viewing area
+     * @param wantedStage the desired stage
+     * @param isArtist true if the person is an artists
+     * @return the correct DistanceMap of the stage
+     */
+    public DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist){
+        Stage searchingStage = null;
+        for (Stage stage : DataController.getPlanner().getStages()) {
+            if (stage.getName().equals(wantedStage.getName())) {
+                searchingStage = stage;
             }
         }
+
+        int stageIndex = DataController.getPlanner().getStages().indexOf(searchingStage);
+        for (DistanceMap distanceMap : MapDataController.getDistanceMaps()) {
+            if (isArtist) {
+                if (distanceMap.getMapName().equals("ArtistStage" + (stageIndex + 1))) {
+                    return distanceMap;
+                }
+            } else {
+                if (distanceMap.getMapName().equals("VisitorStage" + (stageIndex + 1))) {
+                    return distanceMap;
+                }
+            }
+        }
+
         return null;
     }
 
     /**
      * Determines if a person is going to a show
+     *
      * @param show the show the person is deciding to go to
      * @return true if the persone wants to go to the show
      */
-    private boolean isGoingToShow(Show show){
-        if(person.getFavoriteGenre().getFancyName() == show.getGenre().getSuperGenre()){
-            if(Math.random() >= 0.1){
-                return true;
-            }else {
-                return false;
+    private boolean isGoingToShow(Show show, int totalExpectedPopularity) {
+        if (person.isArtist()) {
+            for (Artist artist : show.getArtists()) {
+                if (person.getName().equals(artist.getName())) {
+                    return true;
+                }
             }
-        }
-        if(Math.random() >= 0.33){
-            return true;
-        }else {
             return false;
         }
+
+        double chance = Math.random();
+        if (person.getFavoriteGenre().getFancyName().equals(show.getGenre().getSuperGenre())) {
+            return chance <= ( ( show.getExpectedPopularity() *3.0)) /  ((double) totalExpectedPopularity);
+        }
+
+        return chance <= ((double) (show.getExpectedPopularity())  /((double) ((totalExpectedPopularity)) * 2.0)) ;
     }
 
     public Point2D getNewPosition() {
@@ -254,26 +264,6 @@ public class PersonLogic {
         this.activity = activity;
     }
 
-    public double getAngle() {
-        return angle;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public Point2D getTarget() {
-        return target;
-    }
-
-    public double getRotationSpeed() {
-        return rotationSpeed;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
     public int getNegativeFeedback() {
         return negativeFeedback;
     }
@@ -284,10 +274,6 @@ public class PersonLogic {
 
     public void setPosition(Point2D position) {
         this.position = position;
-    }
-
-    public void setRotationSpeed(double rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
     }
 
     public void setNegativeFeedback(int negativeFeedback) {
