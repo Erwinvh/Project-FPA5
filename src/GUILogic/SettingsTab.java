@@ -149,6 +149,11 @@ public class SettingsTab {
         Button saveButton = new Button("Save settings");
         saveButton.setOnAction(event ->  saveSettings());
 
+        //Reset simulator
+        Button resetButton = new Button("Reset simulator");
+        resetButton.setOnAction(event -> DataController.getSettings().setReset(true));
+
+
         //Adding all nodes to the gridpane
         split.add(planner, 0, 0);
         split.add(deleteAll, 0, 2);
@@ -167,6 +172,7 @@ public class SettingsTab {
 
         split.add(prediction,2,6);
         split.add(saveButton, 2, 10);
+        split.add(resetButton,3,10);
 
         split.add(hourLabel,2,7);
         split.add(minuteLabel,3,7);
@@ -281,8 +287,10 @@ public class SettingsTab {
             settingsBuilder.add("Use overwrite time", overwriteStartTime.isSelected());
             writer.writeObject(settingsBuilder.build());
             writer.close();
-            DataController.getClock().setTime(Integer.parseInt( beginHours.getValue().toString()),Integer.parseInt( beginMinutes.getValue().toString()),0);
             DataController.getClock().setSimulatorSpeed(speedSlider.getValue());
+            if(overwriteStartTime.isSelected()) {
+                DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString()), Integer.parseInt(beginMinutes.getValue().toString()), 0);
+            }
         }
         catch (Exception e){
             e.printStackTrace();

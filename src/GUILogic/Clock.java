@@ -13,7 +13,7 @@ public class Clock {
         this.hours = DataController.getSettings().getBeginHours();
         this.minutes = DataController.getSettings().getBeginMinutes();
         this.seconds = 0;
-        this.simulatorSpeed = 120 * DataController.getSettings().getSimulatorSpeed();
+        this.simulatorSpeed =(90 * DataController.getSettings().getSimulatorSpeed());
         this.intervalPassed = false;
     }
 

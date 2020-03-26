@@ -6,9 +6,19 @@ public class Settings {
     private double simulatorSpeed;
     private double visitors;
     private boolean usingPredictedPerson;
-    private int beginHours;
-    private int beginMinutes;
+    private int beginHours = Integer.MIN_VALUE;
+    private int beginMinutes = Integer.MIN_VALUE;
     private boolean overwriteStartTime;
+    private boolean reset;
+
+    public boolean isReset() {
+        return reset;
+    }
+
+    public void setReset(boolean reset) {
+        this.reset = reset;
+    }
+
     private String saveFileName = "Resources/settings.json";
 
     /**
