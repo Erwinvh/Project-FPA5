@@ -8,6 +8,19 @@ public class Settings {
     private boolean usingPredictedPerson;
     private int beginHours;
     private int beginMinutes;
+    private boolean overwriteStartTime;
+
+    public boolean isOverwriteStartTime() {
+        return overwriteStartTime;
+    }
+
+    public void setOverwriteStartTime(boolean overwriteStartTime) {
+        this.overwriteStartTime = overwriteStartTime;
+    }
+
+    public void setSaveFileName(String saveFileName) {
+        this.saveFileName = saveFileName;
+    }
 
     public int getBeginHours() {
         return beginHours;

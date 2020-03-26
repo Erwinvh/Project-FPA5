@@ -200,6 +200,7 @@ public class DataController {
                         this.settings.setUsingPredictedPerson(settings.getBoolean("Is Using Prediction"));
                         this.settings.setBeginHours(settings.getInt("Begin hours"));
                         this.settings.setBeginMinutes(settings.getInt("Begin minutes"));
+                        this.settings.setOverwriteStartTime(settings.getBoolean( "Use overwrite time"));
                     }
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");

@@ -46,7 +46,6 @@ public class PersonLogic {
         this.speed = speed * speedMultiplier;
         this.rotationSpeed = 100;
         selectNewMap(DataController.getActiveShows());
-        this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 

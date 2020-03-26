@@ -60,7 +60,7 @@ public class Simulator {
         sortedShowList.sort(Show::compareToTime);
         LocalTime firstShowTime = sortedShowList.get(0).getBeginTime();
 
-        if (firstShowTime != null){
+        if (firstShowTime != null && !DataController.getSettings().isOverwriteStartTime()){
             if (firstShowTime.getHour() != 0){
                 DataController.getClock().setTime(firstShowTime.getHour() - 1, firstShowTime.getMinute(), firstShowTime.getSecond());
             } else if (firstShowTime.getMinute() == 30){
