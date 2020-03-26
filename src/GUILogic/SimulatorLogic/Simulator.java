@@ -72,7 +72,6 @@ public class Simulator {
             DataController.getClock().setToMidnight();
         }
 
-
         createPredictions();
     }
 

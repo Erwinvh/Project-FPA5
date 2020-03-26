@@ -159,7 +159,7 @@ public class Person {
      * Plays an soundEffect according to the genre
      */
     public void playSoundEffect() {
-        if (this.favoriteGenre.equals(Genres.METAL)) {
+        if (this.favoriteGenre != null && this.favoriteGenre.equals(Genres.METAL)) {
             this.mediaPlayer.setVolume(0.05);
         }
 
