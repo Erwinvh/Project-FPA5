@@ -30,16 +30,25 @@ public class Simulator {
 
     private BorderPane simulatorLayout;
 
-    
+    /**
+     * The constructor for the Simulator
+     */
     public Simulator() {
         init();
         start();
     }
 
+    /**
+     * The getter for the simulator layout
+     * @return The borderpane in which the simulator is placed
+     */
     public BorderPane getSimulatorLayout() {
         return simulatorLayout;
     }
 
+    /**
+     * This methode sets all items and attributes by initilisation
+     */
     public void init() {
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
@@ -49,6 +58,9 @@ public class Simulator {
         createPredictions();
     }
 
+    /**
+     * This methode starts the simulator
+     */
     public void start() {
         this.simulatorLayout = new BorderPane();
         canvas = new ResizableCanvas(this::draw, this.simulatorLayout);
@@ -145,6 +157,10 @@ public class Simulator {
         return true;
     }
 
+    /**
+     * This methode handles the mouse event when its pressed
+     * @param e the mouse event
+     */
     public void onMousePressed(MouseEvent e) {
         if (e.getButton() == MouseButton.PRIMARY)
             this.init();
@@ -156,6 +172,9 @@ public class Simulator {
         }
     }
 
+    /**
+     * This methode creates the prediction of the type of guests that will visit the festival
+     */
     public void createPredictions() {
         int Total = 6;
         int metal = 1;
@@ -201,6 +220,10 @@ public class Simulator {
         this.Prediction.add(Total);
     }
 
+    /**
+     * This methode draws the items on the simulator
+     * @param g
+     */
     public void draw(FXGraphics2D g) {
         //Gets inverseTransform from cameraTransform so the correct rectangle can be cleared.
         AffineTransform inverse = this.cameraTransform.getInverseTransform();
@@ -234,14 +257,26 @@ public class Simulator {
         g.setTransform(this.cameraTransform.getTransform());
     }
 
+    /**
+     * This is the setter for the amount of people per NPC
+     * @param peopleAmount Amount of people per npc
+     */
     public void setPeopleAmount(int peopleAmount) {
         this.peopleAmount = peopleAmount;
     }
 
+    /**
+     * The getter for the amount of people per npc
+     * @return The amount of people amount
+     */
     public int getPeopleAmount() {
         return peopleAmount;
     }
 
+    /**
+     *
+     * @param predictedGuests
+     */
     public void setPredictedGuests(boolean predictedGuests) {
         this.predictedGuests = predictedGuests;
     }

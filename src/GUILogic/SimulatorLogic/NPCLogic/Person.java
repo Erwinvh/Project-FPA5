@@ -26,15 +26,15 @@ public class Person {
     private MediaPlayer mediaPlayer;
     private PersonLogic personLogic;
     private String name;
-
     private boolean isArtist = false;
 
     /**
      * A constructor of NPCLogic.Person
      *
-     * @param position        the starting position of the NPCLogic.Person
-     * @param genreChanceList a list for the probability of liking a Genre
-     * @param speed           the movement speed of the NPCLogic.Person
+     * @param position        The starting position of the NPCLogic.Person
+     * @param genreChanceList A list for the probability of liking a Genre
+     * @param speed           The movement speed of the NPCLogic.Person
+     * @param isArtist        A Boolean that identifies the npc as artist or not
      */
     public Person(Point2D position, ArrayList<Integer> genreChanceList, double speed, boolean isArtist) {
         this.isArtist = isArtist;
@@ -42,6 +42,14 @@ public class Person {
         this.personLogic = new PersonLogic(position, speed, this, isArtist);
     }
 
+    /**
+     * The second constructor for the artist and its name.
+     * @param position        The starting position of the NPCLogic.Person
+     * @param genreChanceList A list for the probability of liking a Genre
+     * @param name            The artist name
+     * @param speed           The movement speed of the NPCLogic.Person
+     * @param isArtist        A Boolean that identifies the npc as artist or not
+     */
     public Person(Point2D position, ArrayList<Integer> genreChanceList, String name, double speed, boolean isArtist) {
         this.name = name;
         this.isArtist = isArtist;
@@ -60,9 +68,8 @@ public class Person {
         String soundEffectPath;
 
         if (this.isArtist) {
-            //TODO: add artist sound effect.
             spriteSheetPath = "Artist.png";
-            soundEffectPath = "ClassicLaugh.mp3";
+            soundEffectPath = "ArtistSound.mp3";
         } else {
             int number = (int) (Math.random() * ((genreChance.get(6) - 1) + 1)) + 1;
             if (genreChance.get(0) >= number && number > 0) {
@@ -91,13 +98,13 @@ public class Person {
                 this.favoriteGenre = Genres.POP;
 
             } else if (genreChance.get(6) >= number && number > (genreChance.get(6) - genreChance.get(5))) {
-                spriteSheetPath = "terminator.png";
-                soundEffectPath = "Terminator.mp3";
+                spriteSheetPath = "visitor.png";
+                soundEffectPath = "VisitorHello.mp3";
                 this.favoriteGenre = Genres.ELECTRONIC;
 
             } else {
-                spriteSheetPath = "visitor.png";
-                soundEffectPath = "VisitorHello.mp3";
+                spriteSheetPath = "terminator.png";
+                soundEffectPath = "Terminator.mp3";
                 this.favoriteGenre = Genres.COUNTRY;
             }
         }
@@ -112,6 +119,10 @@ public class Person {
         this.mediaPlayer = new MediaPlayer(this.soundEffect);
     }
 
+    /**
+     * The getter for the npcs logic
+     * @return This Npc's logic
+     */
     public PersonLogic getPersonLogic() {
         return personLogic;
     }
@@ -139,6 +150,10 @@ public class Person {
         }
     }
 
+    /**
+     * The draw function of this npc
+     * @param g The 2D graphics
+     */
     public void draw(Graphics2D g) {
         g.drawImage(sprite, this.personLogic.getTransform(), null);
     }
@@ -158,22 +173,42 @@ public class Person {
 
     }
 
+    /**
+     * The getter for the sprite
+     * @return The sprite of the npc
+     */
     public BufferedImage getSprite() {
         return sprite;
     }
 
+    /**
+     * The getter for the favorite genre of the npc
+     * @return the favorite genre
+     */
     public Genres getFavoriteGenre() {
         return favoriteGenre;
     }
 
+    /**
+     * The setter for the speed of the NPC
+     * @param speed The given speed
+     */
     public void setSpeed(double speed){
         this.personLogic.setSpeed(speed);
     }
 
+    /**
+     * The getter for the NPC name
+     * @return The npc name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * The getter for the boolean of whether an npc is an artist or not
+     * @return the true or false value of the npc
+     */
     public boolean isArtist() {
         return isArtist;
     }
