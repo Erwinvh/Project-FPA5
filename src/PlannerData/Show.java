@@ -153,12 +153,6 @@ public class Show implements Serializable, Comparable<Show> {
      * @return 1 if this show has higher expectedPopularity, 0 if equal, -1 if less
      */
     public int compareTo(Show otherShow){
-        if(this.expectedPopularity > otherShow.expectedPopularity){
-            return 1;
-        }
-        if(this.expectedPopularity < otherShow.expectedPopularity){
-            return -1;
-        }
-        return 0;
+        return Integer.compare(this.expectedPopularity, otherShow.expectedPopularity);
     }
 }
