@@ -90,6 +90,18 @@ public class Clock {
     }
 
     /**
+     * set time to parameters.
+     * @param hours
+     * @param minutes
+     * @param seconds
+     */
+    public void setTime(int hours, int minutes, int seconds){
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
+    }
+
+    /**
      * This methode sets the time back to midnight
      */
     public void setToMidnight() {
