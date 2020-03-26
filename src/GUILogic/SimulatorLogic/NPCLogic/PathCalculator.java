@@ -60,8 +60,8 @@ public class PathCalculator {
         int failedAttempts = 0;
         while (failedAttempts < 8) {
             Random random = new Random();
-            int xPos = random.nextInt(3) - 1 + ((int) currentPosition.getX()) / tileSize;
-            int yPos = random.nextInt(3) - 1 + ((int) currentPosition.getY()) / tileSize;
+            int xPos = random.nextInt(3) - 1 + (((int) currentPosition.getX()) / tileSize);
+            int yPos = random.nextInt(3) - 1 + (((int) currentPosition.getY()) / tileSize);
             xPos = Math.min(xPos, 99);
             xPos = Math.max(0, xPos);
             yPos = Math.min(yPos, 99);

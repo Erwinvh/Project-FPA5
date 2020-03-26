@@ -66,6 +66,14 @@ public class Simulator {
                 DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute(), firstShowTime.getSecond());
             }
         }
+        else{
+            if(DataController.getSettings().getBeginHours() != Integer.MIN_VALUE && DataController.getSettings().getBeginMinutes() != Integer.MIN_VALUE){
+                DataController.getClock().setTime(DataController.getSettings().getBeginHours(),DataController.getClock().getMinutes(),0);
+            }
+            else {
+                DataController.getClock().setToMidnight();
+            }
+        }
 
         createPredictions();
     }

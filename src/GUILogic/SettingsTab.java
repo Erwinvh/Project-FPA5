@@ -281,8 +281,10 @@ public class SettingsTab {
             settingsBuilder.add("Use overwrite time", overwriteStartTime.isSelected());
             writer.writeObject(settingsBuilder.build());
             writer.close();
-            DataController.getClock().setTime(Integer.parseInt( beginHours.getValue().toString()),Integer.parseInt( beginMinutes.getValue().toString()),0);
             DataController.getClock().setSimulatorSpeed(speedSlider.getValue());
+            if(overwriteStartTime.isSelected()) {
+                DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString()), Integer.parseInt(beginMinutes.getValue().toString()), 0);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
