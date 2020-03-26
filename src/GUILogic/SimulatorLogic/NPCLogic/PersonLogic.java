@@ -207,14 +207,6 @@ public class PersonLogic {
         }
     }
 
-    public boolean isRoaming() {
-        return isRoaming;
-    }
-
-    public void setRoaming(boolean roaming) {
-        isRoaming = roaming;
-    }
-
     public DistanceMap getDistanceMap() {
         return this.distanceMap;
     }
@@ -237,28 +229,12 @@ public class PersonLogic {
         this.target = target;
     }
 
-    public String getActivity() {
-        return activity;
-    }
-
-    public void setActivity(String activity) {
-        this.activity = activity;
-    }
-
-    public int getNegativeFeedback() {
-        return negativeFeedback;
-    }
-
     public void setSpeed(double speed) {
         this.speed = speed * this.speedMultiplier;
     }
 
     public void setPosition(Point2D position) {
         this.position = position;
-    }
-
-    public void setNegativeFeedback(int negativeFeedback) {
-        this.negativeFeedback = negativeFeedback;
     }
 
 }

@@ -34,8 +34,6 @@ public class SettingsTab {
     private CheckBox overwriteStartTime;
 
     public SettingsTab(Stage primaryStage) {
-//        this.amountPerNPC = amount;
-//        this.speed = speed;
         this.primaryStage = primaryStage;
         this.settingsTab = new Tab("Settings");
         this.saveFileName = DataController.getSettings().getSaveFileName();
@@ -54,6 +52,10 @@ public class SettingsTab {
 
     }
 
+    /**
+     * builds and returns the settingsTab
+     * @return
+     */
     public Tab getSettingsTab() {
 
         GridPane split = new GridPane();
@@ -81,8 +83,10 @@ public class SettingsTab {
             DeleteShowWindow();
         });
 
+        //Prediction checkbox
         prediction.setText("Predicted types of guests");
 
+        //Simulator speed slider
         speedSlider.setMax(2);
         speedSlider.setMin(0);
         speedSlider.setShowTickLabels(true);
@@ -108,7 +112,7 @@ public class SettingsTab {
             }
         });
 
-
+        //NPC amount slider
         NPCAmountSlider.setMin(1);
         NPCAmountSlider.setMax(300);
         NPCAmountSlider.setShowTickLabels(true);
@@ -130,18 +134,22 @@ public class SettingsTab {
             }
         });
 
+        //Hour Combobox
         Label hourLabel = new Label("Begin time hours");
         for(int i = 0; i < 24; i++){
             beginHours.getItems().add(i);
         }
+        //Minute ComboBox
         Label minuteLabel = new Label("Begin time minutes");
         for(int i = 0; i < 60; i++){
             beginMinutes.getItems().add(i);
         }
 
+        //Save button
         Button saveButton = new Button("Save settings");
         saveButton.setOnAction(event ->  saveSettings());
 
+        //Adding all nodes to the gridpane
         split.add(planner, 0, 0);
         split.add(deleteAll, 0, 2);
         split.add(deleteAllButton, 0, 3);
@@ -171,6 +179,9 @@ public class SettingsTab {
         return settingsTab;
     }
 
+    /**
+     *the Popup window if the deleteAll button is pressed
+     */
     public void DeleteAllWindow() {
         Stage DeleteAll = new Stage();
         DeleteAll.setResizable(false);
@@ -207,6 +218,9 @@ public class SettingsTab {
         DeleteAll.show();
     }
 
+    /**
+     * The popupwindow if the delete shows is pressed
+     */
     public void DeleteShowWindow() {
         Stage DeleteShow = new Stage();
         DeleteShow.setResizable(false);
