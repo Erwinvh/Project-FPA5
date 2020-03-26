@@ -6,7 +6,6 @@ import NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.animation.AnimationTimer;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.jfree.fx.FXGraphics2D;
@@ -17,6 +16,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Simulator {
     private MapDataController mapDataController;
@@ -24,7 +24,7 @@ public class Simulator {
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
 
-    private int peopleAmount = 100;
+    private int peopleAmount = 200;
     private int globalSpeed = 4;
     private CameraTransform cameraTransform;
     private ArrayList<Integer> prediction = new ArrayList<>();
@@ -56,14 +56,17 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
 
-        LocalTime firstShow = DataController.getPlanner().getShows().get(0).getBeginTime();
-        if (firstShow != null){
-            if (firstShow.getHour() != 0){
-                DataController.getClock().setTime(firstShow.getHour() - 1, firstShow.getMinute(), firstShow.getSecond());
-            } else if (firstShow.getMinute() == 30){
-                DataController.getClock().setTime(firstShow.getHour(), firstShow.getMinute() - 30, firstShow.getSecond());
+        ArrayList<Show> sortedShowList = DataController.getPlanner().getShows();
+        sortedShowList.sort(Show::compareToTime);
+        LocalTime firstShowTime = sortedShowList.get(0).getBeginTime();
+
+        if (firstShowTime != null){
+            if (firstShowTime.getHour() != 0){
+                DataController.getClock().setTime(firstShowTime.getHour() - 1, firstShowTime.getMinute(), firstShowTime.getSecond());
+            } else if (firstShowTime.getMinute() == 30){
+                DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute() - 30, firstShowTime.getSecond());
             } else {
-                DataController.getClock().setTime(firstShow.getHour(), firstShow.getMinute(), firstShow.getSecond());
+                DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute(), firstShowTime.getSecond());
             }
         } else {
             DataController.getClock().setToMidnight();

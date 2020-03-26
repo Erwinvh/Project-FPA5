@@ -155,4 +155,9 @@ public class Show implements Serializable, Comparable<Show> {
     public int compareTo(Show otherShow){
         return Integer.compare(this.expectedPopularity, otherShow.expectedPopularity);
     }
+
+    public int compareToTime(Show otherShow){
+        return this.beginTime.compareTo(otherShow.beginTime);
+        //return this.beginTime - otherShow.beginTime;
+    }
 }
