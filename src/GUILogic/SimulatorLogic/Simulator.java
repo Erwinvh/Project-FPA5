@@ -15,6 +15,7 @@ import org.jfree.fx.ResizableCanvas;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Simulator {
@@ -55,7 +56,20 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
 
-        DataController.getClock().setToMidnight();
+        LocalTime firstShow = DataController.getPlanner().getShows().get(0).getBeginTime();
+        if (firstShow != null){
+            if (firstShow.getHour() != 0){
+                DataController.getClock().setTime(firstShow.getHour() - 1, firstShow.getMinute(), firstShow.getSecond());
+            } else if (firstShow.getMinute() == 30){
+                DataController.getClock().setTime(firstShow.getHour(), firstShow.getMinute() - 30, firstShow.getSecond());
+            } else {
+                DataController.getClock().setTime(firstShow.getHour(), firstShow.getMinute(), firstShow.getSecond());
+            }
+        } else {
+            DataController.getClock().setToMidnight();
+        }
+
+
         createPredictions();
     }
 
@@ -165,9 +179,6 @@ public class Simulator {
      * @param e the mouse event
      */
     public void onMousePressed(MouseEvent e) {
-        if (e.getButton() == MouseButton.PRIMARY)
-          //  this.init();
-
         for (Person person : this.people) {
             if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 32) {
                 person.playSoundEffect();
