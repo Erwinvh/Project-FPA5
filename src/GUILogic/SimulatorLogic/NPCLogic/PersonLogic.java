@@ -2,7 +2,6 @@ package GUILogic.SimulatorLogic.NPCLogic;
 
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
-import NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
 import PlannerData.Stage;
@@ -34,9 +33,8 @@ public class PersonLogic {
      * @param position the position of the npc
      * @param speed the speed of the npc
      * @param person the person object connected to the npc
-     * @param isArtist the
      */
-    public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
+    public PersonLogic(Point2D position, double speed, Person person) {
         Random random = new Random();
         this.speedMultiplier = ((120.0 - random.nextInt(40)) / 100);
 
@@ -46,7 +44,6 @@ public class PersonLogic {
         this.speed = speed * speedMultiplier;
         this.rotationSpeed = 100;
         selectNewMap(DataController.getActiveShows());
-        this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
@@ -230,8 +227,8 @@ public class PersonLogic {
         AffineTransform tx = new AffineTransform();
 
         tx.translate(position.getX() - this.person.getSprite().getWidth() * 0.5, position.getY() - this.person.getSprite().getHeight() * 0.5);
-        tx.rotate(this.angle, this.person.getSprite().getWidth() * 0.5, this.person.getSprite().getHeight() * 0.5);
         tx.scale(0.5, 0.5);
+        tx.rotate(this.angle, this.person.getSprite().getWidth() * 0.5, this.person.getSprite().getHeight() * 0.5);
 
         return tx;
     }

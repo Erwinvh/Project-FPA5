@@ -1,8 +1,6 @@
-package NPCLogic;
+package GUILogic.SimulatorLogic.NPCLogic;
 
 import Enumerators.Genres;
-import GUILogic.SimulatorLogic.NPCLogic.PathCalculator;
-import GUILogic.SimulatorLogic.NPCLogic.PersonLogic;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -38,7 +36,7 @@ public class Person {
     public Person(Point2D position, ArrayList<Integer> genreChanceList, double speed, boolean isArtist) {
         this.isArtist = isArtist;
         genrePicker(genreChanceList);
-        this.personLogic = new PersonLogic(position, speed, this, isArtist);
+        this.personLogic = new PersonLogic(position, speed, this);
     }
 
     /**
@@ -53,7 +51,7 @@ public class Person {
         this.name = name;
         this.isArtist = isArtist;
         genrePicker(genreChanceList);
-        this.personLogic = new PersonLogic(position, speed, this, isArtist);
+        this.personLogic = new PersonLogic(position, speed, this);
     }
 
     /**
