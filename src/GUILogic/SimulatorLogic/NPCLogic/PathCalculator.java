@@ -3,6 +3,7 @@ package GUILogic.SimulatorLogic.NPCLogic;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 
 import java.awt.geom.Point2D;
+import java.util.Random;
 
 public class PathCalculator {
 
@@ -59,16 +60,19 @@ public class PathCalculator {
 
         int failedAttempts = 0;
         while (failedAttempts < 8) {
+//            Random random = new Random();
+//            random.nextInt(3);
             int xPos = (int) Math.floor(Math.random() * 2.9) - 1 + ((int) currentPosition.getX()) / tileSize;
             int yPos = (int) Math.floor(Math.random() * 2.9) - 1 + ((int) currentPosition.getY()) / tileSize;
             xPos = Math.min(xPos, 99);
             xPos = Math.max(0, xPos);
             yPos = Math.min(yPos, 99);
             yPos = Math.max(0, yPos);
-            boolean[][] walkableMap = distanceMap.getWalkableMap();
-            if (walkableMap[xPos][yPos]) {
+
+            if (distanceMap.getWalkableMap()[xPos][yPos]) {
                 return new Point2D.Double(xPos * tileSize, yPos * tileSize);
             }
+
             failedAttempts++;
         }
 
