@@ -16,6 +16,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Simulator {
@@ -139,12 +140,26 @@ public class Simulator {
     }
 
     /**
-     * Spawns a person, if all the artists are spawned then spawning visitors
+     * Spawns on either of the 2 spawn locations, randomly chosen.
      */
     public void spawnPerson() {
-        Point2D newSpawnLocation = new Point2D.Double(2 * 32, 20 * 32);
+        Point2D spawnLocation1 = new Point2D.Double(2 * 32, 20 * 32);
+        Point2D spawnLocation2 = new Point2D.Double(31 * 32, 97 * 32);
 
-        if (canSpawn(newSpawnLocation)) {
+        Random r = new Random();
+        if (r.nextBoolean()){
+            spawnOnLocation(spawnLocation1);
+        } else {
+            spawnOnLocation(spawnLocation2);
+        }
+    }
+
+    /**
+     * Spawns a person, if all the artists are spawned then spawning visitors
+     * @param p2d spawnLocation
+     */
+    public void spawnOnLocation(Point2D p2d){
+        if (canSpawn(p2d)) {
             //loop trough all the artists to see if they are spawned already
             for (Artist artist : DataController.getPlanner().getArtists()) {
                 boolean hasBeenSpawned = false;
@@ -155,16 +170,17 @@ public class Simulator {
                 }
 
                 if (!hasBeenSpawned) {
-                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true));
+                    this.people.add(new Person(new Point2D.Double(p2d.getX(), p2d.getY()), this.prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true));
                     return;
                 }
             }
 
             //if all the artists have been spawned then we spawn visitors
-            this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
-                    newSpawnLocation.getY()), this.prediction, DataController.getClock().getSimulatorSpeed(), false));
+            this.people.add(new Person(new Point2D.Double(p2d.getX(),
+                    p2d.getY()), this.prediction, DataController.getClock().getSimulatorSpeed(), false));
         }
     }
+
 
     /**
      * A method that checks if a spot is not occupied by another person
