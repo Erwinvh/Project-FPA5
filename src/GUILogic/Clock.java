@@ -29,14 +29,14 @@ public class Clock {
         seconds += deltaTime * simulatorSpeed;
         if (seconds >= 60) {
             minutes++;
-            seconds = 0;
+            seconds -= 60;
             if (minutes % 15 == 0)
                 pulse();
             if (minutes == 60) {
                 hours++;
-                minutes = 0;
+                minutes -= 60;
                 if (hours == 24) {
-                    hours = 0;
+                    hours -= 24;
                 }
             }
         }

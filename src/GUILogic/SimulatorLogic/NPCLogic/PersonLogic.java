@@ -25,6 +25,7 @@ public class PersonLogic {
     private String activity;
     private Person person;
     private Point2D newPosition;
+    private double speedMultiplier;
 
     private boolean isRoaming = false;
 
@@ -34,7 +35,7 @@ public class PersonLogic {
 
     public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
         Random random = new Random();
-        double speedMultiplier = ((120.0 - random.nextInt(40)) / 100);
+        this.speedMultiplier = ((120.0 - random.nextInt(40)) / 100);
 
         this.position = position;
         this.person = person;
@@ -268,7 +269,7 @@ public class PersonLogic {
     }
 
     public void setSpeed(double speed) {
-        this.speed = speed;
+        this.speed = speed * this.speedMultiplier;
     }
 
     public void setPosition(Point2D position) {
