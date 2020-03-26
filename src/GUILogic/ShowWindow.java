@@ -26,7 +26,6 @@ public class ShowWindow {
     private Button cancelButton = new Button("Cancel");
     private Stage popUp = new Stage();
 
-    // TODO: Refactor createTable and data
 private ScheduleTab ST;
 
     private int stagePopularity = 0;
@@ -39,12 +38,9 @@ private ScheduleTab ST;
      *
      * @param screenNumber
      * @param currParentStage
-     * @param data
      * @param ST
+     * @param selectedShow
      */
-
-
-
     public ShowWindow(int screenNumber, Stage currParentStage, ScheduleTab ST, Show selectedShow) {
         this.ST = ST;
         this.selectedShow = selectedShow;
