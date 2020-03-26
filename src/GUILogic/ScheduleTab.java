@@ -62,6 +62,7 @@ public class ScheduleTab {
      * This method creates the createTable which shows the user all shows that are currently planned.
      */
     public void createTable() {
+        this.table.getItems().clear();
         this.table.setEditable(false);
         this.data.addAll(DataController.getPlanner().getShows());
 
