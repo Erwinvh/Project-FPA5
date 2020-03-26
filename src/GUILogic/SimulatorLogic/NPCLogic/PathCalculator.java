@@ -49,8 +49,7 @@ public class PathCalculator {
     }
 
     /**
-     * Finds a random tile that is walkable and closest to a point
-     *
+     * Finds a random adjacent tile that is walkable and closest to a point
      * @param currentPosition the position the character is currently on
      * @param distanceMap     the DistanceMap it is walking on
      * @return the available tile, if not found return the currentPosition
@@ -60,10 +59,9 @@ public class PathCalculator {
 
         int failedAttempts = 0;
         while (failedAttempts < 8) {
-//            Random random = new Random();
-//            random.nextInt(3);
-            int xPos = (int) Math.floor(Math.random() * 2.9) - 1 + ((int) currentPosition.getX()) / tileSize;
-            int yPos = (int) Math.floor(Math.random() * 2.9) - 1 + ((int) currentPosition.getY()) / tileSize;
+            Random random = new Random();
+            int xPos = random.nextInt(3) - 1 + ((int) currentPosition.getX()) / tileSize;
+            int yPos = random.nextInt(3) - 1 + ((int) currentPosition.getY()) / tileSize;
             xPos = Math.min(xPos, 99);
             xPos = Math.max(0, xPos);
             yPos = Math.min(yPos, 99);

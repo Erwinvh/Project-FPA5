@@ -671,6 +671,11 @@ private ScheduleTab ST;
         return description;
     }
 
+    /**
+     * converts the index of the time Combobox to the corresponding time
+     * @param index the index of the time selected
+     * @return
+     */
     public LocalTime indexToLocalTime(int index) {
         LocalTime time = LocalTime.MIDNIGHT;
         int hours = index / 2;
@@ -681,6 +686,11 @@ private ScheduleTab ST;
         return time;
     }
 
+    /**
+     * converts the time to the index of the Time Combobox
+     * @param time
+     * @return
+     */
     public int localTimeToIndex(LocalTime time) {
         int index = 1;
         index += time.getHour() * 2;
