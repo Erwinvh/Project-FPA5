@@ -30,6 +30,7 @@ public class Simulator {
 
     private BorderPane simulatorLayout;
 
+    
     public Simulator() {
         init();
         start();

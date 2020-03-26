@@ -30,6 +30,10 @@ public class ScheduleTab {
     private ArrayList<String> errorList = new ArrayList<>();
     private ObservableList<Show> data = FXCollections.observableArrayList();
 
+    /**
+     * The constructor of the schedule tab
+     * @param primaryStage The stage in which the tab is placed
+     */
     public ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.scheduleTab = new Tab("Schedule");
@@ -48,7 +52,7 @@ public class ScheduleTab {
     /**
      * This is the getter of the Schedule tab, it allows the Gui to show the schedule tab in the application.
      *
-     * @return Tab
+     * @return The schedule tab
      */
     public Tab getScheduleTab() {
         return this.scheduleTab;
@@ -167,7 +171,10 @@ public class ScheduleTab {
         }
     }
 
-    public void resetData(){
+    /**
+     * This methode resets the data that is shown in the table
+     */
+    public void resetData() {
         this.data = FXCollections.observableArrayList();
 createTable();
     }
@@ -198,14 +205,14 @@ createTable();
     private void getButtons() {
         Button addButton = new Button("Add Show");
         addButton.setOnAction(event -> {
-            new ShowWindow(1, this.primaryStage, this.data, this.table, this.selectedItem);
+            new ShowWindow(1, this.primaryStage, this, null);
         });
 
         Button editButton = new Button("Edit Show");
         editButton.setOnAction(event -> {
             try {
                 this.selectedItem = this.table.getSelectionModel().getSelectedItem();
-                new ShowWindow(2, this.primaryStage, this.data, this.table, this.selectedItem);
+                new ShowWindow(2, this.primaryStage, this, this.selectedItem);
             } catch (Exception e) {
                 this.errorList.clear();
                 this.errorList.add("No show has been selected.");
@@ -217,7 +224,7 @@ createTable();
         deleteButton.setOnAction(event -> {
             try {
                 this.selectedItem = this.table.getSelectionModel().getSelectedItem();
-                new ShowWindow(3, this.primaryStage, this.data, this.table, this.selectedItem);
+                new ShowWindow(3, this.primaryStage, this, this.selectedItem);
             } catch (Exception e) {
                 this.errorList.clear();
                 this.errorList.add("No show has been selected.");
