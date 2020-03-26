@@ -201,6 +201,7 @@ public class DataController {
                         this.settings.setBeginHours(settings.getInt("Begin hours"));
                         this.settings.setBeginMinutes(settings.getInt("Begin minutes"));
                         this.settings.setOverwriteStartTime(settings.getBoolean( "Use overwrite time"));
+                        this.settings.setReset(false);
                     }
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");

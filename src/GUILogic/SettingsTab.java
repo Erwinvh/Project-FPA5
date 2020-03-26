@@ -149,6 +149,11 @@ public class SettingsTab {
         Button saveButton = new Button("Save settings");
         saveButton.setOnAction(event ->  saveSettings());
 
+        //Reset simulator
+        Button resetButton = new Button("Reset simulator");
+        resetButton.setOnAction(event -> DataController.getSettings().setReset(true));
+
+
         //Adding all nodes to the gridpane
         split.add(planner, 0, 0);
         split.add(deleteAll, 0, 2);
@@ -167,6 +172,7 @@ public class SettingsTab {
 
         split.add(prediction,2,6);
         split.add(saveButton, 2, 10);
+        split.add(resetButton,3,10);
 
         split.add(hourLabel,2,7);
         split.add(minuteLabel,3,7);
