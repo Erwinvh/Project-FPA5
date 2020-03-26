@@ -24,6 +24,13 @@ public class ArtistWindow {
     private Artist selectedArtist;
     private ScheduleTab ST;
 
+    /**
+     * The constructor of the artist submenu windows
+     * This is also where the specific submenu is chosen
+     * @param screenNumber submenu selection number
+     * @param currParentStage Current parent stage
+     * @param ST The schedule tab
+     */
     public ArtistWindow(int screenNumber, Stage currParentStage,ScheduleTab ST) {
         this.ST=ST;
         this.currStage.initOwner(currParentStage);
@@ -115,6 +122,9 @@ public class ArtistWindow {
         this.currStage.show();
     }
 
+    /**
+     * The further setup of the submenu for editing an artist
+     */
     public void artistEditWindow() {
         this.currStage.setWidth(275);
         this.currStage.setHeight(450);
@@ -230,6 +240,9 @@ public class ArtistWindow {
         this.currStage.show();
     }
 
+    /**
+     * The further setup for the submenu to delete an artist
+     */
     public void artistDeleteWindow() {
         this.currStage.setTitle("Delete Artist");
         this.currStage.setWidth(275);
@@ -349,6 +362,11 @@ public class ArtistWindow {
         return false;
     }
 
+    /**
+     * A methode that checks whether an artist can be deleted or if it is being used in a show
+     * If it is used in a show it will return false, else it will return true
+     * @return A true or false value
+     */
     public boolean canDeleteArtist() {
         this.errorList.clear();
         for (Show show : DataController.getPlanner().getShows()) {

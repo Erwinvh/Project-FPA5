@@ -6,6 +6,9 @@ public class Clock {
     private double simulatorSpeed;
     private boolean intervalPassed;
 
+    /**
+     * The constructor for the Clock
+     */
     public Clock() {
         this.hours = 0;
         this.minutes = 0;
@@ -13,7 +16,6 @@ public class Clock {
         this.simulatorSpeed = 180;
         this.intervalPassed = false;
     }
-
 
     /**
      * function adds the corresponding time by calculating how much time has passed
@@ -41,36 +43,35 @@ public class Clock {
 
     }
 
+    /**
+     * A getter for the boolean of whether a interval has passed
+     * @return A true or false value
+     */
     public boolean isIntervalPassed() {
         return intervalPassed;
     }
 
+    /**
+     * A setter for the interval passed that sets it to true
+     */
     private void pulse() {
         this.intervalPassed = true;
     }
 
+    /**
+     * The getter for the hour integer
+     * @return The integer of the hour
+     */
     public int getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
-
+    /**
+     * The getter for the hour
+     * @return
+     */
     public int getMinutes() {
         return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public double getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(double seconds) {
-        this.seconds = seconds;
     }
 
     /**
@@ -80,16 +81,27 @@ public class Clock {
         this.simulatorSpeed = simulatorSpeed;
     }
 
+    /**
+     * The getter for the simulator speed
+     * @return
+     */
     public double getSimulatorSpeed() {
         return simulatorSpeed;
     }
-    
-        public void setToMidnight() {
+
+    /**
+     * This methode sets the time back to midnight
+     */
+    public void setToMidnight() {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
     }
 
+    /**
+     * A to string function to make the time representable as a string.
+     * @return time as a string
+     */
     public String toString(){
         String h, m;
         if (hours < 10){

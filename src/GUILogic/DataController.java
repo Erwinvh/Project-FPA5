@@ -6,7 +6,6 @@ import PlannerData.Planner;
 import PlannerData.Show;
 import PlannerData.Stage;
 
-
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -30,8 +29,27 @@ public class DataController {
     private static Settings settings;
 
     /**
-     * Reads the Json file and creates an instance of Planner
+     * The constructor for the data controller
      */
+
+//    public class LazyInitializedSingleton {
+//
+//        private static LazyInitializedSingleton instance;
+//
+//        private LazyInitializedSingleton(){}
+//
+//        public static LazyInitializedSingleton getInstance(){
+//            if(instance == null){
+//                instance = new LazyInitializedSingleton();
+//            }
+//            return instance;
+//        }
+//    }
+
+//    private static DataController instance;
+//    private DataController(){}
+//    public static
+
     public DataController() {
         planner = new Planner();
         clock = new Clock();
@@ -103,7 +121,13 @@ public class DataController {
 
     }
 
-    public static ArrayList<Show> getActiveShows() {
+
+    //check with groep?
+    /**
+     * A getter for the active stages
+     * @return
+     */
+    public static ArrayList<Show> getActiveShows(){
         LocalTime currentTime = LocalTime.MIDNIGHT;
         currentTime = currentTime.plusHours(DataController.getClock().getHours());
         currentTime = currentTime.plusMinutes(DataController.getClock().getMinutes());
@@ -119,6 +143,10 @@ public class DataController {
         return activeShows;
     }
 
+    /**
+     * The getter for the planner
+     * @return Planner
+     */
     public static Planner getPlanner() {
         return planner;
     }
@@ -180,6 +208,10 @@ public class DataController {
 
     }
 
+    /**
+     * The getter for the clock
+     * @return The clock
+     */
     public static Clock getClock() {
         return clock;
     }

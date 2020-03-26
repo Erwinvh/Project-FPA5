@@ -24,12 +24,14 @@ public class Simulator {
     private ArrayList<Artist> artists;
 
     private int peopleAmount = 100;
+    private int globalSpeed = 4;
     private CameraTransform cameraTransform;
     private boolean predictedGuests = DataController.getSettings().isUsingPredictedPerson();
     private ArrayList<Integer> Prediction = new ArrayList<>();
 
     private BorderPane simulatorLayout;
 
+    
     public Simulator() {
         init();
         start();
@@ -222,15 +224,16 @@ public class Simulator {
             person.draw(g);
 
         g.setTransform(new AffineTransform());
-
         String time = DataController.getClock().toString();
         Font font = new Font("Arial", Font.PLAIN, 30);
         Shape timeShape = font.createGlyphVector(g.getFontRenderContext(), time).getOutline();
         timeShape = AffineTransform.getTranslateInstance(0, 30).createTransformedShape(timeShape);
+
         g.setColor(Color.BLACK);
         g.fill(timeShape);
         g.setColor(Color.WHITE);
         g.draw(timeShape);
+
         g.setTransform(this.cameraTransform.getTransform());
     }
 

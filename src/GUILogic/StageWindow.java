@@ -28,9 +28,9 @@ public class StageWindow {
     /**
      * This is the constructor of the base of the submenus.
      * This method also decides which submenu it should show to the user.
-     *
-     * @param screenNumber
-     * @param currentParentStage
+     * @param screenNumber Submenu selection number
+     * @param currentParentStage The current parent stage
+     * @param ST The schedule tab
      */
     public StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
         this.ST =ST;
@@ -98,6 +98,9 @@ public class StageWindow {
         this.currentStage.show();
     }
 
+    /**
+     * The submenu window for the editing of a Stage
+     */
     public void editStageWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
@@ -184,6 +187,9 @@ public class StageWindow {
         this.currentStage.show();
     }
 
+    /**
+     * The submenu window for deleting a stage
+     */
     public void deleteStageWindow() {
         BorderPane borderPane = new BorderPane();
         HBox startLine = new HBox();
@@ -302,6 +308,11 @@ public class StageWindow {
         return false;
     }
 
+    /**
+     * This methode checks whether a stage is allowed to be deleted.
+     * If its used in a show you aren't allowed to delete a stage, else you are.
+     * @return Boolean: true if the stage can be deleted, false if not.
+     */
     public boolean stageDeleteChecker() {
         this.errorList.clear();
         for (Show show : DataController.getPlanner().getShows()) {
