@@ -106,11 +106,10 @@ public class Simulator {
     public void update(double deltaTime) {
         DataController.getClock().update(deltaTime);
 
-
-
         if(DataController.getClock().isIntervalPassed()){
             pulse();
         }
+
         double speed = DataController.getClock().getSimulatorSpeed() * 10;
 
         if (artists.size() < DataController.getPlanner().getArtists().size()) {

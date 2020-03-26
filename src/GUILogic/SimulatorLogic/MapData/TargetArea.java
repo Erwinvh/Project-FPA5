@@ -2,6 +2,9 @@ package GUILogic.SimulatorLogic.MapData;
 
 import java.awt.geom.Point2D;
 
+/**
+ * This object saves the tiles of a target on the Map
+ */
 public class TargetArea {
     private String name;
 
@@ -27,10 +30,6 @@ public class TargetArea {
 
     public String getName() {
         return name;
-    }
-
-    public TargetAreaType getTargetAreaType() {
-        return targetAreaType;
     }
 
     public Point2D getPosition() {

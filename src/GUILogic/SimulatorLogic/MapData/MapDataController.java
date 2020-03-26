@@ -116,6 +116,10 @@ public class MapDataController {
         walkableMap = new WalkableMap(walkableArray);
     }
 
+    /**
+     * Determines the type of Target area depending visitors, artists or all
+     * @param objectsJsonObject
+     */
     private void populateTargetAreas(JsonObject objectsJsonObject) {
         JsonArray targetsJsonArray = objectsJsonObject.getJsonArray("objects");
         targetAreas = new TargetArea[targetsJsonArray.size()];

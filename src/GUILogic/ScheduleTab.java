@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ScheduleTab {
     private Tab scheduleTab;
-    private TableView<Show> table;
+    private TableView<Show> table = new TableView<>();
     private VBox descriptionVBox = new VBox();
     private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
@@ -62,9 +62,7 @@ public class ScheduleTab {
      * This method creates the createTable which shows the user all shows that are currently planned.
      */
     public void createTable() {
-        this.table = new TableView<>();
         this.table.setEditable(false);
-        this.data.addAll(DataController.getPlanner().getShows());
 
         TableColumn nameColumn = new TableColumn("Name");
         nameColumn.setPrefWidth(100);
@@ -98,8 +96,19 @@ public class ScheduleTab {
         this.table.setPrefHeight(600);
 
         this.table.getColumns().addAll(nameColumn, beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
-        this.table.getItems().addAll(DataController.getPlanner().getShows());
 
+        fillTable();
+
+
+    }
+
+    /**
+     * This methode fills the table with information
+     */
+    public void fillTable(){
+        this.table.getItems().clear();
+        this.data.addAll(DataController.getPlanner().getShows());
+        this.table.getItems().addAll(DataController.getPlanner().getShows());
         this.table.setItems(this.data);
         this.table.getSelectionModel().selectFirst();
         this.table.setOnMouseClicked(event -> getShowDescription());
@@ -175,7 +184,7 @@ public class ScheduleTab {
      */
     public void resetData() {
         this.data = FXCollections.observableArrayList();
-        createTable();
+       fillTable();
     }
 
     /**
@@ -202,11 +211,13 @@ public class ScheduleTab {
      * This method creates the Buttons to the Add, Edit and Delete menus.
      */
     private void getButtons() {
+        //Add show button
         Button addButton = new Button("Add Show");
         addButton.setOnAction(event -> {
             new ShowWindow(1, this.primaryStage, this, null);
         });
 
+        //Edit show button
         Button editButton = new Button("Edit Show");
         editButton.setOnAction(event -> {
             try {
@@ -219,6 +230,7 @@ public class ScheduleTab {
             }
         });
 
+        //Delete show button
         Button deleteButton = new Button("Delete Show");
         deleteButton.setOnAction(event -> {
             try {
@@ -231,9 +243,11 @@ public class ScheduleTab {
             }
         });
 
+        //Add artist button
         Button addArtistButton = new Button("Add Artist");
         addArtistButton.setOnAction(event -> new ArtistWindow(1, this.primaryStage, this));
 
+        //Edit artist button
         Button editArtistButton = new Button("Edit Artist");
         editArtistButton.setOnAction(event -> {
             if (DataController.getPlanner().getArtists().isEmpty()) {
@@ -245,6 +259,7 @@ public class ScheduleTab {
             }
         });
 
+        //Delete artist button
         Button deleteArtistButton = new Button("Delete Artist");
         deleteArtistButton.setOnAction(event -> {
             if (DataController.getPlanner().getArtists().isEmpty()) {
@@ -256,6 +271,7 @@ public class ScheduleTab {
             }
         });
 
+        //Add stage button
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
             if (DataController.getPlanner().getStages().size() <= 5) {
@@ -267,6 +283,7 @@ public class ScheduleTab {
             }
         });
 
+        //Edit stage button
         Button editStageButton = new Button("Edit Stage");
         editStageButton.setOnAction(event -> {
             if (DataController.getPlanner().getStages().isEmpty()) {
@@ -278,6 +295,7 @@ public class ScheduleTab {
             }
         });
 
+        //Delete stage button
         Button deleteStageButton = new Button("Delete Stage");
         deleteStageButton.setOnAction(event -> {
             if (DataController.getPlanner().getStages().isEmpty()) {

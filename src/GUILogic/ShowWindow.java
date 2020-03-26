@@ -87,8 +87,19 @@ private ScheduleTab ST;
         //time
         gridPane.add(new Label("Begin time:"), 1, 2);
         gridPane.add(new Label("End time:"), 1, 3);
-        ComboBox startingTime = getTimestampsComboBox();
-        ComboBox endingTime = getTimestampsComboBox();
+
+        setupTimeList();
+        ComboBox startingTime = getTimestampsComboBox(0);
+        ComboBox endingTime = getTimestampsComboBox(0);
+
+        startingTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("listener called");
+            System.out.println(newValue);
+            System.out.println(timeList.indexOf(newValue));
+            ComboBox updatedEndingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1));
+            gridPane.add(updatedEndingTime, 2, 3);
+        });
+
         gridPane.add(startingTime, 2, 2);
         gridPane.add(endingTime, 2, 3);
 
@@ -278,8 +289,8 @@ private ScheduleTab ST;
         gridPane.add(new Label("Begin time:"), 1, 2);
         gridPane.add(new Label("End time:"), 1, 3);
 
-        ComboBox startingTime = getTimestampsComboBox();
-        ComboBox endingTime = getTimestampsComboBox();
+        ComboBox startingTime = getTimestampsComboBox(0);
+        ComboBox endingTime = getTimestampsComboBox(0);
 
         startingTime.getSelectionModel().select(localTimeToIndex(this.selectedShow.getBeginTime()));
         endingTime.getSelectionModel().select(localTimeToIndex(this.selectedShow.getEndTime()));
@@ -529,8 +540,8 @@ private ScheduleTab ST;
      */
     public boolean verifyInput(ComboBox startingTime, ComboBox endingTime, ComboBox stage, ComboBox genre, TextField showName, ComboBox artist) {
         this.errorList.clear();
-        int startIndex = this.timeList.indexOf(startingTime.getValue());
-        int endIndex = this.timeList.indexOf(endingTime.getValue());
+//        int startIndex = this.timeList.indexOf(startingTime.getValue());
+//        int endIndex = this.timeList.indexOf(endingTime.getValue());
         if (showName.getText().length() == 0) {
             this.errorList.add("The show name has not been filled in.");
         }
@@ -541,20 +552,21 @@ private ScheduleTab ST;
             if (endingTime.getValue() == null || endingTime.getValue().equals("Select")) {
                 this.errorList.add("The endtime has not been filled in.");
             }
-        } else {
-            if (startIndex > endIndex) {
-                this.errorList.add("The begintime is later than the endtime.");
-            } else if (startIndex == endIndex) {
-                this.errorList.add("The begintime the same as the endtime.");
-            }
         }
-        if (stage.getValue() == null || stage.getValue().equals("--Select--")) {
+//        else {
+//            if (startIndex > endIndex) {
+//                this.errorList.add("The begintime is later than the endtime.");
+//            } else if (startIndex == endIndex) {
+//                this.errorList.add("The begintime the same as the endtime.");
+//            }
+//        }
+        if (stage.getValue() == null || stage.getValue().equals("Select")) {
             this.errorList.add("The stage has not been filled in.");
         }
-        if (genre.getValue() == null || genre.getValue().equals("--Select--")) {
+        if (genre.getValue() == null || genre.getValue().equals("Select")) {
             this.errorList.add("The genre has not been filled in.");
         }
-        if (artist.getValue() == null || artist.getValue().equals("--Select--")) {
+        if (artist.getValue() == null || artist.getValue().equals("Select")) {
             this.errorList.add("An artist has not been added yet");
         }
         if ((int) this.popularitySlider.getValue() == 0) {
@@ -632,10 +644,16 @@ private ScheduleTab ST;
      *
      * @return ComboBox
      */
-    public ComboBox getTimestampsComboBox() {
+    public ComboBox getTimestampsComboBox(int startingIndex) {
         ComboBox timeBox = new ComboBox();
         timeBox.getItems().add("Select");
+        timeBox.getItems().addAll(timeList.subList(startingIndex, timeList.size()));
         timeBox.getSelectionModel().selectFirst();
+
+        return timeBox;
+    }
+
+    private void setupTimeList(){
         String time;
         String halftime = "";
 
@@ -656,11 +674,9 @@ private ScheduleTab ST;
                     this.timeList.add(time);
                 }
 
-                timeBox.getItems().add(time);
+               // timeBox.getItems().add(time);
             }
         }
-
-        return timeBox;
     }
 
     public TextArea getShowDescriptionTextArea(String presetText, int width, int height) {
@@ -671,6 +687,11 @@ private ScheduleTab ST;
         return description;
     }
 
+    /**
+     * converts the index of the time Combobox to the corresponding time
+     * @param index the index of the time selected
+     * @return
+     */
     public LocalTime indexToLocalTime(int index) {
         LocalTime time = LocalTime.MIDNIGHT;
         int hours = index / 2;
@@ -681,6 +702,11 @@ private ScheduleTab ST;
         return time;
     }
 
+    /**
+     * converts the time to the index of the Time Combobox
+     * @param time
+     * @return
+     */
     public int localTimeToIndex(LocalTime time) {
         int index = 1;
         index += time.getHour() * 2;

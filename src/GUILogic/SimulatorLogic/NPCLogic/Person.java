@@ -133,7 +133,7 @@ public class Person {
 
         boolean collided = false;
         for (Person other : people) {
-            if (other != this && this.personLogic.getNewPosition().distance(other.personLogic.getPosition()) < 32 * this.personLogic.getTransform().getScaleX()) {
+            if (other != this && this.personLogic.getNewPosition().distance(other.personLogic.getPosition()) < 16) {
                 collided = true;
             }
         }
