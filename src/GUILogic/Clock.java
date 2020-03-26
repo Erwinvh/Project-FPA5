@@ -83,8 +83,8 @@ public class Clock {
     }
 
     /**
-     * The getter for the hour
-     * @return
+     * The getter for the minute
+     * @return The integer of the minute
      */
     public int getMinutes() {
         return minutes;
@@ -99,7 +99,7 @@ public class Clock {
 
     /**
      * The getter for the simulator speed
-     * @return
+     * @return The simulator speed
      */
     public double getSimulatorSpeed() {
         return simulatorSpeed;
@@ -128,7 +128,7 @@ public class Clock {
 
     /**
      * A to string function to make the time representable as a string.
-     * @return time as a string
+     * @return Time as a string
      */
     public String toString(){
         String h, m;

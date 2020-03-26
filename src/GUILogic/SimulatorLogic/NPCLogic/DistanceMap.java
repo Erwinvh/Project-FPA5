@@ -96,45 +96,9 @@ public class DistanceMap {
                     }
                 }
             }
-
-//            //north
-//            try {
-//                if (!this.visited[currentX][currentY + 1] && this.walkableMap[currentX][currentY + 1]) {
-//                    this.map[currentX][currentY + 1] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX, currentY + 1));
-//                    this.visited[currentX][currentY + 1] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
-//            //east
-//            try {
-//                if (!this.visited[currentX + 1][currentY] && this.walkableMap[currentX + 1][currentY]) {
-//                    this.map[currentX + 1][currentY] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX + 1, currentY));
-//                    this.visited[currentX + 1][currentY] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
-//            //south
-//            try {
-//                if (!this.visited[currentX][currentY - 1] && this.walkableMap[currentX][currentY - 1]) {
-//                    this.map[currentX][currentY - 1] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX, currentY - 1));
-//                    this.visited[currentX][currentY - 1] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
-//            //west
-//            try {
-//                if (!this.visited[currentX - 1][currentY] && this.walkableMap[currentX - 1][currentY]) {
-//                    this.map[currentX - 1][currentY] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX - 1, currentY));
-//                    this.visited[currentX - 1][currentY] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
         }
     }
+
 
     public int[][] getMap() {
         return map;

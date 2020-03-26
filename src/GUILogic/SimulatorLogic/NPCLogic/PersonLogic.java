@@ -27,11 +27,15 @@ public class PersonLogic {
     private double speedMultiplier;
 
     private boolean isRoaming = false;
-
     private int negativeFeedback = 5;
 
-    private boolean isArtist;
-
+    /**
+     * The constructor for the npc logic
+     * @param position the position of the npc
+     * @param speed the speed of the npc
+     * @param person the person object connected to the npc
+     * @param isArtist the
+     */
     public PersonLogic(Point2D position, double speed, Person person, boolean isArtist) {
         Random random = new Random();
         this.speedMultiplier = ((120.0 - random.nextInt(40)) / 100);
@@ -46,33 +50,8 @@ public class PersonLogic {
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
-    public void choiceMaker() {
-        Random random = new Random();
-        int number = random.nextInt(11);
-        //int number = (int) (Math.random() * ((10 - 1) + 1)) + 1;
-        if (number <= 5/*this.favoriteGenre==genre.getSuperGenre()*/) {
-            //change back once integrated with the main application
-            if (number < 2) {
-                System.out.println("didn't go, so idle");
-                this.negativeFeedback--;
-            } else {
-                System.out.println("did go to the show");
-                this.negativeFeedback = 5;
-            }
-        } else {
-            if (number <= this.negativeFeedback) {
-                System.out.println("didn't go, so idle");
-                this.negativeFeedback--;
-            } else {
-                System.out.println("did go to the show");
-                this.negativeFeedback = 5;
-            }
-        }
-    }
-
     /**
      * checks if the Person has arrived at the target
-     *
      * @return true or false depending on distance between target and current position
      */
     public boolean hasArrivedAtTarget() {
@@ -81,7 +60,7 @@ public class PersonLogic {
     }
 
     /**
-     * checks if the Person has arrived at it's end destination
+     * Checks if the Person has arrived at it's end destination
      */
     private boolean hasArrivedAtDestination() {
         double distanceAmount = 16;
@@ -89,14 +68,14 @@ public class PersonLogic {
     }
 
     /**
-     * sets the next target of the person of all adjacent tiles
+     * Sets the next target of the person of all adjacent tiles
      */
     public void setNextTarget() {
         this.target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
     /**
-     * sets the DistanceMap to a map determined by the isGoingToShow method
+     * Sets the DistanceMap to a map determined by the isGoingToShow method
      * @param activeShows a list of shows being performed on the current time of the Clock
      */
     public void selectNewMap(ArrayList<Show> activeShows) {
@@ -124,9 +103,9 @@ public class PersonLogic {
      * Gets the distanceMap of a stage depending if the person is an artist
      * If the person is an artist the distance map will be located on the stage itself
      * If the person is not an artist the distance map destination will be the viewing area
-     * @param wantedStage the desired stage
-     * @param isArtist true if the person is an artists
-     * @return the correct DistanceMap of the stage
+     * @param wantedStage The desired stage
+     * @param isArtist True if the person is an artists
+     * @return The correct DistanceMap of the stage
      */
     public DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist){
         Stage searchingStage = null;
@@ -176,10 +155,17 @@ public class PersonLogic {
         return chance <= ((double) (show.getExpectedPopularity())  /((double) ((totalExpectedPopularity)) * 2.0)) ;
     }
 
+    /**
+     * The getter for the new position of the npc
+     * @return The new position of the npc
+     */
     public Point2D getNewPosition() {
         return newPosition;
     }
 
+    /**
+     * The update function for the npc
+     */
     public void update() {
         if (hasArrivedAtDestination()) {
             isRoaming = true;
