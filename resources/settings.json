@@ -1,1 +1,7 @@
-{"Simulator Speed":"0.5598870056497177","Vistors per NPC":100.0,"Is Using Prediction":true}
+{
+  "Simulator Speed": "2.0",
+  "Vistors per NPC": 100.0,
+  "Is Using Prediction": true,
+  "Begin hours": 18,
+  "Begin minutes": 0
+}
