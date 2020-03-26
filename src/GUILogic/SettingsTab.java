@@ -31,6 +31,7 @@ public class SettingsTab {
     private CheckBox prediction;
     private ComboBox beginHours;
     private ComboBox beginMinutes;
+    private CheckBox overwriteStartTime;
 
     public SettingsTab(Stage primaryStage) {
 //        this.amountPerNPC = amount;
@@ -48,6 +49,9 @@ public class SettingsTab {
         beginHours.setValue(DataController.getSettings().getBeginHours());
         this.beginMinutes = new ComboBox();
         beginMinutes.setValue(DataController.getSettings().getBeginMinutes());
+        this.overwriteStartTime = new CheckBox();
+        overwriteStartTime.setText("Use this startingTime");
+
     }
 
     public Tab getSettingsTab() {
@@ -154,12 +158,14 @@ public class SettingsTab {
         split.add(amountLabel,3,5);
 
         split.add(prediction,2,6);
-        split.add(saveButton, 2, 9);
+        split.add(saveButton, 2, 10);
 
         split.add(hourLabel,2,7);
         split.add(minuteLabel,3,7);
         split.add(beginHours,2,8);
         split.add(beginMinutes,3,8);
+
+        split.add(overwriteStartTime,2,9);
 
         settingsTab.setContent(split);
         return settingsTab;
@@ -258,10 +264,10 @@ public class SettingsTab {
             settingsBuilder.add("Is Using Prediction", prediction.isSelected());
             settingsBuilder.add("Begin hours", Integer.parseInt( beginHours.getValue().toString()));
             settingsBuilder.add("Begin minutes",Integer.parseInt( beginMinutes.getValue().toString()));
+            settingsBuilder.add("Use overwrite time", overwriteStartTime.isSelected());
             writer.writeObject(settingsBuilder.build());
             writer.close();
-            DataController.getClock().setHours(Integer.parseInt( beginHours.getValue().toString()));
-            DataController.getClock().setMinutes(Integer.parseInt( beginMinutes.getValue().toString()));
+            DataController.getClock().setTime(Integer.parseInt( beginHours.getValue().toString()),Integer.parseInt( beginMinutes.getValue().toString()),0);
             DataController.getClock().setSimulatorSpeed(speedSlider.getValue());
         }
         catch (Exception e){
