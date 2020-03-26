@@ -173,7 +173,6 @@ public class ScheduleTab {
      * This methode resets the data that is shown in the table
      */
     public void resetData() {
-    public void resetData() {
         this.data = FXCollections.observableArrayList();
         createTable();
     }
