@@ -16,13 +16,13 @@ public class PathCalculator {
     public static Point2D nextPositionToTarget(Point2D currPos, DistanceMap distanceMap) {
         double tileSize = MapDataController.getTileSize();
 
-        int Xindex = (int) Math.floor(currPos.getX() / tileSize);
-        int Yindex = (int) Math.floor(currPos.getY() / tileSize);
+        int xIndex = (int) Math.floor(currPos.getX() / tileSize);
+        int yindex = (int) Math.floor(currPos.getY() / tileSize);
 
         Point2D middlePointCoords = new Point2D.Double(distanceMap.getTarget().getMiddlePoint().getX() * tileSize, distanceMap.getTarget().getMiddlePoint().getY() * tileSize);
 
         if (middlePointCoords.distance(currPos) <= tileSize) {
-            return new Point2D.Double(-1, -1);
+            return new Point2D.Double(-100, -100);
         }
 
         int lowest = Integer.MAX_VALUE;
@@ -31,8 +31,8 @@ public class PathCalculator {
 
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
-                int currX = Xindex + xOffset;
-                int currY = Yindex + yOffset;
+                int currX = xIndex + xOffset;
+                int currY = yindex + yOffset;
                 if (currX > -1 && currX < 99 && currY > -1 && currY < 99) {
                     int value = distanceMap.getMap()[currX][currY];
                     if (value < lowest) {

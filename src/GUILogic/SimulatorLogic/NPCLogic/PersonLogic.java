@@ -2,7 +2,6 @@ package GUILogic.SimulatorLogic.NPCLogic;
 
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
-import GUILogic.SimulatorLogic.MapData.TargetArea;
 import NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
@@ -44,9 +43,7 @@ public class PersonLogic {
         selectNewMap(DataController.getActiveShows());
         this.isArtist = isArtist;
         target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
-
     }
-
 
     public void choiceMaker() {
         Random random = new Random();
@@ -87,7 +84,7 @@ public class PersonLogic {
      */
     private boolean hasArrivedAtDestination() {
         double distanceAmount = 16;
-        return this.target.distance(new Point2D.Double(-1, -1)) < distanceAmount;
+        return this.target.distance(new Point2D.Double(-100, -100)) < distanceAmount;
     }
 
     /**
@@ -186,8 +183,6 @@ public class PersonLogic {
         if (hasArrivedAtDestination()) {
             isRoaming = true;
             roamInTargetArea();
-//            selectRandomMap();
-//            setNextTarget();
         } else if (isRoaming && hasArrivedAtTarget()) {
             roamInTargetArea();
         } else if (hasArrivedAtTarget()) {
@@ -246,8 +241,11 @@ public class PersonLogic {
 
     public AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
+
         tx.translate(position.getX() - this.person.getSprite().getWidth() * 0.5, position.getY() - this.person.getSprite().getHeight() * 0.5);
         tx.rotate(this.angle, this.person.getSprite().getWidth() * 0.5, this.person.getSprite().getHeight() * 0.5);
+        tx.scale(0.5, 0.5);
+
         return tx;
     }
 

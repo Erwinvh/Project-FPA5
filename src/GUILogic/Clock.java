@@ -23,9 +23,10 @@ public class Clock {
      * @param deltaTime in seconds
      */
     public void update(double deltaTime) {
-        if(intervalPassed){
+        if (intervalPassed) {
             intervalPassed = false;
         }
+
         seconds += deltaTime * simulatorSpeed;
         if (seconds >= 60) {
             minutes++;
@@ -40,7 +41,6 @@ public class Clock {
                 }
             }
         }
-
     }
 
     /**
@@ -77,7 +77,7 @@ public class Clock {
     /**
      * set the speed 1 real second is how many seconds in the simulator
      */
-    public void setSimulatorSpeed(double simulatorSpeed) throws Exception {
+    public void setSimulatorSpeed(double simulatorSpeed) {
         this.simulatorSpeed = simulatorSpeed;
     }
 
@@ -104,13 +104,13 @@ public class Clock {
      */
     public String toString(){
         String h, m;
-        if (hours < 10){
+        if (hours < 10) {
             h = "0" + hours;
         } else {
             h = "" + hours;
         }
 
-        if (minutes < 10){
+        if (minutes < 10) {
             m = "0" + minutes;
         } else {
             m = "" + minutes;
