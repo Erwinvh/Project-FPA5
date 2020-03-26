@@ -46,7 +46,6 @@ public class Clock {
     }
 
     private void pulse() {
-        System.out.println("Tick!");
         this.intervalPassed = true;
     }
 

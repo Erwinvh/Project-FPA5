@@ -25,7 +25,7 @@ public class Simulator {
 
     private int peopleAmount = 100;
     private CameraTransform cameraTransform;
-    private boolean predictedGuests = true;
+    private boolean predictedGuests = DataController.getSettings().isUsingPredictedPerson();
     private ArrayList<Integer> Prediction = new ArrayList<>();
 
     private BorderPane simulatorLayout;
@@ -80,6 +80,8 @@ public class Simulator {
      */
     public void update(double deltaTime) {
         DataController.getClock().update(deltaTime);
+
+
 
         if(DataController.getClock().isIntervalPassed()){
             pulse();
@@ -146,7 +148,7 @@ public class Simulator {
 
     public void onMousePressed(MouseEvent e) {
         if (e.getButton() == MouseButton.PRIMARY)
-            this.init();
+          //  this.init();
 
         for (Person person : this.people) {
             if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 32) {
