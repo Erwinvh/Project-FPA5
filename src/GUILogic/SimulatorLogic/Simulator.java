@@ -2,7 +2,8 @@ package GUILogic.SimulatorLogic;
 
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
-import NPCLogic.Person;
+
+import GUILogic.SimulatorLogic.NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.animation.AnimationTimer;
@@ -16,19 +17,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Simulator {
     private MapDataController mapDataController;
-    private ResizableCanvas canvas;
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
 
-    private int peopleAmount = (int) DataController.getSettings().getVisitors();
-    private int globalSpeed = 4;
+    private int peopleAmount;
     private CameraTransform cameraTransform;
-    private ArrayList<Integer> prediction = new ArrayList<>();
-    private boolean predictedGuests = DataController.getSettings().isUsingPredictedPerson();
+    private ArrayList<Integer> prediction;
+    private boolean predictedGuests;
 
     private BorderPane simulatorLayout;
 
@@ -38,14 +36,7 @@ public class Simulator {
     public Simulator() {
         init();
         start();
-    }
 
-    /**
-     * The getter for the simulator layout
-     * @return The borderpane in which the simulator is placed
-     */
-    public BorderPane getSimulatorLayout() {
-        return simulatorLayout;
     }
 
     /**
@@ -55,9 +46,15 @@ public class Simulator {
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
+        peopleAmount = (int) DataController.getSettings().getVisitors();
+        prediction = new ArrayList<>();
+        predictedGuests = DataController.getSettings().isUsingPredictedPerson();
 
         ArrayList<Show> sortedShowList = DataController.getPlanner().getShows();
         sortedShowList.sort(Show::compareToTime);
+
+        if (sortedShowList.get(0) == null) return;
+
         LocalTime firstShowTime = sortedShowList.get(0).getBeginTime();
 
         if (firstShowTime != null){
@@ -78,7 +75,7 @@ public class Simulator {
      */
     public void start() {
         this.simulatorLayout = new BorderPane();
-        canvas = new ResizableCanvas(this::draw, this.simulatorLayout);
+        ResizableCanvas canvas = new ResizableCanvas(this::draw, this.simulatorLayout);
         this.simulatorLayout.setCenter(canvas);
 
         FXGraphics2D graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
@@ -304,5 +301,13 @@ public class Simulator {
         for(Person person: people){
             person.getPersonLogic().selectNewMap(currentShows);
         }
+    }
+
+    /**
+     * The getter for the simulator layout
+     * @return The borderpane in which the simulator is placed
+     */
+    public BorderPane getSimulatorLayout() {
+        return simulatorLayout;
     }
 }
