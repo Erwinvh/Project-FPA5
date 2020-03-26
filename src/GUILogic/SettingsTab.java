@@ -14,19 +14,34 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+import java.io.FileWriter;
+import java.text.DecimalFormat;
+
 public class SettingsTab {
 
     private Stage primaryStage;
-    private int speed;
-    private int amountPerNPC;
     private Tab settingsTab;
     private Planner planning = DataController.getPlanner();
+    private String saveFileName;
+    private Slider speedSlider;
+    private Slider amountPerNPCSlider;
+    private CheckBox prediction;
 
     public SettingsTab(Stage primaryStage) {
 //        this.amountPerNPC = amount;
 //        this.speed = speed;
         this.primaryStage = primaryStage;
         this.settingsTab = new Tab("Settings");
+        this.saveFileName = DataController.getSettings().getSaveFileName();
+        this.speedSlider = new Slider();
+        speedSlider.setValue(DataController.getSettings().getSimulatorSpeed());
+        this.amountPerNPCSlider = new Slider();
+        amountPerNPCSlider.setValue(DataController.getSettings().getVisitorsPerPerson());
+        this.prediction = new CheckBox();
+        prediction.setSelected(DataController.getSettings().isUsingPredictedPerson());
     }
 
     public Tab getSettingsTab() {
@@ -56,18 +71,22 @@ public class SettingsTab {
             DeleteShowWindow();
         });
 
-        CheckBox prediction = new CheckBox("Predicted types of guests");
+        prediction.setText("Predicted types of guests");
 
-        Slider speedSlider = new Slider();
-        speedSlider.setMax(10);
-        speedSlider.setMin(0.1);
+        speedSlider.setMax(2);
+        speedSlider.setMin(0);
         speedSlider.setShowTickLabels(true);
         speedSlider.setShowTickMarks(true);
-        speedSlider.setMajorTickUnit(2);
-        speedSlider.setMinorTickCount(1);
-        speedSlider.setBlockIncrement(10);
+        speedSlider.setMajorTickUnit(1);
+       // speedSlider.setMinorTickCount();
+        speedSlider.setBlockIncrement(0.1);
         Label speedLabel = new Label("");
+        DecimalFormat format = new DecimalFormat("0.0");
+        speedLabel.setText(format.format( DataController.getSettings().getSimulatorSpeed()*100)+"%");
+
         speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+
 
             @Override
             public void changed(
@@ -75,12 +94,11 @@ public class SettingsTab {
                     Number oldValue,
                     Number newValue) {
                 speedLabel.textProperty().setValue(
-                        String.valueOf(newValue.intValue()));
+                        String.valueOf(format.format( newValue.floatValue()* 100)+"%"));
             }
         });
 
 
-        Slider amountPerNPCSlider = new Slider();
         amountPerNPCSlider.setMin(1);
         amountPerNPCSlider.setMax(10000);
         amountPerNPCSlider.setShowTickLabels(true);
@@ -89,6 +107,7 @@ public class SettingsTab {
         amountPerNPCSlider.setMinorTickCount(50);
         amountPerNPCSlider.setBlockIncrement(10);
         Label amountLabel = new Label("");
+        amountLabel.setText(DataController.getSettings().getVisitorsPerPerson()+"");
         amountPerNPCSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
@@ -100,6 +119,9 @@ public class SettingsTab {
                         String.valueOf(newValue.intValue()));
             }
         });
+
+        Button saveButton = new Button("Save settings");
+        saveButton.setOnAction(event ->  saveSettings());
 
         split.add(planner, 0, 0);
         split.add(deleteAll, 0, 2);
@@ -117,6 +139,7 @@ public class SettingsTab {
         split.add(amountLabel,3,5);
 
         split.add(prediction,2,6);
+        split.add(saveButton, 2, 7);
 
         settingsTab.setContent(split);
         return settingsTab;
@@ -201,6 +224,21 @@ public class SettingsTab {
         });
 
         return cancelButton;
+    }
+
+    public void saveSettings(){
+        try {
+            JsonWriter writer = Json.createWriter(new FileWriter(this.saveFileName));
+            JsonObjectBuilder settingsBuilder = Json.createObjectBuilder();
+            settingsBuilder.add("Simulator Speed", speedSlider.getValue()+ "");
+            settingsBuilder.add("Vistors per NPC",amountPerNPCSlider.getValue());
+            settingsBuilder.add("Is Using Prediction", prediction.isSelected());
+            writer.writeObject(settingsBuilder.build());
+            writer.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

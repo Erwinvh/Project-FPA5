@@ -1,6 +1,5 @@
 package GUILogic;
 
-import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -57,7 +56,7 @@ class VisualTab {
 
     private void drawStages(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
-        graphics.setBackground(Color.WHITE);
+        graphics.setBackground(BACKGROUND_COLOR);
         graphics.clearRect(0, 0, (int) this.canvasStages.getWidth(), (int) this.canvasStages.getHeight());
         graphics.translate(TIME_COLUMN_WIDTH, STAGE_HEIGHT);
 
@@ -75,7 +74,7 @@ class VisualTab {
 
     private void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
-        graphics.setBackground(Color.WHITE);
+        graphics.setBackground(BACKGROUND_COLOR);
         graphics.clearRect(0, 0, (int) this.canvas.getWidth(), (int) this.canvas.getHeight());
         graphics.translate(TIME_COLUMN_WIDTH, 0);
 
@@ -108,7 +107,7 @@ class VisualTab {
                     // Draw the box around the show
                     Shape rectangle = new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10);
                     graphics.draw(rectangle);
-                    graphics.setColor(Color.WHITE);
+                    graphics.setColor(SECONDARY_COLOR);
                     graphics.fill(rectangle);
                     graphics.setColor(Color.BLACK);
                     String artists = "";
@@ -119,7 +118,7 @@ class VisualTab {
                     artists = artists.substring(0, artists.length() - 2);
 
                     String genres = "";
-                    if (show.getGenre()!=null) {
+                    if (show.getGenre() != null) {
                         genres = show.getGenre().getFancyName();
                     } else {
                         genres += "No specified genre";

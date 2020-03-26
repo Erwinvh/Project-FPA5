@@ -3,42 +3,60 @@ package GUILogic.SimulatorLogic;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
-//TODO (Could have) Zoom relative to mouse
-
 public class CameraTransform {
     private Point2D centerPoint;
-    private double zoom;
     private Point2D lastMousePos;
-    private AffineTransform inverseTransform;
+
+    private double currZoom;
+    private final double minZoom = 0.2;
+    private final double maxZoom = 2;
 
     /**
-     * Sets initial zoom, center point, inverseTransform and lastMousePos.
+     * Sets initial currZoom, center point, inverseTransform and lastMousePos.
      * <p>
      * Zoom:               Scaling modified by scrolling.
-     * Centerpoint:        The replacement done by dragging with right mouse button. Scaling is included in calculations.
+     * Center point:        The replacement done by dragging with right mouse button. Scaling is included in calculations.
      * inverseTransform:   The AffineTransform that is need to calculate back to initial canvas conditions.
      * Used for f.e. clearRect.
      * lastMousePos        The previous mouse position when moved, pressed or scrolling the mouse.
      * Used to calculate the distance dragged.
      */
     public CameraTransform(Canvas node) {
-        this.zoom = 1.0;
+        this.currZoom = 1.0;
         this.centerPoint = new Point2D.Double(0, 0);
-        this.inverseTransform = new AffineTransform();
         this.lastMousePos = new Point2D.Double(0, 0);
 
-        node.setOnScroll(event -> {
-            lastMousePos = new Point2D.Double(event.getX(), event.getY());
-            zoom *= (1 + event.getDeltaY() / 150.0f);
-        });
-
+        node.setOnScroll(this::onScroll);
         node.setOnMouseDragged(this::mouseDragged);
-        node.setOnMousePressed(event -> lastMousePos = new Point2D.Double(event.getX(), event.getY()));
+        node.setOnMousePressed(e -> {
+            centerPoint = new Point2D.Double(
+                    centerPoint.getX() + (lastMousePos.getX() - e.getX()) / currZoom,
+                    centerPoint.getY() + (lastMousePos.getY() - e.getY()) / currZoom
+            );
+            lastMousePos = new Point2D.Double(e.getX(), e.getY());
+        });
+    }
+
+    private void onScroll(ScrollEvent event) {
+        Point2D preZoom = getInverseTransform().transform(new Point2D.Double(event.getX(), event.getY()), null);
+
+        currZoom *= (1 + event.getDeltaY() / 150.0f);
+
+        if (currZoom > maxZoom) currZoom = maxZoom;
+        else if (currZoom < minZoom) currZoom = minZoom;
+
+        Point2D postZoom = getInverseTransform().transform(new Point2D.Double(event.getX(), event.getY()), null);
+
+        centerPoint = new Point2D.Double(
+                centerPoint.getX() + (postZoom.getX() - preZoom.getX()),
+                centerPoint.getY() + (postZoom.getY() - preZoom.getY())
+        );
     }
 
     /**
@@ -47,24 +65,16 @@ public class CameraTransform {
      * @return AffineTransform
      */
     public AffineTransform getTransform() {
-        if (centerPoint != null) {
-            AffineTransform tx = new AffineTransform();
-            AffineTransform sx = new AffineTransform();
+        if (centerPoint == null) return new AffineTransform();
 
-            sx.scale(zoom, zoom);
-            tx.translate(centerPoint.getX() * zoom, centerPoint.getY() * zoom);
-            tx.concatenate(sx);
+        AffineTransform tx = new AffineTransform();
 
-            try {
-                this.inverseTransform = tx.createInverse();
-            } catch (NoninvertibleTransformException e) {
-                e.printStackTrace();
-            }
+        tx.translate(lastMousePos.getX(), lastMousePos.getY());
 
-            return tx;
-        }
+        tx.scale(currZoom, currZoom);
+        tx.translate(centerPoint.getX(), centerPoint.getY());
 
-        return new AffineTransform();
+        return tx;
     }
 
     /**
@@ -74,7 +84,13 @@ public class CameraTransform {
      * @return AffineTransform
      */
     public AffineTransform getInverseTransform() {
-        return this.inverseTransform;
+        try {
+            return getTransform().createInverse();
+        } catch (NoninvertibleTransformException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
@@ -85,8 +101,8 @@ public class CameraTransform {
     private void mouseDragged(MouseEvent e) {
         if (e.getButton() == MouseButton.SECONDARY) {
             centerPoint = new Point2D.Double(
-                    centerPoint.getX() - (lastMousePos.getX() - e.getX()) / zoom,
-                    centerPoint.getY() - (lastMousePos.getY() - e.getY()) / zoom
+                    centerPoint.getX() - (lastMousePos.getX() - e.getX()) * currZoom * 0.001,
+                    centerPoint.getY() - (lastMousePos.getY() - e.getY()) * currZoom * 0.001
             );
 
             lastMousePos = new Point2D.Double(e.getX(), e.getY());

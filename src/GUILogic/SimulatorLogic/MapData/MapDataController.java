@@ -28,9 +28,6 @@ public class MapDataController {
     private static int MAP_HEIGHT;
     private static int TILE_SIZE;
 
-    //arraylist where the layers are stored
-    private ArrayList<TiledLayer> tiledLayers;
-
     private static BufferedImage mapImage;
     private static WalkableMap walkableMap;
     private static TargetArea[] targetAreas;
@@ -42,7 +39,8 @@ public class MapDataController {
      * then the json file is read out and for each layer a new object is created
      */
     public MapDataController() {
-        this.tiledLayers = new ArrayList<>();
+        //arraylist where the layers are stored
+        ArrayList<TiledLayer> tiledLayers = new ArrayList<>();
 
         //create the tiledMapImage object so we can add to it the sprites later
         TiledMapImage tiledMapImage = new TiledMapImage();
@@ -73,7 +71,6 @@ public class MapDataController {
                     populateWalkableMap(layerJsonObject);
 
                 } else if (layerJsonObject.getJsonString("type").toString().equals("objectgroup")) {
-                    System.out.println("Found objectgroup: " + layerJsonObject.getString("name"));
                     populateTargetAreas(layerJsonObject);
 
                 } else if (layerJsonObject.getBoolean("visible"))

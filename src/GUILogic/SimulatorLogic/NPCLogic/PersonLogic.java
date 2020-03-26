@@ -110,7 +110,6 @@ public class PersonLogic {
         }
         for (Show show : activeShows) {
             if (isGoingToShow(show, totalExpectedPopularity)) {
-                System.out.println("Is going to " + show.getName());
                 DistanceMap targetMap = getDistanceMap(show.getStage(), person.isArtist());
                 if (targetMap != null) {
                     this.distanceMap = targetMap;
