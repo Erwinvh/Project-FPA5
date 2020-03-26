@@ -17,7 +17,6 @@ public class Clock {
         this.intervalPassed = false;
     }
 
-
     /**
      * function adds the corresponding time by calculating how much time has passed
      *

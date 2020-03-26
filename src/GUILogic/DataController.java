@@ -30,6 +30,25 @@ public class DataController {
     /**
      * The constructor for the data controller
      */
+
+//    public class LazyInitializedSingleton {
+//
+//        private static LazyInitializedSingleton instance;
+//
+//        private LazyInitializedSingleton(){}
+//
+//        public static LazyInitializedSingleton getInstance(){
+//            if(instance == null){
+//                instance = new LazyInitializedSingleton();
+//            }
+//            return instance;
+//        }
+//    }
+
+//    private static DataController instance;
+//    private DataController(){}
+//    public static
+
     public DataController() {
         planner = new Planner();
         clock = new Clock();

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ScheduleTab {
     private Tab scheduleTab;
-    private TableView<Show> table = new TableView();
+    private TableView<Show> table = new TableView<>();
     private VBox descriptionVBox = new VBox();
     private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
@@ -63,9 +63,7 @@ public class ScheduleTab {
      */
     public void createTable() {
         this.table.setEditable(false);
-        for (Show show : DataController.getPlanner().getShows()) {
-            this.data.add(show);
-        }
+        this.data.addAll(DataController.getPlanner().getShows());
 
         TableColumn nameColumn = new TableColumn("Name");
         nameColumn.setPrefWidth(100);
@@ -175,8 +173,9 @@ public class ScheduleTab {
      * This methode resets the data that is shown in the table
      */
     public void resetData() {
+    public void resetData() {
         this.data = FXCollections.observableArrayList();
-createTable();
+        createTable();
     }
 
     /**
@@ -233,7 +232,7 @@ createTable();
         });
 
         Button addArtistButton = new Button("Add Artist");
-        addArtistButton.setOnAction(event -> new ArtistWindow(1, this.primaryStage,this));
+        addArtistButton.setOnAction(event -> new ArtistWindow(1, this.primaryStage, this));
 
         Button editArtistButton = new Button("Edit Artist");
         editArtistButton.setOnAction(event -> {
@@ -242,7 +241,7 @@ createTable();
                 this.errorList.add("There is no Artist to edit.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new ArtistWindow(2, this.primaryStage,this);
+                new ArtistWindow(2, this.primaryStage, this);
             }
         });
 
@@ -253,14 +252,14 @@ createTable();
                 this.errorList.add("There is no Artist to delete.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new ArtistWindow(3, this.primaryStage,this);
+                new ArtistWindow(3, this.primaryStage, this);
             }
         });
 
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
             if (DataController.getPlanner().getStages().size() <= 5) {
-                new StageWindow(4, this.primaryStage,this);
+                new StageWindow(4, this.primaryStage, this);
             } else {
                 this.errorList.clear();
                 this.errorList.add("You cannot exceed the maximum of 6 stages.");
@@ -275,7 +274,7 @@ createTable();
                 this.errorList.add("There is no stage to edit.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new StageWindow(5, this.primaryStage,this);
+                new StageWindow(5, this.primaryStage, this);
             }
         });
 
@@ -286,7 +285,7 @@ createTable();
                 this.errorList.add("There is no stage to delete.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
-                new StageWindow(6, this.primaryStage,this);
+                new StageWindow(6, this.primaryStage, this);
             }
         });
 
