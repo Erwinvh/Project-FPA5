@@ -21,12 +21,12 @@ import java.util.ArrayList;
 
 public class ScheduleTab {
     private Tab scheduleTab;
-    private TableView<Show> table = new TableView<>();
+    private TableView<Show> table;
     private VBox descriptionVBox = new VBox();
     private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
     private Stage primaryStage;
-    private Show selectedItem = this.table.getSelectionModel().getSelectedItem();
+    private Show selectedItem = null;
     private ArrayList<String> errorList = new ArrayList<>();
     private ObservableList<Show> data = FXCollections.observableArrayList();
 
@@ -62,7 +62,7 @@ public class ScheduleTab {
      * This method creates the createTable which shows the user all shows that are currently planned.
      */
     public void createTable() {
-        this.table.getItems().clear();
+        this.table = new TableView<>();
         this.table.setEditable(false);
         this.data.addAll(DataController.getPlanner().getShows());
 

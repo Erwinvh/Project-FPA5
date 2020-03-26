@@ -148,6 +148,15 @@ public class Show implements Serializable, Comparable<Show> {
     }
 
     /**
+     * A methode to set the genre fancy genre name in the
+     * @return The fancy name of the genre
+     */
+    public String getGenreFancyName(){
+
+        return this.genre.getFancyName();
+    }
+
+    /**
      * A method that compares shows based on the expectedPopularity
      * @param otherShow the show this show is compared to
      * @return 1 if this show has higher expectedPopularity, 0 if equal, -1 if less
