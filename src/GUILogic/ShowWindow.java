@@ -3,7 +3,6 @@ package GUILogic;
 import Enumerators.Genres;
 import PlannerData.Artist;
 import PlannerData.Show;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -28,8 +27,7 @@ public class ShowWindow {
     private Stage popUp = new Stage();
 
     // TODO: Refactor createTable and data
-    private TableView<Show> table;
-    private ObservableList<Show> data;
+private ScheduleTab ST;
 
     private int stagePopularity = 0;
     private Slider popularitySlider = new Slider();
@@ -42,12 +40,13 @@ public class ShowWindow {
      * @param screenNumber
      * @param currParentStage
      * @param data
-     * @param table
-     * @param selectedShow
+     * @param ST
      */
-    public ShowWindow(int screenNumber, Stage currParentStage, javafx.collections.ObservableList<Show> data, TableView<Show> table, Show selectedShow) {
-        this.table = table;
-        this.data = data;
+
+
+
+    public ShowWindow(int screenNumber, Stage currParentStage, ScheduleTab ST, Show selectedShow) {
+        this.ST = ST;
         this.selectedShow = selectedShow;
         this.popUp.setWidth(400);
         this.popUp.setHeight(450);
@@ -236,7 +235,8 @@ public class ShowWindow {
                     }
 
                     DataController.getPlanner().addShow(show);
-                    this.data.add(show);
+                    DataController.getPlanner().savePlanner();
+                    ST.resetData();
                     this.popUp.close();
                 }
 
@@ -405,14 +405,12 @@ public class ShowWindow {
                 this.addedShow = new Show(beginTime, endTime, addedArtists, showNameAdding, stageAdded, descriptionShow, addedGenre, popularityAdded);
                 if (!this.addedShow.equals(this.selectedShow)) {
                     DataController.getPlanner().deleteShow(this.selectedShow);
-                    this.table.getItems().remove(this.selectedShow);
                     DataController.getPlanner().savePlanner();
 
                     for (Show existingShow : DataController.getPlanner().getShows()) {
                         if (existingShow.getStage().getName().equals(addedShow.getStage().getName())) {
                             if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime()) || (addedShow.getBeginTime().isBefore(existingShow.getBeginTime()) && addedShow.getEndTime().isAfter(existingShow.getEndTime()))) {
                                 DataController.getPlanner().addShow(this.selectedShow);
-                                this.data.add(this.selectedShow);
                                 DataController.getPlanner().savePlanner();
                                 this.errorList.clear();
                                 this.errorList.add("A show cannot begin at the same time or during another show on the same stage.");
@@ -422,7 +420,6 @@ public class ShowWindow {
 
                             if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals(existingShow.getEndTime())) {
                                 DataController.getPlanner().addShow(this.selectedShow);
-                                this.data.add(this.selectedShow);
                                 DataController.getPlanner().savePlanner();
                                 this.errorList.clear();
                                 this.errorList.add("A show cannot end after another show has begun or end at the same time as another ends on the same stage");
@@ -436,7 +433,6 @@ public class ShowWindow {
                                 if (existingArtist.getName().equals(showArtist.getName())) {
                                     if (addedShow.getBeginTime().isAfter(existingShow.getBeginTime()) && addedShow.getBeginTime().isBefore(existingShow.getEndTime()) || addedShow.getBeginTime().equals(existingShow.getBeginTime())) {
                                         DataController.getPlanner().addShow(this.selectedShow);
-                                        this.data.add(this.selectedShow);
                                         DataController.getPlanner().savePlanner();
                                         this.errorList.clear();
                                         this.errorList.add("An artist cannot be at two shows at the same time");
@@ -446,7 +442,6 @@ public class ShowWindow {
 
                                     if (addedShow.getEndTime().isAfter(existingShow.getBeginTime()) && addedShow.getEndTime().isBefore(existingShow.getEndTime()) || addedShow.getEndTime().equals(existingShow.getEndTime())) {
                                         DataController.getPlanner().addShow(this.selectedShow);
-                                        this.data.add(this.selectedShow);
                                         DataController.getPlanner().savePlanner();
                                         this.errorList.clear();
                                         this.errorList.add("An artist cannot be at two shows at the same time");
@@ -458,10 +453,9 @@ public class ShowWindow {
                         }
                     }
 
-                    this.table.getItems().remove(this.selectedShow);
                     DataController.getPlanner().addShow(this.addedShow);
-                    this.data.add(addedShow);
                     DataController.getPlanner().savePlanner();
+                    this.ST.resetData();
                     this.popUp.close();
                 }
             } else {
@@ -507,8 +501,8 @@ public class ShowWindow {
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(event -> {
             if (DataController.getPlanner().deleteShow(this.selectedShow)) {
-                this.table.getItems().remove(this.selectedShow);
                 DataController.getPlanner().savePlanner();
+                this.ST.resetData();
                 this.popUp.close();
             } else {
                 this.errorList.add("The show was not deleted, please try again later.");

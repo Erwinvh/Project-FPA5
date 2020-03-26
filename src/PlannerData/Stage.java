@@ -20,19 +20,36 @@ public class Stage implements Serializable {
 		this.name = name;
 	}
 
+	/**
+	 * The getter for the stage capacity
+	 * @return Stage capacity
+	 */
 	public int getCapacity() {
 		return capacity;
 	}
 
+	/**
+	 * The setter for the stage capacity
+	 * @param capacity New stage capacity
+	 */
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	/**
+	 * The getetr for the stage name
+	 * @return Stage name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * The setter for the stage name
+	 * @param name New stage name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
+
 }

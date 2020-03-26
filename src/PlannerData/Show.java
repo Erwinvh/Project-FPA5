@@ -63,9 +63,6 @@ public class Show implements Serializable, Comparable<Show> {
         }
         return lineUp.toString();
     }
-    public String getGenreFancyName(){
-        return this.genre.getFancyName();
-    }
 
     public int getExpectedPopularity() {
         return this.expectedPopularity;
@@ -133,6 +130,11 @@ public class Show implements Serializable, Comparable<Show> {
         return getTimeString(this.endTime);
     }
 
+    /**
+     * A getter for the time that sets it as a string.
+     * @param time time as LocalTime
+     * @return time as String.
+     */
     private String getTimeString(LocalTime time){
         String timeString;
 
