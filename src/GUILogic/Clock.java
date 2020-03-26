@@ -14,7 +14,7 @@ public class Clock {
         this.minutes = 0;
         this.seconds = 0;
         this.simulatorSpeed = 30;
-        this.halfHourPassed = false;
+        this.intervalPassed = false;
     }
 
     /**

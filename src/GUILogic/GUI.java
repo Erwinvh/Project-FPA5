@@ -26,6 +26,9 @@ public class GUI extends Application {
             } else if (newTab == scheduleTab.getScheduleTab()) {
                 scheduleTab.resetData();
             }
+            else if (newTab == scheduleTab.getScheduleTab()){
+                scheduleTab.resetData();
+            }
         });
 
         Scene scene = new Scene(tabPane);
