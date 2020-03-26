@@ -10,8 +10,8 @@ public class Clock {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
-        this.simulatorSpeed = 180;
-        this.intervalPassed = false;
+        this.simulatorSpeed = 30;
+        this.halfHourPassed = false;
     }
 
 

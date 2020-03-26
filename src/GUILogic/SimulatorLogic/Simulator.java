@@ -24,6 +24,7 @@ public class Simulator {
     private ArrayList<Artist> artists;
 
     private int peopleAmount = 100;
+    private int globalSpeed = 4;
     private CameraTransform cameraTransform;
     private boolean predictedGuests = true;
     private ArrayList<Integer> Prediction = new ArrayList<>();
