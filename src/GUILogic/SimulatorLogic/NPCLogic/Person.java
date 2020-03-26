@@ -13,7 +13,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * A class to represent a visitor or artist
@@ -133,17 +132,15 @@ public class Person {
     public void update(ArrayList<Person> people) {
 
         this.personLogic.update();
-        //colliding handler
-        boolean collided = false;
 
+        boolean collided = false;
         for (Person other : people) {
-            if (other != this && this.personLogic.getNewPosition().distance(other.personLogic.getPosition()) < 32) {
+            if (other != this && this.personLogic.getNewPosition().distance(other.personLogic.getPosition()) < 32 * this.personLogic.getTransform().getScaleX()) {
                 collided = true;
             }
         }
 
         if (!collided) {
-
             this.personLogic.setPosition(this.personLogic.getNewPosition());
         } else {
             this.personLogic.setTarget(PathCalculator.findRandomClosestWalkable(this.personLogic.getPosition(), this.personLogic.getDistanceMap()));
@@ -162,7 +159,7 @@ public class Person {
      * Plays an soundEffect according to the genre
      */
     public void playSoundEffect() {
-        if (this.favoriteGenre.equals("metal")) {
+        if (this.favoriteGenre.equals(Genres.METAL)) {
             this.mediaPlayer.setVolume(0.05);
         }
 
@@ -170,7 +167,6 @@ public class Person {
         this.mediaPlayer.play();
         this.mediaPlayer.stop();
         this.mediaPlayer.setStartTime(Duration.millis(0));
-
     }
 
     /**

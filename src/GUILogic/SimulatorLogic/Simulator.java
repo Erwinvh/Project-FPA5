@@ -15,6 +15,7 @@ import org.jfree.fx.ResizableCanvas;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Simulator {
@@ -26,8 +27,8 @@ public class Simulator {
     private int peopleAmount = 100;
     private int globalSpeed = 4;
     private CameraTransform cameraTransform;
+    private ArrayList<Integer> prediction = new ArrayList<>();
     private boolean predictedGuests = DataController.getSettings().isUsingPredictedPerson();
-    private ArrayList<Integer> Prediction = new ArrayList<>();
 
     private BorderPane simulatorLayout;
 
@@ -55,7 +56,20 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
 
-        DataController.getClock().setToMidnight();
+        LocalTime firstShow = DataController.getPlanner().getShows().get(0).getBeginTime();
+        if (firstShow != null){
+            if (firstShow.getHour() != 0){
+                DataController.getClock().setTime(firstShow.getHour() - 1, firstShow.getMinute(), firstShow.getSecond());
+            } else if (firstShow.getMinute() == 30){
+                DataController.getClock().setTime(firstShow.getHour(), firstShow.getMinute() - 30, firstShow.getSecond());
+            } else {
+                DataController.getClock().setTime(firstShow.getHour(), firstShow.getMinute(), firstShow.getSecond());
+            }
+        } else {
+            DataController.getClock().setToMidnight();
+        }
+
+
         createPredictions();
     }
 
@@ -133,14 +147,14 @@ public class Simulator {
                 }
 
                 if (!hasBeenSpawned) {
-                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.Prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true));
+                    this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(), newSpawnLocation.getY()), this.prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true));
                     return;
                 }
             }
 
             //if all the artists have been spawned then we spawn visitors
             this.people.add(new Person(new Point2D.Double(newSpawnLocation.getX(),
-                    newSpawnLocation.getY()), this.Prediction, DataController.getClock().getSimulatorSpeed(), false));
+                    newSpawnLocation.getY()), this.prediction, DataController.getClock().getSimulatorSpeed(), false));
         }
     }
 
@@ -165,9 +179,6 @@ public class Simulator {
      * @param e the mouse event
      */
     public void onMousePressed(MouseEvent e) {
-        if (e.getButton() == MouseButton.PRIMARY)
-          //  this.init();
-
         for (Person person : this.people) {
             if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 32) {
                 person.playSoundEffect();
@@ -179,23 +190,23 @@ public class Simulator {
      * This methode creates the prediction of the type of guests that will visit the festival
      */
     public void createPredictions() {
-        int Total = 6;
+        int total = 6;
         int metal = 1;
-        int Country = 1;
+        int country = 1;
         int classic = 1;
-        int Rap = 1;
-        int Pop = 1;
+        int rap = 1;
+        int pop = 1;
         int electro = 1;
 
         if (this.predictedGuests) {
             for (Show show : DataController.getPlanner().getShows()) {
-                String showgenre = show.getGenre().getSuperGenre();
-                switch (showgenre) {
+                String showGenre = show.getGenre().getSuperGenre();
+                switch (showGenre) {
                     case "Metal":
                         metal++;
                         break;
                     case "Country":
-                        Country++;
+                        country++;
                         break;
                     case "Classic":
                         classic++;
@@ -204,23 +215,24 @@ public class Simulator {
                         electro++;
                         break;
                     case "Rap":
-                        Rap++;
+                        rap++;
                         break;
                     case "Pop":
-                        Pop++;
+                        pop++;
                         break;
                 }
-                Total++;
+
+                total++;
             }
         }
 
-        this.Prediction.add(metal);
-        this.Prediction.add(classic);
-        this.Prediction.add(Country);
-        this.Prediction.add(Rap);
-        this.Prediction.add(Pop);
-        this.Prediction.add(electro);
-        this.Prediction.add(Total);
+        this.prediction.add(metal);
+        this.prediction.add(classic);
+        this.prediction.add(country);
+        this.prediction.add(rap);
+        this.prediction.add(pop);
+        this.prediction.add(electro);
+        this.prediction.add(total);
     }
 
     /**
