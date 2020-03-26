@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ScheduleTab {
     private Tab scheduleTab;
-    private TableView<Show> table;
+    private TableView<Show> table = new TableView<>();
     private VBox descriptionVBox = new VBox();
     private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
@@ -62,9 +62,7 @@ public class ScheduleTab {
      * This method creates the createTable which shows the user all shows that are currently planned.
      */
     public void createTable() {
-        this.table = new TableView<>();
         this.table.setEditable(false);
-        this.data.addAll(DataController.getPlanner().getShows());
 
         TableColumn nameColumn = new TableColumn("Name");
         nameColumn.setPrefWidth(100);
@@ -98,8 +96,19 @@ public class ScheduleTab {
         this.table.setPrefHeight(600);
 
         this.table.getColumns().addAll(nameColumn, beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
-        this.table.getItems().addAll(DataController.getPlanner().getShows());
 
+        fillTable();
+
+
+    }
+
+    /**
+     * This methode fills the table with information
+     */
+    public void fillTable(){
+        this.table.getItems().clear();
+        this.data.addAll(DataController.getPlanner().getShows());
+        this.table.getItems().addAll(DataController.getPlanner().getShows());
         this.table.setItems(this.data);
         this.table.getSelectionModel().selectFirst();
         this.table.setOnMouseClicked(event -> getShowDescription());
@@ -175,7 +184,7 @@ public class ScheduleTab {
      */
     public void resetData() {
         this.data = FXCollections.observableArrayList();
-        createTable();
+       fillTable();
     }
 
     /**
