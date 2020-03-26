@@ -2,7 +2,6 @@ package GUILogic.SimulatorLogic;
 
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
-
 import GUILogic.SimulatorLogic.NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
