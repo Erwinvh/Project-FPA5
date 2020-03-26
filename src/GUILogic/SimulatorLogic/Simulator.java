@@ -24,7 +24,7 @@ public class Simulator {
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
 
-    private int peopleAmount = 200;
+    private int peopleAmount = (int) DataController.getSettings().getVisitors();
     private int globalSpeed = 4;
     private CameraTransform cameraTransform;
     private ArrayList<Integer> prediction = new ArrayList<>();
@@ -68,8 +68,6 @@ public class Simulator {
             } else {
                 DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute(), firstShowTime.getSecond());
             }
-        } else {
-            DataController.getClock().setToMidnight();
         }
 
         createPredictions();
@@ -298,6 +296,9 @@ public class Simulator {
         this.predictedGuests = predictedGuests;
     }
 
+    /**
+     * updates the new target of all people
+     */
     public void pulse() {
         ArrayList<Show> currentShows = DataController.getActiveShows();
         for(Person person: people){

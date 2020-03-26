@@ -10,11 +10,27 @@ public class Clock {
      * The constructor for the Clock
      */
     public Clock() {
-        this.hours = 0;
-        this.minutes = 0;
+        this.hours = DataController.getSettings().getBeginHours();
+        this.minutes = DataController.getSettings().getBeginMinutes();
         this.seconds = 0;
-        this.simulatorSpeed = 180;
+        this.simulatorSpeed = 90 * DataController.getSettings().getSimulatorSpeed();
         this.intervalPassed = false;
+    }
+
+    /**
+     * setter for hours
+     * @param hours
+     */
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    /**
+     * setter for minutes
+     * @param minutes
+     */
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
     }
 
     /**
@@ -30,14 +46,14 @@ public class Clock {
         seconds += deltaTime * simulatorSpeed;
         if (seconds >= 60) {
             minutes++;
-            seconds = 0;
+            seconds -= 60;
             if (minutes % 15 == 0)
                 pulse();
             if (minutes == 60) {
                 hours++;
-                minutes = 0;
+                minutes -= 60;
                 if (hours == 24) {
-                    hours = 0;
+                    hours -= 24;
                 }
             }
         }
@@ -67,8 +83,8 @@ public class Clock {
     }
 
     /**
-     * The getter for the hour
-     * @return
+     * The getter for the minute
+     * @return The integer of the minute
      */
     public int getMinutes() {
         return minutes;
@@ -77,13 +93,13 @@ public class Clock {
     /**
      * set the speed 1 real second is how many seconds in the simulator
      */
-    public void setSimulatorSpeed(double simulatorSpeed) {
-        this.simulatorSpeed = simulatorSpeed;
+    public void setSimulatorSpeed(double simulatorSpeed) throws Exception {
+        this.simulatorSpeed = simulatorSpeed * 90;
     }
 
     /**
      * The getter for the simulator speed
-     * @return
+     * @return The simulator speed
      */
     public double getSimulatorSpeed() {
         return simulatorSpeed;
@@ -112,7 +128,7 @@ public class Clock {
 
     /**
      * A to string function to make the time representable as a string.
-     * @return time as a string
+     * @return Time as a string
      */
     public String toString(){
         String h, m;

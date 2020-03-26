@@ -27,8 +27,10 @@ public class SettingsTab {
     private Planner planning = DataController.getPlanner();
     private String saveFileName;
     private Slider speedSlider;
-    private Slider amountPerNPCSlider;
+    private Slider NPCAmountSlider;
     private CheckBox prediction;
+    private ComboBox beginHours;
+    private ComboBox beginMinutes;
 
     public SettingsTab(Stage primaryStage) {
 //        this.amountPerNPC = amount;
@@ -38,10 +40,14 @@ public class SettingsTab {
         this.saveFileName = DataController.getSettings().getSaveFileName();
         this.speedSlider = new Slider();
         speedSlider.setValue(DataController.getSettings().getSimulatorSpeed());
-        this.amountPerNPCSlider = new Slider();
-        amountPerNPCSlider.setValue(DataController.getSettings().getVisitorsPerPerson());
+        this.NPCAmountSlider = new Slider();
+        NPCAmountSlider.setValue(DataController.getSettings().getVisitors());
         this.prediction = new CheckBox();
         prediction.setSelected(DataController.getSettings().isUsingPredictedPerson());
+        this.beginHours = new ComboBox();
+        beginHours.setValue(DataController.getSettings().getBeginHours());
+        this.beginMinutes = new ComboBox();
+        beginMinutes.setValue(DataController.getSettings().getBeginMinutes());
     }
 
     public Tab getSettingsTab() {
@@ -59,7 +65,7 @@ public class SettingsTab {
         Label deleteShows = new Label("Delete all shows");
 
         Label speed = new Label("Simulator speed");
-        Label amountPerNPC = new Label("Amount of visitors per NPC");
+        Label NPCAmount = new Label("Amount of visitors");
 
         Button deleteAllButton = new Button("Delete All");
         deleteAllButton.setOnAction(e -> {
@@ -99,16 +105,16 @@ public class SettingsTab {
         });
 
 
-        amountPerNPCSlider.setMin(1);
-        amountPerNPCSlider.setMax(10000);
-        amountPerNPCSlider.setShowTickLabels(true);
-        amountPerNPCSlider.setShowTickMarks(true);
-        amountPerNPCSlider.setMajorTickUnit(500);
-        amountPerNPCSlider.setMinorTickCount(50);
-        amountPerNPCSlider.setBlockIncrement(10);
+        NPCAmountSlider.setMin(1);
+        NPCAmountSlider.setMax(300);
+        NPCAmountSlider.setShowTickLabels(true);
+        NPCAmountSlider.setShowTickMarks(true);
+        NPCAmountSlider.setMajorTickUnit(50);
+        NPCAmountSlider.setMinorTickCount(10);
+        NPCAmountSlider.setBlockIncrement(10);
         Label amountLabel = new Label("");
-        amountLabel.setText(DataController.getSettings().getVisitorsPerPerson()+"");
-        amountPerNPCSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        amountLabel.setText(DataController.getSettings().getVisitors()+"");
+        NPCAmountSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
             public void changed(
@@ -119,6 +125,15 @@ public class SettingsTab {
                         String.valueOf(newValue.intValue()));
             }
         });
+
+        Label hourLabel = new Label("Begin time hours");
+        for(int i = 0; i < 24; i++){
+            beginHours.getItems().add(i);
+        }
+        Label minuteLabel = new Label("Begin time minutes");
+        for(int i = 0; i < 60; i++){
+            beginMinutes.getItems().add(i);
+        }
 
         Button saveButton = new Button("Save settings");
         saveButton.setOnAction(event ->  saveSettings());
@@ -132,14 +147,19 @@ public class SettingsTab {
         split.add(simulator, 2, 0);
         split.add(speed, 2, 2);
         split.add(speedSlider, 2, 3);
-        split.add(amountPerNPC, 2, 4);
-        split.add(amountPerNPCSlider, 2, 5);
+        split.add(NPCAmount, 2, 4);
+        split.add(NPCAmountSlider, 2, 5);
 
         split.add(speedLabel,3,3);
         split.add(amountLabel,3,5);
 
         split.add(prediction,2,6);
-        split.add(saveButton, 2, 7);
+        split.add(saveButton, 2, 9);
+
+        split.add(hourLabel,2,7);
+        split.add(minuteLabel,3,7);
+        split.add(beginHours,2,8);
+        split.add(beginMinutes,3,8);
 
         settingsTab.setContent(split);
         return settingsTab;
@@ -226,20 +246,29 @@ public class SettingsTab {
         return cancelButton;
     }
 
+    /**
+     * Saves the applied settings of the simulator to a Jsonfile
+     */
     public void saveSettings(){
         try {
             JsonWriter writer = Json.createWriter(new FileWriter(this.saveFileName));
             JsonObjectBuilder settingsBuilder = Json.createObjectBuilder();
             settingsBuilder.add("Simulator Speed", speedSlider.getValue()+ "");
-            settingsBuilder.add("Vistors per NPC",amountPerNPCSlider.getValue());
+            settingsBuilder.add("Vistors per NPC",NPCAmountSlider.getValue());
             settingsBuilder.add("Is Using Prediction", prediction.isSelected());
+            settingsBuilder.add("Begin hours", Integer.parseInt( beginHours.getValue().toString()));
+            settingsBuilder.add("Begin minutes",Integer.parseInt( beginMinutes.getValue().toString()));
             writer.writeObject(settingsBuilder.build());
             writer.close();
+            DataController.getClock().setHours(Integer.parseInt( beginHours.getValue().toString()));
+            DataController.getClock().setMinutes(Integer.parseInt( beginMinutes.getValue().toString()));
+            DataController.getClock().setSimulatorSpeed(speedSlider.getValue());
         }
         catch (Exception e){
             e.printStackTrace();
         }
     }
+
 
 
 }

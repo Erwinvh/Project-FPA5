@@ -1,9 +1,30 @@
 package GUILogic;
-
+/**
+ * A class for saving the settings for the simulator Tab
+ */
 public class Settings {
     private double simulatorSpeed;
-    private double visitorsPerPerson;
+    private double visitors;
     private boolean usingPredictedPerson;
+    private int beginHours;
+    private int beginMinutes;
+
+    public int getBeginHours() {
+        return beginHours;
+    }
+
+    public void setBeginHours(int beginHours) {
+        this.beginHours = beginHours;
+    }
+
+    public int getBeginMinutes() {
+        return beginMinutes;
+    }
+
+    public void setBeginMinutes(int beginMinutes) {
+        this.beginMinutes = beginMinutes;
+    }
+
     private String saveFileName = "Resources/settings.json";
 
     public double getSimulatorSpeed() {
@@ -18,12 +39,12 @@ public class Settings {
         this.simulatorSpeed = simulatorSpeed;
     }
 
-    public double getVisitorsPerPerson() {
-        return visitorsPerPerson;
+    public double getVisitors() {
+        return visitors;
     }
 
-    public void setVisitorsPerPerson(double visitorsPerPerson) {
-        this.visitorsPerPerson = visitorsPerPerson;
+    public void setVisitors(double visitorsPerPerson) {
+        this.visitors = visitorsPerPerson;
     }
 
     public boolean isUsingPredictedPerson() {

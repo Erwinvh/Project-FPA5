@@ -21,6 +21,7 @@ import static PlannerData.Planner.saveFileName;
 
 /**
  * Reads the Json file and converts it into the instance of Planner
+ * Also controls public accessable data for the clock and settings
  */
 public class DataController {
 
@@ -51,13 +52,13 @@ public class DataController {
 //    public static
 
     public DataController() {
+        settings = new Settings();
+        readSettings();
         planner = new Planner();
         clock = new Clock();
-        settings = new Settings();
 
-        readSettings();
         try {
-            clock.setSimulatorSpeed(Math.round( clock.getSimulatorSpeed() * settings.getSimulatorSpeed()));
+            clock.setSimulatorSpeed(Math.round(settings.getSimulatorSpeed()));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -122,7 +123,7 @@ public class DataController {
     }
 
 
-    //check with groep?
+    //check with group?
     /**
      * A getter for the active stages
      * @return
@@ -181,6 +182,9 @@ public class DataController {
         return null;
     }
 
+    /**
+     * reads the settings file and sets the attributes of the Settings class accordingly
+     */
     public void readSettings(){
         try {
             File file = new File(this.settings.getSaveFileName());
@@ -192,8 +196,10 @@ public class DataController {
                         JsonReader jsonReader = Json.createReader(reader);
                         JsonObject settings = jsonReader.readObject();
                         this.settings.setSimulatorSpeed((Double.parseDouble(settings.getString("Simulator Speed"))));
-                        this.settings.setVisitorsPerPerson(settings.getInt("Vistors per NPC"));
+                        this.settings.setVisitors(settings.getInt("Vistors per NPC"));
                         this.settings.setUsingPredictedPerson(settings.getBoolean("Is Using Prediction"));
+                        this.settings.setBeginHours(settings.getInt("Begin hours"));
+                        this.settings.setBeginMinutes(settings.getInt("Begin minutes"));
                     }
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");
@@ -216,6 +222,10 @@ public class DataController {
         return clock;
     }
 
+    /**
+     * The getter for the settings
+     * @return The settings
+     */
     public static Settings getSettings(){
         return settings;
     }
