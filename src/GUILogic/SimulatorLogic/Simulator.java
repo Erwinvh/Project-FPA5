@@ -59,6 +59,7 @@ public class Simulator {
         LocalTime firstShowTime = sortedShowList.get(0).getBeginTime();
 
         if (firstShowTime != null && !DataController.getSettings().isOverwriteStartTime()){
+            System.out.println("I don't.");
             if (firstShowTime.getHour() != 0){
                 DataController.getClock().setTime(firstShowTime.getHour() - 1, firstShowTime.getMinute(), firstShowTime.getSecond());
             } else if (firstShowTime.getMinute() == 30){
@@ -68,6 +69,7 @@ public class Simulator {
             }
         }
         else{
+            System.out.println("I do get here");
             if(DataController.getSettings().getBeginHours() != Integer.MIN_VALUE && DataController.getSettings().getBeginMinutes() != Integer.MIN_VALUE){
                 DataController.getClock().setTime(DataController.getSettings().getBeginHours(),DataController.getClock().getMinutes(),0);
             }
