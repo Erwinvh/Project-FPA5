@@ -28,7 +28,9 @@ public class MapDataController {
     private static int MAP_HEIGHT;
     private static int TILE_SIZE;
 
-    private static BufferedImage mapImage;
+    private static BufferedImage dayImage;
+    private static BufferedImage nightImage;
+
     private static WalkableMap walkableMap;
     private static TargetArea[] targetAreas;
     private static DistanceMap[] distanceMaps;
@@ -41,6 +43,7 @@ public class MapDataController {
     public MapDataController() {
         //arraylist where the layers are stored
         ArrayList<TiledLayer> tiledLayers = new ArrayList<>();
+        ArrayList<TiledLayer> tiledLayersNight = new ArrayList<>();
 
         //create the tiledMapImage object so we can add to it the sprites later
         TiledMapImage tiledMapImage = new TiledMapImage();
@@ -74,7 +77,13 @@ public class MapDataController {
                     populateTargetAreas(layerJsonObject);
 
                 } else if (layerJsonObject.getBoolean("visible"))
-                    tiledLayers.add(new TiledLayer(tiledMapImage, layerJsonObject));
+                    //adds darkness and light layer
+                if (layerJsonObject.getInt("id") == 7 || layerJsonObject.getInt("id") == 8){
+                        tiledLayersNight.add(new TiledLayer(tiledMapImage, layerJsonObject));
+                    } else {
+                        tiledLayers.add(new TiledLayer(tiledMapImage, layerJsonObject));
+                    }
+
             }
 
         } catch (FileNotFoundException e) {
@@ -84,9 +93,20 @@ public class MapDataController {
 
         initializeDistanceMaps();
 
-        mapImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = mapImage.getGraphics();
+        Graphics graphics;
+
+        dayImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+        graphics = dayImage.getGraphics();
         for (TiledLayer tiledLayer : tiledLayers) {
+            tiledLayer.drawG(graphics);
+        }
+
+        nightImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+        graphics = nightImage.getGraphics();
+        for (TiledLayer tiledLayer : tiledLayers){
+            tiledLayer.drawG(graphics);
+        }
+        for (TiledLayer tiledLayer : tiledLayersNight){
             tiledLayer.drawG(graphics);
         }
     }
@@ -193,8 +213,12 @@ public class MapDataController {
      * The draw function of the graphics of the map???
      * @param graphics
      */
-    public void draw(Graphics2D graphics) {
-        graphics.drawImage(mapImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
+    public void draw(Graphics2D graphics, boolean isDay) {
+        if (isDay) {
+            graphics.drawImage(dayImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
+        } else {
+            graphics.drawImage(nightImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
+        }
     }
 
     /**
@@ -249,7 +273,7 @@ public class MapDataController {
      * The getter for the map image
      * @return the map image
      */
-    public static BufferedImage getMapImage() {
-        return mapImage;
+    public static BufferedImage getDayImage() {
+        return dayImage;
     }
 }

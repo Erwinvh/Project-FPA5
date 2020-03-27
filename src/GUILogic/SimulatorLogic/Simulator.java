@@ -277,7 +277,15 @@ public class Simulator {
         g.setTransform(this.cameraTransform.getTransform());
         g.setBackground(Color.black);
 
-        mapDataController.draw(g);
+        // draws map dependent on time, day or night
+        int timeHours = DataController.getClock().getHours();
+        if (timeHours < 6 || timeHours > 20){
+            mapDataController.draw(g, false);
+            System.out.println("HI");
+        } else {
+            mapDataController.draw(g, true);
+            System.out.println("OUT");
+        }
 
         for (Person person : people)
             person.draw(g);
