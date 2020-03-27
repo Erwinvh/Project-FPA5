@@ -24,7 +24,6 @@ public class SettingsTab {
 
     private Stage primaryStage;
     private Tab settingsTab;
-    private Planner planning = DataController.getPlanner();
     private String saveFileName;
     private Slider speedSlider;
     private Slider NPCAmountSlider;
@@ -49,7 +48,6 @@ public class SettingsTab {
         beginMinutes.setValue(DataController.getSettings().getBeginMinutes());
         this.overwriteStartTime = new CheckBox();
         overwriteStartTime.setText("Use this startingTime");
-
     }
 
     /**
@@ -92,25 +90,14 @@ public class SettingsTab {
         speedSlider.setShowTickLabels(true);
         speedSlider.setShowTickMarks(true);
         speedSlider.setMajorTickUnit(1);
-       // speedSlider.setMinorTickCount();
         speedSlider.setBlockIncrement(0.1);
         Label speedLabel = new Label("");
         DecimalFormat format = new DecimalFormat("0.0");
         speedLabel.setText(format.format( DataController.getSettings().getSimulatorSpeed()*100)+"%");
 
-        speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-
-
-            @Override
-            public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                speedLabel.textProperty().setValue(
-                        String.valueOf(format.format( newValue.floatValue()* 100)+"%"));
-            }
-        });
+        speedSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->
+                speedLabel.textProperty().setValue(format.format(newValue.floatValue() * 100) + "%")
+        );
 
         //NPC amount slider
         NPCAmountSlider.setMin(1);
@@ -122,23 +109,16 @@ public class SettingsTab {
         NPCAmountSlider.setBlockIncrement(10);
         Label amountLabel = new Label("");
         amountLabel.setText(DataController.getSettings().getVisitors()+"");
-        NPCAmountSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        NPCAmountSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->
+                amountLabel.textProperty().setValue(String.valueOf(newValue.intValue()))
+        );
 
-            @Override
-            public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                amountLabel.textProperty().setValue(
-                        String.valueOf(newValue.intValue()));
-            }
-        });
-
-        //Hour Combobox
+        //Hour ComboBox
         Label hourLabel = new Label("Begin time hours");
         for(int i = 0; i < 24; i++){
             beginHours.getItems().add(i);
         }
+
         //Minute ComboBox
         Label minuteLabel = new Label("Begin time minutes");
         for(int i = 0; i < 60; i++){
@@ -151,10 +131,14 @@ public class SettingsTab {
 
         //Reset simulator
         Button resetButton = new Button("Reset simulator");
-        resetButton.setOnAction(event -> DataController.getSettings().setReset(true));
+        resetButton.setOnAction(event -> {
+            DataController.getSettings().setReset(true);
+        });
+
+        overwriteStartTime.setSelected(DataController.getSettings().isOverwriteStartTime());
 
 
-        //Adding all nodes to the gridpane
+        //Adding all nodes to the GridPane
         split.add(planner, 0, 0);
         split.add(deleteAll, 0, 2);
         split.add(deleteAllButton, 0, 3);
@@ -291,6 +275,7 @@ public class SettingsTab {
             if(overwriteStartTime.isSelected()) {
                 DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString()), Integer.parseInt(beginMinutes.getValue().toString()), 0);
             }
+            DataController.readSettings();
         }
         catch (Exception e){
             e.printStackTrace();
