@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class TiledLayer implements Drawable {
 
     private ArrayList<TiledTile> tiles;
+    private double opacity;
 
     /**
      *The constructor of the tiled layer
@@ -30,6 +31,9 @@ public class TiledLayer implements Drawable {
         int mapWidth = MapDataController.getMapWidth();
         int mapHeight = MapDataController.getMapHeight();
         int tileSize = MapDataController.getTileSize();
+
+        //get opacity of layer
+        this.opacity = jsonObjectLayer.getJsonNumber("opacity").doubleValue();
 
         //loop trough every value
         for (int i = 0; i < gidArray.size(); i++) {
@@ -62,7 +66,7 @@ public class TiledLayer implements Drawable {
      */
     public void drawG(Graphics graphics) {
         for (TiledTile tile : tiles) {
-            tile.drawG(graphics);
+            tile.drawG((Graphics2D) graphics, opacity);
         }
     }
 

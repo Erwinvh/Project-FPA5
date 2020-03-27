@@ -37,10 +37,13 @@ public class TiledTile implements Drawable {
     }
 
     /**
-     * ???
-     * @param graphics
+     * drawG
+     * draws Tile on image with the given opacity.
+     * @param graphics Graphics2D
+     * @param opacity opacity
      */
-    public void drawG(Graphics graphics) {
+    public void drawG(Graphics2D graphics, double opacity) {
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)opacity));
         graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(), MapDataController.getTileSize(), MapDataController.getTileSize(), null);
     }
 }
