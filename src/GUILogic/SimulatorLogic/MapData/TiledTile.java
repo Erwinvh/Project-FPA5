@@ -27,11 +27,19 @@ public class TiledTile implements Drawable {
         this.position = position;
     }
 
+    /**
+     * ???
+     * @param graphics the graphics that need to be drawn
+     */
     @Override
     public void draw(FXGraphics2D graphics) {
         graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(), MapDataController.getTileSize(), MapDataController.getTileSize(), null);
     }
 
+    /**
+     * ???
+     * @param graphics
+     */
     public void drawG(Graphics graphics) {
         graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(), MapDataController.getTileSize(), MapDataController.getTileSize(), null);
     }

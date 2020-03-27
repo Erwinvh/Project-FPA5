@@ -90,7 +90,8 @@ public class ShowWindow {
     }
 
     /**
-     * @return
+     * This methode sets up the base layout of the add and  the edit show window.
+     * @return The scrollpane with the base layout
      */
     public ScrollPane AddEditSetup() {
         gridpaneShows.setHgap(10);
@@ -283,7 +284,8 @@ public class ShowWindow {
     }
 
     /**
-     * @return
+     * This methode checks the input of the added and editted show and returns the show that needs to be set in the planner
+     * @return to be setted show
      */
     public Show inputcheck() {
 //        ObservableList<Node> childrens = this.gridpaneShows.getChildren();
@@ -567,6 +569,10 @@ public class ShowWindow {
         return timeBox;
     }
 
+    /**
+     * This methode sets up the time list with all the possible times for the adding or editing.
+     * This methode is necessary for both begin and end time comboboxes
+     */
     private void setupTimeList() {
         timeList = new ArrayList<>();
         String time;
@@ -594,6 +600,13 @@ public class ShowWindow {
         }
     }
 
+    /**
+     * This methode creates the description text area
+     * @param presetText this text is used in edit and is how the textarea shows the already set text.
+     * @param width the width of the area
+     * @param height the height of the area
+     * @return the fully made area.
+     */
     public TextArea getShowDescriptionTextArea(String presetText, int width, int height) {
         TextArea description = new TextArea(presetText);
         if (height != 0) description.setPrefHeight(height);
@@ -604,9 +617,8 @@ public class ShowWindow {
 
     /**
      * converts the index of the time Combobox to the corresponding time
-     *
      * @param index the index of the time selected
-     * @return
+     * @return the time at the given index
      */
     public LocalTime indexToLocalTime(int index) {
         LocalTime time = LocalTime.MIDNIGHT;
@@ -620,9 +632,8 @@ public class ShowWindow {
 
     /**
      * converts the time to the index of the Time Combobox
-     *
-     * @param time
-     * @return
+     * @param time the selected time
+     * @return the index of the given time
      */
     public int localTimeToIndex(LocalTime time) {
         int index = 1;

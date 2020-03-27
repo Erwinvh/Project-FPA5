@@ -32,6 +32,10 @@ public class SettingsTab {
     private ComboBox beginMinutes;
     private CheckBox overwriteStartTime;
 
+    /**
+     * The constructor of the settings tab
+     * @param primaryStage the window of the main application
+     */
     public SettingsTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.settingsTab = new Tab("Settings");
@@ -52,7 +56,7 @@ public class SettingsTab {
 
     /**
      * builds and returns the settingsTab
-     * @return
+     * @return the settings tab
      */
     public Tab getSettingsTab() {
 
@@ -247,6 +251,11 @@ public class SettingsTab {
         DeleteShow.show();
     }
 
+    /**
+     * This methode creates and returns a cancel button
+     * @param stage the stage it is on.
+     * @return the cancel button
+     */
     public Button cancelButton(Stage stage) {
         Button cancelButton = new Button("Cancel");
         cancelButton.setOnAction(e -> {
@@ -281,7 +290,5 @@ public class SettingsTab {
             e.printStackTrace();
         }
     }
-
-
 
 }

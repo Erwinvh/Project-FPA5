@@ -11,10 +11,18 @@ public class Settings {
     private boolean overwriteStartTime;
     private boolean reset;
 
+    /**
+     * The getter for the state of reset
+     * @return
+     */
     public boolean isReset() {
         return reset;
     }
 
+    /**
+     * The setter for the state of reset
+     * @param reset
+     */
     public void setReset(boolean reset) {
         this.reset = reset;
     }

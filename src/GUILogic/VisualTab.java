@@ -33,6 +33,9 @@ class VisualTab {
     private static final Color BACKGROUND_COLOR = Color.decode("#d9e2ea");
     private static final Color SECONDARY_COLOR = Color.decode("#b5c2d2");
 
+    /**
+     * The constructor for the visual tab
+     */
     VisualTab() {
         this.planner = DataController.getPlanner();
 
@@ -54,6 +57,10 @@ class VisualTab {
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
     }
 
+    /**
+     * This methode draws the ...
+     * @param graphics
+     */
     private void drawStages(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(BACKGROUND_COLOR);
@@ -72,6 +79,10 @@ class VisualTab {
         }
     }
 
+    /**
+     * This is the methode that draws the ...
+     * @param graphics
+     */
     private void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(BACKGROUND_COLOR);
@@ -95,6 +106,10 @@ class VisualTab {
         graphics.setStroke(new BasicStroke(1f));
     }
 
+    /**
+     * This methode draws the ...
+     * @param graphics
+     */
     private void drawPlanning(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.translate(TIME_COLUMN_WIDTH, 0);
@@ -131,10 +146,17 @@ class VisualTab {
         }
     }
 
+    /**
+     * The getter of the visual tab
+     * @return The visual tab
+     */
     Tab getVisualTab() {
         return visualTab;
     }
 
+    /**
+     * The update function that updates the visual tab.
+     */
     void update() {
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
         drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));

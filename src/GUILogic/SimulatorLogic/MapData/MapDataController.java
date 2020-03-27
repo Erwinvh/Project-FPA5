@@ -91,6 +91,10 @@ public class MapDataController {
         }
     }
 
+    /**
+     * The getter for array list of distance maps
+     * @return The list of distance maps
+     */
     public static DistanceMap[] getDistanceMaps() {
         return distanceMaps;
     }
@@ -146,6 +150,9 @@ public class MapDataController {
         }
     }
 
+    /**
+     * ???
+     */
     private void initializeDistanceMaps() {
         distanceMaps = new DistanceMap[targetAreas.length];
         for (int i = 0; i < targetAreas.length; i++) {
@@ -153,6 +160,11 @@ public class MapDataController {
         }
     }
 
+    /**
+     * The getter for the distance map as an object searched for by name
+     * @param name The name of the searched distance map
+     * @return the requested distance map, else null
+     */
     public static DistanceMap getDistanceMap(String name) {
         for (DistanceMap distanceMap : distanceMaps) {
             if (distanceMap.getMapName().equals(name)) {
@@ -162,6 +174,11 @@ public class MapDataController {
         return null;
     }
 
+    /**
+     * The getter for the distance map as an object searched for by the target area.
+     * @param targetArea The target area of the searched distance map
+     * @return The distance map that was requested, else null
+     */
     public static DistanceMap getDistanceMap(TargetArea targetArea) {
         for (DistanceMap distanceMap : distanceMaps) {
             if (distanceMap.getTarget().equals(targetArea)) {
@@ -172,34 +189,66 @@ public class MapDataController {
         return null;
     }
 
+    /**
+     * The draw function of the graphics of the map???
+     * @param graphics
+     */
     public void draw(Graphics2D graphics) {
         graphics.drawImage(mapImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
     }
 
+    /**
+     * The getter for the walkable map
+     * @return the walkable map
+     */
     public WalkableMap getWalkableMap() {
         return walkableMap;
     }
 
+    /**
+     * The getter for the list of target areas
+     * @return the list of target areas
+     */
     public static TargetArea[] getTargetAreas() {
         return targetAreas;
     }
 
+    /**
+     * The getter for the map width
+     * @return the map width
+     */
     public static int getMapWidth() {
         return MAP_WIDTH;
     }
 
+    /**
+     * The getter for the map height
+     * @return the map height
+     */
     public static int getMapHeight() {
         return MAP_HEIGHT;
     }
 
+    /**
+     * The getter for the sprite sheet directory
+     * @return the sprite sheet directory
+     */
     public static String getSpritesheetsDir() {
         return SPRITESHEETS_DIR;
     }
 
+    /**
+     * The getter of the tile size
+     * @return the tile size
+     */
     public static int getTileSize() {
         return TILE_SIZE;
     }
 
+    /**
+     * The getter for the map image
+     * @return the map image
+     */
     public static BufferedImage getMapImage() {
         return mapImage;
     }

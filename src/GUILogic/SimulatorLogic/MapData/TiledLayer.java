@@ -16,9 +16,7 @@ public class TiledLayer implements Drawable {
     private ArrayList<TiledTile> tiles;
 
     /**
-     * constructor
-     * where
-     *
+     *The constructor of the tiled layer
      * @param mapImage        this object holds all the sprites and from here we get them for each place of the map
      * @param jsonObjectLayer in here the is the data stored what on this layer has to be printed
      */
@@ -47,6 +45,10 @@ public class TiledLayer implements Drawable {
         }
     }
 
+    /**
+     * ???
+     * @param graphics the graphics that need to be drawn
+     */
     @Override
     public void draw(FXGraphics2D graphics) {
         for (TiledTile tile : tiles) {
@@ -54,6 +56,10 @@ public class TiledLayer implements Drawable {
         }
     }
 
+    /**
+     * ???
+     * @param graphics
+     */
     public void drawG(Graphics graphics) {
         for (TiledTile tile : tiles) {
             tile.drawG(graphics);
