@@ -185,23 +185,23 @@ public class DataController {
     /**
      * reads the settings file and sets the attributes of the Settings class accordingly
      */
-    public void readSettings(){
+    public static void readSettings(){
         try {
-            File file = new File(this.settings.getSaveFileName());
+            File file = new File(settings.getSaveFileName());
             if (!file.exists()) {
                 file.createNewFile();
             } else {
-                try (Reader reader = new FileReader(this.settings.getSaveFileName())) {
+                try (Reader reader = new FileReader(settings.getSaveFileName())) {
                     if (file.length() != 0) {
                         JsonReader jsonReader = Json.createReader(reader);
-                        JsonObject settings = jsonReader.readObject();
-                        this.settings.setSimulatorSpeed((Double.parseDouble(settings.getString("Simulator Speed"))));
-                        this.settings.setVisitors(settings.getInt("Vistors per NPC"));
-                        this.settings.setUsingPredictedPerson(settings.getBoolean("Is Using Prediction"));
-                        this.settings.setBeginHours(settings.getInt("Begin hours"));
-                        this.settings.setBeginMinutes(settings.getInt("Begin minutes"));
-                        this.settings.setOverwriteStartTime(settings.getBoolean( "Use overwrite time"));
-                        this.settings.setReset(false);
+                        JsonObject settingsJson = jsonReader.readObject();
+                        settings.setSimulatorSpeed((Double.parseDouble(settingsJson.getString("Simulator Speed"))));
+                        settings.setVisitors(settingsJson.getInt("Vistors per NPC"));
+                        settings.setUsingPredictedPerson(settingsJson.getBoolean("Is Using Prediction"));
+                        settings.setBeginHours(settingsJson.getInt("Begin hours"));
+                        settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
+                        settings.setOverwriteStartTime(settingsJson.getBoolean( "Use overwrite time"));
+                        settings.setReset(false);
                     }
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");
@@ -210,7 +210,7 @@ public class DataController {
             }
 
         } catch (IOException e) {
-            System.out.println("Was not able to gather data from " + this.settings.getSaveFileName() + " due to: ");
+            System.out.println("Was not able to gather data from " + settings.getSaveFileName() + " due to: ");
             e.printStackTrace();
         }
 

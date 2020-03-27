@@ -90,25 +90,14 @@ public class SettingsTab {
         speedSlider.setShowTickLabels(true);
         speedSlider.setShowTickMarks(true);
         speedSlider.setMajorTickUnit(1);
-       // speedSlider.setMinorTickCount();
         speedSlider.setBlockIncrement(0.1);
         Label speedLabel = new Label("");
         DecimalFormat format = new DecimalFormat("0.0");
         speedLabel.setText(format.format( DataController.getSettings().getSimulatorSpeed()*100)+"%");
 
-        speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-
-
-            @Override
-            public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                speedLabel.textProperty().setValue(
-                        String.valueOf(format.format( newValue.floatValue()* 100)+"%"));
-            }
-        });
+        speedSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->
+                speedLabel.textProperty().setValue(format.format(newValue.floatValue() * 100) + "%")
+        );
 
         //NPC amount slider
         NPCAmountSlider.setMin(1);
@@ -145,6 +134,8 @@ public class SettingsTab {
         resetButton.setOnAction(event -> {
             DataController.getSettings().setReset(true);
         });
+
+        overwriteStartTime.setSelected(DataController.getSettings().isOverwriteStartTime());
 
 
         //Adding all nodes to the GridPane
@@ -284,6 +275,7 @@ public class SettingsTab {
             if(overwriteStartTime.isSelected()) {
                 DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString()), Integer.parseInt(beginMinutes.getValue().toString()), 0);
             }
+            DataController.readSettings();
         }
         catch (Exception e){
             e.printStackTrace();
