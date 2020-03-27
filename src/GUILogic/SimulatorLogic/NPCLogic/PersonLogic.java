@@ -207,14 +207,26 @@ public class PersonLogic {
         }
     }
 
+    /**
+     * The getter for the distance map
+     * @return the distance map
+     */
     public DistanceMap getDistanceMap() {
         return this.distanceMap;
     }
 
+    /**
+     * The getter for the person position
+     * @return the person position
+     */
     public Point2D getPosition() {
         return position;
     }
 
+    /**
+     * The getter for the affine transform of the person
+     * @return the affine transform
+     */
     public AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
 
@@ -225,14 +237,26 @@ public class PersonLogic {
         return tx;
     }
 
+    /**
+     * The setter for the target of the person
+     * @param target
+     */
     public void setTarget(Point2D target) {
         this.target = target;
     }
 
+    /**
+     * The setter of the speed of the person
+     * @param speed
+     */
     public void setSpeed(double speed) {
         this.speed = speed * this.speedMultiplier;
     }
 
+    /**
+     * The setter of the position of the person
+     * @param position
+     */
     public void setPosition(Point2D position) {
         this.position = position;
     }

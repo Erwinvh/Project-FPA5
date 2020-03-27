@@ -100,10 +100,18 @@ public class DistanceMap {
     }
 
 
+    /**
+     * The getter for the map in the form of ...
+     * @return The map as ...
+     */
     public int[][] getMap() {
         return map;
     }
 
+    /**
+     * The getter for the map name
+     * @return The map name
+     */
     public String getMapName() {
         return mapName;
     }
