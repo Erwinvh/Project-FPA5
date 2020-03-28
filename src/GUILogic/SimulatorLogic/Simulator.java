@@ -278,13 +278,19 @@ public class Simulator {
         g.setBackground(Color.black);
 
         // draws map dependent on time, day or night
+//        int timeHours = DataController.getClock().getHours();
+//        if (timeHours < 6 || timeHours > 20){
+//            mapDataController.draw(g, false);
+//        } else {
+//            mapDataController.draw(g, true);
+//        }
+
+        mapDataController.draw(g);
         int timeHours = DataController.getClock().getHours();
-        if (timeHours < 6 || timeHours > 20){
-            mapDataController.draw(g, false);
-            System.out.println("HI");
-        } else {
-            mapDataController.draw(g, true);
-            System.out.println("OUT");
+        if (timeHours < 6 || timeHours >= 20){
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.667f));
+            g.drawImage(mapDataController.getNightLayerImage(), 0, 0, null);
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
 
         for (Person person : people)
