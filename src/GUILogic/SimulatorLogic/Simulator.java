@@ -6,6 +6,7 @@ import GUILogic.SimulatorLogic.NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.animation.AnimationTimer;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.jfree.fx.FXGraphics2D;
@@ -203,9 +204,11 @@ public class Simulator {
      * @param e the mouse event
      */
     public void onMousePressed(MouseEvent e) {
-        for (Person person : this.people) {
-            if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 32) {
-                person.playSoundEffect();
+        if (e.getButton() == MouseButton.PRIMARY) {
+            for (Person person : this.people) {
+                if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 64) {
+                    person.playSoundEffect();
+                }
             }
         }
     }
