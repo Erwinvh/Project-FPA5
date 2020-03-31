@@ -57,9 +57,9 @@ class SettingsTab {
         prediction.setSelected(settingsReference.isUsingPredictedPerson());
 
         this.beginTime = new ComboBox();
-        beginTime.setValue(DataController.getSettings().getBeginHours());
-        this.beginHours = new ComboBox();
-        beginHours.setValue(settingsReference.getBeginHours());
+        beginTime.setValue(DataController.getInstance().getSettings().getBeginHours());
+        this.beginTime = new ComboBox();
+        beginTime.setValue(settingsReference.getBeginHours());
         this.overwriteStartTime = new CheckBox();
         overwriteStartTime.setText("Use this startingTime");
         ArrayList timelist = ShowWindow.setupTimeList();
@@ -131,7 +131,7 @@ class SettingsTab {
         //Hour ComboBox
         Label timeLabel = new Label("Begin time");
 //        for(int i = 0; i < 24; i++){
-//            beginHours.getItems().add(i);
+//            beginTime.getItems().add(i);
 //        }
 //
         if (settingsReference.getBeginHours() >= 0) {
@@ -146,9 +146,9 @@ class SettingsTab {
             } else {
                 time += ":" + settingsReference.getBeginMinutes();
             }
-            beginHours.getSelectionModel().select(ShowWindow.localTimeToIndex(LocalTime.parse(time)));
+            beginTime.getSelectionModel().select(ShowWindow.localTimeToIndex(LocalTime.parse(time)));
         } else {
-            beginHours.getSelectionModel().selectFirst();
+            beginTime.getSelectionModel().selectFirst();
         }
 
         //Save button
@@ -161,7 +161,7 @@ class SettingsTab {
             DataController.getInstance().readSettings();
             GUI.getSimulatorTab().getSimulator().init();
             if (overwriteStartTime.isSelected()) {
-                DataController.getInstance().getClock().setTime(Integer.parseInt(beginHours.getValue().toString().substring(0, 2)), Integer.parseInt(beginHours.getValue().toString().substring(3, 5)), 0);
+                DataController.getInstance().getClock().setTime(Integer.parseInt(beginTime.getValue().toString().substring(0, 2)), Integer.parseInt(beginTime.getValue().toString().substring(3, 5)), 0);
             }
         });
 
@@ -189,7 +189,7 @@ class SettingsTab {
 
         split.add(timeLabel, 2, 7);
 
-        split.add(beginHours, 2, 8);
+        split.add(beginTime, 2, 8);
 
         split.add(overwriteStartTime, 2, 9);
 
@@ -279,15 +279,15 @@ class SettingsTab {
             settingsBuilder.add("Simulator Speed", speedSlider.getValue() + "");
             settingsBuilder.add("Visitors per NPC", NPCAmountSlider.getValue());
             settingsBuilder.add("Is Using Prediction", prediction.isSelected());
-            settingsBuilder.add("Begin hours", Integer.parseInt(beginHours.getValue().toString().substring(0, 2)));
-            settingsBuilder.add("Begin minutes", Integer.parseInt(beginHours.getValue().toString().substring(3, 5)));
+            settingsBuilder.add("Begin hours", Integer.parseInt(beginTime.getValue().toString().substring(0, 2)));
+            settingsBuilder.add("Begin minutes", Integer.parseInt(beginTime.getValue().toString().substring(3, 5)));
             settingsBuilder.add("Use overwrite time", overwriteStartTime.isSelected());
             writer.writeObject(settingsBuilder.build());
             writer.close();
 
             DataController.getInstance().getClock().setSimulatorSpeed(speedSlider.getValue());
             if (overwriteStartTime.isSelected()) {
-                DataController.getInstance().getClock().setTime(Integer.parseInt(beginHours.getValue().toString().substring(0, 2)), Integer.parseInt(beginHours.getValue().toString().substring(3, 5)), 0);
+                DataController.getInstance().getClock().setTime(Integer.parseInt(beginTime.getValue().toString().substring(0, 2)), Integer.parseInt(beginTime.getValue().toString().substring(3, 5)), 0);
             }
 
             DataController.getInstance().readSettings();
