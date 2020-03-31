@@ -254,4 +254,11 @@ public class Show implements Serializable, Comparable<Show> {
     public void setArtists(ArrayList<Artist> artists) {
         this.artists = artists;
     }
+
+    /**
+     * A method to get the genre fancy name of this show
+     */
+    public String getGenreFancyName(){
+        return this.genre.getFancyName();
+    }
 }
