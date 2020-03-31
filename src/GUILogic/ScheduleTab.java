@@ -16,11 +16,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.util.ArrayList;
 
-public class ScheduleTab {
+class ScheduleTab {
     private Tab scheduleTab;
     private TableView<Show> table = new TableView<>();
     private VBox descriptionVBox = new VBox();
@@ -36,7 +35,7 @@ public class ScheduleTab {
      *
      * @param primaryStage The stage in which the tab is placed
      */
-    public ScheduleTab(Stage primaryStage) {
+    ScheduleTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.scheduleTab = new Tab("Schedule");
         this.allDescriptions.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -56,14 +55,14 @@ public class ScheduleTab {
      *
      * @return The schedule tab
      */
-    public Tab getScheduleTab() {
+    Tab getScheduleTab() {
         return this.scheduleTab;
     }
 
     /**
      * This method creates the createTable which shows the user all shows that are currently planned.
      */
-    public void createTable() {
+    private void createTable() {
         this.table.setEditable(false);
 
         TableColumn nameColumn = new TableColumn("Name");

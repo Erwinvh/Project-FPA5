@@ -9,13 +9,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
-public class CameraTransform {
+class CameraTransform {
     private Point2D centerPoint;
     private Point2D lastMousePos;
 
     private double currZoom;
-    private final double minZoom = 0.2;
-    private final double maxZoom = 2;
+    private static final double MIN_ZOOM = 0.2;
+    private static final double MAX_ZOOM = 2;
 
     /**
      * Sets initial currZoom, center point, inverseTransform and lastMousePos.
@@ -27,7 +27,7 @@ public class CameraTransform {
      * lastMousePos        The previous mouse position when moved, pressed or scrolling the mouse.
      * Used to calculate the distance dragged.
      */
-    public CameraTransform(Canvas node) {
+    CameraTransform(Canvas node) {
         this.currZoom = 1.0;
         this.centerPoint = new Point2D.Double(0, 0);
         this.lastMousePos = new Point2D.Double(0, 0);
@@ -44,7 +44,7 @@ public class CameraTransform {
     }
 
     /**
-     * This methode allows the user to scroll in and out of the map.
+     * This method allows the user to scroll in and out of the map.
      * @param event the scroll event itself
      */
     private void onScroll(ScrollEvent event) {
@@ -52,8 +52,8 @@ public class CameraTransform {
 
         currZoom *= (1 + event.getDeltaY() / 150.0f);
 
-        if (currZoom > maxZoom) currZoom = maxZoom;
-        else if (currZoom < minZoom) currZoom = minZoom;
+        if (currZoom > MAX_ZOOM) currZoom = MAX_ZOOM;
+        else if (currZoom < MIN_ZOOM) currZoom = MIN_ZOOM;
 
         Point2D postZoom = getInverseTransform().transform(new Point2D.Double(event.getX(), event.getY()), null);
 
@@ -68,7 +68,7 @@ public class CameraTransform {
      *
      * @return AffineTransform
      */
-    public AffineTransform getTransform() {
+    AffineTransform getTransform() {
         if (centerPoint == null) return new AffineTransform();
 
         AffineTransform tx = new AffineTransform();
@@ -87,7 +87,7 @@ public class CameraTransform {
      *
      * @return AffineTransform
      */
-    public AffineTransform getInverseTransform() {
+    AffineTransform getInverseTransform() {
         try {
             return getTransform().createInverse();
         } catch (NoninvertibleTransformException e) {
@@ -103,7 +103,7 @@ public class CameraTransform {
      * @param e MouseEvent
      */
     private void mouseDragged(MouseEvent e) {
-        if (e.getButton() == MouseButton.SECONDARY) {
+        if (e.getButton().equals(MouseButton.SECONDARY)) {
             centerPoint = new Point2D.Double(
                     centerPoint.getX() - (lastMousePos.getX() - e.getX()) * currZoom * 0.001,
                     centerPoint.getY() - (lastMousePos.getY() - e.getY()) * currZoom * 0.001

@@ -1,7 +1,5 @@
 package GUILogic.SimulatorLogic.MapData;
 
-import org.jfree.fx.FXGraphics2D;
-
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import java.awt.*;
@@ -11,17 +9,18 @@ import java.util.ArrayList;
 /**
  * this is the object that holds the tiles for that layer
  */
-public class TiledLayer implements Drawable {
+public class TiledLayer {
 
     private ArrayList<TiledTile> tiles;
     private double opacity;
 
     /**
-     *The constructor of the tiled layer
+     * The constructor of the tiled layer
+     *
      * @param mapImage        this object holds all the sprites and from here we get them for each place of the map
      * @param jsonObjectLayer in here the is the data stored what on this layer has to be printed
      */
-    public TiledLayer(TiledMapImage mapImage, JsonObject jsonObjectLayer) {
+    TiledLayer(TiledMapImage mapImage, JsonObject jsonObjectLayer) {
         this.tiles = new ArrayList<>();
 
         //this array stores the values of each tile and that value represents what sprite has to ve used
@@ -50,24 +49,13 @@ public class TiledLayer implements Drawable {
     }
 
     /**
-     * ???
-     * @param graphics the graphics that need to be drawn
-     */
-    @Override
-    public void draw(FXGraphics2D graphics) {
-        for (TiledTile tile : tiles) {
-            tile.draw(graphics);
-        }
-    }
-
-    /**
-     * ???
+     * This method is used to create a BufferedImage from all tiles to make the drawing more efficient
+     *
      * @param graphics
      */
-    public void drawG(Graphics graphics) {
+    void drawG(Graphics graphics) {
         for (TiledTile tile : tiles) {
             tile.drawG((Graphics2D) graphics, opacity);
         }
     }
-
 }

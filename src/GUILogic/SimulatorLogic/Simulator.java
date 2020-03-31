@@ -42,48 +42,45 @@ public class Simulator {
     }
 
     /**
-     * This methode sets all items and attributes by initilisation
+     * This method sets all items and attributes by initialisation
      */
-    public void init() {
+    private void init() {
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         peopleAmount = (int) DataController.getSettings().getVisitors();
         prediction = new ArrayList<>();
+        createPredictions();
         predictedGuests = DataController.getSettings().isUsingPredictedPerson();
 
         ArrayList<Show> sortedShowList = DataController.getPlanner().getShows();
         sortedShowList.sort(Show::compareToTime);
 
-        if (sortedShowList.get(0) == null) return;
+        if (sortedShowList.isEmpty() || sortedShowList.get(0) == null) return;
 
         LocalTime firstShowTime = sortedShowList.get(0).getBeginTime();
 
-        if (firstShowTime != null && !DataController.getSettings().isOverwriteStartTime()){
-            if (firstShowTime.getHour() != 0){
+        if (firstShowTime != null && !DataController.getSettings().isOverwriteStartTime()) {
+            if (firstShowTime.getHour() != 0) {
                 DataController.getClock().setTime(firstShowTime.getHour() - 1, firstShowTime.getMinute(), firstShowTime.getSecond());
-            } else if (firstShowTime.getMinute() == 30){
+            } else if (firstShowTime.getMinute() == 30) {
                 DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute() - 30, firstShowTime.getSecond());
             } else {
                 DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute(), firstShowTime.getSecond());
             }
-        }
-        else{
-            if(DataController.getSettings().getBeginHours() != Integer.MIN_VALUE && DataController.getSettings().getBeginMinutes() != Integer.MIN_VALUE){
-                DataController.getClock().setTime(DataController.getSettings().getBeginHours(),DataController.getSettings().getBeginMinutes(),0);
-            }
-            else {
+        } else {
+            if (DataController.getSettings().getBeginHours() != Integer.MIN_VALUE && DataController.getSettings().getBeginMinutes() != Integer.MIN_VALUE) {
+                DataController.getClock().setTime(DataController.getSettings().getBeginHours(), DataController.getSettings().getBeginMinutes(), 0);
+            } else {
                 DataController.getClock().setToMidnight();
             }
         }
-
-        createPredictions();
     }
 
     /**
-     * This methode starts the simulator
+     * This method starts the simulator
      */
-    public void start() {
+    private void start() {
         this.simulatorLayout = new BorderPane();
         ResizableCanvas canvas = new ResizableCanvas(this::draw, this.simulatorLayout);
         this.simulatorLayout.setCenter(canvas);
@@ -116,7 +113,7 @@ public class Simulator {
     public void update(double deltaTime) {
         DataController.getClock().update(deltaTime);
 
-        if(DataController.getClock().isIntervalPassed()){
+        if (DataController.getClock().isIntervalPassed()) {
             pulse();
         }
 
@@ -139,12 +136,12 @@ public class Simulator {
     /**
      * Spawns on either of the 2 spawn locations, randomly chosen.
      */
-    public void spawnPerson() {
+    private void spawnPerson() {
         Point2D spawnLocation1 = new Point2D.Double(2 * 32, 20 * 32);
         Point2D spawnLocation2 = new Point2D.Double(31 * 32, 97 * 32);
 
         Random r = new Random();
-        if (r.nextBoolean()){
+        if (r.nextBoolean()) {
             spawnOnLocation(spawnLocation1);
         } else {
             spawnOnLocation(spawnLocation2);
@@ -153,9 +150,10 @@ public class Simulator {
 
     /**
      * Spawns a person, if all the artists are spawned then spawning visitors
+     *
      * @param p2d spawnLocation
      */
-    public void spawnOnLocation(Point2D p2d){
+    private void spawnOnLocation(Point2D p2d) {
         if (canSpawn(p2d)) {
             //loop trough all the artists to see if they are spawned already
             for (Artist artist : DataController.getPlanner().getArtists()) {
@@ -185,7 +183,7 @@ public class Simulator {
      * @param spawnPosition the location to check if it's available
      * @return true if empty, false if occupied
      */
-    public boolean canSpawn(Point2D spawnPosition) {
+    private boolean canSpawn(Point2D spawnPosition) {
         for (Person person : people) {
             if (spawnPosition.distance(person.getPersonLogic().getPosition()) <= 64) {
                 return false;
@@ -197,9 +195,10 @@ public class Simulator {
 
     /**
      * This methode handles the mouse event when its pressed
+     *
      * @param e the mouse event
      */
-    public void onMousePressed(MouseEvent e) {
+    private void onMousePressed(MouseEvent e) {
         if (e.getButton() == MouseButton.PRIMARY) {
             for (Person person : this.people) {
                 if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 64) {
@@ -212,7 +211,7 @@ public class Simulator {
     /**
      * This methode creates the prediction of the type of guests that will visit the festival
      */
-    public void createPredictions() {
+    private void createPredictions() {
         int total = 6;
         int metal = 1;
         int country = 1;
@@ -259,10 +258,11 @@ public class Simulator {
     }
 
     /**
-     * This methode draws the items on the simulator
-     * @param g
+     * This method draws the items on the simulator
+     *
+     * @param g the FXGraphics2D instance which is used to draw everything
      */
-    public void draw(FXGraphics2D g) {
+    private void draw(FXGraphics2D g) {
         //Gets inverseTransform from cameraTransform so the correct rectangle can be cleared.
         AffineTransform inverse = this.cameraTransform.getInverseTransform();
 
@@ -318,42 +318,19 @@ public class Simulator {
     }
 
     /**
-     * This is the setter for the amount of people per NPC
-     * @param peopleAmount Amount of people per npc
-     */
-    public void setPeopleAmount(int peopleAmount) {
-        this.peopleAmount = peopleAmount;
-    }
-
-    /**
-     * The getter for the amount of people per npc
-     * @return The amount of people amount
-     */
-    public int getPeopleAmount() {
-        return peopleAmount;
-    }
-
-    /**
-     *
-     * @param predictedGuests
-     */
-    public void setPredictedGuests(boolean predictedGuests) {
-        this.predictedGuests = predictedGuests;
-    }
-
-    /**
      * updates the new target of all people
      */
-    public void pulse() {
+    private void pulse() {
         ArrayList<Show> currentShows = DataController.getActiveShows();
-        for(Person person: people){
+        for (Person person : people) {
             person.getPersonLogic().selectNewMap(currentShows);
         }
     }
 
     /**
      * The getter for the simulator layout
-     * @return The borderpane in which the simulator is placed
+     *
+     * @return The BorderPane in which the simulator is placed
      */
     public BorderPane getSimulatorLayout() {
         return simulatorLayout;

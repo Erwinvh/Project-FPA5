@@ -84,7 +84,7 @@ public class Planner implements Serializable {
      * @param artist the artist to be deleted
      * @return true if the deletion is successful, false if not
      */
-    public boolean deleteArtist(Artist artist) {
+    private boolean deleteArtist(Artist artist) {
         return this.artists.remove(artist);
     }
 
@@ -110,7 +110,7 @@ public class Planner implements Serializable {
      * @param stage the stage to be deleted
      * @return true if the deletion is successful, false if not
      */
-    public boolean deleteStage(Stage stage) {
+    private boolean deleteStage(Stage stage) {
         return this.stages.remove(stage);
     }
 
@@ -118,7 +118,7 @@ public class Planner implements Serializable {
      * Deletes a stage
      *
      * @param stageName the name of the stage to be deleted
-     * @return true if the deletion is succesful, false if not
+     * @return true if the deletion is successful, false if not
      */
     public boolean deleteStage(String stageName) {
         for (Stage stage : this.stages) {
@@ -131,44 +131,48 @@ public class Planner implements Serializable {
     }
 
     /**
-     * The getter for the arraylist of shows
-     * @return Arraylist of shows
+     * The getter for the ArrayList of shows
+     *
+     * @return ArrayList of all shows currently added
      */
     public ArrayList<Show> getShows() {
         return this.shows;
     }
 
     /**
-     * The getter for the arraylist of stages
-     * @return Arraylist of stages
+     * The getter for the ArrayList of stages
+     *
+     * @return ArrayList of all stages that are currently added
      */
     public ArrayList<Stage> getStages() {
         return this.stages;
     }
 
     /**
-     * The getter for the arraylist of artists
-     * @return Arraylist of artists
+     * The getter for the ArrayList of artists
+     *
+     * @return ArrayList of all artists that are currently added
      */
     public ArrayList<Artist> getArtists() {
         return this.artists;
     }
 
     /**
-     * A methode to clear all planned shows out of the planner
+     * A method to clear all planned shows out of the planner
      */
-    public void deleteShows(){
-shows.clear();
+    public void deleteShows() {
+        shows.clear();
     }
 
     /**
-     * A methode to clear all data in the planner
+     * A method to clear all data in the planner
      */
-    public void deleteAll(){
+    public void deleteAll() {
         shows.clear();
         artists.clear();
         stages.clear();
     }
+
     /**
      * Saves the shows, artists and stages in a Json file
      */
@@ -240,6 +244,7 @@ shows.clear();
 
     /**
      * The getter for a stage by name
+     *
      * @param stageName Searched stage name
      * @return Searched stage if found, else Null.
      */
@@ -259,6 +264,7 @@ shows.clear();
 
     /**
      * The getter for an artist by name
+     *
      * @param artistName Searched artist name
      * @return Searched artist if found else Null.
      */

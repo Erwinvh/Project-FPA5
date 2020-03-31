@@ -41,7 +41,7 @@ public class MapDataController {
      * then the json file is read out and for each layer a new object is created
      */
     public MapDataController() {
-        //arraylist where the layers are stored
+        // ArrayList where the layers are stored
         ArrayList<TiledLayer> tiledLayers = new ArrayList<>();
         ArrayList<TiledLayer> tiledLayersNight = new ArrayList<>();
 
@@ -77,18 +77,15 @@ public class MapDataController {
                     populateTargetAreas(layerJsonObject);
 
                 } else if (layerJsonObject.getBoolean("visible"))
-                    //adds darkness and light layer
-                if (layerJsonObject.getInt("id") == 7 || layerJsonObject.getInt("id") == 8){
+                    // Adds darkness and light layer
+                    if (layerJsonObject.getInt("id") == 7 || layerJsonObject.getInt("id") == 8) {
                         tiledLayersNight.add(new TiledLayer(tiledMapImage, layerJsonObject));
                     } else {
                         tiledLayers.add(new TiledLayer(tiledMapImage, layerJsonObject));
                     }
-
             }
-
         } catch (FileNotFoundException e) {
             System.out.println("MapDataController.MapDataController: could not find file in " + MAP_LAYOUT_DIR);
-            //e.printStackTrace();
         }
 
         initializeDistanceMaps();
@@ -104,13 +101,14 @@ public class MapDataController {
         nightLayerImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
         graphics = nightLayerImage.getGraphics();
 
-        for (TiledLayer tiledLayer : tiledLayersNight){
+        for (TiledLayer tiledLayer : tiledLayersNight) {
             tiledLayer.drawG(graphics);
         }
     }
 
     /**
      * The getter for array list of distance maps
+     *
      * @return The list of distance maps
      */
     public static DistanceMap[] getDistanceMaps() {
@@ -120,7 +118,7 @@ public class MapDataController {
     /**
      * This function sets the value of WalkableMap at index i,j to true when at that position the id 214 is found
      *
-     * @param walkableJsonObject
+     * @param walkableJsonObject the jsonObject contain the data for the walkableMap
      */
     private void populateWalkableMap(JsonObject walkableJsonObject) {
         JsonArray dataArray = walkableJsonObject.getJsonArray("data");
@@ -140,7 +138,8 @@ public class MapDataController {
 
     /**
      * Determines the type of Target area depending visitors, artists or all
-     * @param objectsJsonObject
+     *
+     * @param objectsJsonObject the jsonObject containing all targetAreas
      */
     private void populateTargetAreas(JsonObject objectsJsonObject) {
         JsonArray targetsJsonArray = objectsJsonObject.getJsonArray("objects");
@@ -169,7 +168,7 @@ public class MapDataController {
     }
 
     /**
-     * ???
+     * This method initializes all distance maps with the appropriate data
      */
     private void initializeDistanceMaps() {
         distanceMaps = new DistanceMap[targetAreas.length];
@@ -180,6 +179,7 @@ public class MapDataController {
 
     /**
      * The getter for the distance map as an object searched for by name
+     *
      * @param name The name of the searched distance map
      * @return the requested distance map, else null
      */
@@ -194,6 +194,7 @@ public class MapDataController {
 
     /**
      * The getter for the distance map as an object searched for by the target area.
+     *
      * @param targetArea The target area of the searched distance map
      * @return The distance map that was requested, else null
      */
@@ -209,6 +210,7 @@ public class MapDataController {
 
     /**
      * The draw function of the graphics of the map???
+     *
      * @param graphics
      */
     public void draw(Graphics2D graphics) {
@@ -217,6 +219,7 @@ public class MapDataController {
 
     /**
      * The getter for the walkable map
+     *
      * @return the walkable map
      */
     public WalkableMap getWalkableMap() {
@@ -225,6 +228,7 @@ public class MapDataController {
 
     /**
      * The getter for the list of target areas
+     *
      * @return the list of target areas
      */
     public static TargetArea[] getTargetAreas() {
@@ -233,6 +237,7 @@ public class MapDataController {
 
     /**
      * The getter for the map width
+     *
      * @return the map width
      */
     public static int getMapWidth() {
@@ -241,6 +246,7 @@ public class MapDataController {
 
     /**
      * The getter for the map height
+     *
      * @return the map height
      */
     public static int getMapHeight() {
@@ -249,14 +255,16 @@ public class MapDataController {
 
     /**
      * The getter for the sprite sheet directory
+     *
      * @return the sprite sheet directory
      */
-    public static String getSpritesheetsDir() {
+    static String getSpritesheetsDir() {
         return SPRITESHEETS_DIR;
     }
 
     /**
      * The getter of the tile size
+     *
      * @return the tile size
      */
     public static int getTileSize() {
@@ -264,15 +272,8 @@ public class MapDataController {
     }
 
     /**
-     * The getter for the day map image
-     * @return the map image
-     */
-    public static BufferedImage getDayImage() {
-        return dayImage;
-    }
-
-    /**
      * The getter for the night layer image
+     *
      * @return the map image
      */
     public static BufferedImage getNightLayerImage() {
