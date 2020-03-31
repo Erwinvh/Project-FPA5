@@ -150,7 +150,7 @@ else{
         //Reset simulator
         Button resetButton = new Button("Reset simulator");
         resetButton.setOnAction(event -> {
-            DataController.getSettings().setReset(true);
+            GUI.getSimulatorTab().getSimulator().init();
         });
 
         overwriteStartTime.setSelected(DataController.getSettings().isOverwriteStartTime());

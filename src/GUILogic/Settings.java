@@ -9,24 +9,7 @@ public class Settings {
     private int beginHours = Integer.MIN_VALUE;
     private int beginMinutes = Integer.MIN_VALUE;
     private boolean overwriteStartTime;
-    private boolean reset;
-
-    /**
-     * The getter for the state of reset
-     * @return
-     */
-    public boolean isReset() {
-        return reset;
-    }
-
-    /**
-     * The setter for the state of reset
-     * @param reset
-     */
-    public void setReset(boolean reset) {
-        this.reset = reset;
-    }
-
+    
     private String saveFileName = "Resources/settings.json";
 
     /**

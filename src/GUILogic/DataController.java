@@ -201,7 +201,6 @@ public class DataController {
                         settings.setBeginHours(settingsJson.getInt("Begin hours"));
                         settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
                         settings.setOverwriteStartTime(settingsJson.getBoolean( "Use overwrite time"));
-                        settings.setReset(false);
                     }
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");
