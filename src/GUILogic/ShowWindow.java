@@ -332,7 +332,12 @@ class ShowWindow {
             if (endingTime.getValue() == null || endingTime.getValue().equals("Select")) {
                 this.errorList.add("The endtime has not been filled in.");
             }
-        } else {
+
+        }
+        else if(this.timeList.indexOf(startingTime.getValue()) >= this.timeList.indexOf(endingTime.getValue())){
+            this.errorList.add("The endtime is earlier or equal to the begintime");
+        }
+        else {
             beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
             endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
         }
