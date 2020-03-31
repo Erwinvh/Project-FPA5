@@ -143,7 +143,7 @@ public class Person {
         if (!collided) {
             this.personLogic.setPosition(this.personLogic.getNewPosition());
         } else {
-            this.personLogic.setTarget(PathCalculator.findRandomClosestWalkable(this.personLogic.getPosition(), this.personLogic.getDistanceMap()));
+            this.personLogic.setTarget(PathCalculator.findRandomClosestWalkable(this.personLogic.getPosition()));
         }
     }
 

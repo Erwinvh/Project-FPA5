@@ -84,9 +84,9 @@ class ShowWindow {
     }
 
     /**
-     * This methode sets up the base layout of the add and  the edit show window.
+     * This method sets up the base layout of the add and  the edit show window.
      *
-     * @return The scrollpane with the base layout
+     * @return The scrollPane with the base layout
      */
     private ScrollPane AddEditSetup() {
         gridPaneShows.setHgap(10);
@@ -579,7 +579,7 @@ class ShowWindow {
      * This method sets up the time list with all the possible times for the adding or editing.
      * This method is necessary for both begin and end time ComboBoxes
      */
-    public static ArrayList setupTimeList() {
+    public static ArrayList<String> setupTimeList() {
         ArrayList timeListed = new ArrayList<>();
         String time;
         String halftime = "";

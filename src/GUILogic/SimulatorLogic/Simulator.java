@@ -41,7 +41,6 @@ public class Simulator {
     public Simulator() {
         init();
         start();
-
     }
 
     /**
@@ -115,7 +114,7 @@ public class Simulator {
      *
      * @param deltaTime time passed in seconds
      */
-    public void update(double deltaTime) {
+    private void update(double deltaTime) {
         DataController.getClock().update(deltaTime);
 
         if (DataController.getClock().isIntervalPassed()) {
@@ -205,7 +204,7 @@ public class Simulator {
     }
 
     /**
-     * This methode handles the mouse event when its pressed
+     * This method handles the mouse event when its pressed
      *
      * @param e the mouse event
      */
@@ -220,7 +219,7 @@ public class Simulator {
     }
 
     /**
-     * This methode creates the prediction of the type of guests that will visit the festival
+     * This method creates the prediction of the type of guests that will visit the festival
      */
     private void createPredictions() {
         int total = 6;
@@ -291,19 +290,19 @@ public class Simulator {
         mapDataController.draw(g);
         double timeHours;
         timeHours = DataController.getClock().getHours();
-        timeHours += (DataController.getClock().getMinutes()/60.0);
+        timeHours += (DataController.getClock().getMinutes() / 60.0);
 
         float opacity;
 
-        if (timeHours>=14){
-            opacity = (float)((2.0f/3.0f)*Math.pow((timeHours-4), 2) - (float)(38/3) * (float)(timeHours-4) + 55)/100.0f;
+        if (timeHours >= 14) {
+            opacity = (float) ((2.0f / 3.0f) * Math.pow((timeHours - 4), 2) - (float) (38 / 3) * (float) (timeHours - 4) + 55) / 100.0f;
         } else {
-            opacity = (float)((25.0f/84.0f) * Math.pow(timeHours, 2) - (float)(355/42) * (float)timeHours + 60)/100.0f;
+            opacity = (float) ((25.0f / 84.0f) * Math.pow(timeHours, 2) - (float) (355 / 42) * (float) timeHours + 60) / 100.0f;
         }
 
-        if (opacity < 0){
+        if (opacity < 0) {
             opacity = 0f;
-        } else if (opacity > 0.7f){
+        } else if (opacity > 0.7f) {
             opacity = 0.7f;
         }
 
@@ -311,7 +310,7 @@ public class Simulator {
             person.draw(g);
 
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-        g.drawImage(mapDataController.getNightLayerImage(), 0, 0, null);
+        g.drawImage(MapDataController.getNightLayerImage(), 0, 0, null);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         g.setTransform(new AffineTransform());

@@ -144,6 +144,7 @@ public class PersonLogic {
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -215,15 +216,6 @@ public class PersonLogic {
 
             this.setTarget(new Point2D.Double(minPos.getX() + randomX, minPos.getY() + randomY));
         }
-    }
-
-    /**
-     * The getter for the distance map
-     *
-     * @return the distance map
-     */
-    DistanceMap getDistanceMap() {
-        return this.distanceMap;
     }
 
     /**

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * this is the object that holds the tiles for that layer
  */
-public class TiledLayer {
+class TiledLayer {
 
     private ArrayList<TiledTile> tiles;
     private double opacity;
@@ -50,8 +50,6 @@ public class TiledLayer {
 
     /**
      * This method is used to create a BufferedImage from all tiles to make the drawing more efficient
-     *
-     * @param graphics
      */
     void drawG(Graphics graphics) {
         for (TiledTile tile : tiles) {

@@ -8,7 +8,7 @@ import java.util.Random;
 class PathCalculator {
 
     /**
-     * Calculates the next target for a NPCLogic.Person, allows movement in 8 directions
+     * Calculates the next target for a Person, allows movement in 8 directions
      *
      * @param currPos     the current position of the character
      * @param distanceMap map of all distances relative to target position
@@ -52,11 +52,11 @@ class PathCalculator {
 
     /**
      * Finds a random adjacent tile that is walkable and closest to a point
+     *
      * @param currentPosition the position the character is currently on
-     * @param distanceMap     the DistanceMap it is walking on
      * @return the available tile, if not found return the currentPosition
      */
-    static Point2D findRandomClosestWalkable(Point2D currentPosition, DistanceMap distanceMap) {
+    static Point2D findRandomClosestWalkable(Point2D currentPosition) {
         int tileSize = MapDataController.getTileSize();
 
         int failedAttempts = 0;
@@ -69,7 +69,7 @@ class PathCalculator {
             yPos = Math.min(yPos, 99);
             yPos = Math.max(0, yPos);
 
-            if (distanceMap.getWalkableMap()[xPos][yPos]) {
+            if (MapDataController.getWalkableMap()[xPos][yPos]) {
                 return new Point2D.Double(xPos * tileSize, yPos * tileSize);
             }
 

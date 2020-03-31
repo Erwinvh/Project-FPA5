@@ -55,8 +55,8 @@ class SettingsTab {
         beginHours.setValue(DataController.getSettings().getBeginHours());
         this.overwriteStartTime = new CheckBox();
         overwriteStartTime.setText("Use this startingTime");
-        ArrayList timelist = ShowWindow.setupTimeList();
-        beginHours = ShowWindow.getTimestampsComboBox(0, timelist);
+        ArrayList timeList = ShowWindow.setupTimeList();
+        beginHours = ShowWindow.getTimestampsComboBox(0, timeList);
     }
 
     /**

@@ -10,13 +10,11 @@ public class Settings {
     private int beginHours = Integer.MIN_VALUE;
     private int beginMinutes = Integer.MIN_VALUE;
     private boolean overwriteStartTime;
-    
-    private String saveFileName = "Resources/settings.json";
+
+    private static final String SAVE_FILE_NAME = "Resources/settings.json";
 
     /**
      * getter for the overwrite option
-     *
-     * @return
      */
     public boolean isOverwriteStartTime() {
         return overwriteStartTime;
@@ -24,8 +22,6 @@ public class Settings {
 
     /**
      * setter fot the overwrite option
-     *
-     * @param overwriteStartTime
      */
     void setOverwriteStartTime(boolean overwriteStartTime) {
         this.overwriteStartTime = overwriteStartTime;
@@ -33,8 +29,6 @@ public class Settings {
 
     /**
      * getter for the begin time in hours
-     *
-     * @return
      */
     public int getBeginHours() {
         return beginHours;
@@ -42,8 +36,6 @@ public class Settings {
 
     /**
      * A setter for the begin time hours
-     *
-     * @param beginHours
      */
     void setBeginHours(int beginHours) {
         this.beginHours = beginHours;
@@ -51,8 +43,6 @@ public class Settings {
 
     /**
      * the getter for the begin time Minutes
-     *
-     * @return
      */
     public int getBeginMinutes() {
         return beginMinutes;
@@ -60,8 +50,6 @@ public class Settings {
 
     /**
      * the setter for the beginTime minutes
-     *
-     * @param beginMinutes
      */
     void setBeginMinutes(int beginMinutes) {
         this.beginMinutes = beginMinutes;
@@ -70,8 +58,6 @@ public class Settings {
     /**
      * a getter for the simulator speed,
      * a multiplier for the standard simulator speed
-     *
-     * @return
      */
     double getSimulatorSpeed() {
         return simulatorSpeed;
@@ -79,18 +65,14 @@ public class Settings {
 
     /**
      * a getter for the saveFile name
-     *
-     * @return
      */
     String getSaveFileName() {
-        return saveFileName;
+        return SAVE_FILE_NAME;
     }
 
     /**
      * a setter for the simulator speed,
      * a multiplier for the standard simulator speed
-     *
-     * @param simulatorSpeed
      */
     void setSimulatorSpeed(double simulatorSpeed) {
         this.simulatorSpeed = simulatorSpeed;
@@ -98,8 +80,6 @@ public class Settings {
 
     /**
      * A getter for the amount of visitors
-     *
-     * @return
      */
     public double getVisitors() {
         return visitors;
@@ -107,8 +87,6 @@ public class Settings {
 
     /**
      * a setter for the amount of visitors
-     *
-     * @param visitorsPerPerson
      */
     void setVisitors(double visitorsPerPerson) {
         this.visitors = visitorsPerPerson;
@@ -116,8 +94,6 @@ public class Settings {
 
     /**
      * a getter for if the visitor Favorite Genre prediction is being used
-     *
-     * @return
      */
     public boolean isUsingPredictedPerson() {
         return usingPredictedPerson;
@@ -125,11 +101,8 @@ public class Settings {
 
     /**
      * a setter for if the visitor Favorite Genre prediction is being used
-     *
-     * @param usingPredictedPerson
      */
     void setUsingPredictedPerson(boolean usingPredictedPerson) {
         this.usingPredictedPerson = usingPredictedPerson;
     }
 }
-

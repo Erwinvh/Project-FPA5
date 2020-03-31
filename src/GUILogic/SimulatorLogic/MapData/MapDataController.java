@@ -31,7 +31,7 @@ public class MapDataController {
     private static BufferedImage dayImage;
     private static BufferedImage nightLayerImage;
 
-    private static WalkableMap walkableMap;
+    private static boolean[][] walkableMap;
     private static TargetArea[] targetAreas;
     private static DistanceMap[] distanceMaps;
 
@@ -122,7 +122,7 @@ public class MapDataController {
      */
     private void populateWalkableMap(JsonObject walkableJsonObject) {
         JsonArray dataArray = walkableJsonObject.getJsonArray("data");
-        boolean[][] walkableArray = new boolean[MAP_WIDTH][MAP_HEIGHT];
+        walkableMap = new boolean[MAP_WIDTH][MAP_HEIGHT];
 
         for (int i = 0; i < dataArray.size(); i++) {
             boolean isWalkable = false;
@@ -130,10 +130,8 @@ public class MapDataController {
                 isWalkable = true;
             }
 
-            walkableArray[i % MAP_WIDTH][i / MAP_HEIGHT] = isWalkable;
+            walkableMap[i % MAP_WIDTH][i / MAP_HEIGHT] = isWalkable;
         }
-
-        walkableMap = new WalkableMap(walkableArray);
     }
 
     /**
@@ -173,7 +171,7 @@ public class MapDataController {
     private void initializeDistanceMaps() {
         distanceMaps = new DistanceMap[targetAreas.length];
         for (int i = 0; i < targetAreas.length; i++) {
-            distanceMaps[i] = new DistanceMap(targetAreas[i].getName(), targetAreas[i], walkableMap);
+            distanceMaps[i] = new DistanceMap(targetAreas[i].getName(), targetAreas[i]);
         }
     }
 
@@ -209,9 +207,7 @@ public class MapDataController {
     }
 
     /**
-     * The draw function of the graphics of the map???
-     *
-     * @param graphics
+     * The draw function of the graphics of the map, this draws the entire map as an image
      */
     public void draw(Graphics2D graphics) {
         graphics.drawImage(dayImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
@@ -222,7 +218,7 @@ public class MapDataController {
      *
      * @return the walkable map
      */
-    public WalkableMap getWalkableMap() {
+    public static boolean[][] getWalkableMap() {
         return walkableMap;
     }
 

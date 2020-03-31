@@ -1,7 +1,7 @@
 package GUILogic.SimulatorLogic.NPCLogic;
 
+import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.MapData.TargetArea;
-import GUILogic.SimulatorLogic.MapData.WalkableMap;
 
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
@@ -10,21 +10,21 @@ import java.util.Queue;
 public class DistanceMap {
     private String mapName;
     private int[][] map;
-    private boolean[][] walkableMap;
     private TargetArea target;
 
     /**
      * Makes a distanceMap which can be used to find the shortest path
      *
-     * @param mapName     The name of the map
-     * @param targetArea  The point from which the DistanceMap starts (the 0 point)
-     * @param walkableMap A map used to know if the surface is walkable for the NPC's
+     * @param mapName    The name of the map
+     * @param targetArea The point from which the DistanceMap starts (the 0 point)
      */
-    public DistanceMap(String mapName, TargetArea targetArea, WalkableMap walkableMap) {
+    public DistanceMap(String mapName, TargetArea targetArea) {
         this.mapName = mapName;
 
-        int mapWidth = walkableMap.getMap().length;
-        int mapHeight = walkableMap.getMap()[0].length;
+        boolean[][] walkableMap = MapDataController.getWalkableMap();
+
+        int mapWidth = walkableMap.length;
+        int mapHeight = walkableMap[0].length;
 
         int total = mapWidth * mapHeight;
         this.map = new int[mapWidth][mapHeight];
@@ -36,7 +36,6 @@ public class DistanceMap {
             }
         }
 
-        this.walkableMap = walkableMap.getMap();
         this.target = targetArea;
 
         Queue<Point2D> queue = new LinkedList<>();
@@ -70,7 +69,7 @@ public class DistanceMap {
                     if (checkingX > -1 && checkingX < mapWidth && checkingY > -1 && checkingY < mapHeight) {
 
                         // If the spot to check hasn't been visited before and it is walkable as well
-                        if (!visited[checkingX][checkingY] && this.walkableMap[checkingX][checkingY]) {
+                        if (!visited[checkingX][checkingY] && walkableMap[checkingX][checkingY]) {
                             this.map[checkingX][checkingY] = this.map[currentX][currentY] + 1;
                             queue.offer(new Point2D.Double(checkingX, checkingY));
                             visited[checkingX][checkingY] = true;
@@ -99,9 +98,5 @@ public class DistanceMap {
 
     public TargetArea getTarget() {
         return target;
-    }
-
-    boolean[][] getWalkableMap() {
-        return walkableMap;
     }
 }

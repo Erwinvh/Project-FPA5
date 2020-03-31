@@ -22,7 +22,6 @@ import java.util.ArrayList;
 class ScheduleTab {
     private Tab scheduleTab;
     private TableView<Show> table = new TableView<>();
-    private VBox descriptionVBox = new VBox();
     private ScrollPane allDescriptions = new ScrollPane();
     private HBox controls = new HBox();
     private Stage primaryStage;
@@ -114,7 +113,7 @@ class ScheduleTab {
         int numberOfArtists = 0;
 
         try {
-            this.descriptionVBox = new VBox();
+            VBox descriptionVBox = new VBox();
             for (Artist artist : this.selectedItem.getArtists()) {
                 numberOfArtists++;
                 GridPane descriptionStructure = new GridPane();
@@ -145,8 +144,8 @@ class ScheduleTab {
                 artistDescription.setEditable(false);
                 int artistDescrWidth = 450;
                 artistDescription.setMaxWidth(artistDescrWidth);
-                this.descriptionVBox.getChildren().add(descriptionStructure);
-                this.descriptionVBox.getChildren().add(artistDescription);
+                descriptionVBox.getChildren().add(descriptionStructure);
+                descriptionVBox.getChildren().add(artistDescription);
             }
 
             VBox descriptionBase = new VBox();
@@ -163,7 +162,7 @@ class ScheduleTab {
             showDescriptionTextFlow.getChildren().addAll(textTitle, textDescrTitle, textDescription);
             showDescriptionTextFlow.setMaxWidth(450);
 
-            descriptionBase.getChildren().addAll(showDescriptionTextFlow, this.descriptionVBox);
+            descriptionBase.getChildren().addAll(showDescriptionTextFlow, descriptionVBox);
             this.allDescriptions.setContent(descriptionBase);
 
         } catch (Exception e) {
