@@ -14,11 +14,11 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.RoundRectangle2D;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 class VisualTab {
 
+    private final ScrollPane scrollPane;
     private Tab visualTab;
     private Canvas canvas;
     private Canvas canvasStages;
@@ -43,11 +43,11 @@ class VisualTab {
         this.canvas = new Canvas(CANVAS_WIDTH - 6, CANVAS_HEIGHT);
         this.canvasStages = new Canvas(CANVAS_WIDTH, STAGE_HEIGHT);
 
-        ScrollPane scrollPane = new ScrollPane(this.canvas);
+        scrollPane = new ScrollPane(this.canvas);
         scrollPane.setPrefSize(CANVAS_WIDTH, 680);
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVvalue(LocalTime.now().getHour() / 24f);
+        scrollPane.setVvalue(DataController.getClock().getHours() / 24f);
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
@@ -156,6 +156,7 @@ class VisualTab {
      * The update function that updates the visual tab.
      */
     void update() {
+        scrollPane.setVvalue(DataController.getClock().getHours() / 24f);
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
         drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));

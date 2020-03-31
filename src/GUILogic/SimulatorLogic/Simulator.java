@@ -281,23 +281,31 @@ public class Simulator {
         g.setBackground(Color.black);
 
         // draws map dependent on time, day or night
-//        int timeHours = DataController.getClock().getHours();
-//        if (timeHours < 6 || timeHours > 20){
-//            mapDataController.draw(g, false);
-//        } else {
-//            mapDataController.draw(g, true);
-//        }
-
         mapDataController.draw(g);
-        int timeHours = DataController.getClock().getHours();
-        if (timeHours < 6 || timeHours >= 20) {
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.667f));
-            g.drawImage(MapDataController.getNightLayerImage(), 0, 0, null);
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        double timeHours;
+        timeHours = DataController.getClock().getHours();
+        timeHours += (DataController.getClock().getMinutes()/60.0);
+
+        float opacity;
+
+        if (timeHours>=14){
+            opacity = (float)((2.0f/3.0f)*Math.pow((timeHours-4), 2) - (float)(38/3) * (float)(timeHours-4) + 60)/100.0f;
+        } else {
+            opacity = (float)((25.0f/84.0f) * Math.pow(timeHours, 2) - (float)(355/42) * (float)timeHours + 60)/100.0f;
+        }
+
+        if (opacity < 0){
+            opacity = 0f;
+        } else if (opacity > 0.7f){
+            opacity = 0.7f;
         }
 
         for (Person person : people)
             person.draw(g);
+
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        g.drawImage(mapDataController.getNightLayerImage(), 0, 0, null);
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         g.setTransform(new AffineTransform());
         String time = DataController.getClock().toString();
