@@ -34,12 +34,21 @@ public class MapDataController {
     private static boolean[][] walkableMap;
     private static TargetArea[] targetAreas;
     private static DistanceMap[] distanceMaps;
+    private static MapDataController instance;
+
+    public static MapDataController getInstance(){
+        if (instance == null){
+            instance = new MapDataController();
+        }
+        return instance;
+    }
 
     /**
      * constructor
      * first the TiledMapImage is created
      * then the json file is read out and for each layer a new object is created
      */
+
     public MapDataController() {
         // ArrayList where the layers are stored
         ArrayList<TiledLayer> tiledLayers = new ArrayList<>();

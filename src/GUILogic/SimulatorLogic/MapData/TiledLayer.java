@@ -27,9 +27,9 @@ class TiledLayer {
         JsonArray gidArray = jsonObjectLayer.getJsonArray("data");
 
         //get the values now so we only have to do it once
-        int mapWidth = MapDataController.getMapWidth();
-        int mapHeight = MapDataController.getMapHeight();
-        int tileSize = MapDataController.getTileSize();
+        int mapWidth = MapDataController.getInstance().getMapWidth();
+        int mapHeight = MapDataController.getInstance().getMapHeight();
+        int tileSize = MapDataController.getInstance().getTileSize();
 
         //get opacity of layer
         this.opacity = jsonObjectLayer.getJsonNumber("opacity").doubleValue();

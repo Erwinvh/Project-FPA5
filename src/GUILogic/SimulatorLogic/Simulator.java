@@ -22,7 +22,6 @@ import java.util.Random;
 
 
 public class Simulator {
-    private MapDataController mapDataController;
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
 
@@ -49,7 +48,6 @@ public class Simulator {
     public void init() {
         activeShows = DataController.getInstance().getActiveShows();
         tracker = new PopularityTracker();
-        mapDataController = new MapDataController();
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         peopleAmount = (int) DataController.getSettings().getVisitors();
@@ -279,15 +277,15 @@ public class Simulator {
         g.clearRect(
                 (int) (inverse.getTranslateX()),
                 (int) (inverse.getTranslateY()),
-                (int) (MapDataController.getMapWidth() * 16 * inverse.getScaleX()),
-                (int) (MapDataController.getMapHeight() * 8 * inverse.getScaleY())
+                (int) (MapDataController.getInstance().getMapWidth() * 16 * inverse.getScaleX()),
+                (int) (MapDataController.getInstance().getMapHeight() * 8 * inverse.getScaleY())
         );
 
         g.setTransform(this.cameraTransform.getTransform());
         g.setBackground(Color.black);
 
         // draws map dependent on time, day or night
-        mapDataController.draw(g);
+        MapDataController.getInstance().draw(g);
         double timeHours;
         timeHours = DataController.getClock().getHours();
         timeHours += (DataController.getClock().getMinutes() / 60.0);
@@ -310,7 +308,7 @@ public class Simulator {
             person.draw(g);
 
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-        g.drawImage(MapDataController.getNightLayerImage(), 0, 0, null);
+        g.drawImage(MapDataController.getInstance().getNightLayerImage(), 0, 0, null);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         g.setTransform(new AffineTransform());

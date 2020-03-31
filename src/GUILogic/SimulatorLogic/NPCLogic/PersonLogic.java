@@ -95,7 +95,7 @@ public class PersonLogic {
         }
 
         String idleName = "Idle" + (int) (Math.random() * 6 + 1);
-        this.distanceMap = MapDataController.getDistanceMap(idleName);
+        this.distanceMap = MapDataController.getInstance().getDistanceMap(idleName);
     }
 
     /**
@@ -116,7 +116,7 @@ public class PersonLogic {
         }
 
         int stageIndex = DataController.getPlanner().getStages().indexOf(searchingStage);
-        for (DistanceMap distanceMap : MapDataController.getDistanceMaps()) {
+        for (DistanceMap distanceMap : MapDataController.getInstance().getDistanceMaps()) {
             if (isArtist) {
                 if (distanceMap.getMapName().equals("ArtistStage" + (stageIndex + 1))) {
                     return distanceMap;

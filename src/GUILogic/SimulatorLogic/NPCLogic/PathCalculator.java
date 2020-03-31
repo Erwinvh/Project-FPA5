@@ -15,7 +15,7 @@ class PathCalculator {
      * @return the next position the character moves to
      */
     static Point2D nextPositionToTarget(Point2D currPos, DistanceMap distanceMap) {
-        double tileSize = MapDataController.getTileSize();
+        double tileSize = MapDataController.getInstance().getTileSize();
 
         int xIndex = (int) Math.floor(currPos.getX() / tileSize);
         int yIndex = (int) Math.floor(currPos.getY() / tileSize);
@@ -30,7 +30,7 @@ class PathCalculator {
         int lowestIndexX = Integer.MAX_VALUE;
         int lowestIndexY = Integer.MAX_VALUE;
 
-        int maxX = MapDataController.getMapWidth(), maxY = MapDataController.getMapHeight();
+        int maxX = MapDataController.getInstance().getMapWidth(), maxY = MapDataController.getInstance().getMapHeight();
 
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
@@ -57,7 +57,7 @@ class PathCalculator {
      * @return the available tile, if not found return the currentPosition
      */
     static Point2D findRandomClosestWalkable(Point2D currentPosition) {
-        int tileSize = MapDataController.getTileSize();
+        int tileSize = MapDataController.getInstance().getTileSize();
 
         int failedAttempts = 0;
         while (failedAttempts < 8) {
@@ -69,7 +69,7 @@ class PathCalculator {
             yPos = Math.min(yPos, 99);
             yPos = Math.max(0, yPos);
 
-            if (MapDataController.getWalkableMap()[xPos][yPos]) {
+            if (MapDataController.getInstance().getWalkableMap()[xPos][yPos]) {
                 return new Point2D.Double(xPos * tileSize, yPos * tileSize);
             }
 
