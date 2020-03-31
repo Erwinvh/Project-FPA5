@@ -9,7 +9,7 @@ public class PopularityTracker {
     private ArrayList<Integer> amountAtShows;
 
     public PopularityTracker(){
-        activeShows = DataController.getActiveShows();
+        activeShows = DataController.getInstance().getActiveShows();
         amountAtShows = new ArrayList<>();
         for(Show show : activeShows){
             amountAtShows.add(0);

@@ -48,7 +48,7 @@ public class Simulator {
      * This method sets all items and attributes by initialisation
      */
     public void init() {
-        activeShows = DataController.getActiveShows();
+        activeShows = DataController.getInstance().getActiveShows();
         tracker = new PopularityTracker();
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
