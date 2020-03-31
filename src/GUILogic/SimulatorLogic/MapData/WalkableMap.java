@@ -5,15 +5,15 @@ public class WalkableMap {
 
     /**
      * The constructor of the walkable map
-     * @param walkableMap
+     *
+     * @param walkableMap this is a 2D boolean array which holds the logic on what index NPC's can walk
      */
-    public WalkableMap(boolean[][] walkableMap) {
+    WalkableMap(boolean[][] walkableMap) {
         this.walkableMap = walkableMap;
     }
 
     /**
-     * ???
-     * @return
+     * @return the 2D boolean array
      */
     public boolean[][] getMap() {
         return walkableMap;

@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class ArtistWindow {
+class ArtistWindow {
 
     private Stage currStage = new Stage();
     private ArrayList<String> errorList = new ArrayList<>();
@@ -27,12 +27,13 @@ public class ArtistWindow {
     /**
      * The constructor of the artist submenu windows
      * This is also where the specific submenu is chosen
-     * @param screenNumber submenu selection number
+     *
+     * @param screenNumber    submenu selection number
      * @param currParentStage Current parent stage
-     * @param ST The schedule tab
+     * @param ST              The schedule tab
      */
-    public ArtistWindow(int screenNumber, Stage currParentStage,ScheduleTab ST) {
-        this.ST=ST;
+    ArtistWindow(int screenNumber, Stage currParentStage, ScheduleTab ST) {
+        this.ST = ST;
         this.currStage.initOwner(currParentStage);
         this.currStage.initModality(Modality.WINDOW_MODAL);
         this.currStage.setResizable(false);
@@ -55,7 +56,7 @@ public class ArtistWindow {
      * This method sets the submenu to the Add Artist submenu.
      * The user will be able to fill in all the required fields for an unknown artist.
      */
-    public void artistAddWindow() {
+    private void artistAddWindow() {
         this.currStage.setWidth(275);
         this.currStage.setHeight(450);
         this.currStage.setTitle("Add Artist");
@@ -125,7 +126,7 @@ public class ArtistWindow {
     /**
      * The further setup of the submenu for editing an artist
      */
-    public void artistEditWindow() {
+    private void artistEditWindow() {
         this.currStage.setWidth(275);
         this.currStage.setHeight(450);
         this.currStage.setTitle("Edit Artist");
@@ -179,7 +180,6 @@ public class ArtistWindow {
                 artistName.setText("");
                 artistDescription.setText("");
                 genreComboBox.getSelectionModel().selectFirst();
-
             }
         });
 
@@ -219,7 +219,7 @@ public class ArtistWindow {
             } else {
                 this.errorList.clear();
                 this.errorList.add("No Artist has been selected.");
-                new ErrorWindow(this.currStage,this.errorList);
+                new ErrorWindow(this.currStage, this.errorList);
             }
         });
 
@@ -243,7 +243,7 @@ public class ArtistWindow {
     /**
      * The further setup for the submenu to delete an artist
      */
-    public void artistDeleteWindow() {
+    private void artistDeleteWindow() {
         this.currStage.setTitle("Delete Artist");
         this.currStage.setWidth(275);
         this.currStage.setHeight(400);
@@ -282,7 +282,7 @@ public class ArtistWindow {
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (!artistComboBox.getValue().toString().equals("Select artist")){
+            if (!artistComboBox.getValue().toString().equals("Select artist")) {
                 if (canDeleteArtist()) {
                     try {
                         DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
@@ -294,11 +294,10 @@ public class ArtistWindow {
                         new ErrorWindow(this.currStage, this.errorList);
                     }
                 }
-            }
-            else{
+            } else {
                 this.errorList.clear();
                 this.errorList.add("No artist has been set to delete");
-                new ErrorWindow(this.currStage,this.errorList);
+                new ErrorWindow(this.currStage, this.errorList);
             }
 
         });
@@ -329,7 +328,7 @@ public class ArtistWindow {
      * @param genre
      * @param description
      */
-    public boolean canAddArtist(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
+    private boolean canAddArtist(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
         this.errorList.clear();
 
         if (artistName.getText().length() == 0) {
@@ -363,11 +362,12 @@ public class ArtistWindow {
     }
 
     /**
-     * A methode that checks whether an artist can be deleted or if it is being used in a show
+     * A method that checks whether an artist can be deleted or if it is being used in a show
      * If it is used in a show it will return false, else it will return true
+     *
      * @return A true or false value
      */
-    public boolean canDeleteArtist() {
+    private boolean canDeleteArtist() {
         this.errorList.clear();
         for (Show show : DataController.getPlanner().getShows()) {
             for (Artist artist : show.getArtists()) {

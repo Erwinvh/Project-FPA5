@@ -49,13 +49,14 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * Gets all the artists in the String format
+     *
      * @return all the Artist names
      */
     public String getArtistsNames() {
         StringBuilder lineUp = new StringBuilder();
         for (Artist artist : this.artists) {
             if (!artist.equals(this.artists.get(this.artists.size() - 1))) {
-                lineUp.append(artist.getName() + ", ");
+                lineUp.append(artist.getName()).append(", ");
             } else {
                 lineUp.append(artist.getName());
             }
@@ -65,6 +66,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter for the Expected Popularity
+     *
      * @return The expected popularity
      */
     public int getExpectedPopularity() {
@@ -73,7 +75,6 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The setter for the expected popularity
-     * @param expectedPopularity
      */
     public void setExpectedPopularity(int expectedPopularity) {
         this.expectedPopularity = expectedPopularity;
@@ -81,6 +82,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter for the begin time of the show
+     *
      * @return The shows begin time
      */
     public LocalTime getBeginTime() {
@@ -89,7 +91,8 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The setter for the show genre
-     * @param genre
+     *
+     * @param genre the new genre for this show
      */
     public void setGenre(Genres genre) {
         this.genre = genre;
@@ -97,7 +100,8 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The setter for the show description
-     * @param description
+     *
+     * @param description the new description for this show
      */
     public void setDescription(String description) {
         this.description = description;
@@ -105,6 +109,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter for the shows end time.
+     *
      * @return The end time of the show
      */
     public LocalTime getEndTime() {
@@ -113,6 +118,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter of the show name
+     *
      * @return The show name
      */
     public String getName() {
@@ -121,7 +127,8 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The setter for the show name
-     * @param name
+     *
+     * @param name the new name for this show
      */
     public void setName(String name) {
         this.name = name;
@@ -129,6 +136,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter for the show description
+     *
      * @return The show description
      */
     public String getDescription() {
@@ -137,7 +145,8 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter for the show stage
-     * @return
+     *
+     * @return the stage this show will be held on
      */
     public Stage getStage() {
         return this.stage;
@@ -145,6 +154,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter for the show genre
+     *
      * @return The show genre
      */
     public Genres getGenre() {
@@ -153,7 +163,8 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The getter for the list of artists for the show
-     * @return The arraylist of artists
+     *
+     * @return The ArrayList of artists
      */
     public ArrayList<Artist> getArtists() {
         return this.artists;
@@ -161,6 +172,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * Gets the begin time of the show in a String format
+     *
      * @return the begin time
      */
     public String getBeginTimeString() {
@@ -169,6 +181,7 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * Gets the begin time of the show in a String format
+     *
      * @return the end time
      */
     public String getEndTimeString() {
@@ -177,10 +190,11 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * A getter for the time that sets it as a string.
+     *
      * @param time time as LocalTime
      * @return time as String.
      */
-    private String getTimeString(LocalTime time){
+    private String getTimeString(LocalTime time) {
         String timeString;
 
         if (time.getHour() < 10) timeString = "0" + time.getHour() + ":";
@@ -193,36 +207,37 @@ public class Show implements Serializable, Comparable<Show> {
     }
 
     /**
-     * A methode to set the genre fancy genre name in the
+     * A method to set the genre fancy genre name in the
+     *
      * @return The fancy name of the genre
      */
-    public String getGenreFancyName(){
-
+    public String getGenreFancyName() {
         return this.genre.getFancyName();
     }
 
     /**
      * A method that compares shows based on the expectedPopularity
+     *
      * @param otherShow the show this show is compared to
      * @return 1 if this show has higher expectedPopularity, 0 if equal, -1 if less
      */
-    public int compareTo(Show otherShow){
+    public int compareTo(Show otherShow) {
         return Integer.compare(this.expectedPopularity, otherShow.expectedPopularity);
     }
 
     /**
-     * This methode allows two show begin times to be compared
-     * @param otherShow
+     * This method allows two show begin times to be compared
+     *
+     * @param otherShow the show to compare this show with
      * @return an integer
      */
-    public int compareToTime(Show otherShow){
+    public int compareToTime(Show otherShow) {
         return this.beginTime.compareTo(otherShow.beginTime);
         //return this.beginTime - otherShow.beginTime;
     }
 
     /**
      * The setter for the show begin time
-     * @param beginTime
      */
     public void setBeginTime(LocalTime beginTime) {
         this.beginTime = beginTime;
@@ -230,7 +245,6 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The setter for the show end time
-     * @param endTime
      */
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
@@ -238,7 +252,6 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The setter for the show stage
-     * @param stage
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -246,7 +259,6 @@ public class Show implements Serializable, Comparable<Show> {
 
     /**
      * The setter for the list of artists
-     * @param artists
      */
     public void setArtists(ArrayList<Artist> artists) {
         this.artists = artists;

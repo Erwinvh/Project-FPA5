@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class StageWindow {
+class StageWindow {
 
     private Stage currentStage = new Stage();
     private PlannerData.Stage addedStage;
@@ -28,12 +28,13 @@ public class StageWindow {
     /**
      * This is the constructor of the base of the submenus.
      * This method also decides which submenu it should show to the user.
-     * @param screenNumber Submenu selection number
+     *
+     * @param screenNumber       Submenu selection number
      * @param currentParentStage The current parent stage
-     * @param ST The schedule tab
+     * @param ST                 The schedule tab
      */
-    public StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
-        this.ST =ST;
+    StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
+        this.ST = ST;
         this.currentStage.initOwner(currentParentStage);
         this.currentStage.initModality(Modality.WINDOW_MODAL);
         this.currentStage.setResizable(false);
@@ -56,7 +57,7 @@ public class StageWindow {
      * This method creates the submenu where the user can add a Stage to the festival.
      * The user must choose a name for the Stage and choose a capacity.
      */
-    public void stageAddWindow() {
+    private void stageAddWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
         this.currentStage.setTitle("Add Stage");
@@ -101,7 +102,7 @@ public class StageWindow {
     /**
      * The submenu window for the editing of a Stage
      */
-    public void editStageWindow() {
+    private void editStageWindow() {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
         this.currentStage.setTitle("Edit Stage");
@@ -156,11 +157,10 @@ public class StageWindow {
                     this.ST.resetData();
                     this.currentStage.close();
                 }
-            }
-            else{
+            } else {
                 this.errorList.clear();
                 this.errorList.add("No stage has been Selected");
-                new ErrorWindow(this.currentStage,this.errorList);
+                new ErrorWindow(this.currentStage, this.errorList);
             }
         });
 
@@ -190,11 +190,12 @@ public class StageWindow {
     /**
      * The submenu window for deleting a stage
      */
-    public void deleteStageWindow() {
+    private void deleteStageWindow() {
         BorderPane borderPane = new BorderPane();
         HBox startLine = new HBox();
         this.currentStage.setTitle("Delete Stage");
         startLine.getChildren().add(new Label("Choose the stage you want to delete:"));
+
         ComboBox stageBox = new ComboBox();
         stageBox.getItems().add("Select");
         for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
@@ -210,7 +211,6 @@ public class StageWindow {
                 }
             } else {
                 this.information.textProperty().setValue("         " + '\n');
-                //something here?
             }
         });
 
@@ -239,8 +239,7 @@ public class StageWindow {
                         new ErrorWindow(this.currentStage, this.errorList);
                     }
                 }
-            }
-            else{
+            } else {
                 this.errorList.clear();
                 this.errorList.add("No stage has been selected.");
                 new ErrorWindow(this.currentStage, this.errorList);
@@ -261,11 +260,8 @@ public class StageWindow {
     /**
      * This method checks if the new Stage is valid or not.
      * If it isn't valid it will notify the user of the mistakes so the user may repair them before submitting them again.
-     *
-     * @param stageName
-     * @param capacity
      */
-    public boolean canAddStage(TextField stageName, TextField capacity) {
+    private boolean canAddStage(TextField stageName, TextField capacity) {
         this.errorList.clear();
 
         if (stageName.getText().length() == 0) {
@@ -309,11 +305,12 @@ public class StageWindow {
     }
 
     /**
-     * This methode checks whether a stage is allowed to be deleted.
+     * This method checks whether a stage is allowed to be deleted.
      * If its used in a show you aren't allowed to delete a stage, else you are.
-     * @return Boolean: true if the stage can be deleted, false if not.
+     *
+     * @return boolean: true if the stage can be deleted, false if not.
      */
-    public boolean stageDeleteChecker() {
+    private boolean stageDeleteChecker() {
         this.errorList.clear();
         for (Show show : DataController.getPlanner().getShows()) {
             if (show.getStage().getName().equals(this.selectedStage.getName())) {

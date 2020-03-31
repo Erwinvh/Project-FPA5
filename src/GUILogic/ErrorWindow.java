@@ -12,14 +12,15 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class ErrorWindow {
+class ErrorWindow {
 
     /**
      * This Constructor creates a Error Window that shows the user which Error he/she made during a process.
+     *
      * @param parentStage The stage that from which the error window is generated.
-     * @param errorList The list of errors that have occured and will be shown.
+     * @param errorList   The list of errors that have occurred and will be shown.
      */
-    public ErrorWindow(Stage parentStage, ArrayList<String> errorList) {
+    ErrorWindow(Stage parentStage, ArrayList<String> errorList) {
         Stage errorPopUp = new Stage();
         errorPopUp.setWidth(500);
         errorPopUp.setResizable(false);

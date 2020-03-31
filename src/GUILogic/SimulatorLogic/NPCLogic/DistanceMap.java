@@ -10,20 +10,8 @@ import java.util.Queue;
 public class DistanceMap {
     private String mapName;
     private int[][] map;
-    private Queue<Point2D> queue;
-    private boolean[][] visited;
     private boolean[][] walkableMap;
     private TargetArea target;
-
-    private final int size = 100;
-
-    public TargetArea getTarget() {
-        return target;
-    }
-
-    public boolean[][] getWalkableMap() {
-        return walkableMap;
-    }
 
     /**
      * Makes a distanceMap which can be used to find the shortest path
@@ -38,38 +26,32 @@ public class DistanceMap {
         int mapWidth = walkableMap.getMap().length;
         int mapHeight = walkableMap.getMap()[0].length;
 
+        int total = mapWidth * mapHeight;
         this.map = new int[mapWidth][mapHeight];
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                this.map[i][j] = size * size;
+        boolean[][] visited = new boolean[mapWidth][mapHeight];
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapHeight; j++) {
+                this.map[i][j] = total;
+                visited[i][j] = false;
             }
         }
 
-        this.visited = new boolean[mapWidth][mapHeight];
         this.walkableMap = walkableMap.getMap();
         this.target = targetArea;
 
-        this.queue = new LinkedList<>();
-        this.queue.offer(targetArea.getMiddlePoint());
+        Queue<Point2D> queue = new LinkedList<>();
+        queue.offer(targetArea.getMiddlePoint());
         this.map[(int) targetArea.getMiddlePoint().getX()][(int) targetArea.getMiddlePoint().getY()] = 0;
+        visited[(int) targetArea.getMiddlePoint().getX()][(int) targetArea.getMiddlePoint().getY()] = true;
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                this.visited[i][j] = false;
-            }
-        }
-
-        this.visited[(int) targetArea.getMiddlePoint().getX()][(int) targetArea.getMiddlePoint().getY()] = true;
-
-        /**
+        /*
          * The Breadth-First Search Algorithm
          * Loops trough every accessible point in the map and gives it the corresponding distance value
          */
         // Whilst there is still something to look through
-        while (!this.queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             // Retrieve the next center point to look around from
-            Point2D currentPoint = this.queue.poll();
+            Point2D currentPoint = queue.poll();
 
             int currentX = (int) currentPoint.getX();
             int currentY = (int) currentPoint.getY();
@@ -88,10 +70,10 @@ public class DistanceMap {
                     if (checkingX > -1 && checkingX < mapWidth && checkingY > -1 && checkingY < mapHeight) {
 
                         // If the spot to check hasn't been visited before and it is walkable as well
-                        if (!this.visited[checkingX][checkingY] && this.walkableMap[checkingX][checkingY]) {
+                        if (!visited[checkingX][checkingY] && this.walkableMap[checkingX][checkingY]) {
                             this.map[checkingX][checkingY] = this.map[currentX][currentY] + 1;
-                            this.queue.offer(new Point2D.Double(checkingX, checkingY));
-                            this.visited[checkingX][checkingY] = true;
+                            queue.offer(new Point2D.Double(checkingX, checkingY));
+                            visited[checkingX][checkingY] = true;
                         }
                     }
                 }
@@ -99,10 +81,8 @@ public class DistanceMap {
         }
     }
 
-
     /**
-     * The getter for the map in the form of ...
-     * @return The map as ...
+     * @return The map as a 2D int array, each index containing the distance from the target in this DistanceMap
      */
     public int[][] getMap() {
         return map;
@@ -110,9 +90,18 @@ public class DistanceMap {
 
     /**
      * The getter for the map name
+     *
      * @return The map name
      */
     public String getMapName() {
         return mapName;
+    }
+
+    public TargetArea getTarget() {
+        return target;
+    }
+
+    boolean[][] getWalkableMap() {
+        return walkableMap;
     }
 }

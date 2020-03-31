@@ -5,7 +5,7 @@ import GUILogic.SimulatorLogic.MapData.MapDataController;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-public class PathCalculator {
+class PathCalculator {
 
     /**
      * Calculates the next target for a NPCLogic.Person, allows movement in 8 directions
@@ -14,11 +14,11 @@ public class PathCalculator {
      * @param distanceMap map of all distances relative to target position
      * @return the next position the character moves to
      */
-    public static Point2D nextPositionToTarget(Point2D currPos, DistanceMap distanceMap) {
+    static Point2D nextPositionToTarget(Point2D currPos, DistanceMap distanceMap) {
         double tileSize = MapDataController.getTileSize();
 
         int xIndex = (int) Math.floor(currPos.getX() / tileSize);
-        int yindex = (int) Math.floor(currPos.getY() / tileSize);
+        int yIndex = (int) Math.floor(currPos.getY() / tileSize);
 
         Point2D middlePointCoords = new Point2D.Double(distanceMap.getTarget().getMiddlePoint().getX() * tileSize, distanceMap.getTarget().getMiddlePoint().getY() * tileSize);
 
@@ -30,11 +30,13 @@ public class PathCalculator {
         int lowestIndexX = Integer.MAX_VALUE;
         int lowestIndexY = Integer.MAX_VALUE;
 
+        int maxX = MapDataController.getMapWidth(), maxY = MapDataController.getMapHeight();
+
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
                 int currX = xIndex + xOffset;
-                int currY = yindex + yOffset;
-                if (currX > -1 && currX < 99 && currY > -1 && currY < 99) {
+                int currY = yIndex + yOffset;
+                if (currX > -1 && currX < maxX - 1 && currY > -1 && currY < maxY - 1) {
                     int value = distanceMap.getMap()[currX][currY];
                     if (value < lowest) {
                         lowest = value;
@@ -54,7 +56,7 @@ public class PathCalculator {
      * @param distanceMap     the DistanceMap it is walking on
      * @return the available tile, if not found return the currentPosition
      */
-    public static Point2D findRandomClosestWalkable(Point2D currentPosition, DistanceMap distanceMap) {
+    static Point2D findRandomClosestWalkable(Point2D currentPosition, DistanceMap distanceMap) {
         int tileSize = MapDataController.getTileSize();
 
         int failedAttempts = 0;

@@ -20,7 +20,6 @@ public class PersonLogic {
     private Point2D target;
     private double rotationSpeed;
     private DistanceMap distanceMap;
-    private String activity;
     private Person person;
     private Point2D newPosition;
     private double speedMultiplier;
@@ -30,11 +29,12 @@ public class PersonLogic {
 
     /**
      * The constructor for the npc logic
+     *
      * @param position the position of the npc
-     * @param speed the speed of the npc
-     * @param person the person object connected to the npc
+     * @param speed    the speed of the npc
+     * @param person   the person object connected to the npc
      */
-    public PersonLogic(Point2D position, double speed, Person person) {
+    PersonLogic(Point2D position, double speed, Person person) {
         Random random = new Random();
         this.speedMultiplier = ((120.0 - random.nextInt(40)) / 100);
 
@@ -49,9 +49,10 @@ public class PersonLogic {
 
     /**
      * checks if the Person has arrived at the target
+     *
      * @return true or false depending on distance between target and current position
      */
-    public boolean hasArrivedAtTarget() {
+    private boolean hasArrivedAtTarget() {
         double distanceAmount = 17;
         return position.distance(target.getX(), target.getY()) < distanceAmount;
     }
@@ -67,19 +68,20 @@ public class PersonLogic {
     /**
      * Sets the next target of the person of all adjacent tiles
      */
-    public void setNextTarget() {
+    private void setNextTarget() {
         this.target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
     /**
      * Sets the DistanceMap to a map determined by the isGoingToShow method
+     *
      * @param activeShows a list of shows being performed on the current time of the Clock
      */
     public void selectNewMap(ArrayList<Show> activeShows) {
         this.isRoaming = false;
         Collections.sort(activeShows);
         int totalExpectedPopularity = 0;
-        for(Show show : activeShows){
+        for (Show show : activeShows) {
             totalExpectedPopularity += show.getExpectedPopularity();
         }
         for (Show show : activeShows) {
@@ -100,11 +102,12 @@ public class PersonLogic {
      * Gets the distanceMap of a stage depending if the person is an artist
      * If the person is an artist the distance map will be located on the stage itself
      * If the person is not an artist the distance map destination will be the viewing area
+     *
      * @param wantedStage The desired stage
-     * @param isArtist True if the person is an artists
+     * @param isArtist    True if the person is an artists
      * @return The correct DistanceMap of the stage
      */
-    public DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist){
+    private DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist) {
         Stage searchingStage = null;
         for (Stage stage : DataController.getPlanner().getStages()) {
             if (stage.getName().equals(wantedStage.getName())) {
@@ -132,7 +135,7 @@ public class PersonLogic {
      * Determines if a person is going to a show
      *
      * @param show the show the person is deciding to go to
-     * @return true if the persone wants to go to the show
+     * @return true if the person wants to go to the show
      */
     private boolean isGoingToShow(Show show, int totalExpectedPopularity) {
         if (person.isArtist()) {
@@ -146,24 +149,25 @@ public class PersonLogic {
 
         double chance = Math.random();
         if (person.getFavoriteGenre().getFancyName().equals(show.getGenre().getSuperGenre())) {
-            return chance <= ( ( show.getExpectedPopularity() *3.0)) /  ((double) totalExpectedPopularity);
+            return chance <= ((show.getExpectedPopularity() * 3.0)) / ((double) totalExpectedPopularity);
         }
 
-        return chance <= ((double) (show.getExpectedPopularity())  /((double) ((totalExpectedPopularity)) * 2.0)) ;
+        return chance <= ((double) (show.getExpectedPopularity()) / ((double) ((totalExpectedPopularity)) * 2.0));
     }
 
     /**
      * The getter for the new position of the npc
+     *
      * @return The new position of the npc
      */
-    public Point2D getNewPosition() {
+    Point2D getNewPosition() {
         return newPosition;
     }
 
     /**
      * The update function for the npc
      */
-    public void update() {
+    void update() {
         if (hasArrivedAtDestination()) {
             isRoaming = true;
             roamInTargetArea();
@@ -209,14 +213,16 @@ public class PersonLogic {
 
     /**
      * The getter for the distance map
+     *
      * @return the distance map
      */
-    public DistanceMap getDistanceMap() {
+    DistanceMap getDistanceMap() {
         return this.distanceMap;
     }
 
     /**
      * The getter for the person position
+     *
      * @return the person position
      */
     public Point2D getPosition() {
@@ -225,9 +231,10 @@ public class PersonLogic {
 
     /**
      * The getter for the affine transform of the person
+     *
      * @return the affine transform
      */
-    public AffineTransform getTransform() {
+    AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
 
         tx.translate(position.getX() - this.person.getSprite().getWidth() * 0.5, position.getY() - this.person.getSprite().getHeight() * 0.5);
@@ -239,26 +246,28 @@ public class PersonLogic {
 
     /**
      * The setter for the target of the person
-     * @param target
+     *
+     * @param target the new target position for the NPC
      */
-    public void setTarget(Point2D target) {
+    void setTarget(Point2D target) {
         this.target = target;
     }
 
     /**
      * The setter of the speed of the person
-     * @param speed
+     *
+     * @param speed the new speed for the NPC
      */
-    public void setSpeed(double speed) {
+    void setSpeed(double speed) {
         this.speed = speed * this.speedMultiplier;
     }
 
     /**
      * The setter of the position of the person
-     * @param position
+     *
+     * @param position the new position for the NPC
      */
-    public void setPosition(Point2D position) {
+    void setPosition(Point2D position) {
         this.position = position;
     }
-
 }

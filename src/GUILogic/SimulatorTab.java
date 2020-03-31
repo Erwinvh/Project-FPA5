@@ -18,6 +18,7 @@ class SimulatorTab {
 
     /**
      * The getter for the Simulator
+     *
      * @return The simulator
      */
     Simulator getSimulator() {
@@ -26,6 +27,7 @@ class SimulatorTab {
 
     /**
      * The getter for the simulator tab
+     *
      * @return The simulator tab
      */
     Tab getSimulatorTab() {

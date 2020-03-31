@@ -58,8 +58,7 @@ class VisualTab {
     }
 
     /**
-     * This methode draws the ...
-     * @param graphics
+     * This method draws the stages at their correct position at the top bar
      */
     private void drawStages(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
@@ -80,8 +79,7 @@ class VisualTab {
     }
 
     /**
-     * This is the methode that draws the ...
-     * @param graphics
+     * This is the method that draws all the lines to better visually separate all shows and stages
      */
     private void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
@@ -107,8 +105,7 @@ class VisualTab {
     }
 
     /**
-     * This methode draws the ...
-     * @param graphics
+     * This method draws all shows under the correct stage, it also fills in the information of each show
      */
     private void drawPlanning(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
@@ -119,6 +116,7 @@ class VisualTab {
                 if (show.getStage().getName().equals(stage.getName()) && show.getStage().getCapacity() == stage.getCapacity()) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
+
                     // Draw the box around the show
                     Shape rectangle = new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10);
                     graphics.draw(rectangle);

@@ -23,7 +23,7 @@ public class Person {
     private MediaPlayer mediaPlayer;
     private PersonLogic personLogic;
     private String name;
-    private boolean isArtist = false;
+    private boolean isArtist;
 
     /**
      * A constructor of NPCLogic.Person
@@ -41,6 +41,7 @@ public class Person {
 
     /**
      * The second constructor for the artist and its name.
+     *
      * @param position        The starting position of the NPCLogic.Person
      * @param genreChanceList A list for the probability of liking a Genre
      * @param name            The artist name
@@ -57,9 +58,9 @@ public class Person {
     /**
      * Assigns the corresponding image and sound according to the liked superGenre
      *
-     * @param genreChance
+     * @param genreChance keeps track of how big the chance is to get a specific genre assigned
      */
-    public void genrePicker(ArrayList<Integer> genreChance) {
+    private void genrePicker(ArrayList<Integer> genreChance) {
 
         String spriteSheetPath;
         String soundEffectPath;
@@ -117,7 +118,8 @@ public class Person {
     }
 
     /**
-     * The getter for the npcs logic
+     * The getter for the npc's logic
+     *
      * @return This Npc's logic
      */
     public PersonLogic getPersonLogic() {
@@ -147,6 +149,7 @@ public class Person {
 
     /**
      * The draw function of this npc
+     *
      * @param g The 2D graphics
      */
     public void draw(Graphics2D g) {
@@ -169,30 +172,34 @@ public class Person {
 
     /**
      * The getter for the sprite
+     *
      * @return The sprite of the npc
      */
-    public BufferedImage getSprite() {
+    BufferedImage getSprite() {
         return sprite;
     }
 
     /**
      * The getter for the favorite genre of the npc
+     *
      * @return the favorite genre
      */
-    public Genres getFavoriteGenre() {
+    Genres getFavoriteGenre() {
         return favoriteGenre;
     }
 
     /**
      * The setter for the speed of the NPC
+     *
      * @param speed The given speed
      */
-    public void setSpeed(double speed){
+    public void setSpeed(double speed) {
         this.personLogic.setSpeed(speed);
     }
 
     /**
      * The getter for the NPC name
+     *
      * @return The npc name
      */
     public String getName() {
@@ -201,6 +208,7 @@ public class Person {
 
     /**
      * The getter for the boolean of whether an npc is an artist or not
+     *
      * @return the true or false value of the npc
      */
     public boolean isArtist() {

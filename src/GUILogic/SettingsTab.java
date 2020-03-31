@@ -1,8 +1,7 @@
 package GUILogic;
 
-import PlannerData.Planner;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,7 +19,7 @@ import javax.json.JsonWriter;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
 
-public class SettingsTab {
+class SettingsTab {
 
     private Stage primaryStage;
     private Tab settingsTab;
@@ -34,31 +33,39 @@ public class SettingsTab {
 
     /**
      * The constructor of the settings tab
+     *
      * @param primaryStage the window of the main application
      */
-    public SettingsTab(Stage primaryStage) {
+    SettingsTab(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.settingsTab = new Tab("Settings");
         this.saveFileName = DataController.getSettings().getSaveFileName();
+
         this.speedSlider = new Slider();
         speedSlider.setValue(DataController.getSettings().getSimulatorSpeed());
+
         this.NPCAmountSlider = new Slider();
         NPCAmountSlider.setValue(DataController.getSettings().getVisitors());
+
         this.prediction = new CheckBox();
         prediction.setSelected(DataController.getSettings().isUsingPredictedPerson());
+
         this.beginHours = new ComboBox();
         beginHours.setValue(DataController.getSettings().getBeginHours());
+
         this.beginMinutes = new ComboBox();
         beginMinutes.setValue(DataController.getSettings().getBeginMinutes());
+
         this.overwriteStartTime = new CheckBox();
         overwriteStartTime.setText("Use this startingTime");
     }
 
     /**
      * builds and returns the settingsTab
+     *
      * @return the settings tab
      */
-    public Tab getSettingsTab() {
+    Tab getSettingsTab() {
 
         GridPane split = new GridPane();
 
@@ -76,14 +83,10 @@ public class SettingsTab {
         Label NPCAmount = new Label("Amount of visitors");
 
         Button deleteAllButton = new Button("Delete All");
-        deleteAllButton.setOnAction(e -> {
-            DeleteAllWindow();
-        });
+        deleteAllButton.setOnAction(e -> deleteData(false));
 
         Button deleteShowsButton = new Button("Delete All Shows");
-        deleteShowsButton.setOnAction(e -> {
-            DeleteShowWindow();
-        });
+        deleteShowsButton.setOnAction(e -> deleteData(true));
 
         //Prediction checkbox
         prediction.setText("Predicted types of guests");
@@ -97,7 +100,7 @@ public class SettingsTab {
         speedSlider.setBlockIncrement(0.1);
         Label speedLabel = new Label("");
         DecimalFormat format = new DecimalFormat("0.0");
-        speedLabel.setText(format.format( DataController.getSettings().getSimulatorSpeed()*100)+"%");
+        speedLabel.setText(format.format(DataController.getSettings().getSimulatorSpeed() * 100) + "%");
 
         speedSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->
                 speedLabel.textProperty().setValue(format.format(newValue.floatValue() * 100) + "%")
@@ -111,36 +114,34 @@ public class SettingsTab {
         NPCAmountSlider.setMajorTickUnit(50);
         NPCAmountSlider.setMinorTickCount(10);
         NPCAmountSlider.setBlockIncrement(10);
+
         Label amountLabel = new Label("");
-        amountLabel.setText(DataController.getSettings().getVisitors()+"");
+        amountLabel.setText(DataController.getSettings().getVisitors() + "");
         NPCAmountSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->
                 amountLabel.textProperty().setValue(String.valueOf(newValue.intValue()))
         );
 
         //Hour ComboBox
         Label hourLabel = new Label("Begin time hours");
-        for(int i = 0; i < 24; i++){
+        for (int i = 0; i < 24; i++) {
             beginHours.getItems().add(i);
         }
 
         //Minute ComboBox
         Label minuteLabel = new Label("Begin time minutes");
-        for(int i = 0; i < 60; i++){
+        for (int i = 0; i < 60; i++) {
             beginMinutes.getItems().add(i);
         }
 
         //Save button
         Button saveButton = new Button("Save settings");
-        saveButton.setOnAction(event ->  saveSettings());
+        saveButton.setOnAction(event -> saveSettings());
 
         //Reset simulator
         Button resetButton = new Button("Reset simulator");
-        resetButton.setOnAction(event -> {
-            DataController.getSettings().setReset(true);
-        });
+        resetButton.setOnAction(event -> DataController.getSettings().setReset(true));
 
         overwriteStartTime.setSelected(DataController.getSettings().isOverwriteStartTime());
-
 
         //Adding all nodes to the GridPane
         split.add(planner, 0, 0);
@@ -155,112 +156,81 @@ public class SettingsTab {
         split.add(NPCAmount, 2, 4);
         split.add(NPCAmountSlider, 2, 5);
 
-        split.add(speedLabel,3,3);
-        split.add(amountLabel,3,5);
+        split.add(speedLabel, 3, 3);
+        split.add(amountLabel, 3, 5);
 
-        split.add(prediction,2,6);
+        split.add(prediction, 2, 6);
         split.add(saveButton, 2, 10);
-        split.add(resetButton,3,10);
+        split.add(resetButton, 3, 10);
 
-        split.add(hourLabel,2,7);
-        split.add(minuteLabel,3,7);
-        split.add(beginHours,2,8);
-        split.add(beginMinutes,3,8);
+        split.add(hourLabel, 2, 7);
+        split.add(minuteLabel, 3, 7);
+        split.add(beginHours, 2, 8);
+        split.add(beginMinutes, 3, 8);
 
-        split.add(overwriteStartTime,2,9);
+        split.add(overwriteStartTime, 2, 9);
 
         settingsTab.setContent(split);
         return settingsTab;
     }
 
-    /**
-     *the Popup window if the deleteAll button is pressed
-     */
-    public void DeleteAllWindow() {
-        Stage DeleteAll = new Stage();
-        DeleteAll.setResizable(false);
-        DeleteAll.initOwner(this.primaryStage);
-        DeleteAll.initModality(Modality.WINDOW_MODAL);
+    private void deleteData(boolean onlyRemoveShows) {
+        Stage deleteDataStage = new Stage();
+        deleteDataStage.setResizable(false);
+        deleteDataStage.initOwner(this.primaryStage);
+        deleteDataStage.initModality(Modality.WINDOW_MODAL);
 
-        HBox Setup = new HBox();
+        HBox setup = new HBox();
         Image warning = new Image("file:Resources/alert.png");
         ImageView showError = new ImageView(warning);
         showError.setFitWidth(100);
         showError.setFitHeight(100);
-        Setup.getChildren().add(showError);
+        setup.getChildren().add(showError);
 
         VBox lineup = new VBox();
-        Label text = new Label("Are you sure you want to delete all?" + '\n' + "This change cannot be undone!");
+        Label text = new Label();
         lineup.getChildren().add(text);
 
-        HBox Buttons = new HBox();
-        Buttons.getChildren().add(cancelButton(DeleteAll));
+        HBox buttons = new HBox();
+        buttons.getChildren().add(cancelButton(deleteDataStage));
 
         Button confirm = new Button("Confirm");
+        if (onlyRemoveShows) {
+            text.setText("Are you sure you want to delete all shows?\nThis change cannot be undone!");
+            confirm.setOnAction(e -> DataController.getPlanner().deleteShows());
+        } else {
+            text.setText("Are you sure you want to delete all?" + '\n' + "This change cannot be undone!");
+            confirm.setOnAction(e -> DataController.getPlanner().deleteAll());
+        }
+
+        EventHandler<? super ActionEvent> oldClickAction = confirm.getOnAction();
         confirm.setOnAction(e -> {
-            DataController.getPlanner().deleteAll();
+            if (oldClickAction != null) oldClickAction.handle(e);
+
             DataController.getPlanner().savePlanner();
-            DeleteAll.close();
+            deleteDataStage.close();
         });
-        Buttons.getChildren().add(confirm);
 
-        lineup.getChildren().add(Buttons);
-        Setup.getChildren().add(lineup);
-        Scene DeleteShowScene = new Scene(Setup);
-        DeleteAll.setScene(DeleteShowScene);
+        buttons.getChildren().add(confirm);
 
-        DeleteAll.show();
+        lineup.getChildren().add(buttons);
+        setup.getChildren().add(lineup);
+
+        Scene deleteDataScene = new Scene(setup);
+        deleteDataStage.setScene(deleteDataScene);
+
+        deleteDataStage.show();
     }
 
     /**
-     * The popupwindow if the delete shows is pressed
-     */
-    public void DeleteShowWindow() {
-        Stage DeleteShow = new Stage();
-        DeleteShow.setResizable(false);
-        DeleteShow.initOwner(this.primaryStage);
-        DeleteShow.initModality(Modality.WINDOW_MODAL);
-
-        HBox Setup = new HBox();
-        Image warning = new Image("file:Resources/alert.png");
-        ImageView showError = new ImageView(warning);
-        showError.setFitWidth(100);
-        showError.setFitHeight(100);
-        Setup.getChildren().add(showError);
-
-        VBox lineup = new VBox();
-        Label text = new Label("Are you sure you want to delete all shows?" + '\n' + "This change cannot be undone!");
-        lineup.getChildren().add(text);
-
-        HBox Buttons = new HBox();
-        Buttons.getChildren().add(cancelButton(DeleteShow));
-
-        Button confirm = new Button("Confirm");
-        confirm.setOnAction(e -> {
-            DataController.getPlanner().deleteShows();
-            DataController.getPlanner().savePlanner();
-            DeleteShow.close();
-        });
-        Buttons.getChildren().add(confirm);
-
-        lineup.getChildren().add(Buttons);
-        Setup.getChildren().add(lineup);
-        Scene DeleteShowScene = new Scene(Setup);
-        DeleteShow.setScene(DeleteShowScene);
-
-        DeleteShow.show();
-    }
-
-    /**
-     * This methode creates and returns a cancel button
+     * This method creates and returns a cancel button
+     *
      * @param stage the stage it is on.
      * @return the cancel button
      */
-    public Button cancelButton(Stage stage) {
+    private Button cancelButton(Stage stage) {
         Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> {
-           stage.close();
-        });
+        cancelButton.setOnAction(e -> stage.close());
 
         return cancelButton;
     }
@@ -268,27 +238,27 @@ public class SettingsTab {
     /**
      * Saves the applied settings of the simulator to a Jsonfile
      */
-    public void saveSettings(){
-        try {
-            JsonWriter writer = Json.createWriter(new FileWriter(this.saveFileName));
+    private void saveSettings() {
+        try (JsonWriter writer = Json.createWriter(new FileWriter(this.saveFileName))) {
             JsonObjectBuilder settingsBuilder = Json.createObjectBuilder();
-            settingsBuilder.add("Simulator Speed", speedSlider.getValue()+ "");
-            settingsBuilder.add("Vistors per NPC",NPCAmountSlider.getValue());
+            settingsBuilder.add("Simulator Speed", speedSlider.getValue() + "");
+            settingsBuilder.add("Visitors per NPC", NPCAmountSlider.getValue());
             settingsBuilder.add("Is Using Prediction", prediction.isSelected());
-            settingsBuilder.add("Begin hours", Integer.parseInt( beginHours.getValue().toString()));
-            settingsBuilder.add("Begin minutes",Integer.parseInt( beginMinutes.getValue().toString()));
+            settingsBuilder.add("Begin hours", Integer.parseInt(beginHours.getValue().toString()));
+            settingsBuilder.add("Begin minutes", Integer.parseInt(beginMinutes.getValue().toString()));
             settingsBuilder.add("Use overwrite time", overwriteStartTime.isSelected());
             writer.writeObject(settingsBuilder.build());
             writer.close();
+
             DataController.getClock().setSimulatorSpeed(speedSlider.getValue());
-            if(overwriteStartTime.isSelected()) {
+
+            if (overwriteStartTime.isSelected()) {
                 DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString()), Integer.parseInt(beginMinutes.getValue().toString()), 0);
             }
+
             DataController.readSettings();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
