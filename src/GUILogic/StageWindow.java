@@ -1,5 +1,6 @@
 package GUILogic;
 
+import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -25,6 +26,8 @@ class StageWindow {
     private PlannerData.Stage selectedStage;
     private ScheduleTab ST;
 
+    private Planner plannerReference;
+
     /**
      * This is the constructor of the base of the submenus.
      * This method also decides which submenu it should show to the user.
@@ -34,6 +37,8 @@ class StageWindow {
      * @param ST                 The schedule tab
      */
     StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
+        plannerReference = DataController.getInstance().getPlanner();
+
         this.ST = ST;
         this.currentStage.initOwner(currentParentStage);
         this.currentStage.initModality(Modality.WINDOW_MODAL);
@@ -83,7 +88,7 @@ class StageWindow {
         confirmButton.setOnAction(e -> {
             if (canAddStage(stageNameTextField, inputTextField)) {
                 this.addedStage = new PlannerData.Stage(Integer.parseInt(inputTextField.getText()), stageNameTextField.getText());
-                DataController.getPlanner().addStage(this.addedStage);
+                plannerReference.addStage(this.addedStage);
                 this.currentStage.close();
             }
         });
@@ -113,7 +118,7 @@ class StageWindow {
 
         ComboBox stageBox = new ComboBox();
         stageBox.getItems().add("Select");
-        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+        for (PlannerData.Stage stage : plannerReference.getStages()) {
             stageBox.getItems().add(stage.getName());
         }
 
@@ -139,7 +144,7 @@ class StageWindow {
         confirmButton.setOnAction(e -> {
             if (!stageBox.getValue().toString().equals("Select")) {
                 if (canAddStage(stageName, inputTextField)) {
-                    for (Show show : DataController.getPlanner().getShows()) {
+                    for (Show show : plannerReference.getShows()) {
                         PlannerData.Stage stage = show.getStage();
                         if (stage.getName().equals(this.selectedStage.getName())) {
                             stage.setName(stageName.getText());
@@ -153,7 +158,7 @@ class StageWindow {
 
                     this.selectedStage.setName(stageName.getText());
                     this.selectedStage.setCapacity(Integer.parseInt(inputTextField.getText()));
-                    DataController.getPlanner().savePlanner();
+                    plannerReference.savePlanner();
                     this.ST.resetData();
                     this.currentStage.close();
                 }
@@ -169,7 +174,7 @@ class StageWindow {
 
         stageBox.setOnAction(event -> {
             if (!stageBox.getValue().equals("Select")) {
-                this.selectedStage = DataController.getPlanner().getStage(stageBox.getValue().toString());
+                this.selectedStage = plannerReference.getStage(stageBox.getValue().toString());
                 stageName.setText(this.selectedStage.getName());
                 inputTextField.setText("" + this.selectedStage.getCapacity());
             } else {
@@ -198,14 +203,14 @@ class StageWindow {
 
         ComboBox stageBox = new ComboBox();
         stageBox.getItems().add("Select");
-        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+        for (PlannerData.Stage stage : plannerReference.getStages()) {
             stageBox.getItems().add(stage.getName());
         }
 
         stageBox.getSelectionModel().selectFirst();
         stageBox.setOnAction(event -> {
             if (!stageBox.getValue().equals("Select")) {
-                this.selectedStage = DataController.getPlanner().getStage(stageBox.getValue().toString());
+                this.selectedStage = plannerReference.getStage(stageBox.getValue().toString());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
                     this.information.textProperty().setValue("Do you want to delete the stage: " + selectedStage.getName() + '\n' + " with the capacity of " + selectedStage.getCapacity());
                 }
@@ -229,8 +234,8 @@ class StageWindow {
             if (!stageBox.getValue().toString().equals("Select")) {
                 if (stageDeleteChecker()) {
                     try {
-                        DataController.getPlanner().deleteStage(stageBox.getValue().toString());
-                        DataController.getPlanner().savePlanner();
+                        plannerReference.deleteStage(stageBox.getValue().toString());
+                        plannerReference.savePlanner();
                         this.currentStage.close();
 
                     } catch (Exception exception) {
@@ -267,7 +272,7 @@ class StageWindow {
         if (stageName.getText().length() == 0) {
             this.errorList.add("The stage name has not been filled in.");
         } else {
-            for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+            for (PlannerData.Stage stage : plannerReference.getStages()) {
                 if (this.selectedStage != null) {
                     if ((!this.selectedStage.equals(stage)) && stageName.getText().equals(stage.getName())) {
                         this.errorList.add("This Stage already exists.");
@@ -312,7 +317,7 @@ class StageWindow {
      */
     private boolean stageDeleteChecker() {
         this.errorList.clear();
-        for (Show show : DataController.getPlanner().getShows()) {
+        for (Show show : plannerReference.getShows()) {
             if (show.getStage().getName().equals(this.selectedStage.getName())) {
                 this.errorList.add("Stages in use cannot be removed from the event.");
             }

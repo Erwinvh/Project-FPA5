@@ -37,7 +37,7 @@ class VisualTab {
      * The constructor for the visual tab
      */
     VisualTab() {
-        this.planner = DataController.getPlanner();
+        this.planner = DataController.getInstance().getPlanner();
 
         this.visualTab = new Tab("Visual");
         this.canvas = new Canvas(CANVAS_WIDTH - 6, CANVAS_HEIGHT);
@@ -47,7 +47,7 @@ class VisualTab {
         scrollPane.setPrefSize(CANVAS_WIDTH, 680);
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVvalue(DataController.getClock().getHours() / 24f);
+        scrollPane.setVvalue(DataController.getInstance().getClock().getHours() / 24f);
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
@@ -156,7 +156,7 @@ class VisualTab {
      * The update function that updates the visual tab.
      */
     void update() {
-        scrollPane.setVvalue(DataController.getClock().getHours() / 24f);
+        scrollPane.setVvalue(DataController.getInstance().getClock().getHours() / 24f);
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
         drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));

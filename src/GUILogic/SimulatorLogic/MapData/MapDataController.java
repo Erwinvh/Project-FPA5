@@ -85,7 +85,7 @@ public class MapDataController {
                     }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("MapDataController.MapDataController: could not find file in " + MAP_LAYOUT_DIR);
+            System.out.println("MapDataController.getInstance().MapDataController: could not find file in " + MAP_LAYOUT_DIR);
         }
 
         initializeDistanceMaps();

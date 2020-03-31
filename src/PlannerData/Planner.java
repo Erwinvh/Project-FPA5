@@ -269,7 +269,7 @@ public class Planner implements Serializable {
      * @return Searched artist if found else Null.
      */
     public Artist getArtist(String artistName) {
-        for (Artist artist : DataController.getPlanner().getArtists()) {
+        for (Artist artist : DataController.getInstance().getPlanner().getArtists()) {
             if (artistName.equals(artist.getName())) {
                 return artist;
             }

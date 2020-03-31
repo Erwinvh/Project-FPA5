@@ -10,11 +10,12 @@ public class Clock {
      * The constructor for the Clock
      */
     Clock() {
-        this.hours = DataController.getSettings().getBeginHours();
-        this.minutes = DataController.getSettings().getBeginMinutes();
-        this.seconds = 0;
-        this.simulatorSpeed = (90 * DataController.getSettings().getSimulatorSpeed());
-        this.intervalPassed = false;
+        //Settings settings = DataController.getInstance().getSettings();
+//        this.hours = settings.getBeginHours();
+//        this.minutes = settings.getBeginMinutes();
+//        this.seconds = 0;
+//        this.simulatorSpeed = 90 * settings.getSimulatorSpeed();
+//        this.intervalPassed = false;
     }
 
     /**

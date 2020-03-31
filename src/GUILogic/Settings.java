@@ -5,7 +5,7 @@ package GUILogic;
  */
 public class Settings {
     private double simulatorSpeed;
-    private double visitors;
+    private int visitors;
     private boolean usingPredictedPerson;
     private int beginHours = Integer.MIN_VALUE;
     private int beginMinutes = Integer.MIN_VALUE;
@@ -81,14 +81,14 @@ public class Settings {
     /**
      * A getter for the amount of visitors
      */
-    public double getVisitors() {
+    public int getVisitors() {
         return visitors;
     }
 
     /**
      * a setter for the amount of visitors
      */
-    void setVisitors(double visitorsPerPerson) {
+    void setVisitors(int visitorsPerPerson) {
         this.visitors = visitorsPerPerson;
     }
 

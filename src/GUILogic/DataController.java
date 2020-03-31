@@ -25,9 +25,9 @@ import static PlannerData.Planner.saveFileName;
  */
 public class DataController {
 
-    private static Planner planner;
-    private static Clock clock;
-    private static Settings settings;
+    private Planner planner;
+    private Clock clock;
+    private Settings settings;
 
     private static DataController instance;
 
@@ -42,7 +42,7 @@ public class DataController {
     /**
      * The constructor for the data controller
      */
-    public DataController() {
+    private DataController() {
         settings = new Settings();
         readSettings();
         planner = new Planner();
@@ -62,22 +62,22 @@ public class DataController {
                 try (Reader reader = new FileReader(saveFileName)) {
                     if (file.length() != 0) {
                         JsonReader jsonReader = Json.createReader(reader);
-                        JsonObject planner = jsonReader.readObject();
-                        JsonArray shows = planner.getJsonArray("shows");
-                        JsonArray artists = planner.getJsonArray("artists");
-                        JsonArray stages = planner.getJsonArray("stages");
+                        JsonObject plannerJsonObject = jsonReader.readObject();
+                        JsonArray shows = plannerJsonObject.getJsonArray("shows");
+                        JsonArray artists = plannerJsonObject.getJsonArray("artists");
+                        JsonArray stages = plannerJsonObject.getJsonArray("stages");
 
                         for (JsonObject stage : stages.getValuesAs(JsonObject.class)) {
                             String name = stage.getString("name");
                             int capacity = stage.getInt("capacity");
-                            DataController.planner.getStages().add(new Stage(capacity, name));
+                            planner.getStages().add(new Stage(capacity, name));
                         }
 
                         for (JsonObject artist : artists.getValuesAs(JsonObject.class)) {
                             String name = artist.getString("name");
                             String description = artist.getString("description");
                             Genres genre = Genres.getGenre(artist.getString("genre"));
-                            DataController.planner.getArtists().add(new Artist(name, genre, description));
+                            planner.getArtists().add(new Artist(name, genre, description));
                         }
 
                         for (JsonObject show : shows.getValuesAs(JsonObject.class)) {
@@ -97,7 +97,7 @@ public class DataController {
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
                             Show readShow = new Show(beginTime, endTime, artistsInShow, name, stageInShow, description, genre, expectedPopularity);
-                            DataController.planner.getShows().add(readShow);
+                            planner.getShows().add(readShow);
                         }
                     }
                 } catch (Exception e) {
@@ -116,11 +116,11 @@ public class DataController {
      *
      * @return an ArrayList containing all active shows
      */
-    public static ArrayList<Show> getActiveShows() {
+    public ArrayList<Show> getActiveShows() {
         LocalTime currentTime = LocalTime.MIDNIGHT;
-        currentTime = currentTime.plusHours(DataController.getClock().getHours());
-        currentTime = currentTime.plusMinutes(DataController.getClock().getMinutes());
-        ArrayList<Show> allShows = getPlanner().getShows();
+        currentTime = currentTime.plusHours(this.clock.getHours());
+        currentTime = currentTime.plusMinutes(this.clock.getMinutes());
+        ArrayList<Show> allShows = this.planner.getShows();
         ArrayList<Show> activeShows = new ArrayList<>();
 
         for (Show show : allShows) {
@@ -137,7 +137,7 @@ public class DataController {
      *
      * @return Planner
      */
-    public static Planner getPlanner() {
+    public Planner getPlanner() {
         return planner;
     }
 
@@ -150,16 +150,18 @@ public class DataController {
     private LocalTime stringToLocalTime(String time) {
         int hours = Integer.parseInt(time.charAt(0) + "") * 10 + Integer.parseInt(time.charAt(1) + "");
         int minutes = Integer.parseInt(time.charAt(3) + "") * 10 + Integer.parseInt(time.charAt(4) + "");
+
         LocalTime localTime = LocalTime.MIN;
         localTime = localTime.plusHours(hours);
         localTime = localTime.plusMinutes(minutes);
+
         return localTime;
     }
 
     /**
      * reads the settings file and sets the attributes of the Settings class accordingly
      */
-    static void readSettings() {
+    void readSettings() {
         try {
             File file = new File(settings.getSaveFileName());
             if (!file.exists()) {
@@ -193,7 +195,7 @@ public class DataController {
      *
      * @return The clock
      */
-    public static Clock getClock() {
+    public Clock getClock() {
         return clock;
     }
 
@@ -202,7 +204,7 @@ public class DataController {
      *
      * @return The settings
      */
-    public static Settings getSettings() {
+    public Settings getSettings() {
         return settings;
     }
 }

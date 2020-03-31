@@ -1,10 +1,13 @@
 package GUILogic.SimulatorLogic;
 
+import GUILogic.Clock;
 import GUILogic.DataController;
 import GUILogic.PopularityTracker;
+import GUILogic.Settings;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.NPCLogic.Person;
 import PlannerData.Artist;
+import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.MouseButton;
@@ -20,7 +23,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class Simulator {
     private MapDataController mapDataController;
     private ArrayList<Person> people;
@@ -35,6 +37,10 @@ public class Simulator {
     private PopularityTracker tracker;
     private ArrayList<Show> activeShows;
 
+    private Clock clockReference;
+    private Settings settingsReference;
+    private Planner plannerReference;
+
     /**
      * The constructor for the Simulator
      */
@@ -47,36 +53,40 @@ public class Simulator {
      * This method sets all items and attributes by initialisation
      */
     public void init() {
+        clockReference = DataController.getInstance().getClock();
+        settingsReference = DataController.getInstance().getSettings();
+        plannerReference = DataController.getInstance().getPlanner();
+
         activeShows = DataController.getInstance().getActiveShows();
         tracker = new PopularityTracker();
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
-        peopleAmount = (int) DataController.getSettings().getVisitors();
+        peopleAmount = settingsReference.getVisitors();
         prediction = new ArrayList<>();
         createPredictions();
-        predictedGuests = DataController.getSettings().isUsingPredictedPerson();
+        predictedGuests = settingsReference.isUsingPredictedPerson();
 
-        ArrayList<Show> sortedShowList = DataController.getPlanner().getShows();
+        ArrayList<Show> sortedShowList = plannerReference.getShows();
         sortedShowList.sort(Show::compareToTime);
 
         if (sortedShowList.isEmpty() || sortedShowList.get(0) == null) return;
 
         LocalTime firstShowTime = sortedShowList.get(0).getBeginTime();
 
-        if (firstShowTime != null && !DataController.getSettings().isOverwriteStartTime()) {
+        if (firstShowTime != null && !settingsReference.isOverwriteStartTime()) {
             if (firstShowTime.getHour() != 0) {
-                DataController.getClock().setTime(firstShowTime.getHour() - 1, firstShowTime.getMinute(), firstShowTime.getSecond());
+                clockReference.setTime(firstShowTime.getHour() - 1, firstShowTime.getMinute(), firstShowTime.getSecond());
             } else if (firstShowTime.getMinute() == 30) {
-                DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute() - 30, firstShowTime.getSecond());
+                clockReference.setTime(firstShowTime.getHour(), firstShowTime.getMinute() - 30, firstShowTime.getSecond());
             } else {
-                DataController.getClock().setTime(firstShowTime.getHour(), firstShowTime.getMinute(), firstShowTime.getSecond());
+                clockReference.setTime(firstShowTime.getHour(), firstShowTime.getMinute(), firstShowTime.getSecond());
             }
         } else {
-            if (DataController.getSettings().getBeginHours() != Integer.MIN_VALUE && DataController.getSettings().getBeginMinutes() != Integer.MIN_VALUE) {
-                DataController.getClock().setTime(DataController.getSettings().getBeginHours(), DataController.getSettings().getBeginMinutes(), 0);
+            if (settingsReference.getBeginHours() != Integer.MIN_VALUE && settingsReference.getBeginMinutes() != Integer.MIN_VALUE) {
+                clockReference.setTime(settingsReference.getBeginHours(), settingsReference.getBeginMinutes(), 0);
             } else {
-                DataController.getClock().setToMidnight();
+                clockReference.setToMidnight();
             }
         }
     }
@@ -115,17 +125,17 @@ public class Simulator {
      * @param deltaTime time passed in seconds
      */
     private void update(double deltaTime) {
-        DataController.getClock().update(deltaTime);
+        clockReference.update(deltaTime);
 
-        if (DataController.getClock().isIntervalPassed()) {
+        if (clockReference.isIntervalPassed()) {
             pulse();
         }
 
-        double speed = DataController.getClock().getSimulatorSpeed() * 10;
+        double speed = clockReference.getSimulatorSpeed() * 10;
 
-        if (artists.size() < DataController.getPlanner().getArtists().size()) {
+        if (artists.size() < plannerReference.getArtists().size()) {
             peopleAmount++;
-            artists = DataController.getPlanner().getArtists();
+            artists = plannerReference.getArtists();
         }
 
         if (people.size() < peopleAmount)
@@ -160,7 +170,7 @@ public class Simulator {
     private void spawnOnLocation(Point2D p2d) {
         if (canSpawn(p2d)) {
             //loop trough all the artists to see if they are spawned already
-            for (Artist artist : DataController.getPlanner().getArtists()) {
+            for (Artist artist : plannerReference.getArtists()) {
                 boolean hasBeenSpawned = false;
                 for (Person person : people) {
                     if (person.getName() != null)
@@ -169,7 +179,7 @@ public class Simulator {
                 }
 
                 if (!hasBeenSpawned) {
-                    Person newPerson = new Person( new Point2D.Double(p2d.getX(), p2d.getY()), this.prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true);
+                    Person newPerson = new Person(new Point2D.Double(p2d.getX(), p2d.getY()), this.prediction, artist.getName(), clockReference.getSimulatorSpeed(), true);
                     this.people.add(newPerson);
                     newPerson.getPersonLogic().selectNewMap(this.activeShows, this.tracker);
                     newPerson.getPersonLogic().setNextTarget();
@@ -179,13 +189,12 @@ public class Simulator {
 
             //if all the artists have been spawned then we spawn visitors
             Person newPerson = new Person(new Point2D.Double(p2d.getX(),
-                    p2d.getY()), this.prediction, DataController.getClock().getSimulatorSpeed(), false);
-            this.people.add( newPerson);
-            newPerson.getPersonLogic().selectNewMap(this.activeShows,this.tracker);
+                    p2d.getY()), this.prediction, clockReference.getSimulatorSpeed(), false);
+            this.people.add(newPerson);
+            newPerson.getPersonLogic().selectNewMap(this.activeShows, this.tracker);
             newPerson.getPersonLogic().setNextTarget();
         }
     }
-
 
     /**
      * A method that checks if a spot is not occupied by another person
@@ -231,7 +240,7 @@ public class Simulator {
         int electro = 1;
 
         if (this.predictedGuests) {
-            for (Show show : DataController.getPlanner().getShows()) {
+            for (Show show : plannerReference.getShows()) {
                 String showGenre = show.getGenre().getSuperGenre();
                 switch (showGenre) {
                     case "Metal":
@@ -289,8 +298,8 @@ public class Simulator {
         // draws map dependent on time, day or night
         MapDataController.draw(g);
         double timeHours;
-        timeHours = DataController.getClock().getHours();
-        timeHours += (DataController.getClock().getMinutes() / 60.0);
+        timeHours = clockReference.getHours();
+        timeHours += clockReference.getMinutes() / 60.0;
 
         float opacity;
 
@@ -314,7 +323,7 @@ public class Simulator {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         g.setTransform(new AffineTransform());
-        String time = DataController.getClock().toString();
+        String time = clockReference.toString();
         Font font = new Font("Arial", Font.PLAIN, 30);
         Shape timeShape = font.createGlyphVector(g.getFontRenderContext(), time).getOutline();
         timeShape = AffineTransform.getTranslateInstance(0, 30).createTransformedShape(timeShape);
@@ -331,11 +340,11 @@ public class Simulator {
      * updates the new target of all people
      */
     private void pulse() {
-         activeShows = DataController.getActiveShows();
+        activeShows = DataController.getInstance().getActiveShows();
 
         PopularityTracker tracker = new PopularityTracker();
         for (Person person : people) {
-            person.getPersonLogic().selectNewMap(activeShows,tracker);
+            person.getPersonLogic().selectNewMap(activeShows, tracker);
         }
     }
 

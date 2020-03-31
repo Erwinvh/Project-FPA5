@@ -4,6 +4,7 @@ import GUILogic.DataController;
 import GUILogic.PopularityTracker;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import PlannerData.Artist;
+import PlannerData.Planner;
 import PlannerData.Show;
 import PlannerData.Stage;
 
@@ -108,14 +109,15 @@ public class PersonLogic {
      * @return The correct DistanceMap of the stage
      */
     private DistanceMap getDistanceMap(Stage wantedStage, boolean isArtist) {
+        ArrayList<Stage> stages = DataController.getInstance().getPlanner().getStages();
         Stage searchingStage = null;
-        for (Stage stage : DataController.getPlanner().getStages()) {
+        for (Stage stage : stages) {
             if (stage.getName().equals(wantedStage.getName())) {
                 searchingStage = stage;
             }
         }
 
-        int stageIndex = DataController.getPlanner().getStages().indexOf(searchingStage);
+        int stageIndex = stages.indexOf(searchingStage);
         for (DistanceMap distanceMap : MapDataController.getDistanceMaps()) {
             if (isArtist) {
                 if (distanceMap.getMapName().equals("ArtistStage" + (stageIndex + 1))) {
@@ -150,16 +152,14 @@ public class PersonLogic {
 
         double chance = Math.random();
         if (person.getFavoriteGenre().getFancyName().equals(show.getGenre().getSuperGenre())) {
-            if(tracker.canGoToShow(show) ){
+            if (tracker.canGoToShow(show)) {
                 return chance <= ((show.getExpectedPopularity() * 3.0)) / ((double) totalExpectedPopularity);
-            }
-            else return false;
+            } else return false;
         }
 
-        if(tracker.canGoToShow(show)) {
+        if (tracker.canGoToShow(show)) {
             return chance <= ((double) (show.getExpectedPopularity()) / ((double) ((totalExpectedPopularity)) * 2.0));
-        }
-        else return false;
+        } else return false;
     }
 
     /**

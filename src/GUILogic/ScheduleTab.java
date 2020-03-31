@@ -1,6 +1,7 @@
 package GUILogic;
 
 import PlannerData.Artist;
+import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,12 +30,16 @@ class ScheduleTab {
     private ArrayList<String> errorList = new ArrayList<>();
     private ObservableList<Show> data = FXCollections.observableArrayList();
 
+    private Planner plannerReference;
+
     /**
      * The constructor of the schedule tab
      *
      * @param primaryStage The stage in which the tab is placed
      */
     ScheduleTab(Stage primaryStage) {
+        plannerReference = DataController.getInstance().getPlanner();
+
         this.primaryStage = primaryStage;
         this.scheduleTab = new Tab("Schedule");
         this.allDescriptions.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -98,8 +103,8 @@ class ScheduleTab {
      */
     public void fillTable() {
         this.table.getItems().clear();
-        this.data.addAll(DataController.getPlanner().getShows());
-        this.table.getItems().addAll(DataController.getPlanner().getShows());
+        this.data.addAll(plannerReference.getShows());
+        this.table.getItems().addAll(plannerReference.getShows());
         this.table.setItems(this.data);
         this.table.getSelectionModel().selectFirst();
         this.table.setOnMouseClicked(event -> getShowDescription());
@@ -171,7 +176,7 @@ class ScheduleTab {
     }
 
     /**
-     * This methode resets the data that is shown in the table
+     * This method resets the data that is shown in the table
      */
     public void resetData() {
         this.data = FXCollections.observableArrayList();
@@ -204,9 +209,7 @@ class ScheduleTab {
     private void getButtons() {
         //Add show button
         Button addButton = new Button("Add Show");
-        addButton.setOnAction(event -> {
-            new ShowWindow(1, this.primaryStage, this, null);
-        });
+        addButton.setOnAction(event -> new ShowWindow(1, this.primaryStage, this, null));
 
         //Edit show button
         Button editButton = new Button("Edit Show");
@@ -241,7 +244,7 @@ class ScheduleTab {
         //Edit artist button
         Button editArtistButton = new Button("Edit Artist");
         editArtistButton.setOnAction(event -> {
-            if (DataController.getPlanner().getArtists().isEmpty()) {
+            if (plannerReference.getArtists().isEmpty()) {
                 this.errorList.clear();
                 this.errorList.add("There is no Artist to edit.");
                 new ErrorWindow(this.primaryStage, this.errorList);
@@ -253,7 +256,7 @@ class ScheduleTab {
         //Delete artist button
         Button deleteArtistButton = new Button("Delete Artist");
         deleteArtistButton.setOnAction(event -> {
-            if (DataController.getPlanner().getArtists().isEmpty()) {
+            if (plannerReference.getArtists().isEmpty()) {
                 this.errorList.clear();
                 this.errorList.add("There is no Artist to delete.");
                 new ErrorWindow(this.primaryStage, this.errorList);
@@ -265,7 +268,7 @@ class ScheduleTab {
         //Add stage button
         Button addStageButton = new Button("Add Stage");
         addStageButton.setOnAction(event -> {
-            if (DataController.getPlanner().getStages().size() <= 5) {
+            if (plannerReference.getStages().size() <= 5) {
                 new StageWindow(4, this.primaryStage, this);
             } else {
                 this.errorList.clear();
@@ -277,7 +280,7 @@ class ScheduleTab {
         //Edit stage button
         Button editStageButton = new Button("Edit Stage");
         editStageButton.setOnAction(event -> {
-            if (DataController.getPlanner().getStages().isEmpty()) {
+            if (plannerReference.getStages().isEmpty()) {
                 this.errorList.clear();
                 this.errorList.add("There is no stage to edit.");
                 new ErrorWindow(this.primaryStage, this.errorList);
@@ -289,7 +292,7 @@ class ScheduleTab {
         //Delete stage button
         Button deleteStageButton = new Button("Delete Stage");
         deleteStageButton.setOnAction(event -> {
-            if (DataController.getPlanner().getStages().isEmpty()) {
+            if (plannerReference.getStages().isEmpty()) {
                 this.errorList.clear();
                 this.errorList.add("There is no stage to delete.");
                 new ErrorWindow(this.primaryStage, this.errorList);

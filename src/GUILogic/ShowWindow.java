@@ -2,6 +2,7 @@ package GUILogic;
 
 import Enumerators.Genres;
 import PlannerData.Artist;
+import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -40,11 +41,15 @@ class ShowWindow {
     private ComboBox artistBox;
     private GridPane gridPaneShows;
 
+    private Planner plannerReference;
+
     /**
      * This is the constructor of the base createLayout of the windows of the three Menus.
      * The method also sends the user to the correct menu window.
      */
     ShowWindow(int screenNumber, Stage currParentStage, ScheduleTab ST, Show selectedShow) {
+        plannerReference = DataController.getInstance().getPlanner();
+
         this.ST = ST;
         this.selectedShow = selectedShow;
 
@@ -182,8 +187,8 @@ class ShowWindow {
         submitButton.setOnAction(event -> {
             Show addedShow = checkInput();
             if (addedShow != null && this.errorList.isEmpty()) {
-                DataController.getPlanner().addShow(addedShow);
-                DataController.getPlanner().savePlanner();
+                plannerReference.addShow(addedShow);
+                plannerReference.savePlanner();
                 ST.resetData();
                 this.popUp.close();
             } else {
@@ -241,17 +246,17 @@ class ShowWindow {
         submit.setOnAction(event -> {
             Show editedShow = checkInput();
             if (editedShow != null && this.errorList.isEmpty()) {
-                int index = DataController.getPlanner().getShows().indexOf(selectedShow);
+//                int index = plannerReference.getShows().indexOf(selectedShow);
+                selectedShow.setName(editedShow.getName());
+                selectedShow.setExpectedPopularity(editedShow.getExpectedPopularity());
+                selectedShow.setDescription(editedShow.getDescription());
+                selectedShow.setBeginTime(editedShow.getBeginTime());
+                selectedShow.setEndTime(editedShow.getEndTime());
+                selectedShow.setArtists(editedShow.getArtists());
+                selectedShow.setGenre(editedShow.getGenre());
+                selectedShow.setStage(editedShow.getStage());
 
-                DataController.getPlanner().getShows().get(index).setName(editedShow.getName());
-                DataController.getPlanner().getShows().get(index).setExpectedPopularity(editedShow.getExpectedPopularity());
-                DataController.getPlanner().getShows().get(index).setDescription(editedShow.getDescription());
-                DataController.getPlanner().getShows().get(index).setBeginTime(editedShow.getBeginTime());
-                DataController.getPlanner().getShows().get(index).setEndTime(editedShow.getEndTime());
-                DataController.getPlanner().getShows().get(index).setArtists(editedShow.getArtists());
-                DataController.getPlanner().getShows().get(index).setGenre(editedShow.getGenre());
-                DataController.getPlanner().getShows().get(index).setStage(editedShow.getStage());
-                DataController.getPlanner().savePlanner();
+                plannerReference.savePlanner();
                 this.ST.resetData();
                 this.popUp.close();
             } else {
@@ -293,7 +298,7 @@ class ShowWindow {
             this.errorList.add("The show name has not been filled in.");
         } else {
             showName = this.nameField.getText();
-            for (Show show : DataController.getPlanner().getShows()) {
+            for (Show show : plannerReference.getShows()) {
                 if (this.selectedShow == null) {
                     if (showName.equals(show.getName())) {
                         this.errorList.add("There is already a show with that name");
@@ -328,7 +333,7 @@ class ShowWindow {
         if (this.stageBox.getValue() == null || this.stageBox.getValue().equals("Select")) {
             this.errorList.add("The stage has not been filled in.");
         } else {
-            addedStage = DataController.getPlanner().getStage((String) stageBox.getValue());
+            addedStage = plannerReference.getStage((String) stageBox.getValue());
         }
 
         //genre
@@ -355,7 +360,7 @@ class ShowWindow {
                     }
                 }
 
-                Artist artist = DataController.getPlanner().getArtist(comboBoxString);
+                Artist artist = plannerReference.getArtist(comboBoxString);
                 if (artist != null) {
                     addedArtists.add(artist);
                 }
@@ -378,7 +383,7 @@ class ShowWindow {
         Show newShow;
         if (errorList.isEmpty()) {
             newShow = new Show(beginTime, endTime, addedArtists, showName, addedStage, descriptionShow, addedGenre, popularityAdded);
-            for (Show existingShow : DataController.getPlanner().getShows()) {
+            for (Show existingShow : plannerReference.getShows()) {
                 if (selectedShow == null) {
                     if (existingShow.getStage().getName().equals(newShow.getStage().getName())) {
                         if (newShow.getBeginTime().isAfter(existingShow.getBeginTime()) && newShow.getBeginTime().isBefore(existingShow.getEndTime()) || newShow.getBeginTime().equals(existingShow.getBeginTime())) {
@@ -461,8 +466,8 @@ class ShowWindow {
         HBox cancelConfirmButton = new HBox();
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(event -> {
-            if (DataController.getPlanner().deleteShow(this.selectedShow)) {
-                DataController.getPlanner().savePlanner();
+            if (plannerReference.deleteShow(this.selectedShow)) {
+                plannerReference.savePlanner();
                 this.ST.resetData();
                 this.popUp.close();
             } else {
@@ -515,14 +520,14 @@ class ShowWindow {
         ComboBox stageBox = new ComboBox();
         stageBox.getItems().add("Select stage");
         stageBox.getSelectionModel().selectFirst();
-        for (PlannerData.Stage stage : DataController.getPlanner().getStages()) {
+        for (PlannerData.Stage stage : plannerReference.getStages()) {
             stageBox.getItems().add(stage.getName());
         }
 
         stageBox.setOnAction(event -> {
             int stageCapacity = 100;
             if (!stageBox.getValue().equals("Select stage")) {
-                PlannerData.Stage selectedStage = DataController.getPlanner().getStage(stageBox.getValue().toString());
+                PlannerData.Stage selectedStage = plannerReference.getStage(stageBox.getValue().toString());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
                     stageCapacity = selectedStage.getCapacity();
                 }
@@ -546,7 +551,7 @@ class ShowWindow {
         artistBox.getItems().add("Select");
         artistBox.getSelectionModel().selectFirst();
 
-        for (Artist artist : DataController.getPlanner().getArtists()) {
+        for (Artist artist : plannerReference.getArtists()) {
             artistBox.getItems().add(artist.getName());
         }
 

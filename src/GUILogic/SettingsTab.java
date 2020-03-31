@@ -1,5 +1,6 @@
 package GUILogic;
 
+import PlannerData.Planner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -32,27 +33,33 @@ class SettingsTab {
     private ComboBox beginTime;
     private CheckBox overwriteStartTime;
 
+    private Settings settingsReference;
+
     /**
      * The constructor of the settings tab
      *
      * @param primaryStage the window of the main application
      */
     SettingsTab(Stage primaryStage) {
+        settingsReference = DataController.getInstance().getSettings();
+
         this.primaryStage = primaryStage;
         this.settingsTab = new Tab("Settings");
-        this.saveFileName = DataController.getSettings().getSaveFileName();
+        this.saveFileName = settingsReference.getSaveFileName();
 
         this.speedSlider = new Slider();
-        speedSlider.setValue(DataController.getSettings().getSimulatorSpeed());
+        speedSlider.setValue(settingsReference.getSimulatorSpeed());
 
         this.NPCAmountSlider = new Slider();
-        NPCAmountSlider.setValue(DataController.getSettings().getVisitors());
+        NPCAmountSlider.setValue(settingsReference.getVisitors());
 
         this.prediction = new CheckBox();
-        prediction.setSelected(DataController.getSettings().isUsingPredictedPerson());
+        prediction.setSelected(settingsReference.isUsingPredictedPerson());
 
         this.beginTime = new ComboBox();
         beginTime.setValue(DataController.getSettings().getBeginHours());
+        this.beginHours = new ComboBox();
+        beginHours.setValue(settingsReference.getBeginHours());
         this.overwriteStartTime = new CheckBox();
         overwriteStartTime.setText("Use this startingTime");
         ArrayList timelist = ShowWindow.setupTimeList();
@@ -99,7 +106,7 @@ class SettingsTab {
         speedSlider.setBlockIncrement(0.1);
         Label speedLabel = new Label("");
         DecimalFormat format = new DecimalFormat("0.0");
-        speedLabel.setText(format.format(DataController.getSettings().getSimulatorSpeed() * 100) + "%");
+        speedLabel.setText(format.format(settingsReference.getSimulatorSpeed() * 100) + "%");
 
         speedSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->
                 speedLabel.textProperty().setValue(format.format(newValue.floatValue() * 100) + "%")
@@ -115,11 +122,10 @@ class SettingsTab {
         NPCAmountSlider.setBlockIncrement(10);
 
         Label amountLabel = new Label("");
-        amountLabel.setText(DataController.getSettings().getVisitors() + "");
+        amountLabel.setText(settingsReference.getVisitors() + "");
         NPCAmountSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->
                 amountLabel.textProperty().setValue(String.valueOf(newValue.intValue()))
         );
-
 
 
         //Hour ComboBox
@@ -128,25 +134,22 @@ class SettingsTab {
 //            beginHours.getItems().add(i);
 //        }
 //
-if (DataController.getSettings().getBeginHours()>=0){
-    String time;
-    if (DataController.getSettings().getBeginHours()<=9){
-        time = "0"+DataController.getSettings().getBeginHours();
-    }
-    else{
-        time = DataController.getSettings().getBeginHours()+"";
-    }
-    if (DataController.getSettings().getBeginMinutes()<10){
-        time+=":0" + DataController.getSettings().getBeginMinutes();
-    }
-    else{
-        time+= ":" + DataController.getSettings().getBeginMinutes();
-    }
-    beginTime.getSelectionModel().select(ShowWindow.localTimeToIndex(LocalTime.parse(time)));
-}
-else{
-    beginTime.getSelectionModel().selectFirst();
-}
+        if (settingsReference.getBeginHours() >= 0) {
+            String time;
+            if (settingsReference.getBeginHours() <= 9) {
+                time = "0" + settingsReference.getBeginHours();
+            } else {
+                time = settingsReference.getBeginHours() + "";
+            }
+            if (settingsReference.getBeginMinutes() < 10) {
+                time += ":0" + settingsReference.getBeginMinutes();
+            } else {
+                time += ":" + settingsReference.getBeginMinutes();
+            }
+            beginHours.getSelectionModel().select(ShowWindow.localTimeToIndex(LocalTime.parse(time)));
+        } else {
+            beginHours.getSelectionModel().selectFirst();
+        }
 
         //Save button
         Button saveButton = new Button("Save settings");
@@ -155,14 +158,14 @@ else{
         //Reset simulator
         Button resetButton = new Button("Reset simulator");
         resetButton.setOnAction(event -> {
-            DataController.readSettings();
+            DataController.getInstance().readSettings();
             GUI.getSimulatorTab().getSimulator().init();
-            if(overwriteStartTime.isSelected()) {
-                DataController.getClock().setTime(Integer.parseInt(beginTime.getValue().toString().substring(0,2)), Integer.parseInt(beginTime.getValue().toString().substring(3,5)), 0);
+            if (overwriteStartTime.isSelected()) {
+                DataController.getInstance().getClock().setTime(Integer.parseInt(beginHours.getValue().toString().substring(0, 2)), Integer.parseInt(beginHours.getValue().toString().substring(3, 5)), 0);
             }
         });
 
-        overwriteStartTime.setSelected(DataController.getSettings().isOverwriteStartTime());
+        overwriteStartTime.setSelected(settingsReference.isOverwriteStartTime());
 
         //Adding all nodes to the GridPane
         split.add(planner, 0, 0);
@@ -184,9 +187,9 @@ else{
         split.add(saveButton, 2, 10);
         split.add(resetButton, 3, 10);
 
-        split.add(timeLabel,2,7);
+        split.add(timeLabel, 2, 7);
 
-        split.add(beginTime,2,8);
+        split.add(beginHours, 2, 8);
 
         split.add(overwriteStartTime, 2, 9);
 
@@ -195,6 +198,8 @@ else{
     }
 
     private void deleteData(boolean onlyRemoveShows) {
+        Planner plannerReference = DataController.getInstance().getPlanner();
+
         Stage deleteDataStage = new Stage();
         deleteDataStage.setResizable(false);
         deleteDataStage.initOwner(this.primaryStage);
@@ -217,17 +222,17 @@ else{
         Button confirm = new Button("Confirm");
         if (onlyRemoveShows) {
             text.setText("Are you sure you want to delete all shows?\nThis change cannot be undone!");
-            confirm.setOnAction(e -> DataController.getPlanner().deleteShows());
+            confirm.setOnAction(e -> plannerReference.deleteShows());
         } else {
             text.setText("Are you sure you want to delete all?" + '\n' + "This change cannot be undone!");
-            confirm.setOnAction(e -> DataController.getPlanner().deleteAll());
+            confirm.setOnAction(e -> plannerReference.deleteAll());
         }
 
         EventHandler<? super ActionEvent> oldClickAction = confirm.getOnAction();
         confirm.setOnAction(e -> {
             if (oldClickAction != null) oldClickAction.handle(e);
 
-            DataController.getPlanner().savePlanner();
+            plannerReference.savePlanner();
             deleteDataStage.close();
         });
 
@@ -271,31 +276,21 @@ else{
         // writes settings into JSON file settings.json
         try (JsonWriter writer = Json.createWriter(new FileWriter(this.saveFileName))) {
             JsonObjectBuilder settingsBuilder = Json.createObjectBuilder();
-            settingsBuilder.add("Simulator Speed", simSpeed + "");
-            settingsBuilder.add("Visitors per NPC", visPerNPC);
-            settingsBuilder.add("Is Using Prediction", predic);
-            settingsBuilder.add("Begin hours", beginTimeHours);
-            settingsBuilder.add("Begin minutes", beginTimeMinutes);
-            settingsBuilder.add("Use overwrite time", overwriteTime);
+            settingsBuilder.add("Simulator Speed", speedSlider.getValue() + "");
+            settingsBuilder.add("Visitors per NPC", NPCAmountSlider.getValue());
+            settingsBuilder.add("Is Using Prediction", prediction.isSelected());
+            settingsBuilder.add("Begin hours", Integer.parseInt(beginHours.getValue().toString().substring(0, 2)));
+            settingsBuilder.add("Begin minutes", Integer.parseInt(beginHours.getValue().toString().substring(3, 5)));
+            settingsBuilder.add("Use overwrite time", overwriteStartTime.isSelected());
             writer.writeObject(settingsBuilder.build());
             writer.close();
 
-            // sets simulatorSpeed and if something else has changed, inits simulator and sets time.
-            DataController.getInstance().getClock().setSimulatorSpeed(simSpeed);
-            if(
-                    overwriteTime != settings.isOverwriteStartTime() ||
-                            visPerNPC != settings.getVisitors() ||
-                            predic != settings.isUsingPredictedPerson() ||
-                            beginTimeHours != settings.getBeginHours() ||
-                            beginTimeMinutes != settings.getBeginMinutes()
-            ) {
-                GUI.getSimulatorTab().getSimulator().init();
-                DataController.getInstance().getClock().setTime(beginTimeHours, beginTimeMinutes, 0);
+            DataController.getInstance().getClock().setSimulatorSpeed(speedSlider.getValue());
+            if (overwriteStartTime.isSelected()) {
+                DataController.getInstance().getClock().setTime(Integer.parseInt(beginHours.getValue().toString().substring(0, 2)), Integer.parseInt(beginHours.getValue().toString().substring(3, 5)), 0);
             }
 
-            // DataController update Settings
-            DataController.readSettings();
-
+            DataController.getInstance().readSettings();
         } catch (Exception e) {
             e.printStackTrace();
         }

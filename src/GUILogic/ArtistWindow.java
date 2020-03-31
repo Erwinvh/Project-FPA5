@@ -2,6 +2,7 @@ package GUILogic;
 
 import Enumerators.Genres;
 import PlannerData.Artist;
+import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,6 +25,8 @@ class ArtistWindow {
     private Artist selectedArtist;
     private ScheduleTab ST;
 
+    private Planner plannerReference;
+
     /**
      * The constructor of the artist submenu windows
      * This is also where the specific submenu is chosen
@@ -38,6 +41,8 @@ class ArtistWindow {
         this.currStage.initModality(Modality.WINDOW_MODAL);
         this.currStage.setResizable(false);
         this.currStage.getIcons().add(new Image("logoA5.jpg"));
+
+        this.plannerReference = DataController.getInstance().getPlanner();
 
         switch (screenNumber) {
             case 1:
@@ -96,8 +101,8 @@ class ArtistWindow {
         confirmButton.setOnAction(e -> {
             if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
                 try {
-                    DataController.getPlanner().addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue().toString()), artistDescription.getText());
-                    DataController.getPlanner().savePlanner();
+                    plannerReference.addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue().toString()), artistDescription.getText());
+                    plannerReference.savePlanner();
                     this.currStage.close();
                 } catch (Exception event) {
                     this.errorList.add("Failed to add the artist.");
@@ -137,7 +142,7 @@ class ArtistWindow {
         ComboBox artistComboBox = new ComboBox();
 
         artistComboBox.getItems().add("Select artist");
-        for (Artist artist : DataController.getPlanner().getArtists()) {
+        for (Artist artist : plannerReference.getArtists()) {
             artistComboBox.getItems().add(artist.getName());
         }
 
@@ -172,7 +177,7 @@ class ArtistWindow {
 
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("Select artist")) {
-                this.selectedArtist = DataController.getPlanner().getArtist(artistComboBox.getValue().toString());
+                this.selectedArtist = plannerReference.getArtist(artistComboBox.getValue().toString());
                 artistName.setText(this.selectedArtist.getName());
                 artistDescription.setText(this.selectedArtist.getDescription());
                 genreComboBox.setValue(this.selectedArtist.getGenre().getFancyName());
@@ -194,7 +199,7 @@ class ArtistWindow {
             if (!artistComboBox.getValue().toString().equals("Select artist")) {
                 if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
                     try {
-                        for (Show show : DataController.getPlanner().getShows()) {
+                        for (Show show : plannerReference.getShows()) {
                             for (Artist artist : show.getArtists()) {
                                 if (artist.getName().equals(this.selectedArtist.getName())) {
                                     artist.setName(artistName.getText());
@@ -208,7 +213,7 @@ class ArtistWindow {
                         this.selectedArtist.setDescription(artistDescription.getText());
                         this.selectedArtist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));
 
-                        DataController.getPlanner().savePlanner();
+                        plannerReference.savePlanner();
                         ST.resetData();
                         this.currStage.close();
                     } catch (Exception event) {
@@ -255,14 +260,14 @@ class ArtistWindow {
 
         ComboBox artistComboBox = new ComboBox();
         artistComboBox.getItems().add("Select artist");
-        for (Artist artist : DataController.getPlanner().getArtists()) {
+        for (Artist artist : plannerReference.getArtists()) {
             artistComboBox.getItems().add(artist.getName());
         }
 
         artistComboBox.getSelectionModel().selectFirst();
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("Select artist")) {
-                this.selectedArtist = DataController.getPlanner().getArtist(artistComboBox.getValue().toString());
+                this.selectedArtist = plannerReference.getArtist(artistComboBox.getValue().toString());
                 if (selectedArtist != null && !selectedArtist.getName().isEmpty()) {
                     this.artistDeleteText.textProperty().setValue("Do you want to delete the artist: " + selectedArtist.getName() + '\n' + " with the genre of " + selectedArtist.getGenre().getFancyName() + '\n' + " with the description: " + selectedArtist.getDescription());
                 }
@@ -285,8 +290,8 @@ class ArtistWindow {
             if (!artistComboBox.getValue().toString().equals("Select artist")) {
                 if (canDeleteArtist()) {
                     try {
-                        DataController.getPlanner().deleteArtist(artistComboBox.getValue().toString());
-                        DataController.getPlanner().savePlanner();
+                        plannerReference.deleteArtist(artistComboBox.getValue().toString());
+                        plannerReference.savePlanner();
                         this.currStage.close();
                     } catch (Exception exception) {
                         this.errorList.clear();
@@ -334,8 +339,7 @@ class ArtistWindow {
         if (artistName.getText().length() == 0) {
             this.errorList.add("The artist's name has not been filled in.");
         } else {
-
-            for (Artist artist : DataController.getPlanner().getArtists()) {
+            for (Artist artist : plannerReference.getArtists()) {
                 if (this.selectedArtist != null) {
                     if (!this.selectedArtist.equals(artist) && artistName.getText().equals(artist.getName())) {
                         this.errorList.add("This artist already exists.");
@@ -369,7 +373,7 @@ class ArtistWindow {
      */
     private boolean canDeleteArtist() {
         this.errorList.clear();
-        for (Show show : DataController.getPlanner().getShows()) {
+        for (Show show : plannerReference.getShows()) {
             for (Artist artist : show.getArtists()) {
                 if (artist.getName().equals(this.selectedArtist.getName())) {
                     this.errorList.add("Artists who are performing cannot be removed from the event.");
