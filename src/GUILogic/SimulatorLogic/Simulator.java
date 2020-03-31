@@ -287,7 +287,7 @@ public class Simulator {
         g.setBackground(Color.black);
 
         // draws map dependent on time, day or night
-        mapDataController.draw(g);
+        MapDataController.draw(g);
         double timeHours;
         timeHours = DataController.getClock().getHours();
         timeHours += (DataController.getClock().getMinutes() / 60.0);

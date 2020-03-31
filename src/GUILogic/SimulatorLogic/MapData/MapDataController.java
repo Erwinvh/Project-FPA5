@@ -209,7 +209,7 @@ public class MapDataController {
     /**
      * The draw function of the graphics of the map, this draws the entire map as an image
      */
-    public void draw(Graphics2D graphics) {
+    public static void draw(Graphics2D graphics) {
         graphics.drawImage(dayImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
     }
 
