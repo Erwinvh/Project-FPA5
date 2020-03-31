@@ -155,7 +155,11 @@ else{
         //Reset simulator
         Button resetButton = new Button("Reset simulator");
         resetButton.setOnAction(event -> {
+            DataController.readSettings();
             GUI.getSimulatorTab().getSimulator().init();
+            if(overwriteStartTime.isSelected()) {
+                DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString().substring(0,2)), Integer.parseInt(beginHours.getValue().toString().substring(3,5)), 0);
+            }
         });
 
         overwriteStartTime.setSelected(DataController.getSettings().isOverwriteStartTime());
@@ -268,7 +272,7 @@ else{
 
             DataController.getClock().setSimulatorSpeed(speedSlider.getValue());
             if(overwriteStartTime.isSelected()) {
-                DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString().substring(0,1)), Integer.parseInt(beginHours.getValue().toString().substring(3,4)), 0);
+                DataController.getClock().setTime(Integer.parseInt(beginHours.getValue().toString().substring(0,2)), Integer.parseInt(beginHours.getValue().toString().substring(3,5)), 0);
             }
 
             DataController.readSettings();

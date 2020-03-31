@@ -285,7 +285,7 @@ public class Simulator {
         float opacity;
 
         if (timeHours>=14){
-            opacity = (float)((2.0f/3.0f)*Math.pow((timeHours-4), 2) - (float)(38/3) * (float)(timeHours-4) + 60)/100.0f;
+            opacity = (float)((2.0f/3.0f)*Math.pow((timeHours-4), 2) - (float)(38/3) * (float)(timeHours-4) + 55)/100.0f;
         } else {
             opacity = (float)((25.0f/84.0f) * Math.pow(timeHours, 2) - (float)(355/42) * (float)timeHours + 60)/100.0f;
         }
