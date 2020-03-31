@@ -44,7 +44,7 @@ public class Simulator {
     /**
      * This method sets all items and attributes by initialisation
      */
-    private void init() {
+    public void init() {
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();

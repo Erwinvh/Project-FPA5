@@ -68,7 +68,7 @@ class ShowWindow {
         this.timeList = setupTimeList();
         endingTime = getTimestampsComboBox(0,this.timeList);
         startingTime = getTimestampsComboBox(0,this.timeList);
-        gridpaneShows = new GridPane();
+        gridPaneShows = new GridPane();
         try {
             this.stagePopularity = this.selectedShow.getStage().getCapacity();
         } catch (Exception e) {
