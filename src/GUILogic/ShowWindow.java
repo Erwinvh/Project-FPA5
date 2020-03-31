@@ -17,6 +17,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.time.LocalTime;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 
 class ShowWindow {
@@ -216,8 +218,10 @@ class ShowWindow {
         artistScroller.setContent(AddEditSetup());
 
         this.nameField.setText(this.selectedShow.getName());
-        this.startingTime.getSelectionModel().select(localTimeToIndex(this.selectedShow.getBeginTime()));
-        this.endingTime.getSelectionModel().select(localTimeToIndex(this.selectedShow.getEndTime()));
+        LocalTime beginTime = this.selectedShow.getBeginTime();
+        this.startingTime.getSelectionModel().select(localTimeToIndex(beginTime));
+        LocalTime endTime = this.selectedShow.getEndTime().minusHours(beginTime.getHour()).minusMinutes(beginTime.getMinute());
+        this.endingTime.getSelectionModel().select(localTimeToIndex(endTime) -1);
 
         this.stageBox.setValue(this.selectedShow.getStage().getName());
         this.genreBox.setValue(this.selectedShow.getGenre().getFancyName());
@@ -327,7 +331,7 @@ class ShowWindow {
         else {
 
             beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
-            endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()) + this.timeList.indexOf(startingTime.getValue()) -1);
+            endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
         }
 
         //stage
