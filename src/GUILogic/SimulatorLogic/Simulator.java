@@ -71,29 +71,13 @@ public class Simulator {
 
         try{
             MediaPlayer background = new MediaPlayer(new Media(getClass().getResource("/soundEffects/PawPrints.mp3").toString()));
-            background.setVolume(0.5);
+            background.setVolume(0.05);
             background.setAutoPlay(true);
         }catch (Exception e){
 
         }
 
-        try{
-            MediaPlayer background = new MediaPlayer(new Media(getClass().getResource("/soundEffects/PawPrints.mp3").toString()));
-            background.setVolume(0.5);
-            background.setAutoPlay(true);
-        }catch (Exception e){
-
-        }
-
-        try{
-            MediaPlayer background = new MediaPlayer(new Media(getClass().getResource("/soundEffects/PawPrints.mp3").toString()));
-            background.setVolume(0.5);
-            background.setAutoPlay(true);
-        }catch (Exception e){
-
-        }
-
-        ArrayList<Show> sortedShowList = DataController.getPlanner().getShows();
+        ArrayList<Show> sortedShowList = DataController.getInstance().getPlanner().getShows();
         sortedShowList.sort(Show::compareToTime);
 
         if (sortedShowList.isEmpty() || sortedShowList.get(0) == null) return;
