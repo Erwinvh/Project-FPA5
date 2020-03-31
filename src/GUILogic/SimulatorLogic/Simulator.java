@@ -6,6 +6,7 @@ import GUILogic.SimulatorLogic.NPCLogic.Person;
 import PlannerData.Artist;
 import PlannerData.Show;
 import javafx.animation.AnimationTimer;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.jfree.fx.FXGraphics2D;
@@ -203,9 +204,11 @@ public class Simulator {
      * @param e the mouse event
      */
     public void onMousePressed(MouseEvent e) {
-        for (Person person : this.people) {
-            if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 32) {
-                person.playSoundEffect();
+        if (e.getButton() == MouseButton.PRIMARY) {
+            for (Person person : this.people) {
+                if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 64) {
+                    person.playSoundEffect();
+                }
             }
         }
     }
@@ -278,17 +281,31 @@ public class Simulator {
         g.setBackground(Color.black);
 
         // draws map dependent on time, day or night
-        int timeHours = DataController.getClock().getHours();
-        if (timeHours < 6 || timeHours > 20){
-            mapDataController.draw(g, false);
-            System.out.println("HI");
+        mapDataController.draw(g);
+        double timeHours;
+        timeHours = DataController.getClock().getHours();
+        timeHours += (DataController.getClock().getMinutes()/60.0);
+
+        float opacity;
+
+        if (timeHours>=14){
+            opacity = (float)((2.0f/3.0f)*Math.pow((timeHours-4), 2) - (float)(38/3) * (float)(timeHours-4) + 60)/100.0f;
         } else {
-            mapDataController.draw(g, true);
-            System.out.println("OUT");
+            opacity = (float)((25.0f/84.0f) * Math.pow(timeHours, 2) - (float)(355/42) * (float)timeHours + 60)/100.0f;
+        }
+
+        if (opacity < 0){
+            opacity = 0f;
+        } else if (opacity > 0.7f){
+            opacity = 0.7f;
         }
 
         for (Person person : people)
             person.draw(g);
+
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        g.drawImage(mapDataController.getNightLayerImage(), 0, 0, null);
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         g.setTransform(new AffineTransform());
         String time = DataController.getClock().toString();

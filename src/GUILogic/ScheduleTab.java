@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,7 @@ public class ScheduleTab {
 
     /**
      * The constructor of the schedule tab
+     *
      * @param primaryStage The stage in which the tab is placed
      */
     public ScheduleTab(Stage primaryStage) {
@@ -65,31 +67,24 @@ public class ScheduleTab {
         this.table.setEditable(false);
 
         TableColumn nameColumn = new TableColumn("Name");
-        nameColumn.setPrefWidth(100);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
 
         TableColumn beginTimeCol = new TableColumn("Begin time");
-        beginTimeCol.setPrefWidth(100);
         beginTimeCol.setCellValueFactory(new PropertyValueFactory<>("beginTimeString"));
 
         TableColumn endTimeCol = new TableColumn("End time");
-        endTimeCol.setPrefWidth(100);
         endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTimeString"));
 
         TableColumn stageCol = new TableColumn("Stage");
-        stageCol.setPrefWidth(100);
         stageCol.setCellValueFactory(new PropertyValueFactory<>("StageName"));
 
         TableColumn artistCol = new TableColumn("Artists");
-        artistCol.setPrefWidth(300);
         artistCol.setCellValueFactory(new PropertyValueFactory<>("ArtistsNames"));
 
         TableColumn genreCol = new TableColumn("Genre");
-        genreCol.setPrefWidth(100);
         genreCol.setCellValueFactory(new PropertyValueFactory<>("GenreFancyName"));
 
         TableColumn popularityCol = new TableColumn("Popularity");
-        popularityCol.setPrefWidth(100);
         popularityCol.setCellValueFactory(new PropertyValueFactory<>("expectedPopularity"));
 
         this.table.setPrefWidth(800);
@@ -98,14 +93,12 @@ public class ScheduleTab {
         this.table.getColumns().addAll(nameColumn, beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
 
         fillTable();
-
-
     }
 
     /**
-     * This methode fills the table with information
+     * This method fills the table with information
      */
-    public void fillTable(){
+    public void fillTable() {
         this.table.getItems().clear();
         this.data.addAll(DataController.getPlanner().getShows());
         this.table.getItems().addAll(DataController.getPlanner().getShows());
@@ -184,7 +177,7 @@ public class ScheduleTab {
      */
     public void resetData() {
         this.data = FXCollections.observableArrayList();
-       fillTable();
+        fillTable();
     }
 
     /**

@@ -29,7 +29,7 @@ public class MapDataController {
     private static int TILE_SIZE;
 
     private static BufferedImage dayImage;
-    private static BufferedImage nightImage;
+    private static BufferedImage nightLayerImage;
 
     private static WalkableMap walkableMap;
     private static TargetArea[] targetAreas;
@@ -101,11 +101,9 @@ public class MapDataController {
             tiledLayer.drawG(graphics);
         }
 
-        nightImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
-        graphics = nightImage.getGraphics();
-        for (TiledLayer tiledLayer : tiledLayers){
-            tiledLayer.drawG(graphics);
-        }
+        nightLayerImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+        graphics = nightLayerImage.getGraphics();
+
         for (TiledLayer tiledLayer : tiledLayersNight){
             tiledLayer.drawG(graphics);
         }
@@ -213,12 +211,8 @@ public class MapDataController {
      * The draw function of the graphics of the map???
      * @param graphics
      */
-    public void draw(Graphics2D graphics, boolean isDay) {
-        if (isDay) {
-            graphics.drawImage(dayImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
-        } else {
-            graphics.drawImage(nightImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
-        }
+    public void draw(Graphics2D graphics) {
+        graphics.drawImage(dayImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
     }
 
     /**
@@ -270,10 +264,18 @@ public class MapDataController {
     }
 
     /**
-     * The getter for the map image
+     * The getter for the day map image
      * @return the map image
      */
     public static BufferedImage getDayImage() {
         return dayImage;
+    }
+
+    /**
+     * The getter for the night layer image
+     * @return the map image
+     */
+    public static BufferedImage getNightLayerImage() {
+        return nightLayerImage;
     }
 }
