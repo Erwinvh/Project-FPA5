@@ -92,7 +92,7 @@ public class PersonLogic {
             }
         }
 
-        String idleName = "Idle" + (int) (Math.random() * 5 + 1);
+        String idleName = "Idle" + (int) (Math.random() * 6 + 1);
         this.distanceMap = MapDataController.getDistanceMap(idleName);
     }
 
