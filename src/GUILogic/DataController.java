@@ -21,7 +21,7 @@ import static PlannerData.Planner.saveFileName;
 
 /**
  * Reads the Json file and converts it into the instance of Planner
- * Also controls public accessable data for the clock and settings
+ * Also controls public accessible data for the clock and settings
  */
 public class DataController {
 
@@ -29,28 +29,19 @@ public class DataController {
     private static Clock clock;
     private static Settings settings;
 
+    private static DataController instance;
+
+    public static DataController getInstance(){
+        if (instance == null){
+            instance = new DataController();
+        }
+
+        return instance;
+    }
+
     /**
      * The constructor for the data controller
      */
-
-//    public class LazyInitializedSingleton {
-//
-//        private static LazyInitializedSingleton instance;
-//
-//        private LazyInitializedSingleton(){}
-//
-//        public static LazyInitializedSingleton getInstance(){
-//            if(instance == null){
-//                instance = new LazyInitializedSingleton();
-//            }
-//            return instance;
-//        }
-//    }
-
-//    private static DataController instance;
-//    private DataController(){}
-//    public static
-
     public DataController() {
         settings = new Settings();
         readSettings();
@@ -59,8 +50,7 @@ public class DataController {
 
         try {
             clock.setSimulatorSpeed((settings.getSimulatorSpeed()));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -76,17 +66,20 @@ public class DataController {
                         JsonArray shows = planner.getJsonArray("shows");
                         JsonArray artists = planner.getJsonArray("artists");
                         JsonArray stages = planner.getJsonArray("stages");
+
                         for (JsonObject stage : stages.getValuesAs(JsonObject.class)) {
                             String name = stage.getString("name");
                             int capacity = stage.getInt("capacity");
-                            this.planner.getStages().add(new Stage(capacity, name));
+                            DataController.planner.getStages().add(new Stage(capacity, name));
                         }
+
                         for (JsonObject artist : artists.getValuesAs(JsonObject.class)) {
                             String name = artist.getString("name");
                             String description = artist.getString("description");
                             Genres genre = stringToGenre(artist.getString("genre"));
-                            this.planner.getArtists().add(new Artist(name, genre, description));
+                            DataController.planner.getArtists().add(new Artist(name, genre, description));
                         }
+
                         for (JsonObject show : shows.getValuesAs(JsonObject.class)) {
                             JsonArray showArtists = show.getJsonArray("artists");
                             JsonObject stage = show.getJsonObject("stage");
@@ -104,12 +97,9 @@ public class DataController {
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
                             Show readShow = new Show(beginTime, endTime, artistsInShow, name, stageInShow, description, genre, expectedPopularity);
-                            this.planner.getShows().add(readShow);
+                            DataController.planner.getShows().add(readShow);
                         }
-                    } else {
-
                     }
-
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");
                     e.printStackTrace();
@@ -119,16 +109,14 @@ public class DataController {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
             e.printStackTrace();
         }
-
     }
 
-
-    //check with group?
     /**
-     * A getter for the active stages
-     * @return
+     * A getter for the active shows
+     *
+     * @return an ArrayList containing all active shows
      */
-    public static ArrayList<Show> getActiveShows(){
+    public static ArrayList<Show> getActiveShows() {
         LocalTime currentTime = LocalTime.MIDNIGHT;
         currentTime = currentTime.plusHours(DataController.getClock().getHours());
         currentTime = currentTime.plusMinutes(DataController.getClock().getMinutes());
@@ -146,6 +134,7 @@ public class DataController {
 
     /**
      * The getter for the planner
+     *
      * @return Planner
      */
     public static Planner getPlanner() {
@@ -185,7 +174,7 @@ public class DataController {
     /**
      * reads the settings file and sets the attributes of the Settings class accordingly
      */
-    public static void readSettings(){
+    static void readSettings() {
         try {
             File file = new File(settings.getSaveFileName());
             if (!file.exists()) {
@@ -196,15 +185,15 @@ public class DataController {
                         JsonReader jsonReader = Json.createReader(reader);
                         JsonObject settingsJson = jsonReader.readObject();
                         settings.setSimulatorSpeed((Double.parseDouble(settingsJson.getString("Simulator Speed"))));
-                        settings.setVisitors(settingsJson.getInt("Vistors per NPC"));
+                        settings.setVisitors(settingsJson.getInt("Visitors per NPC"));
                         settings.setUsingPredictedPerson(settingsJson.getBoolean("Is Using Prediction"));
                         settings.setBeginHours(settingsJson.getInt("Begin hours"));
                         settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
-                        settings.setOverwriteStartTime(settingsJson.getBoolean( "Use overwrite time"));
+                        settings.setOverwriteStartTime(settingsJson.getBoolean("Use overwrite time"));
                         settings.setReset(false);
                     }
                 } catch (Exception e) {
-                    System.out.println("error loading data due to: ");
+                    System.out.println("Error loading data due to: ");
                     e.printStackTrace();
                 }
             }
@@ -218,6 +207,7 @@ public class DataController {
 
     /**
      * The getter for the clock
+     *
      * @return The clock
      */
     public static Clock getClock() {
@@ -226,9 +216,10 @@ public class DataController {
 
     /**
      * The getter for the settings
+     *
      * @return The settings
      */
-    public static Settings getSettings(){
+    public static Settings getSettings() {
         return settings;
     }
 }
