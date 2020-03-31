@@ -108,13 +108,14 @@ class ShowWindow {
         gridPaneShows.add(new Label("End time:"), 1, 3);
         gridPaneShows.add(this.startingTime, 2, 2);
         gridPaneShows.add(this.endingTime, 2, 3);
-//        startingTime.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            System.out.println("listener called");
-//            System.out.println(newValue);
-//            System.out.println(timeList.indexOf(newValue));
-//            ComboBox updatedEndingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1));
-//            gridPaneShows.add(updatedEndingTime, 2, 3);
-//        });
+        startingTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("listener called");
+            System.out.println(newValue);
+            System.out.println(timeList.indexOf(newValue));
+            ComboBox updatedEndingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1), timeList);
+            this.endingTime = updatedEndingTime;
+            gridPaneShows.add(endingTime, 2, 3);
+        });
 
         // Stage
         gridPaneShows.add(new Label("Stage:"), 1, 4);
@@ -320,12 +321,13 @@ class ShowWindow {
             }
 
         }
-        else if(this.timeList.indexOf(startingTime.getValue()) >= this.timeList.indexOf(endingTime.getValue())){
-            this.errorList.add("The endtime is earlier or equal to the begintime");
-        }
+//        else if(this.timeList.indexOf(startingTime.getValue()) >= (this.timeList.indexOf(endingTime.getValue()))){
+//            this.errorList.add("The endtime is earlier or equal to the begintime");
+//        }
         else {
+
             beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
-            endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
+            endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()) + this.timeList.indexOf(startingTime.getValue()) -1);
         }
 
         //stage
