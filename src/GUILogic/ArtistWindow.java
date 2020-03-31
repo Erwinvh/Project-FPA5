@@ -99,7 +99,7 @@ class ArtistWindow {
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
+            if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString())) {
                 try {
                     plannerReference.addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue().toString()), artistDescription.getText());
                     plannerReference.savePlanner();
@@ -197,7 +197,7 @@ class ArtistWindow {
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
             if (!artistComboBox.getValue().toString().equals("Select artist")) {
-                if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString(), artistDescription)) {
+                if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString())) {
                     try {
                         for (Show show : plannerReference.getShows()) {
                             for (Artist artist : show.getArtists()) {
@@ -331,9 +331,8 @@ class ArtistWindow {
      * @param artistName
      * @param artistDescription
      * @param genre
-     * @param description
      */
-    private boolean canAddArtist(TextField artistName, TextArea artistDescription, String genre, TextArea description) {
+    private boolean canAddArtist(TextField artistName, TextArea artistDescription, String genre) {
         this.errorList.clear();
 
         if (artistName.getText().length() == 0) {
