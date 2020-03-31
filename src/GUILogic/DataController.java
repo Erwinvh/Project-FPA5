@@ -189,8 +189,7 @@ public class DataController {
                         settings.setUsingPredictedPerson(settingsJson.getBoolean("Is Using Prediction"));
                         settings.setBeginHours(settingsJson.getInt("Begin hours"));
                         settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
-                        settings.setOverwriteStartTime(settingsJson.getBoolean("Use overwrite time"));
-                        settings.setReset(false);
+                        settings.setOverwriteStartTime(settingsJson.getBoolean( "Use overwrite time"));
                     }
                 } catch (Exception e) {
                     System.out.println("Error loading data due to: ");

@@ -8,11 +8,13 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 
+    private static SimulatorTab simulatorTab;
+
     @Override
     public void start(Stage primaryStage) {
         TabPane tabPane = new TabPane();
         ScheduleTab scheduleTab = new ScheduleTab(primaryStage);
-        SimulatorTab simulatorTab = new SimulatorTab();
+        simulatorTab = new SimulatorTab();
         SettingsTab settingsTab = new SettingsTab(primaryStage);
         VisualTab visualTab = new VisualTab();
 
@@ -37,4 +39,6 @@ public class GUI extends Application {
         primaryStage.setHeight(720);
         primaryStage.show();
     }
+
+    public static SimulatorTab getSimulatorTab(){ return simulatorTab; }
 }

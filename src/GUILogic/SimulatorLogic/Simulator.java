@@ -110,11 +110,7 @@ public class Simulator {
      *
      * @param deltaTime time passed in seconds
      */
-    private void update(double deltaTime) {
-        if (DataController.getSettings().isReset()) {
-            DataController.getSettings().setReset(false);
-            init();
-        }
+    public void update(double deltaTime) {
         DataController.getClock().update(deltaTime);
 
         if (DataController.getClock().isIntervalPassed()) {
