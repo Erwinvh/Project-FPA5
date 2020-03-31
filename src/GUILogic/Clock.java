@@ -71,7 +71,7 @@ public class Clock {
      *
      * @return The integer of the minute
      */
-    int getMinutes() {
+    public int getMinutes() {
         return minutes;
     }
 
