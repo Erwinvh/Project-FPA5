@@ -1,6 +1,7 @@
 package GUILogic.SimulatorLogic.NPCLogic;
 
 import GUILogic.DataController;
+import GUILogic.PopularityTracker;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import PlannerData.Artist;
 import PlannerData.Show;
@@ -25,7 +26,6 @@ public class PersonLogic {
     private double speedMultiplier;
 
     private boolean isRoaming = false;
-    private int negativeFeedback = 5;
 
     /**
      * The constructor for the npc logic
@@ -43,8 +43,8 @@ public class PersonLogic {
         this.angle = 0;
         this.speed = speed * speedMultiplier;
         this.rotationSpeed = 100;
-        selectNewMap(DataController.getActiveShows());
-        target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
+        //target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
+        this.target = null;
     }
 
     /**
@@ -68,7 +68,7 @@ public class PersonLogic {
     /**
      * Sets the next target of the person of all adjacent tiles
      */
-    private void setNextTarget() {
+    public void setNextTarget() {
         this.target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
     }
 
@@ -77,7 +77,7 @@ public class PersonLogic {
      *
      * @param activeShows a list of shows being performed on the current time of the Clock
      */
-    public void selectNewMap(ArrayList<Show> activeShows) {
+    public void selectNewMap(ArrayList<Show> activeShows, PopularityTracker tracker) {
         this.isRoaming = false;
         Collections.sort(activeShows);
         int totalExpectedPopularity = 0;
@@ -85,7 +85,7 @@ public class PersonLogic {
             totalExpectedPopularity += show.getExpectedPopularity();
         }
         for (Show show : activeShows) {
-            if (isGoingToShow(show, totalExpectedPopularity)) {
+            if (isGoingToShow(show, totalExpectedPopularity, tracker)) {
                 DistanceMap targetMap = getDistanceMap(show.getStage(), person.isArtist());
                 if (targetMap != null) {
                     this.distanceMap = targetMap;
@@ -137,7 +137,7 @@ public class PersonLogic {
      * @param show the show the person is deciding to go to
      * @return true if the person wants to go to the show
      */
-    private boolean isGoingToShow(Show show, int totalExpectedPopularity) {
+    private boolean isGoingToShow(Show show, int totalExpectedPopularity, PopularityTracker tracker) {
         if (person.isArtist()) {
             for (Artist artist : show.getArtists()) {
                 if (person.getName().equals(artist.getName())) {
@@ -149,10 +149,16 @@ public class PersonLogic {
 
         double chance = Math.random();
         if (person.getFavoriteGenre().getFancyName().equals(show.getGenre().getSuperGenre())) {
-            return chance <= ((show.getExpectedPopularity() * 3.0)) / ((double) totalExpectedPopularity);
+            if(tracker.canGoToShow(show) ){
+                return chance <= ((show.getExpectedPopularity() * 3.0)) / ((double) totalExpectedPopularity);
+            }
+            else return false;
         }
 
-        return chance <= ((double) (show.getExpectedPopularity()) / ((double) ((totalExpectedPopularity)) * 2.0));
+        if(tracker.canGoToShow(show)) {
+            return chance <= ((double) (show.getExpectedPopularity()) / ((double) ((totalExpectedPopularity)) * 2.0));
+        }
+        else return false;
     }
 
     /**

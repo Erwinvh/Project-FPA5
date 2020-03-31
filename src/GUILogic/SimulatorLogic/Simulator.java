@@ -1,6 +1,7 @@
 package GUILogic.SimulatorLogic;
 
 import GUILogic.DataController;
+import GUILogic.PopularityTracker;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.NPCLogic.Person;
 import PlannerData.Artist;
@@ -31,6 +32,8 @@ public class Simulator {
     private boolean predictedGuests;
 
     private BorderPane simulatorLayout;
+    private PopularityTracker tracker;
+    private ArrayList<Show> activeShows;
 
     /**
      * The constructor for the Simulator
@@ -45,6 +48,8 @@ public class Simulator {
      * This method sets all items and attributes by initialisation
      */
     public void init() {
+        activeShows = DataController.getActiveShows();
+        tracker = new PopularityTracker();
         mapDataController = new MapDataController();
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
@@ -165,14 +170,20 @@ public class Simulator {
                 }
 
                 if (!hasBeenSpawned) {
-                    this.people.add(new Person(new Point2D.Double(p2d.getX(), p2d.getY()), this.prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true));
+                    Person newPerson = new Person( new Point2D.Double(p2d.getX(), p2d.getY()), this.prediction, artist.getName(), DataController.getClock().getSimulatorSpeed(), true);
+                    this.people.add(newPerson);
+                    newPerson.getPersonLogic().selectNewMap(this.activeShows, this.tracker);
+                    newPerson.getPersonLogic().setNextTarget();
                     return;
                 }
             }
 
             //if all the artists have been spawned then we spawn visitors
-            this.people.add(new Person(new Point2D.Double(p2d.getX(),
-                    p2d.getY()), this.prediction, DataController.getClock().getSimulatorSpeed(), false));
+            Person newPerson = new Person(new Point2D.Double(p2d.getX(),
+                    p2d.getY()), this.prediction, DataController.getClock().getSimulatorSpeed(), false);
+            this.people.add( newPerson);
+            newPerson.getPersonLogic().selectNewMap(this.activeShows,this.tracker);
+            newPerson.getPersonLogic().setNextTarget();
         }
     }
 
@@ -321,9 +332,11 @@ public class Simulator {
      * updates the new target of all people
      */
     private void pulse() {
-        ArrayList<Show> currentShows = DataController.getActiveShows();
+         activeShows = DataController.getActiveShows();
+
+        PopularityTracker tracker = new PopularityTracker();
         for (Person person : people) {
-            person.getPersonLogic().selectNewMap(currentShows);
+            person.getPersonLogic().selectNewMap(activeShows,tracker);
         }
     }
 
