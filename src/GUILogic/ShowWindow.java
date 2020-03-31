@@ -70,9 +70,9 @@ public class ShowWindow {
         descriptionArea = getShowDescriptionTextArea("", 200, 250);
         additionalArtists = new VBox();
         artistBox = getAllArtistsComboBox();
-        setupTimeList();
-        endingTime = getTimestampsComboBox(0);
-        startingTime = getTimestampsComboBox(0);
+        this.timeList = setupTimeList();
+        endingTime = getTimestampsComboBox(0,this.timeList);
+        startingTime = getTimestampsComboBox(0,this.timeList);
         gridpaneShows = new GridPane();
         try {
             this.stagePopularity = this.selectedShow.getStage().getCapacity();
@@ -560,7 +560,7 @@ public class ShowWindow {
      *
      * @return ComboBox
      */
-    public ComboBox getTimestampsComboBox(int startingIndex) {
+    public static ComboBox getTimestampsComboBox(int startingIndex, ArrayList timeList) {
         ComboBox timeBox = new ComboBox();
         timeBox.getItems().add("Select");
         timeBox.getItems().addAll(timeList.subList(startingIndex, timeList.size()));
@@ -573,8 +573,8 @@ public class ShowWindow {
      * This methode sets up the time list with all the possible times for the adding or editing.
      * This methode is necessary for both begin and end time comboboxes
      */
-    private void setupTimeList() {
-        timeList = new ArrayList<>();
+    public static ArrayList setupTimeList() {
+        ArrayList timeListed = new ArrayList<>();
         String time;
         String halftime = "";
 
@@ -591,13 +591,14 @@ public class ShowWindow {
                     time = halftime;
                 }
 
-                if (!this.timeList.contains(time)) {
-                    this.timeList.add(time);
+                if (!timeListed.contains(time)) {
+                    timeListed.add(time);
                 }
 
                 // timeBox.getItems().add(time);
             }
         }
+        return timeListed;
     }
 
     /**
@@ -635,7 +636,7 @@ public class ShowWindow {
      * @param time the selected time
      * @return the index of the given time
      */
-    public int localTimeToIndex(LocalTime time) {
+    public static int localTimeToIndex(LocalTime time) {
         int index = 1;
         index += time.getHour() * 2;
         if (time.getMinute() == 30) {
