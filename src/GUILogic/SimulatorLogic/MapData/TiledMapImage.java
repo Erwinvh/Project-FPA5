@@ -39,9 +39,9 @@ class TiledMapImage {
      */
     void addSpriteSheet(String spritesheetName, int startingGID, int mapWidth, int mapHeight) {
         try {
-            int tileSize = MapDataController.getInstance().getTileSize();
+            int tileSize = MapDataController.getTileSize();
             int counter = startingGID;
-            BufferedImage image = ImageIO.read(new File(MapDataController.getInstance().getSpritesheetsDir() + spritesheetName));
+            BufferedImage image = ImageIO.read(new File(MapDataController.getSpritesheetsDir() + spritesheetName));
 
             for (int y = 0; y < mapHeight; y++) {
                 for (int x = 0; x < mapWidth; x++) {

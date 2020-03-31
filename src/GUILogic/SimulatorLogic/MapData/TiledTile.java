@@ -33,6 +33,6 @@ class TiledTile {
      */
     void drawG(Graphics2D graphics, double opacity) {
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)opacity));
-        graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(), MapDataController.getInstance().getTileSize(), MapDataController.getInstance().getTileSize(), null);
+        graphics.drawImage(tileImage, (int) position.getX(), (int) position.getY(), MapDataController.getTileSize(), MapDataController.getTileSize(), null);
     }
 }

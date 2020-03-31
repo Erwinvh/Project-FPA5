@@ -21,7 +21,7 @@ public class DistanceMap {
     public DistanceMap(String mapName, TargetArea targetArea) {
         this.mapName = mapName;
 
-        boolean[][] walkableMap = MapDataController.getInstance().getWalkableMap();
+        boolean[][] walkableMap = MapDataController.getWalkableMap();
 
         int mapWidth = walkableMap.length;
         int mapHeight = walkableMap[0].length;
