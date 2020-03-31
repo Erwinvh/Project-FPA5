@@ -191,16 +191,7 @@ class ShowWindow {
             }
         });
 
-        cancelConfirmHBox.getChildren().add(this.cancelButton);
-        cancelConfirmHBox.getChildren().add(submitButton);
-        cancelConfirmHBox.setPadding(new Insets(10));
-        cancelConfirmHBox.setSpacing(20);
-        structure.setBottom(cancelConfirmHBox);
-
-        Scene adderScene = new Scene(structure);
-        adderScene.getStylesheets().add("Window-StyleSheet.css");
-        this.popUp.setScene(adderScene);
-        this.popUp.show();
+        FinaliseSetup(structure, cancelConfirmHBox,submitButton);
     }
 
     /**
@@ -268,16 +259,7 @@ class ShowWindow {
             }
         });
 
-        choice.getChildren().add(this.cancelButton);
-        choice.getChildren().add(submit);
-        choice.setPadding(new Insets(10));
-        choice.setSpacing(20);
-        borderPane.setBottom(choice);
-
-        Scene editScene = new Scene(borderPane);
-        editScene.getStylesheets().add("Window-StyleSheet.css");
-        this.popUp.setScene(editScene);
-        this.popUp.show();
+        FinaliseSetup(borderPane,choice,submit);
     }
 
     /**
@@ -489,18 +471,24 @@ class ShowWindow {
             }
         });
 
-        cancelConfirmButton.getChildren().add(this.cancelButton);
-        cancelConfirmButton.getChildren().add(confirmButton);
-        cancelConfirmButton.setPadding(new Insets(10));
-        cancelConfirmButton.setSpacing(20);
 
-        borderPane.setBottom(cancelConfirmButton);
-        Scene deleteScene = new Scene(borderPane);
-        deleteScene.getStylesheets().add("Window-StyleSheet.css");
-        this.popUp.setScene(deleteScene);
-        this.popUp.show();
+        FinaliseSetup(borderPane,cancelConfirmButton,confirmButton);
     }
 
+
+    public void FinaliseSetup(BorderPane borderPane, HBox choices, Button confirmButton){
+
+        choices.getChildren().add(this.cancelButton);
+        choices.getChildren().add(confirmButton);
+        choices.setPadding(new Insets(10));
+        choices.setSpacing(20);
+
+        borderPane.setBottom(choices);
+        Scene Scene = new Scene(borderPane);
+        Scene.getStylesheets().add("Window-StyleSheet.css");
+        this.popUp.setScene(Scene);
+        this.popUp.show();
+    }
     /**
      * This method makes a ComboBox with all the known Genres. it is not possible to add a Genre.
      * This method is only used once in the Adding menu and once in the Edit menu.
