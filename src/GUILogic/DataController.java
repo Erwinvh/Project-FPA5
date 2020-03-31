@@ -31,8 +31,8 @@ public class DataController {
 
     private static DataController instance;
 
-    public static DataController getInstance(){
-        if (instance == null){
+    public static DataController getInstance() {
+        if (instance == null) {
             instance = new DataController();
         }
 
@@ -76,7 +76,7 @@ public class DataController {
                         for (JsonObject artist : artists.getValuesAs(JsonObject.class)) {
                             String name = artist.getString("name");
                             String description = artist.getString("description");
-                            Genres genre = stringToGenre(artist.getString("genre"));
+                            Genres genre = Genres.getGenre(artist.getString("genre"));
                             DataController.planner.getArtists().add(new Artist(name, genre, description));
                         }
 
@@ -86,12 +86,12 @@ public class DataController {
 
                             ArrayList<Artist> artistsInShow = new ArrayList<>();
                             for (JsonObject artist : showArtists.getValuesAs(JsonObject.class)) {
-                                artistsInShow.add(new Artist(artist.getString("name"), stringToGenre(artist.getString("genre")), artist.getString("description")));
+                                artistsInShow.add(new Artist(artist.getString("name"), Genres.getGenre(artist.getString("genre")), artist.getString("description")));
                             }
 
                             Stage stageInShow = new Stage(stage.getInt("capacity"), stage.getString("name"));
                             String name = show.getString("name");
-                            Genres genre = stringToGenre(show.getString("genre"));
+                            Genres genre = Genres.getGenre(show.getString("genre"));
                             String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
@@ -157,21 +157,6 @@ public class DataController {
     }
 
     /**
-     * Converts a String to a Fancy name Genre
-     *
-     * @param text the String value of a Genre
-     * @return the genre in the instance of Genres
-     */
-    private Genres stringToGenre(String text) {
-        for (Genres genre : Genres.values()) {
-            if (text.equals(genre.getFancyName())) {
-                return genre;
-            }
-        }
-        return null;
-    }
-
-    /**
      * reads the settings file and sets the attributes of the Settings class accordingly
      */
     static void readSettings() {
@@ -189,7 +174,7 @@ public class DataController {
                         settings.setUsingPredictedPerson(settingsJson.getBoolean("Is Using Prediction"));
                         settings.setBeginHours(settingsJson.getInt("Begin hours"));
                         settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
-                        settings.setOverwriteStartTime(settingsJson.getBoolean( "Use overwrite time"));
+                        settings.setOverwriteStartTime(settingsJson.getBoolean("Use overwrite time"));
                     }
                 } catch (Exception e) {
                     System.out.println("Error loading data due to: ");
@@ -201,7 +186,6 @@ public class DataController {
             System.out.println("Was not able to gather data from " + settings.getSaveFileName() + " due to: ");
             e.printStackTrace();
         }
-
     }
 
     /**
