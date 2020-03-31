@@ -27,8 +27,11 @@ class StageWindow {
     private ScheduleTab ST;
     private VBox WindowStructure;
     private Button CancelButton;
+<<<<<<< Updated upstream
 
     private Planner plannerReference;
+=======
+>>>>>>> Stashed changes
 
     /**
      * This is the constructor of the base of the submenus.

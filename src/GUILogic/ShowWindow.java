@@ -41,8 +41,11 @@ class ShowWindow {
     private ComboBox artistBox;
     private GridPane gridPaneShows;
     private BorderPane WindowStructure;
+<<<<<<< Updated upstream
 
     private Planner plannerReference;
+=======
+>>>>>>> Stashed changes
 
     /**
      * This is the constructor of the base createLayout of the windows of the three Menus.
