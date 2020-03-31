@@ -40,6 +40,7 @@ class ShowWindow {
     private VBox additionalArtists;
     private ComboBox artistBox;
     private GridPane gridPaneShows;
+    private BorderPane WindowStructure;
 
     private Planner plannerReference;
 
@@ -61,6 +62,7 @@ class ShowWindow {
         this.popUp.initModality(Modality.WINDOW_MODAL);
         this.popUp.getIcons().add(new Image("logoA5.jpg"));
 
+        this.WindowStructure = new BorderPane();
         stageBox = getAllStagesComboBox();
         genreBox = getGenreComboBox();
         errorList = new ArrayList<>();
@@ -79,7 +81,6 @@ class ShowWindow {
         } catch (Exception e) {
             stagePopularity = 0;
         }
-
         cancelButton = new Button("Cancel");
         this.cancelButton.setOnAction(event -> this.popUp.close());
 
@@ -174,13 +175,12 @@ class ShowWindow {
      * This method allows the user to Add a new Show.
      */
     private void addShowWindow() {
-        BorderPane structure = new BorderPane();
         this.popUp.setTitle("Add Show");
 
         Label addingNew = new Label("What show do you want to add?");
-        structure.setTop(addingNew);
+        this.WindowStructure.setTop(addingNew);
 
-        structure.setCenter(AddEditSetup());
+        this.WindowStructure.setCenter(AddEditSetup());
 
         HBox cancelConfirmHBox = new HBox();
         Button submitButton = new Button("Submit");
@@ -195,19 +195,18 @@ class ShowWindow {
                 new ErrorWindow(this.popUp, this.errorList);
             }
         });
-
-        FinaliseSetup(structure, cancelConfirmHBox,submitButton);
+        FinaliseSetup(cancelConfirmHBox,submitButton);
     }
 
     /**
      * This method allows the user to edit the selected show.
      */
     private void editShowWindow() {
-        BorderPane borderPane = new BorderPane();
         this.popUp.setTitle("Edit Show");
 
         Label editShowLabel = new Label("Edit this show:");
-        borderPane.setTop(editShowLabel);
+        this.WindowStructure.setTop(editShowLabel);
+
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
@@ -240,7 +239,7 @@ class ShowWindow {
         }
         this.descriptionArea.setText(this.selectedShow.getDescription());
 
-        borderPane.setCenter(artistScroller);
+        this.WindowStructure.setCenter(artistScroller);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
@@ -264,7 +263,7 @@ class ShowWindow {
             }
         });
 
-        FinaliseSetup(borderPane,choice,submit);
+        FinaliseSetup(choice,submit);
     }
 
     /**
@@ -445,12 +444,11 @@ class ShowWindow {
      * This method allows the user to see the selected show that they wish to delete.
      */
     private void deleteShowWindow() {
-        BorderPane borderPane = new BorderPane();
         this.popUp.setTitle("Delete Show");
 
         //title
         Label deleteShowLabel = new Label("Are you sure you want to delete this show?");
-        borderPane.setTop(deleteShowLabel);
+        this.WindowStructure.setTop(deleteShowLabel);
 
         //information
         Label information = new Label("Show: " + this.selectedShow.getName() + '\n'
@@ -460,7 +458,7 @@ class ShowWindow {
                 + "Expected popularity is " + this.selectedShow.getExpectedPopularity() + " people."
                 + "with the description: " + '\n' + this.selectedShow.getDescription());
 
-        borderPane.setCenter(information);
+        this.WindowStructure.setCenter(information);
 
         //buttons
         HBox cancelConfirmButton = new HBox();
@@ -477,23 +475,28 @@ class ShowWindow {
         });
 
 
-        FinaliseSetup(borderPane,cancelConfirmButton,confirmButton);
+        FinaliseSetup(cancelConfirmButton,confirmButton);
     }
 
-
-    public void FinaliseSetup(BorderPane borderPane, HBox choices, Button confirmButton){
-
+    /**
+     * This method finalizes the setup of all three windows by showing it to the user
+     *
+     * @param choices The Horizontal box with the buttons
+     * @param confirmButton The confirm button
+     */
+    public void FinaliseSetup(HBox choices, Button confirmButton){
         choices.getChildren().add(this.cancelButton);
         choices.getChildren().add(confirmButton);
         choices.setPadding(new Insets(10));
         choices.setSpacing(20);
 
-        borderPane.setBottom(choices);
-        Scene Scene = new Scene(borderPane);
+        this.WindowStructure.setBottom(choices);
+        Scene Scene = new Scene(this.WindowStructure);
         Scene.getStylesheets().add("Window-StyleSheet.css");
         this.popUp.setScene(Scene);
         this.popUp.show();
     }
+
     /**
      * This method makes a ComboBox with all the known Genres. it is not possible to add a Genre.
      * This method is only used once in the Adding menu and once in the Edit menu.

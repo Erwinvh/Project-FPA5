@@ -13,6 +13,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
@@ -67,7 +69,15 @@ public class Simulator {
         createPredictions();
         predictedGuests = settingsReference.isUsingPredictedPerson();
 
-        ArrayList<Show> sortedShowList = plannerReference.getShows();
+        try{
+            MediaPlayer background = new MediaPlayer(new Media(getClass().getResource("/soundEffects/PawPrints.mp3").toString()));
+            background.setVolume(0.5);
+            background.setAutoPlay(true);
+        }catch (Exception e){
+
+        }
+
+        ArrayList<Show> sortedShowList = DataController.getPlanner().getShows();
         sortedShowList.sort(Show::compareToTime);
 
         if (sortedShowList.isEmpty() || sortedShowList.get(0) == null) return;
