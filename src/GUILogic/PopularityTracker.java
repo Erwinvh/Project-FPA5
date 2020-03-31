@@ -4,6 +4,10 @@ import PlannerData.Show;
 
 import java.util.ArrayList;
 
+/**
+ * A class that counts the amount of people present at shows
+ */
+
 public class PopularityTracker {
     private ArrayList<Show> activeShows;
     private ArrayList<Integer> amountAtShows;
@@ -16,6 +20,11 @@ public class PopularityTracker {
         }
     }
 
+    /**
+     * Looks if there is room for one extra visitor in a show
+     * @param show the show the visitor wants to go to
+     * @return true if there is room, false if the show is full
+     */
     public boolean canGoToShow(Show show){
         for(Show activeShow : activeShows){
             if(show == activeShow){
