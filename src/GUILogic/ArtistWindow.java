@@ -24,8 +24,16 @@ class ArtistWindow {
     private Label artistDeleteText = new Label();
     private Artist selectedArtist;
     private ScheduleTab ST;
-
+    private VBox WindowStructure;
+    private Label artistNameLabel;
+    private TextField artistName;
+    private Label artistGenreLabel = new Label("Artist genre:");
+    private ComboBox genreComboBox = new ComboBox();
     private Planner plannerReference;
+    private Label artistDescriptionLabel;
+    private TextArea artistDescription;
+    private Scene artistScene;
+    private Button Cancel;
 
     /**
      * The constructor of the artist submenu windows
@@ -42,8 +50,14 @@ class ArtistWindow {
         this.currStage.setResizable(false);
         this.currStage.getIcons().add(new Image("logoA5.jpg"));
 
+        this.currStage.setWidth(275);
+        this.currStage.setHeight(450);
         this.plannerReference = DataController.getInstance().getPlanner();
-
+        this.WindowStructure = new VBox();
+        this.WindowStructure.setPrefWidth(250);
+        this.WindowStructure.setAlignment(Pos.CENTER);
+        this.Cancel = new Button("Cancel");
+        this.Cancel.setOnAction(e -> this.currStage.close());
         switch (screenNumber) {
             case 1:
                 artistAddWindow();
@@ -58,44 +72,37 @@ class ArtistWindow {
     }
 
     /**
-     * This method sets the submenu to the Add Artist submenu.
-     * The user will be able to fill in all the required fields for an unknown artist.
+     * This methode sets up the base for the add and edit artist window.
      */
-    private void artistAddWindow() {
-        this.currStage.setWidth(275);
-        this.currStage.setHeight(450);
-        this.currStage.setTitle("Add Artist");
-
-        VBox newArtistList = new VBox();
-        newArtistList.setPrefWidth(250);
-
-        // Artist name
-        Label artistNameLabel = new Label("Artist name:");
-        TextField artistName = new TextField();
-        artistName.setPrefWidth(250);
-
-        //genre
-        Label artistGenreLabel = new Label("Artist genre:");
-        ComboBox genreComboBox = new ComboBox();
+    public void InitialSetup(){
+        this.artistNameLabel = new Label("Artist name:");
+        this.artistName = new TextField();
         genreComboBox.getItems().add("Select");
+        artistName.setPrefWidth(250);
         genreComboBox.getSelectionModel().selectFirst();
         for (Genres genre : Enumerators.Genres.values()) {
             genreComboBox.getItems().add(genre.getFancyName());
         }
-
-        //artist getShowDescription
-        Label artistDescriptionLabel = new Label("Artist's description:");
-        TextArea artistDescription = new TextArea();
+        artistDescriptionLabel = new Label("Artist's description:");
+        artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
         artistDescription.setPrefHeight(200);
+        this.WindowStructure.getChildren().addAll(artistNameLabel, artistName, artistGenreLabel, genreComboBox, artistDescriptionLabel, artistDescription);
 
-        newArtistList.getChildren().addAll(artistNameLabel, artistName, artistGenreLabel, genreComboBox, artistDescriptionLabel, artistDescription);
+    }
+
+    /**
+     * This method sets the submenu to the Add Artist submenu.
+     * The user will be able to fill in all the required fields for an unknown artist.
+     */
+    private void artistAddWindow() {
+        this.currStage.setTitle("Add Artist");
+
+InitialSetup();
 
         //buttons
         HBox cancelConfirmButtons = new HBox();
-        Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> this.currStage.close());
-        cancelConfirmButtons.getChildren().add(cancelButton);
+        cancelConfirmButtons.getChildren().add(this.Cancel);
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
@@ -111,69 +118,28 @@ class ArtistWindow {
             }
         });
 
-        cancelConfirmButtons.getChildren().add(confirmButton);
-
-        cancelConfirmButtons.setPadding(new Insets(10));
-        cancelConfirmButtons.setSpacing(20);
-
-        newArtistList.getChildren().add(cancelConfirmButtons);
-
         ScrollPane artistScroller = new ScrollPane();
-        artistScroller.setContent(newArtistList);
-        newArtistList.setAlignment(Pos.CENTER);
-
-        Scene artistAddScene = new Scene(artistScroller);
-        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
-        this.currStage.setScene(artistAddScene);
-        this.currStage.show();
+        artistScroller.setContent(this.WindowStructure);
+        finalizeSetup(cancelConfirmButtons, confirmButton);
     }
 
     /**
      * The further setup of the submenu for editing an artist
      */
     private void artistEditWindow() {
-        this.currStage.setWidth(275);
-        this.currStage.setHeight(450);
         this.currStage.setTitle("Edit Artist");
 
-        VBox newArtistList = new VBox();
         Label startEdit = new Label("Which artist do you want to edit?");
-        newArtistList.getChildren().add(startEdit);
+        this.WindowStructure.getChildren().add(startEdit);
         ComboBox artistComboBox = new ComboBox();
-
         artistComboBox.getItems().add("Select artist");
         for (Artist artist : plannerReference.getArtists()) {
             artistComboBox.getItems().add(artist.getName());
         }
-
         artistComboBox.getSelectionModel().selectFirst();
+        this.WindowStructure.getChildren().add(artistComboBox);
 
-        newArtistList.getChildren().add(artistComboBox);
-        newArtistList.setPrefWidth(250);
-
-        //artist name
-        Label artistNameLabel = new Label("Artist name:");
-        TextField artistName = new TextField();
-        artistName.setPrefWidth(250);
-        newArtistList.getChildren().addAll(artistNameLabel, artistName);
-
-        //genre
-        Label artistGenreLabel = new Label("Artist's genres:");
-        newArtistList.getChildren().add(artistGenreLabel);
-        ComboBox genreComboBox = new ComboBox();
-
-        for (Genres genre : Enumerators.Genres.values()) {
-            genreComboBox.getItems().add(genre.getFancyName());
-        }
-
-        newArtistList.getChildren().add(genreComboBox);
-
-        //artist getShowDescription
-        Label artistDescriptionLabel = new Label("Artist's description:");
-        TextArea artistDescription = new TextArea();
-        artistDescription.setPrefWidth(250);
-        artistDescription.setPrefHeight(150);
-        newArtistList.getChildren().addAll(artistDescriptionLabel, artistDescription);
+InitialSetup();
 
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("Select artist")) {
@@ -228,21 +194,15 @@ class ArtistWindow {
             }
         });
 
-        choice.getChildren().add(confirmButton);
-
         choice.setPadding(new Insets(10));
         choice.setSpacing(20);
-        newArtistList.getChildren().add(choice);
 
         ScrollPane artistScrollPane = new ScrollPane();
-        artistScrollPane.setContent(newArtistList);
-        newArtistList.setAlignment(Pos.CENTER);
+        artistScrollPane.setContent(this.WindowStructure);
+        this.WindowStructure.setAlignment(Pos.CENTER);
 
-        Scene artistAddScene = new Scene(artistScrollPane);
-        artistAddScene.getStylesheets().add("Window-StyleSheet.css");
-        this.currStage.setScene(artistAddScene);
 
-        this.currStage.show();
+        finalizeSetup(choice,confirmButton);
     }
 
     /**
@@ -250,11 +210,7 @@ class ArtistWindow {
      */
     private void artistDeleteWindow() {
         this.currStage.setTitle("Delete Artist");
-        this.currStage.setWidth(275);
-        this.currStage.setHeight(400);
 
-        VBox newArtistList = new VBox();
-        newArtistList.setPrefWidth(250);
         HBox header = new HBox();
         header.getChildren().add(new Label("Choose the artist you want to delete:"));
 
@@ -273,7 +229,6 @@ class ArtistWindow {
                 }
             } else {
                 this.artistDeleteText.textProperty().setValue("         " + '\n');
-
             }
         });
 
@@ -307,20 +262,25 @@ class ArtistWindow {
 
         });
 
-        cancelConfirmButtons.getChildren().add(confirmButton);
+        this.WindowStructure.getChildren().add(header);
+        this.WindowStructure.getChildren().add(this.artistDeleteText);
 
-        cancelConfirmButtons.setPadding(new Insets(10));
-        cancelConfirmButtons.setSpacing(20);
-        newArtistList.getChildren().add(cancelConfirmButtons);
+        finalizeSetup(cancelConfirmButtons, confirmButton );
+    }
 
-        BorderPane structure = new BorderPane();
-        structure.setTop(header);
-        structure.setCenter(this.artistDeleteText);
-        structure.setBottom(cancelConfirmButtons);
-
-        Scene artistDeleteScene = new Scene(structure);
-        artistDeleteScene.getStylesheets().add("Window-StyleSheet.css");
-        this.currStage.setScene(artistDeleteScene);
+    /**
+     * This method finishes the artist windows and allow the user to see them.
+     * @param choices The HBox with the cancel and confirm buttons
+     * @param confirm The confirm button
+     */
+    public void finalizeSetup(HBox choices,Button confirm){
+        choices.setPadding(new Insets(10));
+        choices.setSpacing(20);
+        choices.getChildren().add(confirm);
+        this.WindowStructure.getChildren().add(choices);
+        this.artistScene = new Scene(this.WindowStructure);
+        this.artistScene.getStylesheets().add("Window-StyleSheet.css");
+        this.currStage.setScene(this.artistScene);
         this.currStage.show();
     }
 
