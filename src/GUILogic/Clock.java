@@ -5,19 +5,7 @@ public class Clock {
     private double seconds;
     private double simulatorSpeed;
     private boolean intervalPassed;
-
-    /**
-     * The constructor for the Clock
-     */
-    Clock() {
-        //Settings settings = DataController.getInstance().getSettings();
-//        this.hours = settings.getBeginHours();
-//        this.minutes = settings.getBeginMinutes();
-//        this.seconds = 0;
-//        this.simulatorSpeed = 90 * settings.getSimulatorSpeed();
-//        this.intervalPassed = false;
-    }
-
+    
     /**
      * function adds the corresponding time by calculating how much time has passed
      *
