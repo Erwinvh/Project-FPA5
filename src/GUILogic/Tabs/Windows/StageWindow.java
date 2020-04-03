@@ -6,6 +6,7 @@ import GUILogic.Tabs.Windows.ErrorWindow;
 import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -75,8 +76,8 @@ public class StageWindow {
         this.currentStage.setWidth(200);
         this.currentStage.setHeight(250);
         this.stageNameTextField = new TextField();
-        this.stageNameLabel = new Label("Stage Name:");
-        this.stageCapacityLabel = new Label("Stage Capacity:");
+        this.stageNameLabel = new Label("Stage name:");
+        this.stageCapacityLabel = new Label("Stage capacity:");
         this.inputTextField = new TextField();
         this.WindowStructure.getChildren().addAll(stageNameLabel, stageNameTextField, stageCapacityLabel, inputTextField);
     }
@@ -87,7 +88,7 @@ public class StageWindow {
      */
     private void stageAddWindow() {
         AddEditSetup();
-        this.currentStage.setTitle("Add Stage");
+        this.currentStage.setTitle("Add stage");
 
         HBox cancelConfirmButton = new HBox();
         cancelConfirmButton.getChildren().add(this.CancelButton);
@@ -106,7 +107,7 @@ public class StageWindow {
      * The submenu window for the editing of a Stage
      */
     private void editStageWindow() {
-        this.currentStage.setTitle("Edit Stage");
+        this.currentStage.setTitle("Edit stage");
         Label startEdit = new Label("Which stage do you want to edit?");
         this.WindowStructure.getChildren().add(startEdit);
         ComboBox stageBox = new ComboBox();
@@ -166,7 +167,8 @@ public class StageWindow {
      */
     private void deleteStageWindow() {
         HBox startLine = new HBox();
-        this.currentStage.setTitle("Delete Stage");
+        this.currentStage.setTitle("Delete stage");
+        this.currentStage.setHeight(250);
         startLine.getChildren().add(new Label("Choose the stage you want to delete:"));
 
         ComboBox stageBox = new ComboBox();

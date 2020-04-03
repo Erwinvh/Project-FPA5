@@ -179,7 +179,7 @@ public class ShowWindow {
      * This method allows the user to Add a new Show.
      */
     private void addShowWindow() {
-        this.popUp.setTitle("Add Show");
+        this.popUp.setTitle("Add show");
 
         Label addingNew = new Label("What show do you want to add?");
         this.WindowStructure.setTop(addingNew);
@@ -206,7 +206,7 @@ public class ShowWindow {
      * This method allows the user to edit the selected show.
      */
     private void editShowWindow() {
-        this.popUp.setTitle("Edit Show");
+        this.popUp.setTitle("Edit show");
 
         Label editShowLabel = new Label("Edit this show:");
         this.WindowStructure.setTop(editShowLabel);
@@ -381,7 +381,7 @@ public class ShowWindow {
         }
         //description
         if (this.descriptionArea.getText().length() == 0) {
-            this.errorList.add("No Description ahs been added.");
+            this.errorList.add("No description ahs been added.");
         } else {
             descriptionShow = descriptionArea.getText();
         }
@@ -451,7 +451,7 @@ public class ShowWindow {
      * This method allows the user to see the selected show that they wish to delete.
      */
     private void deleteShowWindow() {
-        this.popUp.setTitle("Delete Show");
+        this.popUp.setTitle("Delete show");
 
         //title
         Label deleteShowLabel = new Label("Are you sure you want to delete this show?");
