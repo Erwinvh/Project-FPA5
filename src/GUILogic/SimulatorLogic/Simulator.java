@@ -10,8 +10,6 @@ import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.animation.AnimationTimer;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
@@ -114,8 +112,6 @@ public class Simulator {
             }
         }.start();
 
-        canvas.setOnMouseClicked(this::onMousePressed);
-
         draw(graphics);
     }
 
@@ -210,21 +206,6 @@ public class Simulator {
         }
 
         return true;
-    }
-
-    /**
-     * This method handles the mouse event when its pressed
-     *
-     * @param e the mouse event
-     */
-    private void onMousePressed(MouseEvent e) {
-        if (e.getButton() == MouseButton.PRIMARY) {
-            for (Person person : this.people) {
-                if (person.getPersonLogic().getPosition().distance(new Point2D.Double(e.getX(), e.getY())) < 64) {
-                    person.playSoundEffect();
-                }
-            }
-        }
     }
 
     /**

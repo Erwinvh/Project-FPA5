@@ -27,14 +27,11 @@ public class ArtistWindow {
     private Artist selectedArtist;
     private ScheduleTab ST;
     private VBox WindowStructure;
-    private Label artistNameLabel;
     private TextField artistName;
     private Label artistGenreLabel = new Label("Artist genre:");
     private ComboBox genreComboBox = new ComboBox();
     private Planner plannerReference;
-    private Label artistDescriptionLabel;
     private TextArea artistDescription;
-    private Scene artistScene;
     private Button Cancel;
 
     /**
@@ -77,7 +74,7 @@ public class ArtistWindow {
      * This methode sets up the base for the add and edit artist window.
      */
     public void InitialSetup(){
-        this.artistNameLabel = new Label("Artist name:");
+        Label artistNameLabel = new Label("Artist name:");
         this.artistName = new TextField();
         genreComboBox.getItems().add("Select");
         artistName.setPrefWidth(250);
@@ -85,7 +82,7 @@ public class ArtistWindow {
         for (Genres genre : Enumerators.Genres.values()) {
             genreComboBox.getItems().add(genre.getFancyName());
         }
-        artistDescriptionLabel = new Label("Artist's description:");
+        Label artistDescriptionLabel = new Label("Artist's description:");
         artistDescription = new TextArea();
         artistDescription.setPrefWidth(250);
         artistDescription.setPrefHeight(200);
@@ -238,10 +235,7 @@ InitialSetup();
 
         //buttons
         HBox cancelConfirmButtons = new HBox();
-        Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> this.currStage.close());
-        cancelConfirmButtons.getChildren().add(cancelButton);
-
+        cancelConfirmButtons.getChildren().add(this.Cancel);
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
             if (!artistComboBox.getValue().toString().equals("Select artist")) {
@@ -280,9 +274,9 @@ InitialSetup();
         choices.setSpacing(20);
         choices.getChildren().add(confirm);
         this.WindowStructure.getChildren().add(choices);
-        this.artistScene = new Scene(this.WindowStructure);
-        this.artistScene.getStylesheets().add("Window-StyleSheet.css");
-        this.currStage.setScene(this.artistScene);
+        Scene artistScene = new Scene(this.WindowStructure);
+        artistScene.getStylesheets().add("Window-StyleSheet.css");
+        this.currStage.setScene(artistScene);
         this.currStage.show();
     }
 
