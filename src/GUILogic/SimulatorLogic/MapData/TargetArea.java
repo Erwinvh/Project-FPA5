@@ -65,7 +65,6 @@ public class TargetArea {
 
     /**
      * The setter for the name of the target area
-     * @param name
      */
     public void setName(String name) {
         this.name = name;
