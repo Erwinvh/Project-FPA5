@@ -54,10 +54,9 @@ public class ErrorWindow {
 
         Scene errorScene = new Scene(baseStructure);
         errorScene.getStylesheets().add("Window-StyleSheet.css");
-        Scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        errorScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent ke) {
                 if (ke.getCode() == KeyCode.ESCAPE) {
-                    System.out.println("Key Pressed: " + ke.getCode());
                     getErrorStage().close();
                 }
             }

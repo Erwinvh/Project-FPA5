@@ -282,7 +282,6 @@ InitialSetup();
         artistScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent ke) {
                 if (ke.getCode() == KeyCode.ESCAPE) {
-                    System.out.println("Key Pressed: " + ke.getCode());
                     getCurrStage().close();
                 }
                 if (ke.getCode()==KeyCode.ENTER){
