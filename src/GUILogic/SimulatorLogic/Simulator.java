@@ -2,10 +2,10 @@ package GUILogic.SimulatorLogic;
 
 import GUILogic.Clock;
 import GUILogic.DataController;
-import GUILogic.SimulatorLogic.NPCLogic.PopularityTracker;
 import GUILogic.Settings;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.NPCLogic.Person;
+import GUILogic.SimulatorLogic.NPCLogic.PopularityTracker;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;

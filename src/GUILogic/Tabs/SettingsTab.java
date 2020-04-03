@@ -276,7 +276,6 @@ public class SettingsTab {
         int beginTimeHours = Integer.parseInt(beginTime.getValue().toString().substring(0, 2));
         int beginTimeMinutes = Integer.parseInt(beginTime.getValue().toString().substring(3, 5));
         boolean overwriteTime = overwriteStartTime.isSelected();
-
         // writes settings into JSON file settings.json
         try (JsonWriter writer = Json.createWriter(new FileWriter(this.saveFileName))) {
             JsonObjectBuilder settingsBuilder = Json.createObjectBuilder();
