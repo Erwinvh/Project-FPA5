@@ -381,7 +381,7 @@ public class ShowWindow {
         }
         //description
         if (this.descriptionArea.getText().length() == 0) {
-            this.errorList.add("No description ahs been added.");
+            this.errorList.add("No description has been added.");
         } else {
             descriptionShow = descriptionArea.getText();
         }
@@ -528,7 +528,7 @@ public class ShowWindow {
      */
     private ComboBox getAllStagesComboBox() {
         ComboBox stageBox = new ComboBox();
-        stageBox.getItems().add("Select stage");
+        stageBox.getItems().add("Select");
         stageBox.getSelectionModel().selectFirst();
         for (PlannerData.Stage stage : plannerReference.getStages()) {
             stageBox.getItems().add(stage.getName());

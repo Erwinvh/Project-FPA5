@@ -161,13 +161,12 @@ public class ScheduleTab {
             }
 
             VBox descriptionBase = new VBox();
-            descriptionBase.getChildren().add(new Label("Show:"));
             TextFlow showDescriptionTextFlow = new TextFlow();
 
             Text textTitle = new Text(this.selectedItem.getName());
             textTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 40");
 
-            Text textDescrTitle = new Text("\n\n Show Description:");
+            Text textDescrTitle = new Text("\n\n Show description:");
             textDescrTitle.setStyle("-fx-font-weight: bold;");
 
             Text textDescription = new Text("\n" + this.selectedItem.getDescription());
@@ -215,11 +214,11 @@ public class ScheduleTab {
      */
     private void getButtons() {
         //Add show button
-        Button addButton = new Button("Add Show");
+        Button addButton = new Button("Add show");
         addButton.setOnAction(event -> new ShowWindow(1, this.primaryStage, this, null));
 
         //Edit show button
-        Button editButton = new Button("Edit Show");
+        Button editButton = new Button("Edit show");
         editButton.setOnAction(event -> {
             try {
                 this.selectedItem = this.table.getSelectionModel().getSelectedItem();
@@ -232,7 +231,7 @@ public class ScheduleTab {
         });
 
         //Delete show button
-        Button deleteButton = new Button("Delete Show");
+        Button deleteButton = new Button("Delete show");
         deleteButton.setOnAction(event -> {
             try {
                 this.selectedItem = this.table.getSelectionModel().getSelectedItem();
@@ -245,15 +244,15 @@ public class ScheduleTab {
         });
 
         //Add artist button
-        Button addArtistButton = new Button("Add Artist");
+        Button addArtistButton = new Button("Add artist");
         addArtistButton.setOnAction(event -> new ArtistWindow(1, this.primaryStage, this));
 
         //Edit artist button
-        Button editArtistButton = new Button("Edit Artist");
+        Button editArtistButton = new Button("Edit artist");
         editArtistButton.setOnAction(event -> {
             if (plannerReference.getArtists().isEmpty()) {
                 this.errorList.clear();
-                this.errorList.add("There is no Artist to edit.");
+                this.errorList.add("There is no artist to edit.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
                 new ArtistWindow(2, this.primaryStage, this);
@@ -261,11 +260,11 @@ public class ScheduleTab {
         });
 
         //Delete artist button
-        Button deleteArtistButton = new Button("Delete Artist");
+        Button deleteArtistButton = new Button("Delete artist");
         deleteArtistButton.setOnAction(event -> {
             if (plannerReference.getArtists().isEmpty()) {
                 this.errorList.clear();
-                this.errorList.add("There is no Artist to delete.");
+                this.errorList.add("There is no artist to delete.");
                 new ErrorWindow(this.primaryStage, this.errorList);
             } else {
                 new ArtistWindow(3, this.primaryStage, this);
@@ -273,7 +272,7 @@ public class ScheduleTab {
         });
 
         //Add stage button
-        Button addStageButton = new Button("Add Stage");
+        Button addStageButton = new Button("Add stage");
         addStageButton.setOnAction(event -> {
             if (plannerReference.getStages().size() <= 5) {
                 new StageWindow(4, this.primaryStage, this);
@@ -285,7 +284,7 @@ public class ScheduleTab {
         });
 
         //Edit stage button
-        Button editStageButton = new Button("Edit Stage");
+        Button editStageButton = new Button("Edit stage");
         editStageButton.setOnAction(event -> {
             if (plannerReference.getStages().isEmpty()) {
                 this.errorList.clear();
@@ -297,7 +296,7 @@ public class ScheduleTab {
         });
 
         //Delete stage button
-        Button deleteStageButton = new Button("Delete Stage");
+        Button deleteStageButton = new Button("Delete stage");
         deleteStageButton.setOnAction(event -> {
             if (plannerReference.getStages().isEmpty()) {
                 this.errorList.clear();
