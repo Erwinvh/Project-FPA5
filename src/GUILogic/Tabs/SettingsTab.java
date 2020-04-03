@@ -138,6 +138,7 @@ public class SettingsTab {
 //            beginTime.getItems().add(i);
 //        }
 //
+        beginTime.getItems().remove("Select");
         if (settingsReference.getBeginHours() >= 0) {
             String time;
             if (settingsReference.getBeginHours() <= 9) {
@@ -268,14 +269,6 @@ public class SettingsTab {
      * Saves the applied settings of the simulator to a Jsonfile
      */
     private void saveSettings() {
-        //gets Settings from DataController and reads settingsTab chosen fields.
-        Settings settings = DataController.getInstance().getSettings();
-        double simSpeed = speedSlider.getValue();
-        double visPerNPC = NPCAmountSlider.getValue();
-        boolean predic = prediction.isSelected();
-        int beginTimeHours = Integer.parseInt(beginTime.getValue().toString().substring(0, 2));
-        int beginTimeMinutes = Integer.parseInt(beginTime.getValue().toString().substring(3, 5));
-        boolean overwriteTime = overwriteStartTime.isSelected();
         // writes settings into JSON file settings.json
         try (JsonWriter writer = Json.createWriter(new FileWriter(this.saveFileName))) {
             JsonObjectBuilder settingsBuilder = Json.createObjectBuilder();
