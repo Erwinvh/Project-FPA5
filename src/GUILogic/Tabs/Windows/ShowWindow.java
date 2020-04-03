@@ -7,11 +7,14 @@ import GUILogic.Tabs.Windows.ErrorWindow;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -269,6 +272,8 @@ public class ShowWindow {
         FinaliseSetup(choice,submit);
     }
 
+
+
     /**
      * This method checks the input of the added and edited show and returns the show that needs to be set in the planner
      *
@@ -346,7 +351,7 @@ public class ShowWindow {
 
                 for (Artist artist : addedArtists) {
                     if (artist.getName().equals(comboBoxString)) {
-                        this.errorList.add("you have a duplicate artist in the artists.");
+                        this.errorList.add("You have a duplicate artist in the artists.");
                     }
                 }
 
@@ -481,11 +486,30 @@ public class ShowWindow {
         choices.setPadding(new Insets(10));
         choices.setSpacing(20);
 
+
         this.WindowStructure.setBottom(choices);
         Scene Scene = new Scene(this.WindowStructure);
         Scene.getStylesheets().add("Window-StyleSheet.css");
+        Scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.ESCAPE) {
+                    getPopUp().close();
+                }
+                if (ke.getCode()==KeyCode.ENTER){
+                    confirmButton.fire();
+                }
+            }
+        });
         this.popUp.setScene(Scene);
         this.popUp.show();
+    }
+
+    /**
+     * The getter for the show window stage
+     * @return The show window stage
+     */
+    public Stage getPopUp() {
+        return popUp;
     }
 
     /**

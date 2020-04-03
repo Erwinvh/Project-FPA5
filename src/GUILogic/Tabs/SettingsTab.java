@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -36,6 +37,7 @@ public class SettingsTab {
     private CheckBox prediction;
     private ComboBox beginTime;
     private CheckBox overwriteStartTime;
+    private Label Predictionexplanation;
 
     private Settings settingsReference;
 
@@ -59,6 +61,10 @@ public class SettingsTab {
 
         this.prediction = new CheckBox();
         prediction.setSelected(settingsReference.isUsingPredictedPerson());
+        Predictionexplanation = new Label("This feature creates a more realistic view \n of the type of visitor the festival will attract.\n When it is turned off the simulator will spawn\n random types of visitors. \n If on it will spawn the predicted visitors.");
+        Predictionexplanation.setVisible(false);
+        prediction.setOnMouseEntered(event -> Predictionexplanation.setVisible(true));
+        prediction.setOnMouseExited(event -> Predictionexplanation.setVisible(false));
 
         this.beginTime = new ComboBox();
         beginTime.setValue(DataController.getInstance().getSettings().getBeginHours());
@@ -83,8 +89,10 @@ public class SettingsTab {
         split.setHgap(200);
         split.setVgap(20);
 
-        Label planner = new Label("Planner settings");
-        Label simulator = new Label("Simulator settings");
+        Text planner = new Text("Planner settings");
+        planner.setStyle("-fx-font-weight: bold;");
+        Text simulator = new Text("Simulator settings");
+        simulator.setStyle("-fx-font-weight: bold;");
 
         Label speed = new Label("Simulator speed");
         Label NPCAmount = new Label("Amount of visitors");
@@ -180,6 +188,7 @@ public class SettingsTab {
         split.add(amountLabel, 3, 5);
 
         split.add(prediction, 2, 6);
+        split.add(Predictionexplanation,3,6);
         split.add(saveButton, 2, 10);
         split.add(resetButton, 3, 10);
 
