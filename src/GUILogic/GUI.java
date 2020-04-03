@@ -25,9 +25,9 @@ public class GUI extends Application {
         tabPane.getTabs().addAll(scheduleTab.getScheduleTab(), visualTab.getVisualTab(), simulatorTab.getSimulatorTab(), settingsTab.getSettingsTab());
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-            if (newTab == visualTab.getVisualTab()) {
+            if (newTab.equals(visualTab.getVisualTab())) {
                 visualTab.update();
-            } else if (newTab == scheduleTab.getScheduleTab()) {
+            } else if (newTab.equals(scheduleTab.getScheduleTab())) {
                 scheduleTab.resetData();
             }
         });
@@ -44,5 +44,7 @@ public class GUI extends Application {
         primaryStage.show();
     }
 
-    public static SimulatorTab getSimulatorTab(){ return simulatorTab; }
+    public static SimulatorTab getSimulatorTab() {
+        return simulatorTab;
+    }
 }

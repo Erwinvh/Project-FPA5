@@ -161,17 +161,12 @@ public class DataController {
     /**
      * reads the settings file and sets the attributes of the Settings class accordingly
      */
-     public void readSettings() {
+    public void readSettings() {
         try {
             File file = new File(settings.getSaveFileName());
             if (!file.exists()) {
                 file.createNewFile();
-                settings.setSimulatorSpeed(1);
-                settings.setVisitors(100);
-                settings.setUsingPredictedPerson(false);
-                settings.setBeginHours(0);
-                settings.setBeginMinutes(0);
-                settings.setOverwriteStartTime(false);
+                setDefaultSettings();
             } else {
                 try (Reader reader = new FileReader(settings.getSaveFileName())) {
                     if (file.length() != 0) {
@@ -183,15 +178,7 @@ public class DataController {
                         settings.setBeginHours(settingsJson.getInt("Begin hours"));
                         settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
                         settings.setOverwriteStartTime(settingsJson.getBoolean("Use overwrite time"));
-                    }
-                    else {
-                        settings.setSimulatorSpeed(1);
-                        settings.setVisitors(100);
-                        settings.setUsingPredictedPerson(false);
-                        settings.setBeginHours(0);
-                        settings.setBeginMinutes(0);
-                        settings.setOverwriteStartTime(false);
-                    }
+                    } else setDefaultSettings();
                 } catch (Exception e) {
                     System.out.println("Error loading data due to: ");
                     e.printStackTrace();
@@ -202,6 +189,15 @@ public class DataController {
             System.out.println("Was not able to gather data from " + settings.getSaveFileName() + " due to: ");
             e.printStackTrace();
         }
+    }
+
+    private void setDefaultSettings() {
+        settings.setSimulatorSpeed(1);
+        settings.setVisitors(100);
+        settings.setUsingPredictedPerson(false);
+        settings.setBeginHours(0);
+        settings.setBeginMinutes(0);
+        settings.setOverwriteStartTime(false);
     }
 
     /**

@@ -23,7 +23,7 @@ public class Settings {
     /**
      * setter fot the overwrite option
      */
-    public void setOverwriteStartTime(boolean overwriteStartTime) {
+    void setOverwriteStartTime(boolean overwriteStartTime) {
         this.overwriteStartTime = overwriteStartTime;
     }
 
@@ -37,7 +37,7 @@ public class Settings {
     /**
      * A setter for the begin time hours
      */
-    public void setBeginHours(int beginHours) {
+    void setBeginHours(int beginHours) {
         this.beginHours = beginHours;
     }
 
@@ -51,7 +51,7 @@ public class Settings {
     /**
      * the setter for the beginTime minutes
      */
-    public void setBeginMinutes(int beginMinutes) {
+    void setBeginMinutes(int beginMinutes) {
         this.beginMinutes = beginMinutes;
     }
 
@@ -74,7 +74,7 @@ public class Settings {
      * a setter for the simulator speed,
      * a multiplier for the standard simulator speed
      */
-    public void setSimulatorSpeed(double simulatorSpeed) {
+    void setSimulatorSpeed(double simulatorSpeed) {
         this.simulatorSpeed = simulatorSpeed;
     }
 
@@ -88,7 +88,7 @@ public class Settings {
     /**
      * a setter for the amount of visitors
      */
-    public void setVisitors(int visitorsPerPerson) {
+    void setVisitors(int visitorsPerPerson) {
         this.visitors = visitorsPerPerson;
     }
 
@@ -102,7 +102,7 @@ public class Settings {
     /**
      * a setter for if the visitor Favorite Genre prediction is being used
      */
-    public void setUsingPredictedPerson(boolean usingPredictedPerson) {
+    void setUsingPredictedPerson(boolean usingPredictedPerson) {
         this.usingPredictedPerson = usingPredictedPerson;
     }
 }

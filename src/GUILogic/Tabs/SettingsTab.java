@@ -220,7 +220,7 @@ public class SettingsTab {
             text.setText("Are you sure you want to delete all shows?\nThis change cannot be undone!");
             confirm.setOnAction(e -> plannerReference.deleteShows());
         } else {
-            text.setText("Are you sure you want to delete all?" + '\n' + "This change cannot be undone!");
+            text.setText("Are you sure you want to delete all?\nThis change cannot be undone!");
             confirm.setOnAction(e -> plannerReference.deleteAll());
         }
 
