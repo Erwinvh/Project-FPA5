@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -99,7 +100,6 @@ public class ScheduleTab {
         this.table.setPrefHeight(600);
 
         this.table.getColumns().addAll(nameColumn, beginTimeCol, endTimeCol, stageCol, artistCol, genreCol, popularityCol);
-
         fillTable();
     }
 
@@ -113,6 +113,8 @@ public class ScheduleTab {
         this.table.setItems(this.data);
         this.table.getSelectionModel().selectFirst();
         this.table.setOnMouseClicked(event -> getShowDescription());
+
+        this.table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
     }
 
     /**
