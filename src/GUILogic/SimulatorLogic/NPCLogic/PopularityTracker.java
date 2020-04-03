@@ -10,12 +10,11 @@ import java.util.HashMap;
  * A class that counts the amount of people present at shows
  */
 public class PopularityTracker {
-    HashMap<Show, Integer> peopleAtShows;
-    private ArrayList<Show> activeShows;
+    private HashMap<Show, Integer> peopleAtShows;
 
     public PopularityTracker() {
         peopleAtShows = new HashMap<>();
-        activeShows = DataController.getInstance().getActiveShows();
+        ArrayList<Show> activeShows = DataController.getInstance().getActiveShows();
         for (Show show : activeShows) {
             peopleAtShows.put(show, 0);
         }
@@ -27,7 +26,7 @@ public class PopularityTracker {
      * @param show the show the visitor wants to go to
      * @return true if there is room, false if the show is full
      */
-    public boolean canGoToShow(Show show) {
+    boolean canGoToShow(Show show) {
         for (Show activeShow : peopleAtShows.keySet()) {
             if (show.equals(activeShow)) {
                 if (show.getStage().getCapacity() >= peopleAtShows.get(show) + 1) {

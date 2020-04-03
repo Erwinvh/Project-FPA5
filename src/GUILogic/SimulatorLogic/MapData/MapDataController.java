@@ -107,21 +107,13 @@ public class MapDataController {
         }
 
         ArrayList<TargetArea> idles = new ArrayList<>();
-        for(TargetArea targetArea : targetAreas){
-            if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.ALL){
+        for (TargetArea targetArea : targetAreas) {
+            if (targetArea.getTargetAreaType() == TargetArea.TargetAreaType.ALL) {
                 idles.add(targetArea);
             }
         }
-        this.idleTargetAreas = idles;
-    }
 
-    /**
-     * The getter for array list of distance maps
-     *
-     * @return The list of distance maps
-     */
-    public static DistanceMap[] getDistanceMaps() {
-        return distanceMaps;
+        idleTargetAreas = idles;
     }
 
     /**
@@ -207,7 +199,6 @@ public class MapDataController {
         graphics.drawImage(dayImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
     }
 
-
     /**
      * The getter for the walkable map
      *
@@ -273,7 +264,6 @@ public class MapDataController {
 
     /**
      * A getter for the idle areas
-     * @return
      */
     public static ArrayList<TargetArea> getIdleTargetAreas() {
         return idleTargetAreas;

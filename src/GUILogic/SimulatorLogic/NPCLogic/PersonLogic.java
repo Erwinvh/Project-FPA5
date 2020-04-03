@@ -94,7 +94,7 @@ public class PersonLogic {
         }
 
         ArrayList<TargetArea> idleAreas = MapDataController.getIdleTargetAreas();
-        int idleAreaIndex = (int) (Math.random() * idleAreas.size() );
+        int idleAreaIndex = (int) (Math.random() * idleAreas.size());
         this.distanceMap = MapDataController.getDistanceMap(idleAreas.get(idleAreaIndex));
     }
 
@@ -118,22 +118,22 @@ public class PersonLogic {
 
         TargetArea[] targetAreas = MapDataController.getTargetAreas();
         int stageIndex = stages.indexOf(searchingStage);
-        for(TargetArea targetArea : targetAreas){
-            if(isArtist){
+        for (TargetArea targetArea : targetAreas) {
+            if (isArtist) {
                 if (targetArea.getName().equals("ArtistStage" + (stageIndex + 1))) {
-                    if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.ARTIST) {
+                    if (targetArea.getTargetAreaType() == TargetArea.TargetAreaType.ARTIST) {
                         return MapDataController.getDistanceMap(targetArea);
                     }
                 }
-            }
-            else {
-                if(targetArea.getName().equals("VisitorStage" + (stageIndex + 1))){
-                    if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.VISITOR){
+            } else {
+                if (targetArea.getName().equals("VisitorStage" + (stageIndex + 1))) {
+                    if (targetArea.getTargetAreaType() == TargetArea.TargetAreaType.VISITOR) {
                         return MapDataController.getDistanceMap(targetArea);
                     }
                 }
             }
         }
+
         return null;
     }
 
