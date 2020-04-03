@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -37,7 +36,6 @@ public class SettingsTab {
     private CheckBox prediction;
     private ComboBox beginTime;
     private CheckBox overwriteStartTime;
-    private Label Predictionexplanation;
 
     private Settings settingsReference;
 
@@ -61,10 +59,6 @@ public class SettingsTab {
 
         this.prediction = new CheckBox();
         prediction.setSelected(settingsReference.isUsingPredictedPerson());
-        Predictionexplanation = new Label("This feature creates a more realistic view \n of the type of visitor the festival will attract.\n When it is turned off the simulator will spawn\n random types of visitors. \n If on it will spawn the predicted visitors.");
-        Predictionexplanation.setVisible(false);
-        prediction.setOnMouseEntered(event -> Predictionexplanation.setVisible(true));
-        prediction.setOnMouseExited(event -> Predictionexplanation.setVisible(false));
 
         this.beginTime = new ComboBox();
         beginTime.setValue(DataController.getInstance().getSettings().getBeginHours());
@@ -90,9 +84,9 @@ public class SettingsTab {
         gridPane.setVgap(20);
 
         Label plannerSettings = new Label("Planner settings");
-        planner.setStyle("-fx-font-weight: bold;");
+        plannerSettings.setStyle("-fx-font-weight: bold;");
         Label simulatorSettings = new Label("Simulator settings");
-        simulator.setStyle("-fx-font-weight: bold;");
+        simulatorSettings.setStyle("-fx-font-weight: bold;");
 
         Label simulatorSpeed = new Label("Simulator speed");
         Label NPCAmount = new Label("Amount of visitors");
@@ -105,7 +99,7 @@ public class SettingsTab {
 
         //Prediction checkbox
         prediction.setText("Predicted types of guests");
-
+        prediction.setTooltip(new Tooltip("This feature creates a more realistic view \n of the type of visitor the festival will attract.\n When it is turned off the simulator will spawn\n random types of visitors. \n If on it will spawn the predicted visitors."));
         //Simulator speed slider
         speedSlider.setMax(2);
         speedSlider.setMin(0);
@@ -190,7 +184,6 @@ public class SettingsTab {
         gridPane.add(prediction, 2, 6);
         gridPane.add(saveButton, 2, 10);
         gridPane.add(resetButton, 3, 10);
-        split.add(Predictionexplanation,3,6);
 
         gridPane.add(timeLabel, 2, 7);
         gridPane.add(beginTime, 2, 8);
