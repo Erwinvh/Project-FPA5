@@ -65,6 +65,7 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         peopleAmount = settingsReference.getVisitors();
+        peopleAmount = Math.max(1,peopleAmount);
         prediction = new ArrayList<>();
         createPredictions();
         predictedGuests = settingsReference.isUsingPredictedPerson();
