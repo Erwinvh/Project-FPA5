@@ -5,13 +5,7 @@ public class Clock {
     private double seconds;
     private double simulatorSpeed;
     private boolean intervalPassed;
-
-    /**
-     * The constructor for the Clock
-     */
-    Clock() {
-    }
-
+    
     /**
      * function adds the corresponding time by calculating how much time has passed
      *
