@@ -7,11 +7,14 @@ import GUILogic.Tabs.ScheduleTab;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -276,8 +279,27 @@ InitialSetup();
         this.WindowStructure.getChildren().add(choices);
         Scene artistScene = new Scene(this.WindowStructure);
         artistScene.getStylesheets().add("Window-StyleSheet.css");
+        artistScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.ESCAPE) {
+                    System.out.println("Key Pressed: " + ke.getCode());
+                    getCurrStage().close();
+                }
+                if (ke.getCode()==KeyCode.ENTER){
+                    confirm.fire();
+                }
+            }
+        });
         this.currStage.setScene(artistScene);
         this.currStage.show();
+    }
+
+    /**
+     * The getter for the artist window stage
+     * @return The artist window stage
+     */
+    public Stage getCurrStage() {
+        return currStage;
     }
 
     /**

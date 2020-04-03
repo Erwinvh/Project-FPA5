@@ -5,6 +5,7 @@ import GUILogic.Tabs.ScheduleTab;
 import GUILogic.Tabs.Windows.ErrorWindow;
 import PlannerData.Planner;
 import PlannerData.Show;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -231,8 +234,27 @@ public class StageWindow {
         this.WindowStructure.getChildren().add(choices);
         Scene stageDeleteScene = new Scene(this.WindowStructure);
         stageDeleteScene.getStylesheets().add("Window-StyleSheet.css");
+        stageDeleteScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.ESCAPE) {
+                    System.out.println("Key Pressed: " + ke.getCode());
+                    getCurrentStage().close();
+                }
+                if (ke.getCode()==KeyCode.ENTER){
+                    confirm.fire();
+                }
+            }
+        });
         this.currentStage.setScene(stageDeleteScene);
         this.currentStage.show();
+    }
+
+    /**
+     * The getter for the current stage
+     * @return The current stage
+     */
+    public Stage getCurrentStage() {
+        return currentStage;
     }
 
     /**
@@ -292,6 +314,7 @@ public class StageWindow {
         for (Show show : plannerReference.getShows()) {
             if (show.getStage().getName().equals(this.selectedStage.getName())) {
                 this.errorList.add("Stages in use cannot be removed from the event.");
+                break;
             }
         }
 
