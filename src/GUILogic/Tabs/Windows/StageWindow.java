@@ -2,12 +2,10 @@ package GUILogic.Tabs.Windows;
 
 import GUILogic.DataController;
 import GUILogic.Tabs.ScheduleTab;
-import GUILogic.Tabs.Windows.ErrorWindow;
 import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -30,13 +28,11 @@ public class StageWindow {
     private ArrayList<String> errorList = new ArrayList<>();
     private Label information = new Label();
     private PlannerData.Stage selectedStage;
-    private ScheduleTab ST;
+    private ScheduleTab scheduleTab;
     private VBox WindowStructure;
     private Button CancelButton;
     private TextField stageNameTextField;
-    private Label stageCapacityLabel;
     private TextField inputTextField;
-    private Label stageNameLabel;
 
     private Planner plannerReference;
 
@@ -46,12 +42,12 @@ public class StageWindow {
      *
      * @param screenNumber       Submenu selection number
      * @param currentParentStage The current parent stage
-     * @param ST                 The schedule tab
+     * @param scheduleTab                 The schedule tab
      */
-    public StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
+    public StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab scheduleTab) {
         plannerReference = DataController.getInstance().getPlanner();
 
-        this.ST = ST;
+        this.scheduleTab = scheduleTab;
         this.currentStage.initOwner(currentParentStage);
         this.currentStage.initModality(Modality.WINDOW_MODAL);
         this.currentStage.setResizable(false);
@@ -75,12 +71,12 @@ public class StageWindow {
     /**
      * This method creates the base for the add and edit stage window
      */
-    public void AddEditSetup(){
+    private void AddEditSetup(){
         this.currentStage.setWidth(300);
         this.currentStage.setHeight(250);
         this.stageNameTextField = new TextField();
-        this.stageNameLabel = new Label("Stage name:");
-        this.stageCapacityLabel = new Label("Stage capacity:");
+        Label stageNameLabel = new Label("Stage name:");
+        Label stageCapacityLabel = new Label("Stage capacity:");
         this.inputTextField = new TextField();
         this.WindowStructure.getChildren().addAll(stageNameLabel, stageNameTextField, stageCapacityLabel, inputTextField);
     }
@@ -103,6 +99,7 @@ public class StageWindow {
                 this.currentStage.close();
             }
         });
+
         finalizeSetup(cancelConfirmButton,confirmButton);
     }
 
@@ -118,6 +115,7 @@ public class StageWindow {
         for (PlannerData.Stage stage : plannerReference.getStages()) {
             stageBox.getItems().add(stage.getName());
         }
+
         stageBox.getSelectionModel().selectFirst();
         this.WindowStructure.getChildren().add(stageBox);
         AddEditSetup();
@@ -143,7 +141,7 @@ public class StageWindow {
                     this.selectedStage.setName(this.stageNameTextField.getText());
                     this.selectedStage.setCapacity(Integer.parseInt(inputTextField.getText()));
                     plannerReference.savePlanner();
-                    this.ST.resetData();
+                    this.scheduleTab.resetData();
                     this.currentStage.close();
                 }
             } else {
@@ -163,6 +161,7 @@ public class StageWindow {
                 inputTextField.setText("");
             }
         });
+
         finalizeSetup(cancelConfirmHBox,confirmButton);
     }
 
@@ -170,30 +169,29 @@ public class StageWindow {
      * The submenu window for deleting a stage
      */
     private void deleteStageWindow() {
-        HBox startLine = new HBox();
+        VBox header = new VBox();
         this.currentStage.setTitle("Delete stage");
         this.currentStage.setHeight(250);
-        startLine.getChildren().add(new Label("Choose the stage you want to delete:"));
+        header.getChildren().add(new Label("Choose the stage you want to delete:"));
 
         ComboBox stageBox = new ComboBox();
         stageBox.getItems().add("Select");
         for (PlannerData.Stage stage : plannerReference.getStages()) {
             stageBox.getItems().add(stage.getName());
         }
+
         stageBox.getSelectionModel().selectFirst();
         stageBox.setOnAction(event -> {
             if (!stageBox.getValue().equals("Select")) {
                 this.selectedStage = plannerReference.getStage(stageBox.getValue().toString());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
-                    this.information.textProperty().setValue("Do you want to delete the stage: " + selectedStage.getName() + '\n' + " with the capacity of " + selectedStage.getCapacity());
+                    this.information.textProperty().setValue("Do you want to delete the stage:\n" + selectedStage.getName() + " with the capacity of " + selectedStage.getCapacity());
                 }
-            } else {
-                this.information.textProperty().setValue("         " + '\n');
-            }
+            } else this.information.textProperty().setValue("         " + '\n');
         });
 
-        startLine.getChildren().add(stageBox);
-        this.WindowStructure.getChildren().add(startLine);
+        header.getChildren().add(stageBox);
+        this.WindowStructure.getChildren().add(header);
         this.WindowStructure.getChildren().add(this.information);
 
         HBox cancelConfirmButton = new HBox();
@@ -227,23 +225,22 @@ public class StageWindow {
      * @param choices The Horizontal box in which the buttons reside
      * @param confirm The confirm button
      */
-    public void finalizeSetup(HBox choices, Button confirm ){
+    private void finalizeSetup(HBox choices, Button confirm){
         choices.getChildren().add(confirm);
         choices.setPadding(new Insets(10));
         choices.setSpacing(20);
         this.WindowStructure.getChildren().add(choices);
         Scene stageDeleteScene = new Scene(this.WindowStructure);
         stageDeleteScene.getStylesheets().add("Window-StyleSheet.css");
-        stageDeleteScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent ke) {
-                if (ke.getCode() == KeyCode.ESCAPE) {
-                    getCurrentStage().close();
-                }
-                if (ke.getCode()==KeyCode.ENTER){
-                    confirm.fire();
-                }
+        stageDeleteScene.setOnKeyPressed(ke -> {
+            if (ke.getCode() == KeyCode.ESCAPE) {
+                getCurrentStage().close();
+            }
+            if (ke.getCode()==KeyCode.ENTER){
+                confirm.fire();
             }
         });
+
         this.currentStage.setScene(stageDeleteScene);
         this.currentStage.show();
     }
@@ -252,7 +249,7 @@ public class StageWindow {
      * The getter for the current stage
      * @return The current stage
      */
-    public Stage getCurrentStage() {
+    private Stage getCurrentStage() {
         return currentStage;
     }
 
@@ -294,9 +291,9 @@ public class StageWindow {
                 this.errorList.add("The capacity must be a number.");
             }
         }
-        if (this.errorList.isEmpty()) {
+
+        if (this.errorList.isEmpty())
             return true;
-        }
 
         new ErrorWindow(this.currentStage, this.errorList);
         return false;
@@ -317,9 +314,9 @@ public class StageWindow {
             }
         }
 
-        if (this.errorList.isEmpty()) {
+        if (this.errorList.isEmpty())
             return true;
-        }
+
         new ErrorWindow(this.currentStage, this.errorList);
         return false;
     }

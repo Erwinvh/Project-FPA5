@@ -3,18 +3,15 @@ package GUILogic.Tabs.Windows;
 import Enumerators.Genres;
 import GUILogic.DataController;
 import GUILogic.Tabs.ScheduleTab;
-import GUILogic.Tabs.Windows.ErrorWindow;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -32,7 +29,7 @@ public class ShowWindow {
     private ArrayList<String> timeList;
     private Button cancelButton;
     private Stage popUp;
-    private ScheduleTab ST;
+    private ScheduleTab scheduleTab;
 
     private ComboBox startingTime;
     private ComboBox endingTime;
@@ -46,7 +43,7 @@ public class ShowWindow {
     private VBox additionalArtists;
     private ComboBox artistBox;
     private GridPane gridPaneShows;
-    private BorderPane WindowStructure;
+    private BorderPane windowStructure;
 
     private Planner plannerReference;
 
@@ -54,10 +51,10 @@ public class ShowWindow {
      * This is the constructor of the base createLayout of the windows of the three Menus.
      * The method also sends the user to the correct menu window.
      */
-    public ShowWindow(int screenNumber, Stage currParentStage, ScheduleTab ST, Show selectedShow) {
+    public ShowWindow(int screenNumber, Stage currParentStage, ScheduleTab scheduleTab, Show selectedShow) {
         plannerReference = DataController.getInstance().getPlanner();
 
-        this.ST = ST;
+        this.scheduleTab = scheduleTab;
         this.selectedShow = selectedShow;
 
         popUp = new Stage();
@@ -68,7 +65,7 @@ public class ShowWindow {
         this.popUp.initModality(Modality.WINDOW_MODAL);
         this.popUp.getIcons().add(new Image("logoA5.jpg"));
 
-        this.WindowStructure = new BorderPane();
+        this.windowStructure = new BorderPane();
         stageBox = getAllStagesComboBox();
         genreBox = getGenreComboBox();
         errorList = new ArrayList<>();
@@ -79,14 +76,16 @@ public class ShowWindow {
         additionalArtists = new VBox();
         artistBox = getAllArtistsComboBox();
         this.timeList = setupTimeList();
-        endingTime = getTimestampsComboBox(0,this.timeList);
-        startingTime = getTimestampsComboBox(0,this.timeList);
+        endingTime = getTimestampsComboBox(0, this.timeList);
+        startingTime = getTimestampsComboBox(0, this.timeList);
         gridPaneShows = new GridPane();
+
         try {
             this.stagePopularity = this.selectedShow.getStage().getCapacity();
         } catch (Exception e) {
             stagePopularity = 0;
         }
+
         cancelButton = new Button("Cancel");
         this.cancelButton.setOnAction(event -> this.popUp.close());
 
@@ -114,9 +113,9 @@ public class ShowWindow {
         gridPaneShows.add(new Label("End time:"), 1, 3);
         gridPaneShows.add(this.startingTime, 2, 2);
         gridPaneShows.add(this.endingTime, 2, 3);
+
         startingTime.valueProperty().addListener((observable, oldValue, newValue) -> {
-            ComboBox updatedEndingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1), timeList);
-            this.endingTime = updatedEndingTime;
+            this.endingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1), timeList);
             gridPaneShows.add(endingTime, 2, 3);
         });
 
@@ -182,9 +181,9 @@ public class ShowWindow {
         this.popUp.setTitle("Add show");
 
         Label addingNew = new Label("What show do you want to add?");
-        this.WindowStructure.setTop(addingNew);
+        this.windowStructure.setTop(addingNew);
 
-        this.WindowStructure.setCenter(AddEditSetup());
+        this.windowStructure.setCenter(AddEditSetup());
 
         HBox cancelConfirmHBox = new HBox();
         Button submitButton = new Button("Submit");
@@ -193,13 +192,12 @@ public class ShowWindow {
             if (addedShow != null && this.errorList.isEmpty()) {
                 plannerReference.addShow(addedShow);
                 plannerReference.savePlanner();
-                ST.resetData();
+                scheduleTab.resetData();
                 this.popUp.close();
-            } else {
-                new ErrorWindow(this.popUp, this.errorList);
-            }
+            } else new ErrorWindow(this.popUp, this.errorList);
         });
-        FinaliseSetup(cancelConfirmHBox,submitButton);
+
+        finaliseSetup(cancelConfirmHBox, submitButton);
     }
 
     /**
@@ -209,8 +207,7 @@ public class ShowWindow {
         this.popUp.setTitle("Edit show");
 
         Label editShowLabel = new Label("Edit this show:");
-        this.WindowStructure.setTop(editShowLabel);
-
+        this.windowStructure.setTop(editShowLabel);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
@@ -222,7 +219,7 @@ public class ShowWindow {
         LocalTime beginTime = this.selectedShow.getBeginTime();
         this.startingTime.getSelectionModel().select(localTimeToIndex(beginTime));
         LocalTime endTime = this.selectedShow.getEndTime().minusHours(beginTime.getHour()).minusMinutes(beginTime.getMinute());
-        this.endingTime.getSelectionModel().select(localTimeToIndex(endTime) -1);
+        this.endingTime.getSelectionModel().select(localTimeToIndex(endTime) - 1);
 
         this.stageBox.setValue(this.selectedShow.getStage().getName());
         this.genreBox.setValue(this.selectedShow.getGenre().getFancyName());
@@ -245,13 +242,12 @@ public class ShowWindow {
         }
         this.descriptionArea.setText(this.selectedShow.getDescription());
 
-        this.WindowStructure.setCenter(artistScroller);
+        this.windowStructure.setCenter(artistScroller);
         HBox choice = new HBox();
         Button submit = new Button("Submit");
         submit.setOnAction(event -> {
             Show editedShow = checkInput();
             if (editedShow != null && this.errorList.isEmpty()) {
-//                int index = plannerReference.getShows().indexOf(selectedShow);
                 selectedShow.setName(editedShow.getName());
                 selectedShow.setExpectedPopularity(editedShow.getExpectedPopularity());
                 selectedShow.setDescription(editedShow.getDescription());
@@ -262,17 +258,13 @@ public class ShowWindow {
                 selectedShow.setStage(editedShow.getStage());
 
                 plannerReference.savePlanner();
-                this.ST.resetData();
+                this.scheduleTab.resetData();
                 this.popUp.close();
-            } else {
-                new ErrorWindow(this.popUp, this.errorList);
-            }
+            } else new ErrorWindow(this.popUp, this.errorList);
         });
 
-        FinaliseSetup(choice,submit);
+        finaliseSetup(choice, submit);
     }
-
-
 
     /**
      * This method checks the input of the added and edited show and returns the show that needs to be set in the planner
@@ -316,10 +308,7 @@ public class ShowWindow {
             if (endingTime.getValue() == null || endingTime.getValue().equals("Select")) {
                 this.errorList.add("The endtime has not been filled in.");
             }
-
-        }
-        else {
-
+        } else {
             beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
             endTime = indexToLocalTime(this.timeList.indexOf(endingTime.getValue()));
         }
@@ -429,9 +418,7 @@ public class ShowWindow {
                     }
                 }
             }
-        } else {
-            newShow = null;
-        }
+        } else newShow = null;
 
         return newShow;
     }
@@ -444,17 +431,15 @@ public class ShowWindow {
 
         //title
         Label deleteShowLabel = new Label("Are you sure you want to delete this show?");
-        this.WindowStructure.setTop(deleteShowLabel);
+        this.windowStructure.setTop(deleteShowLabel);
 
         //information
-        Label information = new Label("Show: " + this.selectedShow.getName() + '\n'
-                + "From " + this.selectedShow.getBeginTimeString() + " to " + this.selectedShow.getEndTimeString() + '\n'
-                + "By " + this.selectedShow.getArtistsNames() + " in the genre of " + this.selectedShow.getGenre().getFancyName() + '\n'
-                + "On stage " + this.selectedShow.getStageName() + '\n'
-                + "Expected popularity is " + this.selectedShow.getExpectedPopularity() + " people."
-                + "with the description: " + '\n' + this.selectedShow.getDescription());
+        Label information = new Label("Show: " + this.selectedShow.getName()
+                + "\nFrom " + this.selectedShow.getBeginTimeString() + " to " + this.selectedShow.getEndTimeString()
+                + "\nBy " + this.selectedShow.getArtistsNames() + " in the genre of " + this.selectedShow.getGenre().getFancyName()
+                + "\nOn stage " + this.selectedShow.getStageName());
 
-        this.WindowStructure.setCenter(information);
+        this.windowStructure.setCenter(information);
 
         //buttons
         HBox cancelConfirmButton = new HBox();
@@ -462,7 +447,7 @@ public class ShowWindow {
         confirmButton.setOnAction(event -> {
             if (plannerReference.deleteShow(this.selectedShow)) {
                 plannerReference.savePlanner();
-                this.ST.resetData();
+                this.scheduleTab.resetData();
                 this.popUp.close();
             } else {
                 this.errorList.add("The show was not deleted, please try again later.");
@@ -470,34 +455,30 @@ public class ShowWindow {
             }
         });
 
-
-        FinaliseSetup(cancelConfirmButton,confirmButton);
+        finaliseSetup(cancelConfirmButton, confirmButton);
     }
 
     /**
      * This method finalizes the setup of all three windows by showing it to the user
      *
-     * @param choices The Horizontal box with the buttons
+     * @param choices       The Horizontal box with the buttons
      * @param confirmButton The confirm button
      */
-    public void FinaliseSetup(HBox choices, Button confirmButton){
+    private void finaliseSetup(HBox choices, Button confirmButton) {
         choices.getChildren().add(this.cancelButton);
         choices.getChildren().add(confirmButton);
         choices.setPadding(new Insets(10));
         choices.setSpacing(20);
 
-
-        this.WindowStructure.setBottom(choices);
-        Scene Scene = new Scene(this.WindowStructure);
+        this.windowStructure.setBottom(choices);
+        Scene Scene = new Scene(this.windowStructure);
         Scene.getStylesheets().add("Window-StyleSheet.css");
-        Scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent ke) {
-                if (ke.getCode() == KeyCode.ESCAPE) {
-                    getPopUp().close();
-                }
-                if (ke.getCode()==KeyCode.ENTER){
-                    confirmButton.fire();
-                }
+        Scene.setOnKeyPressed(ke -> {
+            if (ke.getCode() == KeyCode.ESCAPE) {
+                getPopUp().close();
+            }
+            if (ke.getCode() == KeyCode.ENTER) {
+                confirmButton.fire();
             }
         });
         this.popUp.setScene(Scene);
@@ -506,9 +487,10 @@ public class ShowWindow {
 
     /**
      * The getter for the show window stage
+     *
      * @return The show window stage
      */
-    public Stage getPopUp() {
+    private Stage getPopUp() {
         return popUp;
     }
 
@@ -525,6 +507,7 @@ public class ShowWindow {
         for (Genres genre : Genres.values()) {
             genreBox.getItems().add(genre.getFancyName());
         }
+
         return genreBox;
     }
 
@@ -596,7 +579,7 @@ public class ShowWindow {
      * This method is necessary for both begin and end time ComboBoxes
      */
     public static ArrayList<String> setupTimeList() {
-        ArrayList timeListed = new ArrayList<>();
+        ArrayList<String> timeListed = new ArrayList<>();
         String time;
         String halftime = "";
 
@@ -632,8 +615,8 @@ public class ShowWindow {
     private TextArea getShowDescriptionTextArea(String presetText, int width, int height) {
         TextArea description = new TextArea(presetText);
         if (height != 0) description.setPrefHeight(height);
-
         if (width != 0) description.setPrefWidth(width);
+
         return description;
     }
 
