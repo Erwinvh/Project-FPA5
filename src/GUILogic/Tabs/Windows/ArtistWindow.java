@@ -32,7 +32,7 @@ public class ArtistWindow {
     private ComboBox genreComboBox = new ComboBox();
     private Planner plannerReference;
     private TextArea artistDescription;
-    private Button cancel;
+    private Button cancelButton;
 
     /**
      * The constructor of the artist submenu windows
@@ -55,8 +55,8 @@ public class ArtistWindow {
         this.windowStructure = new VBox();
         this.windowStructure.setPrefWidth(250);
         this.windowStructure.setAlignment(Pos.CENTER);
-        this.cancel = new Button("cancel");
-        this.cancel.setOnAction(e -> this.currStage.close());
+        this.cancelButton = new Button("Cancel");
+        this.cancelButton.setOnAction(e -> this.currStage.close());
         switch (screenNumber) {
             case 1:
                 artistAddWindow();
@@ -101,7 +101,7 @@ public class ArtistWindow {
 
         //buttons
         HBox cancelConfirmButtons = new HBox();
-        cancelConfirmButtons.getChildren().add(this.cancel);
+        cancelConfirmButtons.getChildren().add(this.cancelButton);
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
@@ -155,9 +155,7 @@ public class ArtistWindow {
 
         //buttons
         HBox choice = new HBox();
-        Button cancelButton = new Button("cancel");
-        cancelButton.setOnAction(e -> this.currStage.close());
-        choice.getChildren().add(cancelButton);
+        choice.getChildren().add(this.cancelButton);
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
@@ -234,7 +232,7 @@ public class ArtistWindow {
 
         //buttons
         HBox cancelConfirmButtons = new HBox();
-        cancelConfirmButtons.getChildren().add(this.cancel);
+        cancelConfirmButtons.getChildren().add(this.cancelButton);
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
             if (!artistComboBox.getValue().toString().equals("Select artist")) {
