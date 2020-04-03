@@ -25,6 +25,7 @@ public class Simulator {
     private MapDataController mapDataController;
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
+    private ArrayList<Person> artistPersons;
 
     private int peopleAmount;
     private CameraTransform cameraTransform;
@@ -55,6 +56,7 @@ public class Simulator {
         settingsReference = DataController.getInstance().getSettings();
         plannerReference = DataController.getInstance().getPlanner();
 
+        this.artistPersons = new ArrayList<>();
         activeShows = DataController.getInstance().getActiveShows();
         tracker = new PopularityTracker();
         mapDataController = new MapDataController();
@@ -130,8 +132,16 @@ public class Simulator {
         double speed = clockReference.getSimulatorSpeed() * 10;
 
         if (artists.size() < plannerReference.getArtists().size()) {
-            peopleAmount++;
             artists = plannerReference.getArtists();
+        }
+
+        if(this.artistPersons.size() < artists.size()){
+            for(Artist artist : this.artists){
+                if(!hasSpawnArtist(artist)){
+                    spawnArtist(artist.getName());
+                    break;
+                }
+            }
         }
 
         if (people.size() < peopleAmount)
@@ -146,15 +156,16 @@ public class Simulator {
     /**
      * Spawns on either of the 2 spawn locations, randomly chosen.
      */
-    private void spawnPerson() {
+    private void spawnPerson(Person person ) {
         Point2D spawnLocation1 = new Point2D.Double(2 * 32, 20 * 32);
         Point2D spawnLocation2 = new Point2D.Double(31 * 32, 97 * 32);
 
         Random r = new Random();
+
         if (r.nextBoolean()) {
-            spawnOnLocation(spawnLocation1);
+            spawnOnLocation(spawnLocation1, person);
         } else {
-            spawnOnLocation(spawnLocation2);
+            spawnOnLocation(spawnLocation2, person);
         }
     }
 
@@ -163,34 +174,39 @@ public class Simulator {
      *
      * @param p2d spawnLocation
      */
-    private void spawnOnLocation(Point2D p2d) {
+    private void spawnOnLocation(Point2D p2d, Person person) {
         if (canSpawn(p2d)) {
-            //loop trough all the artists to see if they are spawned already
-            for (Artist artist : plannerReference.getArtists()) {
-                boolean hasBeenSpawned = false;
-                for (Person person : people) {
-                    if (person.getName() != null)
-                        if (person.getName().equals(artist.getName()))
-                            hasBeenSpawned = true;
-                }
 
-                if (!hasBeenSpawned) {
-                    Person newPerson = new Person(new Point2D.Double(p2d.getX(), p2d.getY()), this.prediction, artist.getName(), clockReference.getSimulatorSpeed(), true);
-                    this.people.add(newPerson);
-                    newPerson.getPersonLogic().selectNewMap(this.activeShows, this.tracker);
-                    newPerson.getPersonLogic().setNextTarget();
-                    return;
-                }
-            }
 
             //if all the artists have been spawned then we spawn visitors
-            Person newPerson = new Person(new Point2D.Double(p2d.getX(),
-                    p2d.getY()), this.prediction, clockReference.getSimulatorSpeed(), false);
-            this.people.add(newPerson);
-            newPerson.getPersonLogic().selectNewMap(this.activeShows, this.tracker);
-            newPerson.getPersonLogic().setNextTarget();
+            if (person.isArtist()){
+                this.artistPersons.add(person);
+                this.peopleAmount ++;
+            }
+            people.add(person);
+            person.getPersonLogic().setPosition(p2d);
+            person.getPersonLogic().selectNewMap(this.activeShows, this.tracker);
+            person.getPersonLogic().setNextTarget();
         }
     }
+
+    /**
+     * Spawns an artist at a random entrance
+     * @param artistName the name of a the artist
+     */
+    private void spawnArtist( String artistName){
+        Person artist = new Person(null,this.prediction, artistName, clockReference.getSimulatorSpeed(), true);
+        spawnPerson(artist);
+    }
+
+    /**
+     * Spawns a person at a random entrance
+     */
+    private void spawnPerson(){
+        Person person = new Person(null,this.prediction, clockReference.getSimulatorSpeed(),false);
+        spawnPerson(person);
+    }
+
 
     /**
      * A method that checks if a spot is not occupied by another person
@@ -336,5 +352,14 @@ public class Simulator {
      */
     public BorderPane getSimulatorLayout() {
         return simulatorLayout;
+    }
+
+    public boolean hasSpawnArtist(Artist artist){
+        for(Person artistPerson : this.artistPersons){
+            if(artistPerson.getName().equals(artist.getName())){
+                return true;
+            }
+        }
+        return false;
     }
 }

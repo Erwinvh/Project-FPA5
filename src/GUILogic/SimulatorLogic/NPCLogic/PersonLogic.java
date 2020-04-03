@@ -269,7 +269,7 @@ public class PersonLogic {
      *
      * @param position the new position for the NPC
      */
-    void setPosition(Point2D position) {
+   public void setPosition(Point2D position) {
         this.position = position;
     }
 }
