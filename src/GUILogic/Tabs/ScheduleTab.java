@@ -1,6 +1,6 @@
 package GUILogic.Tabs;
 
-import GUILogic.*;
+import GUILogic.DataController;
 import GUILogic.Tabs.Windows.ArtistWindow;
 import GUILogic.Tabs.Windows.ErrorWindow;
 import GUILogic.Tabs.Windows.ShowWindow;
@@ -16,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -106,7 +105,7 @@ public class ScheduleTab {
     /**
      * This method fills the table with information
      */
-    public void fillTable() {
+    private void fillTable() {
         this.table.getItems().clear();
         this.data.addAll(plannerReference.getShows());
         this.table.getItems().addAll(plannerReference.getShows());
@@ -120,7 +119,7 @@ public class ScheduleTab {
     /**
      * This method creates the descriptionVBox that shows the Artists of the selected show.
      */
-    public void getShowDescription() {
+    private void getShowDescription() {
         this.selectedItem = this.table.getSelectionModel().getSelectedItem();
         int numberOfArtists = 0;
 
@@ -177,7 +176,7 @@ public class ScheduleTab {
             this.allDescriptions.setContent(descriptionBase);
 
         } catch (Exception e) {
-            this.allDescriptions.setContent(new Label("Select a Show for more information"));
+            this.allDescriptions.setContent(new Label("Select a show for more information"));
         }
     }
 
@@ -192,7 +191,7 @@ public class ScheduleTab {
     /**
      * This method creates the base Layout of the Schedule tab by calling the separate pieces.
      */
-    public void createLayout() {
+    private void createLayout() {
         HBox baseLayer = new HBox();
         baseLayer.setSpacing(10);
         createTable();

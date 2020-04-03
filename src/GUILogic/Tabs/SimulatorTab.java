@@ -21,7 +21,7 @@ public class SimulatorTab {
      *
      * @return The simulator
      */
-    public Simulator getSimulator() {
+    Simulator getSimulator() {
         return simulator;
     }
 
