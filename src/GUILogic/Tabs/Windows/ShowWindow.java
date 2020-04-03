@@ -112,9 +112,6 @@ public class ShowWindow {
         gridPaneShows.add(this.startingTime, 2, 2);
         gridPaneShows.add(this.endingTime, 2, 3);
         startingTime.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("listener called");
-            System.out.println(newValue);
-            System.out.println(timeList.indexOf(newValue));
             ComboBox updatedEndingTime = getTimestampsComboBox((timeList.indexOf(newValue) + 1), timeList);
             this.endingTime = updatedEndingTime;
             gridPaneShows.add(endingTime, 2, 3);
@@ -278,16 +275,6 @@ public class ShowWindow {
      * @return the Show that has been verified
      */
     private Show checkInput() {
-//        ObservableList<Node> childrens = this.gridPaneShows.getChildren();
-//
-//        for (Node node : childrens) {
-//            if (gridPaneShows.getRowIndex(node) == 3 && gridPaneShows.getColumnIndex(node) == 2) {
-//                this.endingTime = (ComboBox) node;
-//                System.out.println(((ComboBox) node).getValue());
-//                break;
-//            }
-//        }
-        System.out.println(this.endingTime.getValue());
         errorList.clear();
 
         //name
@@ -326,9 +313,6 @@ public class ShowWindow {
             }
 
         }
-//        else if(this.timeList.indexOf(startingTime.getValue()) >= (this.timeList.indexOf(endingTime.getValue()))){
-//            this.errorList.add("The endtime is earlier or equal to the begintime");
-//        }
         else {
 
             beginTime = indexToLocalTime(this.timeList.indexOf(startingTime.getValue()));
