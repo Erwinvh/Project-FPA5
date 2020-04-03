@@ -73,7 +73,7 @@ public class StageWindow {
      * This method creates the base for the add and edit stage window
      */
     public void AddEditSetup(){
-        this.currentStage.setWidth(200);
+        this.currentStage.setWidth(300);
         this.currentStage.setHeight(250);
         this.stageNameTextField = new TextField();
         this.stageNameLabel = new Label("Stage name:");
@@ -116,6 +116,7 @@ public class StageWindow {
             stageBox.getItems().add(stage.getName());
         }
         stageBox.getSelectionModel().selectFirst();
+        this.WindowStructure.getChildren().add(stageBox);
         AddEditSetup();
 
         HBox cancelConfirmHBox = new HBox();

@@ -133,7 +133,7 @@ public class ScheduleTab {
                 artistName.setEditable(false);
                 descriptionStructure.add(artistName, 1, 1);
 
-                TextField artistAmount = new TextField("Number " + numberOfArtists + "out of " + this.selectedItem.getArtists().size());
+                TextField artistAmount = new TextField("Number " + numberOfArtists + " out of " + this.selectedItem.getArtists().size());
                 artistAmount.setEditable(false);
                 artistAmount.setPrefWidth(150);
                 descriptionStructure.add(artistAmount, 2, 1);
