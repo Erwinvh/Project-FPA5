@@ -95,7 +95,7 @@ public class PersonLogic {
 
         ArrayList<TargetArea> idleAreas = MapDataController.getIdleTargetAreas();
         int idleAreaIndex = (int) (Math.random() * idleAreas.size() );
-        this.distanceMap = MapDataController.getDistanceMap(idleAreas.get(idleAreaIndex).getName());
+        this.distanceMap = MapDataController.getDistanceMap(idleAreas.get(idleAreaIndex));
     }
 
     /**
@@ -122,14 +122,14 @@ public class PersonLogic {
             if(isArtist){
                 if (targetArea.getName().equals("ArtistStage" + (stageIndex + 1))) {
                     if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.ARTIST) {
-                        return MapDataController.getDistanceMap(targetArea.getName());
+                        return MapDataController.getDistanceMap(targetArea);
                     }
                 }
             }
             else {
                 if(targetArea.getName().equals("VisitorStage" + (stageIndex + 1))){
                     if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.VISITOR){
-                        return MapDataController.getDistanceMap(targetArea.getName());
+                        return MapDataController.getDistanceMap(targetArea);
                     }
                 }
             }

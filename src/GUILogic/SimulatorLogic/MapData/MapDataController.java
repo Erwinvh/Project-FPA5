@@ -183,22 +183,7 @@ public class MapDataController {
             distanceMaps[i] = new DistanceMap(targetAreas[i].getName(), targetAreas[i]);
         }
     }
-
-    /**
-     * The getter for the distance map as an object searched for by name
-     *
-     * @param name The name of the searched distance map
-     * @return the requested distance map, else null
-     */
-    public static DistanceMap getDistanceMap(String name) {
-        for (DistanceMap distanceMap : distanceMaps) {
-            if (distanceMap.getMapName().equals(name)) {
-                return distanceMap;
-            }
-        }
-        return null;
-    }
-
+    
     /**
      * The getter for the distance map as an object searched for by the target area.
      *
