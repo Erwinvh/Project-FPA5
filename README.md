@@ -1,9 +1,5 @@
 # **NPConcerts**
-NPConcerts is een project dat een festival simuleert. Hierin lopen bezoekers naar shows en rustplekken. Hierin zijn de tijden, artiesten, stages en populariteit instelbaar. Dit is een project vanuit Serious Sims, een bedrijf dat simulatiesoftware bouwt voor bedrijven.
-
-Er is met 6 man 9 weken over dit project gedaan. (Meer!!??)
-
-(Namen!!??)
+NPConcerts is een project dat een festival simuleert. Hierin lopen bezoekers naar shows en rustplekken. Hierin zijn de tijden, artiesten, stages en populariteit instelbaar. Dit is een project vanuit Serious Sims, een bedrijf dat simulatiesoftware bouwt voor bedrijven. Er is met 6 man 9 weken over dit project gedaan.
 
 Dit was onze mock-up van de schedule tab. Hierin is te zien dat wij kozen voor een TableView waarbij start tijd en uiteindelijk eind tijd. Er is uiteindelijk meer bijgekomen.
 
