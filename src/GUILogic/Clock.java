@@ -79,7 +79,7 @@ public class Clock {
     /**
      * set the speed 1 real second is how many seconds in the simulator
      */
-    void setSimulatorSpeed(double simulatorSpeed) {
+    public void setSimulatorSpeed(double simulatorSpeed) {
         this.simulatorSpeed = simulatorSpeed * 90;
     }
 

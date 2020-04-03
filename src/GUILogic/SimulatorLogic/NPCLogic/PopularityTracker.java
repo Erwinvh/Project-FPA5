@@ -1,5 +1,6 @@
-package GUILogic;
+package GUILogic.SimulatorLogic.NPCLogic;
 
+import GUILogic.DataController;
 import PlannerData.Show;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class PopularityTracker {
      */
     public boolean canGoToShow(Show show){
         for(Show activeShow : peopleAtShows.keySet()){
-            if(show == activeShow){
+            if(show.equals( activeShow)){
                 if(show.getStage().getCapacity() >= peopleAtShows.get(show) + 1){
                     peopleAtShows.put(show, peopleAtShows.get(show) + 1);
                     return true;

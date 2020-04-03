@@ -161,7 +161,7 @@ public class DataController {
     /**
      * reads the settings file and sets the attributes of the Settings class accordingly
      */
-    void readSettings() {
+     public void readSettings() {
         try {
             File file = new File(settings.getSaveFileName());
             if (!file.exists()) {

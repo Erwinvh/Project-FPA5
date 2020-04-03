@@ -23,7 +23,7 @@ public class Settings {
     /**
      * setter fot the overwrite option
      */
-    void setOverwriteStartTime(boolean overwriteStartTime) {
+    public void setOverwriteStartTime(boolean overwriteStartTime) {
         this.overwriteStartTime = overwriteStartTime;
     }
 
@@ -37,7 +37,7 @@ public class Settings {
     /**
      * A setter for the begin time hours
      */
-    void setBeginHours(int beginHours) {
+    public void setBeginHours(int beginHours) {
         this.beginHours = beginHours;
     }
 
@@ -51,7 +51,7 @@ public class Settings {
     /**
      * the setter for the beginTime minutes
      */
-    void setBeginMinutes(int beginMinutes) {
+    public void setBeginMinutes(int beginMinutes) {
         this.beginMinutes = beginMinutes;
     }
 
@@ -59,14 +59,14 @@ public class Settings {
      * a getter for the simulator speed,
      * a multiplier for the standard simulator speed
      */
-    double getSimulatorSpeed() {
+    public double getSimulatorSpeed() {
         return simulatorSpeed;
     }
 
     /**
      * a getter for the saveFile name
      */
-    String getSaveFileName() {
+    public String getSaveFileName() {
         return SAVE_FILE_NAME;
     }
 
@@ -74,7 +74,7 @@ public class Settings {
      * a setter for the simulator speed,
      * a multiplier for the standard simulator speed
      */
-    void setSimulatorSpeed(double simulatorSpeed) {
+    public void setSimulatorSpeed(double simulatorSpeed) {
         this.simulatorSpeed = simulatorSpeed;
     }
 
@@ -88,7 +88,7 @@ public class Settings {
     /**
      * a setter for the amount of visitors
      */
-    void setVisitors(int visitorsPerPerson) {
+    public void setVisitors(int visitorsPerPerson) {
         this.visitors = visitorsPerPerson;
     }
 
@@ -102,7 +102,7 @@ public class Settings {
     /**
      * a setter for if the visitor Favorite Genre prediction is being used
      */
-    void setUsingPredictedPerson(boolean usingPredictedPerson) {
+    public void setUsingPredictedPerson(boolean usingPredictedPerson) {
         this.usingPredictedPerson = usingPredictedPerson;
     }
 }

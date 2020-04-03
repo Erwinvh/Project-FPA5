@@ -1,6 +1,9 @@
-package GUILogic;
+package GUILogic.Tabs.Windows;
 
 import Enumerators.Genres;
+import GUILogic.DataController;
+import GUILogic.Tabs.ScheduleTab;
+import GUILogic.Tabs.Windows.ErrorWindow;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -17,11 +20,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.time.LocalTime;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 
-class ShowWindow {
+public class ShowWindow {
 
     private Show selectedShow;
     private ArrayList<String> errorList;
@@ -50,7 +51,7 @@ class ShowWindow {
      * This is the constructor of the base createLayout of the windows of the three Menus.
      * The method also sends the user to the correct menu window.
      */
-    ShowWindow(int screenNumber, Stage currParentStage, ScheduleTab ST, Show selectedShow) {
+    public ShowWindow(int screenNumber, Stage currParentStage, ScheduleTab ST, Show selectedShow) {
         plannerReference = DataController.getInstance().getPlanner();
 
         this.ST = ST;

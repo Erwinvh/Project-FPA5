@@ -1,5 +1,9 @@
-package GUILogic;
+package GUILogic.Tabs;
 
+import GUILogic.DataController;
+import GUILogic.GUI;
+import GUILogic.Settings;
+import GUILogic.Tabs.Windows.ShowWindow;
 import PlannerData.Planner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +26,7 @@ import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-class SettingsTab {
+public class SettingsTab {
 
     private Stage primaryStage;
     private Tab settingsTab;
@@ -40,7 +44,7 @@ class SettingsTab {
      *
      * @param primaryStage the window of the main application
      */
-    SettingsTab(Stage primaryStage) {
+   public SettingsTab(Stage primaryStage) {
         settingsReference = DataController.getInstance().getSettings();
 
         this.primaryStage = primaryStage;
@@ -71,7 +75,7 @@ class SettingsTab {
      *
      * @return the settings tab
      */
-    Tab getSettingsTab() {
+    public Tab getSettingsTab() {
 
         GridPane split = new GridPane();
 

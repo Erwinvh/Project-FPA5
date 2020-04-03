@@ -2,7 +2,7 @@ package GUILogic.SimulatorLogic;
 
 import GUILogic.Clock;
 import GUILogic.DataController;
-import GUILogic.PopularityTracker;
+import GUILogic.SimulatorLogic.NPCLogic.PopularityTracker;
 import GUILogic.Settings;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import GUILogic.SimulatorLogic.NPCLogic.Person;
@@ -13,8 +13,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 

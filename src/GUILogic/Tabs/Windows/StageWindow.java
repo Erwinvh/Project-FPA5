@@ -1,5 +1,8 @@
-package GUILogic;
+package GUILogic.Tabs.Windows;
 
+import GUILogic.DataController;
+import GUILogic.Tabs.ScheduleTab;
+import GUILogic.Tabs.Windows.ErrorWindow;
 import PlannerData.Planner;
 import PlannerData.Show;
 import javafx.geometry.Insets;
@@ -9,7 +12,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -17,7 +19,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-class StageWindow {
+public class StageWindow {
 
     private Stage currentStage = new Stage();
     private PlannerData.Stage addedStage;
@@ -42,7 +44,7 @@ class StageWindow {
      * @param currentParentStage The current parent stage
      * @param ST                 The schedule tab
      */
-    StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
+    public StageWindow(int screenNumber, Stage currentParentStage, ScheduleTab ST) {
         plannerReference = DataController.getInstance().getPlanner();
 
         this.ST = ST;

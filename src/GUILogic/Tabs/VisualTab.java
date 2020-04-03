@@ -1,5 +1,6 @@
-package GUILogic;
+package GUILogic.Tabs;
 
+import GUILogic.DataController;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -16,7 +17,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.RoundRectangle2D;
 import java.time.format.DateTimeFormatter;
 
-class VisualTab {
+public class VisualTab {
 
     private final ScrollPane scrollPane;
     private Tab visualTab;
@@ -36,7 +37,7 @@ class VisualTab {
     /**
      * The constructor for the visual tab
      */
-    VisualTab() {
+    public VisualTab() {
         this.planner = DataController.getInstance().getPlanner();
 
         this.visualTab = new Tab("Visual");
@@ -148,14 +149,14 @@ class VisualTab {
      * The getter of the visual tab
      * @return The visual tab
      */
-    Tab getVisualTab() {
+    public Tab getVisualTab() {
         return visualTab;
     }
 
     /**
      * The update function that updates the visual tab.
      */
-    void update() {
+    public void update() {
         scrollPane.setVvalue(DataController.getInstance().getClock().getHours() / 24f);
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
         drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));

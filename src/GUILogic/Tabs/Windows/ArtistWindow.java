@@ -1,6 +1,9 @@
-package GUILogic;
+package GUILogic.Tabs.Windows;
 
 import Enumerators.Genres;
+import GUILogic.DataController;
+import GUILogic.Tabs.Windows.ErrorWindow;
+import GUILogic.Tabs.ScheduleTab;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -9,7 +12,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -17,7 +19,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-class ArtistWindow {
+public class ArtistWindow {
 
     private Stage currStage = new Stage();
     private ArrayList<String> errorList = new ArrayList<>();
@@ -43,7 +45,7 @@ class ArtistWindow {
      * @param currParentStage Current parent stage
      * @param ST              The schedule tab
      */
-    ArtistWindow(int screenNumber, Stage currParentStage, ScheduleTab ST) {
+    public ArtistWindow(int screenNumber, Stage currParentStage, ScheduleTab ST) {
         this.ST = ST;
         this.currStage.initOwner(currParentStage);
         this.currStage.initModality(Modality.WINDOW_MODAL);

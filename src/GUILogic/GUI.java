@@ -1,5 +1,9 @@
 package GUILogic;
 
+import GUILogic.Tabs.ScheduleTab;
+import GUILogic.Tabs.SettingsTab;
+import GUILogic.Tabs.SimulatorTab;
+import GUILogic.Tabs.VisualTab;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;

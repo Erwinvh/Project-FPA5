@@ -1,5 +1,10 @@
-package GUILogic;
+package GUILogic.Tabs;
 
+import GUILogic.*;
+import GUILogic.Tabs.Windows.ArtistWindow;
+import GUILogic.Tabs.Windows.ErrorWindow;
+import GUILogic.Tabs.Windows.ShowWindow;
+import GUILogic.Tabs.Windows.StageWindow;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -20,7 +25,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-class ScheduleTab {
+public class ScheduleTab {
     private Tab scheduleTab;
     private TableView<Show> table = new TableView<>();
     private ScrollPane allDescriptions = new ScrollPane();
@@ -37,7 +42,7 @@ class ScheduleTab {
      *
      * @param primaryStage The stage in which the tab is placed
      */
-    ScheduleTab(Stage primaryStage) {
+    public ScheduleTab(Stage primaryStage) {
         plannerReference = DataController.getInstance().getPlanner();
 
         this.primaryStage = primaryStage;
@@ -59,7 +64,7 @@ class ScheduleTab {
      *
      * @return The schedule tab
      */
-    Tab getScheduleTab() {
+    public Tab getScheduleTab() {
         return this.scheduleTab;
     }
 

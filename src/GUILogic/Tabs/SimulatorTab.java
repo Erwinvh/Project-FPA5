@@ -1,16 +1,16 @@
-package GUILogic;
+package GUILogic.Tabs;
 
 import GUILogic.SimulatorLogic.Simulator;
 import javafx.scene.control.Tab;
 
-class SimulatorTab {
+public class SimulatorTab {
     private Tab simulatorTab;
     private Simulator simulator;
 
     /**
      * The constructor for the simulator tab
      */
-    SimulatorTab() {
+    public SimulatorTab() {
         this.simulatorTab = new Tab("Simulator");
         this.simulator = new Simulator();
         this.simulatorTab.setContent(this.simulator.getSimulatorLayout());
@@ -21,7 +21,7 @@ class SimulatorTab {
      *
      * @return The simulator
      */
-    Simulator getSimulator() {
+    public Simulator getSimulator() {
         return simulator;
     }
 
@@ -30,7 +30,7 @@ class SimulatorTab {
      *
      * @return The simulator tab
      */
-    Tab getSimulatorTab() {
+    public Tab getSimulatorTab() {
         return simulatorTab;
     }
 }

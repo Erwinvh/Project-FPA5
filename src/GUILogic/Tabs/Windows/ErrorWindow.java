@@ -1,4 +1,4 @@
-package GUILogic;
+package GUILogic.Tabs.Windows;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-class ErrorWindow {
+public class ErrorWindow {
 
     /**
      * This Constructor creates a Error Window that shows the user which Error he/she made during a process.
@@ -20,7 +20,7 @@ class ErrorWindow {
      * @param parentStage The stage that from which the error window is generated.
      * @param errorList   The list of errors that have occurred and will be shown.
      */
-    ErrorWindow(Stage parentStage, ArrayList<String> errorList) {
+    public ErrorWindow(Stage parentStage, ArrayList<String> errorList) {
         Stage errorPopUp = new Stage();
         errorPopUp.setWidth(500);
         errorPopUp.setResizable(false);

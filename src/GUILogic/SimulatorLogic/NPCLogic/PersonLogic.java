@@ -1,10 +1,8 @@
 package GUILogic.SimulatorLogic.NPCLogic;
 
 import GUILogic.DataController;
-import GUILogic.PopularityTracker;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
 import PlannerData.Artist;
-import PlannerData.Planner;
 import PlannerData.Show;
 import PlannerData.Stage;
 
