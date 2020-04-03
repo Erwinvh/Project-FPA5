@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Simulator {
-    private MapDataController mapDataController;
     private ArrayList<Person> people;
     private ArrayList<Artist> artists;
 
@@ -57,7 +56,10 @@ public class Simulator {
 
         activeShows = DataController.getInstance().getActiveShows();
         tracker = new PopularityTracker();
-        mapDataController = new MapDataController();
+
+        // Create the mapDataController to read out all the map data
+        new MapDataController();
+
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         peopleAmount = settingsReference.getVisitors();

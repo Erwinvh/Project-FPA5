@@ -44,7 +44,7 @@ public class SettingsTab {
      *
      * @param primaryStage the window of the main application
      */
-   public SettingsTab(Stage primaryStage) {
+    public SettingsTab(Stage primaryStage) {
         settingsReference = DataController.getInstance().getSettings();
 
         this.primaryStage = primaryStage;
@@ -131,13 +131,9 @@ public class SettingsTab {
                 amountLabel.textProperty().setValue(String.valueOf(newValue.intValue()))
         );
 
-
         //Hour ComboBox
         Label timeLabel = new Label("Begin time");
-//        for(int i = 0; i < 24; i++){
-//            beginTime.getItems().add(i);
-//        }
-//
+
         beginTime.getItems().remove("Select");
         if (settingsReference.getBeginHours() >= 0) {
             String time;

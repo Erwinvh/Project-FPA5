@@ -15,13 +15,13 @@ public class TargetArea {
     private Point2D position;
     private Point2D size;
 
-
     /**
      * The constructor of the target area
-     * @param name the name of the target area
+     *
+     * @param name           the name of the target area
      * @param targetAreaType the type of target area
-     * @param position the position of the target area
-     * @param size the size of the target area
+     * @param position       the position of the target area
+     * @param size           the size of the target area
      */
     public TargetArea(String name, TargetAreaType targetAreaType, Point2D position, Point2D size) {
         this.name = name;
@@ -32,6 +32,7 @@ public class TargetArea {
 
     /**
      * The getter for the middle point of the target area
+     *
      * @return the middle point
      */
     public Point2D getMiddlePoint() {
@@ -42,6 +43,7 @@ public class TargetArea {
 
     /**
      * The getter for the name of the target area
+     *
      * @return the target area name
      */
     public String getName() {
@@ -50,6 +52,7 @@ public class TargetArea {
 
     /**
      * The getter for the position of the target area
+     *
      * @return the target area position
      */
     public Point2D getPosition() {
@@ -58,6 +61,7 @@ public class TargetArea {
 
     /**
      * The getter for the size of the target area
+     *
      * @return the target area size
      */
     public Point2D getSize() {
@@ -73,6 +77,7 @@ public class TargetArea {
 
     /**
      * The getter fot the TargetAreatype
+     *
      * @return the type of target area
      */
     public TargetAreaType getTargetAreaType() {
