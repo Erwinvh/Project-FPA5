@@ -34,7 +34,7 @@ public class ScheduleTab {
     private Show selectedItem = null;
     private ArrayList<String> errorList = new ArrayList<>();
     private ObservableList<Show> data = FXCollections.observableArrayList();
-
+    private Boolean newSelection = true;
     private Planner plannerReference;
 
     /**
@@ -120,7 +120,13 @@ public class ScheduleTab {
      * This method creates the descriptionVBox that shows the Artists of the selected show.
      */
     private void getShowDescription() {
-        this.selectedItem = this.table.getSelectionModel().getSelectedItem();
+        if (newSelection){
+            this.selectedItem = this.table.getSelectionModel().getSelectedItem();
+        }
+        else{
+            newSelection = true;
+        }
+
         int numberOfArtists = 0;
 
         try {
@@ -186,6 +192,8 @@ public class ScheduleTab {
     public void resetData() {
         this.data = FXCollections.observableArrayList();
         fillTable();
+        newSelection = false;
+        getShowDescription();
     }
 
     /**

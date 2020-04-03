@@ -212,6 +212,7 @@ InitialSetup();
      */
     private void artistDeleteWindow() {
         this.currStage.setTitle("Delete artist");
+        this.currStage.setHeight(350);
 
         HBox header = new HBox();
         header.getChildren().add(new Label("Choose the artist you want to delete:"));
