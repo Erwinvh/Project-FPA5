@@ -124,18 +124,18 @@ public class VisualTab {
                     graphics.setColor(SECONDARY_COLOR);
                     graphics.fill(rectangle);
                     graphics.setColor(Color.BLACK);
-                    String artists = "";
+                    StringBuilder artists = new StringBuilder();
                     for (Artist artist : show.getArtists()) {
-                        artists += artist.getName() + ", ";
+                        artists.append(artist.getName()).append(", ");
                     }
 
-                    artists = artists.substring(0, artists.length() - 2);
+                    artists = new StringBuilder(artists.substring(0, artists.length() - 2));
 
-                    String genres = "";
+                    String genres;
                     if (show.getGenre() != null) {
                         genres = show.getGenre().getFancyName();
                     } else {
-                        genres += "No specified genre";
+                        genres = "No specified genre";
                     }
 
                     // Draw the info of the show
