@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -83,8 +84,10 @@ public class SettingsTab {
         split.setHgap(200);
         split.setVgap(20);
 
-        Label planner = new Label("Planner settings");
-        Label simulator = new Label("Simulator settings");
+        Text planner = new Text("Planner settings");
+        planner.setStyle("-fx-font-weight: bold;");
+        Text simulator = new Text("Simulator settings");
+        simulator.setStyle("-fx-font-weight: bold;");
 
         Label speed = new Label("Simulator speed");
         Label NPCAmount = new Label("Amount of visitors");
