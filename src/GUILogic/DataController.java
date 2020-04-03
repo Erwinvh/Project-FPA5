@@ -195,7 +195,7 @@ public class DataController {
         settings.setSimulatorSpeed(1);
         settings.setVisitors(100);
         settings.setUsingPredictedPerson(false);
-        settings.setBeginHours(0);
+        settings.setBeginHours(9);
         settings.setBeginMinutes(0);
         settings.setOverwriteStartTime(false);
     }

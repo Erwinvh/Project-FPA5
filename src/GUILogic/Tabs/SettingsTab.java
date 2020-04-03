@@ -72,8 +72,8 @@ public class SettingsTab {
         beginTime.setValue(settingsReference.getBeginHours());
         this.overwriteStartTime = new CheckBox();
         overwriteStartTime.setText("Use this starting time");
-        ArrayList timelist = ShowWindow.setupTimeList();
-        beginTime = ShowWindow.getTimestampsComboBox(0, timelist);
+        ArrayList timeList = ShowWindow.setupTimeList();
+        beginTime = ShowWindow.getTimestampsComboBox(0, timeList);
     }
 
     /**
@@ -83,24 +83,24 @@ public class SettingsTab {
      */
     public Tab getSettingsTab() {
 
-        GridPane split = new GridPane();
+        GridPane gridPane = new GridPane();
 
-        split.setAlignment(Pos.CENTER);
-        split.setHgap(200);
-        split.setVgap(20);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(100);
+        gridPane.setVgap(20);
 
-        Text planner = new Text("Planner settings");
+        Label plannerSettings = new Label("Planner settings");
         planner.setStyle("-fx-font-weight: bold;");
-        Text simulator = new Text("Simulator settings");
+        Label simulatorSettings = new Label("Simulator settings");
         simulator.setStyle("-fx-font-weight: bold;");
 
-        Label speed = new Label("Simulator speed");
+        Label simulatorSpeed = new Label("Simulator speed");
         Label NPCAmount = new Label("Amount of visitors");
 
-        Button deleteAllButton = new Button("Delete All");
+        Button deleteAllButton = new Button("Delete all");
         deleteAllButton.setOnAction(e -> deleteData(false));
 
-        Button deleteShowsButton = new Button("Delete All Shows");
+        Button deleteShowsButton = new Button("Delete all shows");
         deleteShowsButton.setOnAction(e -> deleteData(true));
 
         //Prediction checkbox
@@ -174,31 +174,30 @@ public class SettingsTab {
         overwriteStartTime.setSelected(settingsReference.isOverwriteStartTime());
 
         //Adding all nodes to the GridPane
-        split.add(planner, 0, 0);
-        split.add(deleteAllButton, 0, 3);
-        split.add(deleteShowsButton, 0, 5);
+        gridPane.add(plannerSettings, 0, 0);
+        gridPane.add(deleteAllButton, 0, 1);
+        gridPane.add(deleteShowsButton, 0, 2);
 
-        split.add(simulator, 2, 0);
-        split.add(speed, 2, 2);
-        split.add(speedSlider, 2, 3);
-        split.add(NPCAmount, 2, 4);
-        split.add(NPCAmountSlider, 2, 5);
+        gridPane.add(simulatorSettings, 2, 0);
+        gridPane.add(simulatorSpeed, 2, 1);
+        gridPane.add(speedSlider, 2, 2);
+        gridPane.add(NPCAmount, 2, 4);
+        gridPane.add(NPCAmountSlider, 2, 5);
 
-        split.add(speedLabel, 3, 3);
-        split.add(amountLabel, 3, 5);
+        gridPane.add(speedLabel, 3, 2);
+        gridPane.add(amountLabel, 3, 5);
 
-        split.add(prediction, 2, 6);
+        gridPane.add(prediction, 2, 6);
+        gridPane.add(saveButton, 2, 10);
+        gridPane.add(resetButton, 3, 10);
         split.add(Predictionexplanation,3,6);
-        split.add(saveButton, 2, 10);
-        split.add(resetButton, 3, 10);
 
-        split.add(timeLabel, 2, 7);
+        gridPane.add(timeLabel, 2, 7);
+        gridPane.add(beginTime, 2, 8);
 
-        split.add(beginTime, 2, 8);
+        gridPane.add(overwriteStartTime, 2, 9);
 
-        split.add(overwriteStartTime, 2, 9);
-
-        settingsTab.setContent(split);
+        settingsTab.setContent(gridPane);
         return settingsTab;
     }
 
