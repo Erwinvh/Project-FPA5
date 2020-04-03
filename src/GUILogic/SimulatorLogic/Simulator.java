@@ -161,7 +161,7 @@ public class Simulator {
      */
     private void spawnPerson(Person person ) {
         Point2D spawnLocation1 = new Point2D.Double(2 * 32, 20 * 32);
-        Point2D spawnLocation2 = new Point2D.Double(31 * 32, 97 * 32);
+        Point2D spawnLocation2 = new Point2D.Double(31 * 32, 99 * 32);
 
         Random r = new Random();
 
