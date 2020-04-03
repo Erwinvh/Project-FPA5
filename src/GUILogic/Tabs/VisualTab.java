@@ -139,7 +139,7 @@ public class VisualTab {
                     }
 
                     // Draw the info of the show
-                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " " + genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
+                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " " + "||"+ genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
                 }
             }
         }

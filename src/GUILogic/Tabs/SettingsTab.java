@@ -65,7 +65,7 @@ public class SettingsTab {
         this.beginTime = new ComboBox();
         beginTime.setValue(settingsReference.getBeginHours());
         this.overwriteStartTime = new CheckBox();
-        overwriteStartTime.setText("Use this startingTime");
+        overwriteStartTime.setText("Use this starting time");
         ArrayList timelist = ShowWindow.setupTimeList();
         beginTime = ShowWindow.getTimestampsComboBox(0, timelist);
     }
@@ -85,9 +85,6 @@ public class SettingsTab {
 
         Label planner = new Label("Planner settings");
         Label simulator = new Label("Simulator settings");
-
-        Label deleteAll = new Label("Delete all data");
-        Label deleteShows = new Label("Delete all shows");
 
         Label speed = new Label("Simulator speed");
         Label NPCAmount = new Label("Amount of visitors");
@@ -170,9 +167,7 @@ public class SettingsTab {
 
         //Adding all nodes to the GridPane
         split.add(planner, 0, 0);
-        split.add(deleteAll, 0, 2);
         split.add(deleteAllButton, 0, 3);
-        split.add(deleteShows, 0, 4);
         split.add(deleteShowsButton, 0, 5);
 
         split.add(simulator, 2, 0);

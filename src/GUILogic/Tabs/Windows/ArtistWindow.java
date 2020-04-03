@@ -95,7 +95,7 @@ public class ArtistWindow {
      * The user will be able to fill in all the required fields for an unknown artist.
      */
     private void artistAddWindow() {
-        this.currStage.setTitle("Add Artist");
+        this.currStage.setTitle("Add artist");
 
 InitialSetup();
 
@@ -126,7 +126,7 @@ InitialSetup();
      * The further setup of the submenu for editing an artist
      */
     private void artistEditWindow() {
-        this.currStage.setTitle("Edit Artist");
+        this.currStage.setTitle("Edit artist");
 
         Label startEdit = new Label("Which artist do you want to edit?");
         this.WindowStructure.getChildren().add(startEdit);
@@ -188,7 +188,7 @@ InitialSetup();
                 }
             } else {
                 this.errorList.clear();
-                this.errorList.add("No Artist has been selected.");
+                this.errorList.add("No artist has been selected.");
                 new ErrorWindow(this.currStage, this.errorList);
             }
         });
@@ -208,7 +208,7 @@ InitialSetup();
      * The further setup for the submenu to delete an artist
      */
     private void artistDeleteWindow() {
-        this.currStage.setTitle("Delete Artist");
+        this.currStage.setTitle("Delete artist");
 
         HBox header = new HBox();
         header.getChildren().add(new Label("Choose the artist you want to delete:"));
