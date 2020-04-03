@@ -2,6 +2,7 @@ package GUILogic.SimulatorLogic.NPCLogic;
 
 import GUILogic.DataController;
 import GUILogic.SimulatorLogic.MapData.MapDataController;
+import GUILogic.SimulatorLogic.MapData.TargetArea;
 import PlannerData.Artist;
 import PlannerData.Show;
 import PlannerData.Stage;
@@ -42,7 +43,6 @@ public class PersonLogic {
         this.angle = 0;
         this.speed = speed * speedMultiplier;
         this.rotationSpeed = 100;
-        //target = PathCalculator.nextPositionToTarget(this.position, distanceMap);
         this.target = null;
     }
 
@@ -93,8 +93,9 @@ public class PersonLogic {
             }
         }
 
-        String idleName = "Idle" + (int) (Math.random() * 6 + 1);
-        this.distanceMap = MapDataController.getDistanceMap(idleName);
+        ArrayList<TargetArea> idleAreas = MapDataController.getIdleTargetAreas();
+        int idleAreaIndex = (int) (Math.random() * idleAreas.size() );
+        this.distanceMap = MapDataController.getDistanceMap(idleAreas.get(idleAreaIndex).getName());
     }
 
     /**
@@ -115,19 +116,24 @@ public class PersonLogic {
             }
         }
 
+        TargetArea[] targetAreas = MapDataController.getTargetAreas();
         int stageIndex = stages.indexOf(searchingStage);
-        for (DistanceMap distanceMap : MapDataController.getDistanceMaps()) {
-            if (isArtist) {
-                if (distanceMap.getMapName().equals("ArtistStage" + (stageIndex + 1))) {
-                    return distanceMap;
+        for(TargetArea targetArea : targetAreas){
+            if(isArtist){
+                if (targetArea.getName().equals("ArtistStage" + (stageIndex + 1))) {
+                    if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.ARTIST) {
+                        return MapDataController.getDistanceMap(targetArea.getName());
+                    }
                 }
-            } else {
-                if (distanceMap.getMapName().equals("VisitorStage" + (stageIndex + 1))) {
-                    return distanceMap;
+            }
+            else {
+                if(targetArea.getName().equals("VisitorStage" + (stageIndex + 1))){
+                    if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.VISITOR){
+                        return MapDataController.getDistanceMap(targetArea.getName());
+                    }
                 }
             }
         }
-
         return null;
     }
 

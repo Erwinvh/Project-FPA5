@@ -15,6 +15,7 @@ public class TargetArea {
     private Point2D position;
     private Point2D size;
 
+
     /**
      * The constructor of the target area
      * @param name the name of the target area
@@ -69,5 +70,13 @@ public class TargetArea {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * The getter fot the TargetAreatype
+     * @return the type of target area
+     */
+    public TargetAreaType getTargetAreaType() {
+        return targetAreaType;
     }
 }

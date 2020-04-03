@@ -34,6 +34,7 @@ public class MapDataController {
     private static boolean[][] walkableMap;
     private static TargetArea[] targetAreas;
     private static DistanceMap[] distanceMaps;
+    private static ArrayList<TargetArea> idleTargetAreas;
 
     /**
      * constructor
@@ -104,6 +105,14 @@ public class MapDataController {
         for (TiledLayer tiledLayer : tiledLayersNight) {
             tiledLayer.drawG(graphics);
         }
+
+        ArrayList<TargetArea> idles = new ArrayList<>();
+        for(TargetArea targetArea : targetAreas){
+            if(targetArea.getTargetAreaType() == TargetArea.TargetAreaType.ALL){
+                idles.add(targetArea);
+            }
+        }
+        this.idleTargetAreas = idles;
     }
 
     /**
@@ -213,6 +222,7 @@ public class MapDataController {
         graphics.drawImage(dayImage, 0, 0, MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, null);
     }
 
+
     /**
      * The getter for the walkable map
      *
@@ -274,5 +284,13 @@ public class MapDataController {
      */
     public static BufferedImage getNightLayerImage() {
         return nightLayerImage;
+    }
+
+    /**
+     * A getter for the idle areas
+     * @return
+     */
+    public static ArrayList<TargetArea> getIdleTargetAreas() {
+        return idleTargetAreas;
     }
 }
