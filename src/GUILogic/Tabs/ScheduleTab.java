@@ -120,10 +120,9 @@ public class ScheduleTab {
      * This method creates the descriptionVBox that shows the Artists of the selected show.
      */
     private void getShowDescription() {
-        if (newSelection){
+        if (newSelection) {
             this.selectedItem = this.table.getSelectionModel().getSelectedItem();
-        }
-        else{
+        } else {
             newSelection = true;
         }
 
