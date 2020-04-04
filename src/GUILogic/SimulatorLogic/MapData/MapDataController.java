@@ -81,9 +81,7 @@ public class MapDataController {
                     // Adds darkness and light layer
                     if (layerJsonObject.getInt("id") == 7 || layerJsonObject.getInt("id") == 8) {
                         tiledLayersNight.add(new TiledLayer(tiledMapImage, layerJsonObject));
-                    } else {
-                        tiledLayers.add(new TiledLayer(tiledMapImage, layerJsonObject));
-                    }
+                    } else tiledLayers.add(new TiledLayer(tiledMapImage, layerJsonObject));
             }
         } catch (FileNotFoundException e) {
             System.out.println("MapDataController.getInstance().MapDataController: could not find file in " + MAP_LAYOUT_DIR);

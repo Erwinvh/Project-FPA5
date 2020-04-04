@@ -76,7 +76,7 @@ public class TargetArea {
     }
 
     /**
-     * The getter fot the TargetAreatype
+     * The getter fot the TargetAreaType
      *
      * @return the type of target area
      */
