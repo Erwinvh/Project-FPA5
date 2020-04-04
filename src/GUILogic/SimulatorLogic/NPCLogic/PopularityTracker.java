@@ -21,7 +21,9 @@ public class PopularityTracker {
     }
 
     /**
-     * Looks if there is room for one extra visitor in a show and adds one to the amount people to the show
+     * Looks if there is room for one extra visitor in a show,
+     * if there is room: add one to the amount of people going to the show and return true
+     * Otherwise return false
      *
      * @param show the show the visitor wants to go to
      * @return true if there is room, false if the show is full

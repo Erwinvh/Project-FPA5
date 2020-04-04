@@ -93,6 +93,7 @@ public class MapDataController {
 
         dayImage = new BufferedImage(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
         graphics = dayImage.getGraphics();
+
         for (TiledLayer tiledLayer : tiledLayers) {
             tiledLayer.drawG(graphics);
         }

@@ -36,7 +36,6 @@ public class Simulator {
     private ArrayList<Show> activeShows;
 
     private Clock clockReference;
-    private Settings settingsReference;
     private Planner plannerReference;
 
     /**
@@ -52,8 +51,8 @@ public class Simulator {
      */
     public void init() {
         clockReference = DataController.getInstance().getClock();
-        settingsReference = DataController.getInstance().getSettings();
         plannerReference = DataController.getInstance().getPlanner();
+        Settings settingsReference = DataController.getInstance().getSettings();
 
         this.artistPersons = new ArrayList<>();
         activeShows = DataController.getInstance().getPlanner().getActiveShows();
