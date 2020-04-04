@@ -14,7 +14,7 @@ public class PopularityTracker {
 
     public PopularityTracker() {
         peopleAtShows = new HashMap<>();
-        ArrayList<Show> activeShows = DataController.getInstance().getActiveShows();
+        ArrayList<Show> activeShows = DataController.getInstance().getPlanner().getActiveShows();
         for (Show show : activeShows) {
             peopleAtShows.put(show, 0);
         }

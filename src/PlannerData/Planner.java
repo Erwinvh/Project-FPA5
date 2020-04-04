@@ -1,6 +1,7 @@
 package PlannerData;
 
 import Enumerators.Genres;
+import GUILogic.Clock;
 import GUILogic.DataController;
 
 import javax.json.Json;
@@ -10,6 +11,7 @@ import javax.json.JsonWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -131,33 +133,6 @@ public class Planner implements Serializable {
     }
 
     /**
-     * The getter for the ArrayList of shows
-     *
-     * @return ArrayList of all shows currently added
-     */
-    public ArrayList<Show> getShows() {
-        return this.shows;
-    }
-
-    /**
-     * The getter for the ArrayList of stages
-     *
-     * @return ArrayList of all stages that are currently added
-     */
-    public ArrayList<Stage> getStages() {
-        return this.stages;
-    }
-
-    /**
-     * The getter for the ArrayList of artists
-     *
-     * @return ArrayList of all artists that are currently added
-     */
-    public ArrayList<Artist> getArtists() {
-        return this.artists;
-    }
-
-    /**
      * A method to clear all planned shows out of the planner
      */
     public void deleteShows() {
@@ -215,6 +190,7 @@ public class Planner implements Serializable {
                     artistBuilder.add("genre", artist.getGenre().getFancyName());
                     showArtistsBuilder.add(artistBuilder);
                 }
+
                 Stage stage = show.getStage();
                 stageBuilder.add("name", stage.getName());
                 stageBuilder.add("capacity", stage.getCapacity());
@@ -243,23 +219,67 @@ public class Planner implements Serializable {
     }
 
     /**
+     * The getter for the ArrayList of shows
+     *
+     * @return ArrayList of all shows currently added
+     */
+    public ArrayList<Show> getShows() {
+        return this.shows;
+    }
+
+    /**
+     * A getter for the active shows
+     *
+     * @return an ArrayList containing all active shows
+     */
+    public ArrayList<Show> getActiveShows() {
+        LocalTime currentTime = LocalTime.MIDNIGHT;
+        currentTime = currentTime.plusHours(DataController.getInstance().getClock().getHours());
+        currentTime = currentTime.plusMinutes(DataController.getInstance().getClock().getMinutes());
+
+        ArrayList<Show> activeShows = new ArrayList<>();
+        for (Show show : getShows()) {
+            if ((currentTime.equals(show.getBeginTime())) || (currentTime.isAfter(show.getBeginTime()) && currentTime.isBefore(show.getEndTime()))) {
+                activeShows.add(show);
+            }
+        }
+
+        return activeShows;
+    }
+
+    /**
+     * The getter for the ArrayList of stages
+     *
+     * @return ArrayList of all stages that are currently added
+     */
+    public ArrayList<Stage> getStages() {
+        return this.stages;
+    }
+
+    /**
      * The getter for a stage by name
      *
      * @param stageName Searched stage name
      * @return Searched stage if found, else Null.
      */
     public Stage getStage(String stageName) {
-        if (stageName == null || stageName.isEmpty()) {
-            return null;
-        }
+        if (stageName == null || stageName.isEmpty())
+            throw new NullPointerException("Planner.getStage: stageName cannot be null");
 
         for (Stage stage : getStages()) {
-            if (stageName.equals(stage.getName())) {
-                return stage;
-            }
+            if (stageName.equals(stage.getName())) return stage;
         }
 
         return null;
+    }
+
+    /**
+     * The getter for the ArrayList of artists
+     *
+     * @return ArrayList of all artists that are currently added
+     */
+    public ArrayList<Artist> getArtists() {
+        return this.artists;
     }
 
     /**

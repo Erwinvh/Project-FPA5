@@ -139,7 +139,7 @@ public class VisualTab {
                     }
 
                     // Draw the info of the show
-                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " | "+ genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
+                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " | " + genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
                 }
             }
         }
@@ -147,6 +147,7 @@ public class VisualTab {
 
     /**
      * The getter of the visual tab
+     *
      * @return The visual tab
      */
     public Tab getVisualTab() {
@@ -157,7 +158,8 @@ public class VisualTab {
      * The update function that updates the visual tab.
      */
     public void update() {
-        scrollPane.setVvalue(DataController.getInstance().getClock().getHours() / 24f);
+        scrollPane.setVvalue(DataController.getInstance().getClock().getHours() / 24.0);
+
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
         drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));

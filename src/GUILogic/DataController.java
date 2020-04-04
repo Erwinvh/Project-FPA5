@@ -112,27 +112,6 @@ public class DataController {
     }
 
     /**
-     * A getter for the active shows
-     *
-     * @return an ArrayList containing all active shows
-     */
-    public ArrayList<Show> getActiveShows() {
-        LocalTime currentTime = LocalTime.MIDNIGHT;
-        currentTime = currentTime.plusHours(this.clock.getHours());
-        currentTime = currentTime.plusMinutes(this.clock.getMinutes());
-        ArrayList<Show> allShows = this.planner.getShows();
-        ArrayList<Show> activeShows = new ArrayList<>();
-
-        for (Show show : allShows) {
-            if ((currentTime.equals(show.getBeginTime())) || (currentTime.isAfter(show.getBeginTime()) && currentTime.isBefore(show.getEndTime()))) {
-                activeShows.add(show);
-            }
-        }
-
-        return activeShows;
-    }
-
-    /**
      * The getter for the planner
      *
      * @return Planner

@@ -56,7 +56,7 @@ public class Simulator {
         plannerReference = DataController.getInstance().getPlanner();
 
         this.artistPersons = new ArrayList<>();
-        activeShows = DataController.getInstance().getActiveShows();
+        activeShows = DataController.getInstance().getPlanner().getActiveShows();
         tracker = new PopularityTracker();
 
         // Create the mapDataController to read out all the map data
@@ -340,7 +340,7 @@ public class Simulator {
      * updates the new target of all people
      */
     private void pulse() {
-        activeShows = DataController.getInstance().getActiveShows();
+        activeShows = DataController.getInstance().getPlanner().getActiveShows();
 
         PopularityTracker tracker = new PopularityTracker();
         for (Person person : people) {
