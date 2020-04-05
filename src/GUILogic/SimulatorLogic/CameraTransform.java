@@ -45,6 +45,7 @@ class CameraTransform {
 
     /**
      * This method allows the user to scroll in and out of the map.
+     *
      * @param event the scroll event itself
      */
     private void onScroll(ScrollEvent event) {

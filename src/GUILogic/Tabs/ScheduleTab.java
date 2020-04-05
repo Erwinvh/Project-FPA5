@@ -74,25 +74,25 @@ public class ScheduleTab {
     private void createTable() {
         this.table.setEditable(false);
 
-        TableColumn nameColumn = new TableColumn("Name");
+        TableColumn<Show, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
 
-        TableColumn beginTimeCol = new TableColumn("Begin time");
+        TableColumn<Show, String> beginTimeCol = new TableColumn<>("Begin time");
         beginTimeCol.setCellValueFactory(new PropertyValueFactory<>("beginTimeString"));
 
-        TableColumn endTimeCol = new TableColumn("End time");
+        TableColumn<Show, String> endTimeCol = new TableColumn<>("End time");
         endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTimeString"));
 
-        TableColumn stageCol = new TableColumn("Stage");
+        TableColumn<Show, String> stageCol = new TableColumn<>("Stage");
         stageCol.setCellValueFactory(new PropertyValueFactory<>("StageName"));
 
-        TableColumn artistCol = new TableColumn("Artists");
+        TableColumn<Show, String> artistCol = new TableColumn<>("Artists");
         artistCol.setCellValueFactory(new PropertyValueFactory<>("ArtistsNames"));
 
-        TableColumn genreCol = new TableColumn("Genre");
+        TableColumn<Show, String> genreCol = new TableColumn<>("Genre");
         genreCol.setCellValueFactory(new PropertyValueFactory<>("GenreFancyName"));
 
-        TableColumn popularityCol = new TableColumn("Popularity");
+        TableColumn<Show, String> popularityCol = new TableColumn<>("Popularity");
         popularityCol.setCellValueFactory(new PropertyValueFactory<>("expectedPopularity"));
 
         this.table.setPrefWidth(800);

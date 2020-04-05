@@ -171,7 +171,7 @@ public class MapDataController {
     private void initializeDistanceMaps() {
         distanceMaps = new DistanceMap[targetAreas.length];
         for (int i = 0; i < targetAreas.length; i++) {
-            distanceMaps[i] = new DistanceMap(targetAreas[i].getName(), targetAreas[i]);
+            distanceMaps[i] = new DistanceMap(targetAreas[i]);
         }
     }
 

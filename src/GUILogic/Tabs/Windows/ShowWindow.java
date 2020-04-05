@@ -31,17 +31,17 @@ public class ShowWindow {
     private Stage popUp;
     private ScheduleTab scheduleTab;
 
-    private ComboBox startingTime;
-    private ComboBox endingTime;
-    private ComboBox stageBox;
-    private ComboBox genreBox;
+    private ComboBox<String> startingTime;
+    private ComboBox<String> endingTime;
+    private ComboBox<String> stageBox;
+    private ComboBox<String> genreBox;
     private TextField nameField;
     private int stagePopularity;
     private Slider popularitySlider;
     private Label popularityLabel;
     private TextArea descriptionArea;
     private VBox additionalArtists;
-    private ComboBox artistBox;
+    private ComboBox<String> artistBox;
     private GridPane gridPaneShows;
     private BorderPane windowStructure;
 
@@ -151,7 +151,7 @@ public class ShowWindow {
         Button showArtistAdder = new Button("+");
         gridPaneShows.add(showArtistAdder, 3, 7);
         showArtistAdder.setOnAction(event -> {
-            ComboBox artistAdded = getAllArtistsComboBox();
+            ComboBox<String> artistAdded = getAllArtistsComboBox();
             artistAdded.getItems().add("None");
             this.additionalArtists.getChildren().add(artistAdded);
             artistAdded.setOnAction(e -> {
@@ -230,7 +230,7 @@ public class ShowWindow {
         this.artistBox.setValue(this.selectedShow.getArtists().get(0).getName());
 
         for (int i = 1; i < this.selectedShow.getArtists().size(); i++) {
-            ComboBox addedArtist = getAllArtistsComboBox();
+            ComboBox<String> addedArtist = getAllArtistsComboBox();
             addedArtist.setValue(this.selectedShow.getArtists().get(i).getName());
             this.additionalArtists.getChildren().add(addedArtist);
             addedArtist.getItems().add("None");
@@ -317,14 +317,14 @@ public class ShowWindow {
         if (this.stageBox.getValue() == null || this.stageBox.getValue().equals("Select")) {
             this.errorList.add("The stage has not been filled in.");
         } else {
-            addedStage = plannerReference.getStage((String) stageBox.getValue());
+            addedStage = plannerReference.getStage(stageBox.getValue());
         }
 
         //genre
         if (genreBox.getValue() == null || genreBox.getValue().equals("Select")) {
             this.errorList.add("The genre has not been filled in.");
         } else {
-            addedGenre = Genres.getGenre(genreBox.getValue().toString());
+            addedGenre = Genres.getGenre(genreBox.getValue());
         }
 
         //artist
@@ -500,8 +500,8 @@ public class ShowWindow {
      *
      * @return ComboBox
      */
-    private ComboBox getGenreComboBox() {
-        ComboBox genreBox = new ComboBox();
+    private ComboBox<String> getGenreComboBox() {
+        ComboBox<String> genreBox = new ComboBox<>();
         genreBox.getItems().add("Select");
         genreBox.getSelectionModel().selectFirst();
         for (Genres genre : Genres.values()) {
@@ -517,8 +517,8 @@ public class ShowWindow {
      *
      * @return ComboBox
      */
-    private ComboBox getAllStagesComboBox() {
-        ComboBox stageBox = new ComboBox();
+    private ComboBox<String> getAllStagesComboBox() {
+        ComboBox<String> stageBox = new ComboBox<>();
         stageBox.getItems().add("Select");
         stageBox.getSelectionModel().selectFirst();
         for (PlannerData.Stage stage : plannerReference.getStages()) {
@@ -528,7 +528,7 @@ public class ShowWindow {
         stageBox.setOnAction(event -> {
             int stageCapacity = 100;
             if (!stageBox.getValue().equals("Select stage")) {
-                PlannerData.Stage selectedStage = plannerReference.getStage(stageBox.getValue().toString());
+                PlannerData.Stage selectedStage = plannerReference.getStage(stageBox.getValue());
                 if (selectedStage != null && !selectedStage.getName().isEmpty() && selectedStage.getCapacity() > 0) {
                     stageCapacity = selectedStage.getCapacity();
                 }
@@ -547,8 +547,8 @@ public class ShowWindow {
      *
      * @return ComboBox
      */
-    private ComboBox getAllArtistsComboBox() {
-        ComboBox artistBox = new ComboBox();
+    private ComboBox<String> getAllArtistsComboBox() {
+        ComboBox<String> artistBox = new ComboBox<>();
         artistBox.getItems().add("Select");
         artistBox.getSelectionModel().selectFirst();
 
@@ -565,8 +565,8 @@ public class ShowWindow {
      *
      * @return ComboBox
      */
-    public static ComboBox getTimestampsComboBox(int startingIndex, ArrayList timeList) {
-        ComboBox timeBox = new ComboBox();
+    public static ComboBox<String> getTimestampsComboBox(int startingIndex, ArrayList<String> timeList) {
+        ComboBox<String> timeBox = new ComboBox<>();
         timeBox.getItems().add("Select");
         timeBox.getItems().addAll(timeList.subList(startingIndex, timeList.size()));
         timeBox.getSelectionModel().selectFirst();
