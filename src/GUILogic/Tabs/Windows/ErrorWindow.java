@@ -1,13 +1,11 @@
 package GUILogic.Tabs.Windows;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -54,11 +52,9 @@ public class ErrorWindow {
 
         Scene errorScene = new Scene(baseStructure);
         errorScene.getStylesheets().add("Window-StyleSheet.css");
-        errorScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent ke) {
-                if (ke.getCode() == KeyCode.ESCAPE) {
-                    getErrorStage().close();
-                }
+        errorScene.setOnKeyPressed(ke -> {
+            if (ke.getCode() == KeyCode.ESCAPE) {
+                getErrorStage().close();
             }
         });
 
@@ -68,9 +64,10 @@ public class ErrorWindow {
 
     /**
      * The getter for the error window stage
+     *
      * @return The error window stage
      */
-    public Stage getErrorStage() {
+    private Stage getErrorStage() {
         return errorStage;
     }
 }

@@ -179,6 +179,12 @@ public class PersonLogic {
      * The update function for the npc
      */
     void update() {
+        //check if the person is out of bound and if he is he is set to despawn
+        if (position.getX() < 0 || position.getX() > MapDataController.getMapWidth() * MapDataController.getTileSize() ||
+                position.getY() < 0 || position.getY() > MapDataController.getMapHeight() * MapDataController.getTileSize()) {
+            person.setDespawn(true);
+        }
+
         if (hasArrivedAtDestination()) {
             isRoaming = true;
             roamInTargetArea();
@@ -269,7 +275,7 @@ public class PersonLogic {
      *
      * @param position the new position for the NPC
      */
-   public void setPosition(Point2D position) {
+    public void setPosition(Point2D position) {
         this.position = position;
     }
 }

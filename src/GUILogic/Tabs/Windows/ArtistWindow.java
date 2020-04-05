@@ -29,7 +29,7 @@ public class ArtistWindow {
     private VBox windowStructure;
     private TextField artistName;
     private Label artistGenreLabel = new Label("Artist genre:");
-    private ComboBox genreComboBox = new ComboBox();
+    private ComboBox<String> genreComboBox = new ComboBox<>();
     private Planner plannerReference;
     private TextArea artistDescription;
     private Button cancelButton;
@@ -40,7 +40,7 @@ public class ArtistWindow {
      *
      * @param screenNumber    submenu selection number
      * @param currParentStage Current parent stage
-     * @param scheduleTab              The schedule tab
+     * @param scheduleTab     The schedule tab
      */
     public ArtistWindow(int screenNumber, Stage currParentStage, ScheduleTab scheduleTab) {
         this.scheduleTab = scheduleTab;
@@ -105,9 +105,9 @@ public class ArtistWindow {
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString())) {
+            if (canAddArtist(artistName, artistDescription, genreComboBox.getValue())) {
                 try {
-                    plannerReference.addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue().toString()), artistDescription.getText());
+                    plannerReference.addArtist(artistName.getText(), Genres.getGenre(genreComboBox.getValue()), artistDescription.getText());
                     plannerReference.savePlanner();
                     this.currStage.close();
                 } catch (Exception event) {
@@ -130,7 +130,7 @@ public class ArtistWindow {
 
         Label startEdit = new Label("Which artist do you want to edit?");
         this.windowStructure.getChildren().add(startEdit);
-        ComboBox artistComboBox = new ComboBox();
+        ComboBox<String> artistComboBox = new ComboBox<>();
         artistComboBox.getItems().add("Select artist");
         for (Artist artist : plannerReference.getArtists()) {
             artistComboBox.getItems().add(artist.getName());
@@ -142,7 +142,7 @@ public class ArtistWindow {
 
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("Select artist")) {
-                this.selectedArtist = plannerReference.getArtist(artistComboBox.getValue().toString());
+                this.selectedArtist = plannerReference.getArtist(artistComboBox.getValue());
                 artistName.setText(this.selectedArtist.getName());
                 artistDescription.setText(this.selectedArtist.getDescription());
                 genreComboBox.setValue(this.selectedArtist.getGenre().getFancyName());
@@ -159,22 +159,22 @@ public class ArtistWindow {
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (!artistComboBox.getValue().toString().equals("Select artist")) {
-                if (canAddArtist(artistName, artistDescription, genreComboBox.getValue().toString())) {
+            if (!artistComboBox.getValue().equals("Select artist")) {
+                if (canAddArtist(artistName, artistDescription, genreComboBox.getValue())) {
                     try {
                         for (Show show : plannerReference.getShows()) {
                             for (Artist artist : show.getArtists()) {
                                 if (artist.getName().equals(this.selectedArtist.getName())) {
                                     artist.setName(artistName.getText());
                                     artist.setDescription(artistDescription.getText());
-                                    artist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));
+                                    artist.setGenre(Genres.getGenre(genreComboBox.getValue()));
                                 }
                             }
                         }
 
                         this.selectedArtist.setName(artistName.getText());
                         this.selectedArtist.setDescription(artistDescription.getText());
-                        this.selectedArtist.setGenre(Genres.getGenre(genreComboBox.getValue().toString()));
+                        this.selectedArtist.setGenre(Genres.getGenre(genreComboBox.getValue()));
 
                         plannerReference.savePlanner();
                         scheduleTab.resetData();
@@ -211,7 +211,7 @@ public class ArtistWindow {
         VBox header = new VBox();
         header.getChildren().add(new Label("Choose the artist you want to delete:"));
 
-        ComboBox artistComboBox = new ComboBox();
+        ComboBox<String> artistComboBox = new ComboBox<>();
         artistComboBox.getItems().add("Select artist");
         for (Artist artist : plannerReference.getArtists()) {
             artistComboBox.getItems().add(artist.getName());
@@ -220,7 +220,7 @@ public class ArtistWindow {
         artistComboBox.getSelectionModel().selectFirst();
         artistComboBox.setOnAction(event -> {
             if (!artistComboBox.getValue().equals("Select artist")) {
-                this.selectedArtist = plannerReference.getArtist(artistComboBox.getValue().toString());
+                this.selectedArtist = plannerReference.getArtist(artistComboBox.getValue());
                 if (selectedArtist != null && !selectedArtist.getName().isEmpty()) {
                     this.artistDeleteText.textProperty().setValue("Do you want to delete this artist:\nName: " + selectedArtist.getName() +
                             "\nGenre: " + selectedArtist.getGenre().getFancyName());
@@ -235,10 +235,10 @@ public class ArtistWindow {
         cancelConfirmButtons.getChildren().add(this.cancelButton);
         Button confirmButton = new Button("Confirm");
         confirmButton.setOnAction(e -> {
-            if (!artistComboBox.getValue().toString().equals("Select artist")) {
+            if (!artistComboBox.getValue().equals("Select artist")) {
                 if (canDeleteArtist()) {
                     try {
-                        plannerReference.deleteArtist(artistComboBox.getValue().toString());
+                        plannerReference.deleteArtist(artistComboBox.getValue());
                         plannerReference.savePlanner();
                         this.currStage.close();
                     } catch (Exception exception) {

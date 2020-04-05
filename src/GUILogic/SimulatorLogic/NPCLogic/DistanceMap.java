@@ -8,19 +8,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class DistanceMap {
-    private String mapName;
     private int[][] map;
     private TargetArea target;
 
     /**
      * Makes a distanceMap which can be used to find the shortest path
      *
-     * @param mapName    The name of the map
      * @param targetArea The point from which the DistanceMap starts (the 0 point)
      */
-    public DistanceMap(String mapName, TargetArea targetArea) {
-        this.mapName = mapName;
-
+    public DistanceMap(TargetArea targetArea) {
         boolean[][] walkableMap = MapDataController.getWalkableMap();
 
         int mapWidth = walkableMap.length;
@@ -87,15 +83,10 @@ public class DistanceMap {
         return map;
     }
 
-    /**
-     * The getter for the map name
-     *
-     * @return The map name
-     */
-    public String getMapName() {
-        return mapName;
-    }
 
+    /**
+     * @return the target area where the map is pointing to
+     */
     public TargetArea getTarget() {
         return target;
     }
