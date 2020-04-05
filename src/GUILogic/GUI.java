@@ -1,34 +1,40 @@
 package GUILogic;
 
-import PlannerData.Planner;
+import GUILogic.Tabs.ScheduleTab;
+import GUILogic.Tabs.SettingsTab;
+import GUILogic.Tabs.SimulatorTab;
+import GUILogic.Tabs.VisualTab;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class GUI extends Application {
 
+    private static SimulatorTab simulatorTab;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         TabPane tabPane = new TabPane();
         ScheduleTab scheduleTab = new ScheduleTab(primaryStage);
-        SimulatorTab simulatorTab = new SimulatorTab();
-        SettingsTab settingsTab = new SettingsTab();
+        simulatorTab = new SimulatorTab();
+        SettingsTab settingsTab = new SettingsTab(primaryStage);
         VisualTab visualTab = new VisualTab();
-
 
         tabPane.getTabs().addAll(scheduleTab.getScheduleTab(), visualTab.getVisualTab(), simulatorTab.getSimulatorTab(), settingsTab.getSettingsTab());
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-            if (newTab == visualTab.getVisualTab()) {
+            if (newTab.equals(visualTab.getVisualTab())) {
                 visualTab.update();
+            } else if (newTab.equals(scheduleTab.getScheduleTab())) {
+                scheduleTab.resetData();
             }
         });
 
         Scene scene = new Scene(tabPane);
         scene.getStylesheets().add("Main-StyleSheet.css");
+
         primaryStage.setTitle("Festival Planner");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -36,5 +42,9 @@ public class GUI extends Application {
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
         primaryStage.show();
+    }
+
+    public static SimulatorTab getSimulatorTab() {
+        return simulatorTab;
     }
 }

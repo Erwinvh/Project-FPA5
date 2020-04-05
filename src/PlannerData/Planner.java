@@ -1,112 +1,56 @@
 package PlannerData;
 
 import Enumerators.Genres;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import GUILogic.Clock;
+import GUILogic.DataController;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * A class that saves all added shows, artists and stages.
+ */
 public class Planner implements Serializable {
 
     private ArrayList<Show> shows;
     private ArrayList<Stage> stages;
     private ArrayList<Artist> artists;
-//    private ArrayList<Genres> genres;
 
     public final static String saveFileName = "Resources/saveFile.json";
 
+    /**
+     * The constructor of the planner
+     */
     public Planner() {
         this.shows = new ArrayList<>();
         this.stages = new ArrayList<>();
         this.artists = new ArrayList<>();
-//        this.genres = new ArrayList<>();
     }
 
     /**
-     * method to add shows
+     * method to add shows and saves the planner
      *
      * @param show object where data about the show is stored
      */
     public void addShow(Show show) {
         this.shows.add(show);
         this.savePlanner();
-
     }
 
     /**
-     * overloaded function to add a list of shows
+     * Adds an artists to artists
      *
-     * @param shows array list of shows which are objects where data about the show is stored
+     * @param name        the name of the artist
+     * @param genre       the genre of the artist
+     * @param description the description of the artist
      */
-    public void addShow(ArrayList<Show> shows) {
-        for (Show show : shows) {
-            addShow(show);
-        }
-    }
-
-    /**
-     * overloaded function to create and add a show
-     *
-     * @param beginTime          the time the show begins
-     * @param endTime            the time the show ends
-     * @param artists            an array list of all the artists that contribute to the show
-     * @param name               name of the show
-     * @param stage              Which stage the show is performed
-     * @param description        special information
-     * @param genre              genre of the music performed
-     * @param expectedPopularity how many visitors are expected
-     */
-    public void addShow(LocalTime beginTime, LocalTime endTime, ArrayList<Artist> artists, String name, Stage stage, String description, ArrayList<Genres> genre, int expectedPopularity) {
-        addShow(new Show(beginTime, endTime, artists, name, stage, description, genre, expectedPopularity));
-    }
-
-    public void addShow(LocalTime beginTime, LocalTime endTime, Stage stage, int popularity, Genres genre, ArrayList<Artist> artists) {
-        Show newShow = new Show(beginTime, endTime, stage, artists, "", "", genre, popularity);
-
-        if (this.shows.contains(newShow)) return;
-
-        for (Show show : this.shows) {
-            if (show.getStage().equals(stage)) {
-                if (beginTime.isAfter(show.getBeginTime()) && beginTime.isBefore(show.getEndTime())) {
-                    return;
-                }
-
-                if (endTime.isAfter(show.getBeginTime()) && endTime.isBefore(show.getEndTime())) {
-                    return;
-                }
-            }
-        }
-
-        this.shows.add(newShow);
-        this.savePlanner();
-    }
-
-//    public void addArtist(String name, Genres genre, Image image, String description) {
-//        for (Artist existingArtist : this.artists) {
-//            if (name.equals(existingArtist.getName())) {
-//                return;
-//            }
-//        }
-//
-//        this.artists.add(new Artist(name, genre, image, description));
-//        this.savePlanner();
-//    }
-
-    public void addArtist(String name, Genres genre, String imagePath, String description) {
-        for (Artist existingArtist : this.artists) {
-            if (name.equals(existingArtist.getName())) {
-                return;
-            }
-        }
-
-        this.artists.add(new Artist(name, genre, description));
-        this.savePlanner();
-    }
-
     public void addArtist(String name, Genres genre, String description) {
         for (Artist existingArtist : this.artists) {
             if (name.equals(existingArtist.getName())) return;
@@ -116,42 +60,42 @@ public class Planner implements Serializable {
         this.savePlanner();
     }
 
-    public void addStage(int capacity, String name) {
-
-        if (capacity < 1 || capacity > 100000)
-            return;
-
-        for (Stage stage : this.stages) {
-            if (stage.getName().toLowerCase().equals(name.toLowerCase()))
-                return;
-        }
-
-        this.stages.add(new Stage(capacity, name));
-        this.savePlanner();
-    }
+    /**
+     * Adds a stage to stages and saves the planner
+     *
+     * @param stage A new stage to add
+     */
     public void addStage(Stage stage) {
         this.stages.add(stage);
         this.savePlanner();
     }
 
+    /**
+     * Deletes a show
+     *
+     * @param show the show to be deleted
+     * @return true if the delete is successful, false if not
+     */
     public boolean deleteShow(Show show) {
         return this.shows.remove(show);
     }
 
-    public boolean deleteShow(String showName) {
-        for (Show show : this.shows) {
-            if (show.getName().equals(showName)) {
-                return deleteShow(show);
-            }
-        }
-
-        return false;
-    }
-
-    public boolean deleteArtist(Artist artist) {
+    /**
+     * Deletes an artist
+     *
+     * @param artist the artist to be deleted
+     * @return true if the deletion is successful, false if not
+     */
+    private boolean deleteArtist(Artist artist) {
         return this.artists.remove(artist);
     }
 
+    /**
+     * Delete an artist
+     *
+     * @param artistName the name of the artist to be deleted
+     * @return true if the deletion is successful, false if not
+     */
     public boolean deleteArtist(String artistName) {
         for (Artist artist : this.artists) {
             if (artist.getName().equals(artistName)) {
@@ -162,45 +106,196 @@ public class Planner implements Serializable {
         return false;
     }
 
-    public boolean deleteStage(Stage stage) {
+    /**
+     * Deletes a stage
+     *
+     * @param stage the stage to be deleted
+     * @return true if the deletion is successful, false if not
+     */
+    private boolean deleteStage(Stage stage) {
         return this.stages.remove(stage);
     }
 
+    /**
+     * Deletes a stage
+     *
+     * @param stageName the name of the stage to be deleted
+     * @return true if the deletion is successful, false if not
+     */
     public boolean deleteStage(String stageName) {
         for (Stage stage : this.stages) {
             if (stage.getName().equals(stageName)) {
-                return deleteStage(stageName);
+                return deleteStage(stage);
             }
         }
 
         return false;
     }
 
-    public ArrayList<Show> getShows() {
-        return this.shows;
+    /**
+     * A method to clear all planned shows out of the planner
+     */
+    public void deleteShows() {
+        shows.clear();
     }
 
-    public ArrayList<Stage> getStages() {
-        return this.stages;
+    /**
+     * A method to clear all data in the planner
+     */
+    public void deleteAll() {
+        shows.clear();
+        artists.clear();
+        stages.clear();
     }
 
-    public ArrayList<Artist> getArtists() {
-        return this.artists;
-    }
-
+    /**
+     * Saves the shows, artists and stages in a Json file
+     */
     public void savePlanner() {
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            FileWriter fileWriter = new FileWriter(saveFileName);
-            fileWriter.write(gson.toJson(this));
-            fileWriter.close();
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));
-//            objectOutputStream.writeObject(this);
-//            objectOutputStream.close();
+            JsonWriter writer = Json.createWriter(new FileWriter(saveFileName));
+            JsonObjectBuilder plannerBuilder = Json.createObjectBuilder();
+            JsonArrayBuilder showsBuilder = Json.createArrayBuilder();
+            JsonArrayBuilder stagesBuilder = Json.createArrayBuilder();
+            JsonArrayBuilder artistsBuilder = Json.createArrayBuilder();
+
+            //saves all stages
+            for (Stage stage : this.getStages()) {
+                JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
+                stageBuilder.add("name", stage.getName());
+                stageBuilder.add("capacity", stage.getCapacity());
+                stagesBuilder.add(stageBuilder);
+            }
+
+            //saves all artist
+            for (Artist artist : this.getArtists()) {
+                JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
+                artistBuilder.add("name", artist.getName());
+                artistBuilder.add("description", artist.getDescription());
+                artistBuilder.add("genre", artist.getGenre().getFancyName());
+                artistsBuilder.add(artistBuilder);
+            }
+
+            //saves all shows
+            for (Show show : this.getShows()) {
+                JsonArrayBuilder showArtistsBuilder = Json.createArrayBuilder();
+                JsonObjectBuilder showBuilder = Json.createObjectBuilder();
+                JsonObjectBuilder stageBuilder = Json.createObjectBuilder();
+
+                //saves the artist in a show
+                for (Artist artist : show.getArtists()) {
+                    JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
+                    artistBuilder.add("name", artist.getName());
+                    artistBuilder.add("description", artist.getDescription());
+                    artistBuilder.add("genre", artist.getGenre().getFancyName());
+                    showArtistsBuilder.add(artistBuilder);
+                }
+
+                Stage stage = show.getStage();
+                stageBuilder.add("name", stage.getName());
+                stageBuilder.add("capacity", stage.getCapacity());
+
+                showBuilder.add("name", show.getName());
+                showBuilder.add("artists", showArtistsBuilder);
+                showBuilder.add("stage", stageBuilder);
+                showBuilder.add("beginTime", show.getBeginTimeString());
+                showBuilder.add("endTime", show.getEndTimeString());
+                showBuilder.add("getShowDescription", show.getDescription());
+                showBuilder.add("genre", show.getGenre().getFancyName());
+                showBuilder.add("expectedPopularity", show.getExpectedPopularity());
+                showsBuilder.add(showBuilder);
+            }
+
+            plannerBuilder.add("shows", showsBuilder);
+            plannerBuilder.add("artists", artistsBuilder);
+            plannerBuilder.add("stages", stagesBuilder);
+
+            writer.writeObject(plannerBuilder.build());
+            writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * The getter for the ArrayList of shows
+     *
+     * @return ArrayList of all shows currently added
+     */
+    public ArrayList<Show> getShows() {
+        return this.shows;
+    }
+
+    /**
+     * A getter for the active shows
+     *
+     * @return an ArrayList containing all active shows
+     */
+    public ArrayList<Show> getActiveShows() {
+        LocalTime currentTime = LocalTime.MIDNIGHT;
+        currentTime = currentTime.plusHours(DataController.getInstance().getClock().getHours());
+        currentTime = currentTime.plusMinutes(DataController.getInstance().getClock().getMinutes());
+
+        ArrayList<Show> activeShows = new ArrayList<>();
+        for (Show show : getShows()) {
+            if ((currentTime.equals(show.getBeginTime())) || (currentTime.isAfter(show.getBeginTime()) && currentTime.isBefore(show.getEndTime()))) {
+                activeShows.add(show);
+            }
+        }
+
+        return activeShows;
+    }
+
+    /**
+     * The getter for the ArrayList of stages
+     *
+     * @return ArrayList of all stages that are currently added
+     */
+    public ArrayList<Stage> getStages() {
+        return this.stages;
+    }
+
+    /**
+     * The getter for a stage by name
+     *
+     * @param stageName Searched stage name
+     * @return Searched stage if found, else Null.
+     */
+    public Stage getStage(String stageName) {
+        if (stageName == null || stageName.isEmpty())
+            throw new NullPointerException("Planner.getStage: stageName cannot be null");
+
+        for (Stage stage : getStages()) {
+            if (stageName.equals(stage.getName())) return stage;
+        }
+
+        return null;
+    }
+
+    /**
+     * The getter for the ArrayList of artists
+     *
+     * @return ArrayList of all artists that are currently added
+     */
+    public ArrayList<Artist> getArtists() {
+        return this.artists;
+    }
+
+    /**
+     * The getter for an artist by name
+     *
+     * @param artistName Searched artist name
+     * @return Searched artist if found else Null.
+     */
+    public Artist getArtist(String artistName) {
+        for (Artist artist : DataController.getInstance().getPlanner().getArtists()) {
+            if (artistName.equals(artist.getName())) {
+                return artist;
+            }
+        }
+
+        return null;
     }
 
     @Override

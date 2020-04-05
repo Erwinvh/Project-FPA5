@@ -1,0 +1,561 @@
+{
+  "shows": [
+    {
+      "name": "SYML Back to my roots",
+      "artists": [
+        {
+          "name": "SYML",
+          "description": "SYML is de solo-onderneming van Brian Fennell, die eerder deel uitmaakte van de indieband Barcelona. SYML bracht zijn gelijknamige debuutalbum op 3 mei 2019 uit via Nettwerk Records.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "IBA Parkstad Stage",
+        "capacity": 500
+      },
+      "beginTime": "13:30",
+      "endTime": "14:00",
+      "getShowDescription": "Vragen, verlangen en dromen; dat is wat er in de muziek van Brian Fennell, ofwel SYML, centraal staat. \nNiet alleen in de dream-pop, synth-rock en folktronica sound, maar zeker ook in de beeldende lyrics.\nIn een bijzonder interview vertelt de singer-songwriter, die je kunt kennen van Where\u2019s My Love en Clean Eyes, over de inspiraties voor zijn self-titled debuutalbum. \nOver hoe het feit dat hij geadopteerd is vragen bij hem ging oproepen toen hij zelf vader werd. \nOver hoe het was om te zien dat zijn 1-jarige dochter een heftige medische procedure onderging. \nMaar ook over hoe zijn vrouw hem op een andere manier naar de wereld leerde te kijken.",
+      "genre": "Pop",
+      "expectedPopularity": 272
+    },
+    {
+      "name": "Mt. Atlas newest album",
+      "artists": [
+        {
+          "name": "Mt. Atlas",
+          "description": "Mt. Atlas schrijft songs over het gelijknamige dorpje. \nDe band is een samensmelting van The Ten Bells, Recession Youth en Sugar Plum Fairy. \nDe mannen maken stoner, grunge en garage-rock, a la Queens of the Stone Age, System of a Down en Nirvana. \nDe band bestaat uit Sven Vek (zang), Martin Jacobs (gitaar), Lars Ickenroth (gitaar), Jeffrey Hanssen (bas) en Wesley Ferfers (drums).",
+          "genre": "Metal"
+        }
+      ],
+      "stage": {
+        "name": "Brightlands Stage",
+        "capacity": 500
+      },
+      "beginTime": "13:30",
+      "endTime": "14:00",
+      "getShowDescription": "Lekker stevige stoner-, grunge- en garagerock van de Limburgse Mt. Atlas. \nNiet voor niks dat de band in 2019 de Nu of Nooit talentenjacht wint.",
+      "genre": "Metal",
+      "expectedPopularity": 500
+    },
+    {
+      "name": "Grace Carters greatest hits",
+      "artists": [
+        {
+          "name": "Grace Carter",
+          "description": "Grace Carter is een Britse zanger en songwriter uit Londen, Engeland. \nZe verhuisde met haar moeder op achtjarige leeftijd naar Brighton, maar woont nu in Londen. \nZe bracht haar debuutsingle \"Silence\" uit in mei 2017",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Stage 4",
+        "capacity": 250
+      },
+      "beginTime": "14:00",
+      "endTime": "15:00",
+      "getShowDescription": "De Britse zangeres Grace Carter komt terug naar Amsterdam! \nDeze lady uit Londen is hard op weg een grote te worden. \nGrace laat op jonge leeftijd heel wat emoties en muzikale volwassenheid horen in haar muziek, zoals in de prachtige tearjerkers 'Silence' en 'Silhouette'. \nHaar EP \u2018Saving Grace\u2019 doet denken aan Nina Simone en Lauryn Hill, twee iconen die ze tot haar grootste inspiraties rekent. \nNa indrukwekkende shows in onze Upstairs vorig jaar en een indrukwekkende set op Pinkpop dit jaar is Grace helemaal ready voor de OZ, mét nieuwe muziek! \nTe zien in de Melkweg Amsterdam.",
+      "genre": "Pop",
+      "expectedPopularity": 250
+    },
+    {
+      "name": "Bazart ft. Eefje de Visser",
+      "artists": [
+        {
+          "name": "Bazart",
+          "description": "Bazart is een indie-popgroep uit België.\nDe band maakt Nederlandstalige muziek.\nBazart werd opgericht door zanger Mathieu Terryn en zanger/gitarist Simon Nuytten.\nNaar eigen zeggen probeert de band kleinkunst in de Vlaamse betekenis populair te maken onder het Belgische publiek.\nBazart won vijf MIA's in 2016, uitgereikt op 2 februari 2017, en nog eens twee in 2017, uitgereikt op 30 januari 2018.",
+          "genre": "Pop"
+        },
+        {
+          "name": "Eefje de Visser",
+          "description": "Nederlandse sing and song writer, geboren in amsterdam.\nHier heeft ze haar muzikale talent ontdekt.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Mainstage",
+        "capacity": 1000
+      },
+      "beginTime": "14:15",
+      "endTime": "15:00",
+      "getShowDescription": "In België ben je voor of tegen Bazart, er is geen tussenweg. \nHeel veel Belgen, en vooral jonge Belgen, zijn erg voor Matthieu, Simon en Olivier, respectievelijk Terryn, Nuytten en Symons. \nAls heuse popsterren naar Vlaamse maatstaven doen zij met hun Nederlandstalige kleinkunstteksten en sfeervolle indie-synthipop menig gevoelig hart harder kloppen. \nDe Noorderburen zijn ook al lang voor de bijl. Pinkpop, Lowlands en het clubcircuit werden reeds eerder plat gespeeld. \nNaast knallers van meezinghits als Goud, Chaos en Grip (Omarm Me) hebben ze ook een gelukkige hand van gastvocalisten kiezen. Coely? \nKom er maar in Eefje de Visser voor Onder Ons!",
+      "genre": "Pop",
+      "expectedPopularity": 514
+    },
+    {
+      "name": "Golden earring",
+      "artists": [
+        {
+          "name": "Golden earring",
+          "description": "Golden Earring (tot in 1969 The Golden Earrings) is een Nederlandse rockband.\nDe groep werd opgericht in 1961 en is daarmee (samen met de ook in 1961 opgerichte band Bintangs) de oudste nog bestaande rockband van Nederland en een van de langst bestaande bands ter wereld.\nGolden Earring heeft internationaal succes gehad met hun hits Radar Love, Twilight Zone en When the Lady Smiles, en hun albums Moontan en Cut. ",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "IBA Parkstad Stage",
+        "capacity": 500
+      },
+      "beginTime": "15:00",
+      "endTime": "16:00",
+      "getShowDescription": "Ze stonden in 1970 op de allereerste Pinkpop en stappen 49 jaar later nog in dezelfde bezetting het podium op: Golden Earring. \nZonder hun geluidsinstallatie had Pinkpop de eerste editie niet overleefd. \nGeorge Kooymans kreeg tijdens die eerste Pinkpop een fikse stroomstoot en Barry Hay eindigde in 1977 trippend op het politiebureau, al sleepten ze het festival in 2005 hoogstpersoonlijk door de zwaarste editie ooit. \nAnno 2019 staan Pinkpop en Golden Earring samen voor meer dan een eeuw Neerlands rocktrots \u2013 en reken maar dat dat gevierd gaat worden!",
+      "genre": "Pop",
+      "expectedPopularity": 500
+    },
+    {
+      "name": "Yungbludg",
+      "artists": [
+        {
+          "name": "Yungblud",
+          "description": "Dominic Harrison is een Britse rockmuzikant die optreedt onder de artiestennaam YUNGBLUD. \nYUNGBLUD begon op vierjarige leeftijd met gitaar spelen, waarin hij aangemoedigd werd door zijn vader die een gitaarwinkel had. \nZijn grootvader heeft nog opgetreden met T. Rex in de jaren 70.",
+          "genre": "Punk rock"
+        }
+      ],
+      "stage": {
+        "name": "Brightlands Stage",
+        "capacity": 500
+      },
+      "beginTime": "15:00",
+      "endTime": "16:00",
+      "getShowDescription": "De twintigjarige Brit Dominic Harrison, Yungblud dus, is hét podiumbeest van zijn generatie. \nEen rasperformer die stuitert van de energie. \nIn zijn hanige dribbel \u2013 zijn opa speelde nog bij T. Rex \u2013 zien we de jonge Mick Jagger terug, de jonge Angus Young ook. \nDominic brengt zijn poprevue-on-acid (een onweerstaanbare mix van pop, soul, ska, hiphop, beats en punk, geen grenzen tussen de genres) met een nog zelden vertoonde branie. \nZoals alleen de echte youngster dat kan.",
+      "genre": "Punk rock",
+      "expectedPopularity": 109
+    },
+    {
+      "name": "Gerorge Ezra",
+      "artists": [
+        {
+          "name": "George Ezra",
+          "description": "George Ezra Barnett (born 7 June 1993) is an English singer, songwriter and guitarist. \nAfter releasing two EPs, Did You Hear the Rain? in November 2013 and Cassy O' in March 2014, Ezra rose to prominence with the release of his hit single, \"Budapest\", which reached number one in several countries. \nHis debut studio album, Wanted on Voyage, was released in June 2014, reaching number one in the UK and the top ten in seven other countries. \nIt was also the third best-selling album of 2014 in the UK. \nHis second studio album, Staying at Tamara's, was released in March 2018, and reached number one in the UK and the top ten in eight other countries.\nThe second single from the album, \"Paradise\", reached number two in the UK, while the next single, \"Shotgun\", reached number one, becoming Ezra's first chart-topping single in the UK, Ireland, and Australia.\n In February 2019, he won the Brit Award for British Male Solo Artist. ",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Mainstage",
+        "capacity": 1000
+      },
+      "beginTime": "16:00",
+      "endTime": "17:00",
+      "getShowDescription": "De uit Engeland afkomstige singer-songwriter George Ezra breekt in 2014 door met zijn single \u2018Budapest\u2019. \nAl snel groeit hij uit van onbekende artiest naar een grote internationale ster wiens debuutalbum in meer dan tien landen in de top 10 staat en al toerend de wereld over reist. \nEn ook in Nederland bewijst hij zijn talent met drie stijf uitverkochte shows en zijn single \u2018Shotgun\u2019 die maar liefst 10 weken op #1 heeft gestaan. \nMet zijn catchy muziek is George Ezra een van de meest populaire artiesten van deze tijd en is een optreden op Pinkpop 2019 ook niet meer dan verdiend.",
+      "genre": "Pop",
+      "expectedPopularity": 1000
+    },
+    {
+      "name": "Badflower",
+      "artists": [
+        {
+          "name": "Badflower",
+          "description": "Badflower is een Amerikaanse rockband opgericht in Los Angeles, Californië. \nDe band bestaat uit zanger / gitarist Josh Katz, hoofdgitarist Joey Morrow, basgitarist Alex Espiritu en drummer Anthony Sonetti.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Stage 4",
+        "capacity": 250
+      },
+      "beginTime": "16:00",
+      "endTime": "17:00",
+      "getShowDescription": "Deze alternatieve rockband uit Los Angeles doopt zijn songs bij voorkeur in een zwaar aangezet, groezelig gitaargeluid. \nTergend en slepend, filmisch en groots, Led Zeppelin meets grunge. \nIn de duisternis wordt tegelijkertijd ook veel onthuld. \nFrontman Josh Katz, zanger/gitarist en componist, schrijft hartverscheurend openhartig over zijn mentale gezondheid, of liever: het gebrek daaraan. \nEen onderwerp dat leeft, getuige de miljoenen streams voor hun \u2018hit\u2019 Ghost, waarin Katz op indrukwekkende wijze dealt met zijn persoonlijke angsten, depressies, paniekaanvallen en zelfmoordneigingen. \nBadflowers begin dit jaar verschenen debuut heet niet voor niets OK, I\u2019m Sick.",
+      "genre": "Pop",
+      "expectedPopularity": 250
+    },
+    {
+      "name": "Cage the elephant",
+      "artists": [
+        {
+          "name": "Cage the elephant",
+          "description": "Cage the Elephant is een Amerikaanse rockband, opgericht in 2006, die in 2009 zijn gelijknamige debuutalbum uitbracht.\nHet tweede album, Thank You, Happy Birthday, kwam in 2011 op 2 binnen in de Billboard 200.\nBeide albums werden geproduceerd door Jay Joyce van Jive Records.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "IBA Parkstad Stage",
+        "capacity": 500
+      },
+      "beginTime": "17:00",
+      "endTime": "18:00",
+      "getShowDescription": "Grote kans dat er tijdens Pinkpop een wervelwind gesignaleerd gaat worden in Landgraaf. \nZanger Matthew Shultz van de Amerikaanse band Cage The Elephant is er namelijk eentje. \nEen jonge Iggy Pop? \nHet bastaardkind van Mick Jagger? \nDe hyperactieve frontman stuitert letterlijk alle kanten op, net als de muziek van zijn band, die met Social Cues net z\u2019n vijfde album heeft uitgebracht. \nTwee jaar geleden stonden de razende honden voor het laatst in ons land. \nOOR schreef toen: \u2018Een van de strakste, energiekste en vermakelijkste rockshows die we de laatste tijd zagen.\u2019",
+      "genre": "Pop",
+      "expectedPopularity": 263
+    },
+    {
+      "name": "Soham De",
+      "artists": [
+        {
+          "name": "Soham De",
+          "description": "'It's been (it still is) a process of trying to find what I want from music and what kind of music makes me happy, in terms of writing and performing.\" Soham wrote his first song at 10 years old and this was the beginning of a love for music and creative writing.\nAs the songwriting flourished throughout the years, he would also regularly perform to close friends. \nNow, as a 21 year old singer-songwriter from Kings Lynn, Soham is about to release his debut 4-track EP. \nThe accompanying 4 videos all shot in the studio whilst the recording session was in full flow go some way to translating the emotion and intensity to his words and music.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Garden of Love",
+        "capacity": 250
+      },
+      "beginTime": "17:00",
+      "endTime": "17:30",
+      "getShowDescription": "De Britse singer-songwriter Soham De gaat als een speer. \nEenentwintig pas, zojuist zijn eerste EP uit, en nu al op Pinkpop. \nOp die EP, The Next Nowhere, staan vier goudeerlijke, gloedvolle songs. \nTwee pianoballads, twee met de akoestische gitaar. \nOp beide instrumenten kan hij uitstekend uit de voeten. \nVoeg daarbij zijn intense, breekbare, warme, rasperige soulstem plus ontwapende voordracht en je begrijpt waarom de bebrilde student uit het Noord-Engelse universiteitsstadje Durham zijn toehoorders steevast voor zich weet te winnen. ",
+      "genre": "Pop",
+      "expectedPopularity": 250
+    },
+    {
+      "name": "Davina Michelle",
+      "artists": [
+        {
+          "name": "Davina Michelle",
+          "description": "Michelle Davina Hoogendoorn (Rotterdam, 12 november 1995), bekend onder haar artiestennaam Davina Michelle, is een Nederlands zangeres en youtuber.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Brightlands Stage",
+        "capacity": 500
+      },
+      "beginTime": "17:05",
+      "endTime": "17:50",
+      "getShowDescription": "De jonge Rotterdamse zangeres Davina Michelle werd in één klap wereldberoemd toen ze het nummer What About Us van P!nk coverde. \nDe video staat op meer dan twaalf miljoen views op YouTube en P!nk zelf was zo onder de indruk van het nummer dat ze Davina prompt vroeg om haar voorprogramma te verzorgen. \nOok haar uitvoering van Glen Faria\u2019s Duurt Te Lang werd een megahit, ze kreeg een Edison voor Beste Nieuwkomer en haar half miljoen volgers op YouTube kunnen niet wachten op een volgende video. \nMomenteel werkt ze aan een eigen EP. Spannend!",
+      "genre": "Pop",
+      "expectedPopularity": 420
+    },
+    {
+      "name": "Anouk",
+      "artists": [
+        {
+          "name": "Anouk",
+          "description": "Anouk Teeuwe, kortweg Anouk, (Den Haag, 8 april 1975) is een Nederlands zangeres. \nAnouk wordt gezien als de populairste rockzangeres van Nederland.\nZe brak in 1997 door met de single 'Nobody's Wife' en stond sindsdien met verscheidene nummers in de Nederlandse en Belgische hitlijsten.\nEnkele van haar andere hits zijn 'R U Kiddin' Me', 'Michel', 'Girl', 'Lost', 'Modern World', 'Three Days in a Row' en 'Woman'.\nAnouk bracht tot en met 2016 tien studioalbums uit.\nZe behaalde voor Nederland de negende plaats op het Eurovisiesongfestival 2013 met het nummer 'Birds'. ",
+          "genre": "Rock"
+        }
+      ],
+      "stage": {
+        "name": "Mainstage",
+        "capacity": 1000
+      },
+      "beginTime": "18:00",
+      "endTime": "19:00",
+      "getShowDescription": "In 1998 was haar aanwezigheid nog omstreden. \nEen eierwerper raakte de toen 22-jarige Anouk vol op het bovenlijf. \nWaarna ze \u2013 legendarisch moment \u2013 haar eerste Pinkpop-optreden onverstoorbaar voortzette in een vuurrood bh\u2019tje. \nGirl power, heette dat toen nog. \nFast forward naar 2019. Anouk \u2013 dat had de eiergooier allerminst kunnen bevroeden \u2013 is de onbetwiste koningin van de Nederlandse rockcultuur en tevens de meest geboekte artiest in een halve eeuw Pinkpop. \nRecordhoudster, nipt voor Krezip (zes), Muse en Faithless (beiden vijf). \nZe behoeft nauwelijks introductie. \nSpraakmakend coach van The Voice. \nTrok in 2013 met Birds eigenhandig Nederlands reputatie bij het Eurovisie Songfestival uit het slop. \nTrotse moeder van zes kinderen. \nMoedig, een bikkel, maakt van haar hart nooit een moordkuil. \nBovenal: een ongekende klasbak qua zang, optreden en het schrijven van ijzersterke, memorabele liedjes. In 2015, de vorige keer dat ze op Pinkpop stond, kondigde ze aan al haar hits te spelen. \nDat deed ze prompt. \nDaar valt inmiddels absoluut Dominique aan toe te voegen\u2026 ",
+      "genre": "Rock",
+      "expectedPopularity": 1000
+    },
+    {
+      "name": "Hippo campus",
+      "artists": [
+        {
+          "name": "Hippo campus",
+          "description": "Vertaald uit het Engels-Hippo Campus is een indierockband uit St. Paul, Minnesota.\nZe zijn getekend bij Grand Jury Records in de Verenigde Staten en Transgressive Records in het VK. \nDe band heeft opgetreden in South by Southwest, Lollapalooza, Bonnaroo, Summerfest en Reading en Leeds Festivals, maar ook op Conan.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Stage 4",
+        "capacity": 250
+      },
+      "beginTime": "18:00",
+      "endTime": "19:00",
+      "getShowDescription": "Hippocampus is het deel van de hersenen waar het kortetermijngeheugen huist, al zul je je de gelijknamige indieband uit Minnesota nog lang heugen. \nFrontman Jake Luppen en consorten verrasten in 2017 met het uitgekiende album Landmark, dat een jaar later werd opgevolgd door het elektronischer getinte Bambi. \nHippo Campus heeft het hart op de juiste plaats: ze verkopen speciale T-shirts tegen wapengebruik en de opbrengst van hun overige merch komt ten goede aan de MeToo-beweging. \nBillboard prees hun \u2018passionate and heavily female fan base\u2019 niet voor niets; ook het Pinkpopmeisje is fan!",
+      "genre": "Pop",
+      "expectedPopularity": 250
+    },
+    {
+      "name": "Suprise act",
+      "artists": [
+        {
+          "name": "Suprise act",
+          "description": "Het is iedere dag een verrassing wie er gaat spelen.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Garden of Love",
+        "capacity": 250
+      },
+      "beginTime": "18:00",
+      "endTime": "18:30",
+      "getShowDescription": "Elke dag zal er in de Garden of Love een klein intiem optreden onder de noemer \u2018Surprise act\u2019 plaatsvinden van één van de optredende artiesten. \nWie dat zijn gaan wij nu natuurlijk nog niet verklappen. \nCadeautjes zijn nou eenmaal altijd een verrassing!",
+      "genre": "Pop",
+      "expectedPopularity": 53
+    },
+    {
+      "name": "Jacob Banks",
+      "artists": [
+        {
+          "name": "Jacob Banks",
+          "description": "Jacob Banks (born 24 July 1991) is a British singer and songwriter from Birmingham.\nJacob Banks won the 2012 MOBO UnSung regional competition in Birmingham and the Adidas \"Are You In\" music competition.\nHis music is influenced by a range of genres including soul, R&B and hip hop.\nBanks is currently signed with American label Interscope Records.",
+          "genre": "Alternative rock"
+        }
+      ],
+      "stage": {
+        "name": "IBA Parkstad Stage",
+        "capacity": 500
+      },
+      "beginTime": "19:00",
+      "endTime": "20:00",
+      "getShowDescription": "Sensationeel, de soulstem van deze 27-jarige Britse Nigeriaan, die opgroeide in Birmingham. \nZijn bariton klinkt als een bronzen klok. \nMachtig, expressief, vol en diep, voorzien van een onweerstaanbaar schurend randje. \nDe indrukwekkende blues van Chainsmoking \u2013 het geluid van de chain gang in het digitale tijdperk \u2013 bezorgde hem zijn grootste (radio)hit. \nWant Jacobs soul is tegelijk tijdloos en helemaal van \u2018nu\u2019, getuige zijn overrompelde debuutalbum Village, een broeierige vrijage van soul, gospel, r&b, hiphop, Afrikaanse grooves, dancehall en 808-synths met coole, eigentijdse beats. ",
+      "genre": "Alternative rock",
+      "expectedPopularity": 357
+    },
+    {
+      "name": "Halestorm",
+      "artists": [
+        {
+          "name": "Halestorm",
+          "description": "Halestorm is een Amerikaanse rockband uit Red Lion, Pennsylvania. \nDe band bestaat uit zanger en gitarist Elizabeth \"Lzzy\" Hale, haar broer drummer en percussionist Arejay Hale, gitarist Joe Hottinger en bassist Josh Smith. \nHet debuutalbum Halestorm werd uitgebracht op 28 april 2009 bij Atlantic Records.",
+          "genre": "Rock"
+        }
+      ],
+      "stage": {
+        "name": "Brightlands Stage",
+        "capacity": 500
+      },
+      "beginTime": "19:00",
+      "endTime": "20:00",
+      "getShowDescription": "Hagelbuien op Pinkpop? \nDie van 2014 tijdens Arcade Fire ligt ons nog vers in het geheugen, al mocht ook het noodweer tijdens Elvis Costello in 1979 er wezen. \nDie bui sloeg een gat in het dak van het podium. \nMaar het was de band Halestorm die in 2016 het dak van het Noordpodium er daadwerkelijk af blies. \nInto The Wild Life heette hun succesplaat van destijds en de Amerikaanse hardrockers rond Elizabeth \u2018Lzzy\u2019 Hale komen dit jaar terug naar Landgraaf met opvolger Vicious op zak. \nOnze tip: een gepantserde poncho en een héél stevig roze hoedje\u2026",
+      "genre": "Rock",
+      "expectedPopularity": 461
+    },
+    {
+      "name": "Soham De",
+      "artists": [
+        {
+          "name": "Soham De",
+          "description": "'It's been (it still is) a process of trying to find what I want from music and what kind of music makes me happy, in terms of writing and performing.\" Soham wrote his first song at 10 years old and this was the beginning of a love for music and creative writing.\nAs the songwriting flourished throughout the years, he would also regularly perform to close friends. \nNow, as a 21 year old singer-songwriter from Kings Lynn, Soham is about to release his debut 4-track EP. \nThe accompanying 4 videos all shot in the studio whilst the recording session was in full flow go some way to translating the emotion and intensity to his words and music.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Garden of Love",
+        "capacity": 250
+      },
+      "beginTime": "19:00",
+      "endTime": "19:30",
+      "getShowDescription": "De Britse singer-songwriter Soham De gaat als een speer. \nEenentwintig pas, zojuist zijn eerste EP uit, en nu al op Pinkpop. \nOp die EP, The Next Nowhere, staan vier goudeerlijke, gloedvolle songs. \nTwee pianoballads, twee met de akoestische gitaar. \nOp beide instrumenten kan hij uitstekend uit de voeten. \nVoeg daarbij zijn intense, breekbare, warme, rasperige soulstem plus ontwapende voordracht en je begrijpt waarom de bebrilde student uit het Noord-Engelse universiteitsstadje Durham zijn toehoorders steevast voor zich weet te winnen. ",
+      "genre": "Pop",
+      "expectedPopularity": 250
+    },
+    {
+      "name": "Jamiroquai",
+      "artists": [
+        {
+          "name": "JAMIROQUAI",
+          "description": "Jamiroquai is een Britse band onder leiding van zanger Jay Kay. \nDe band begon in het acid jazz-genre, maar ontwikkelde gaandeweg een eigen geluid met diverse invloeden. \nDit mede door de interesse van Jay Kay in funk- en discomuziek uit de jaren zeventig en tachtig.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Mainstage",
+        "capacity": 1000
+      },
+      "beginTime": "20:00",
+      "endTime": "21:15",
+      "getShowDescription": "Een woordspeling ligt voor de hand, maar van de return van de space cowboy is geen sprake: Jamiroquai staat dit jaar voor het eerst op Pinkpop. \nEn dat terwijl de bont getooide Jay Kay en consorten al sinds het midden van de jaren negentig de aangewezen festivalact zijn, met hun groovende acid jazz en avontuurlijke arsenaal aan hits. \nVirtual Insanity, Cosmic Girl, Deeper Underground en, daar is ie weer, Space Cowboy krijgen ieder veld moeiteloos in beweging, terwijl de experimenten met EDM en trap op het funky Automaton (2017) ons ook danig op de heupen slaan. \n\u2018Het meest onbekommerde feestje van het jaar\u2019, zo schreef OOR dan ook over Automaton. \nGoed gemutst en toch gezegend met een groot geweten \u2013 sinds Jamiroquai in 1993 de Emergency On Planet Earth uitriep, is aan de noodtoestand van moeder Aarde feitelijk weinig verbeterd, maar het is er in ieder geval een stuk swingender op geworden.",
+      "genre": "Pop",
+      "expectedPopularity": 751
+    },
+    {
+      "name": "Jacin Trill & Leafs",
+      "artists": [
+        {
+          "name": "Jacin Trill & Leafs",
+          "description": "Jacin Koot (Hoorn, 12 juli 1998), beter bekend onder zijn artiestennaam Jacin Trill, is een Nederlands rapper. \nHij staat onder contract bij platenlabel Sony Music en verwierf bekendheid met zijn hit Kspreyopjebytch. \nAndere bekende hits zijn rozeswoesh en Nikes, waarop Bokoesam ook te horen is.\nJahmil Dapaloe (Almere, 3 oktober 2001), beter bekend onder zijn artiestennaam Leafs, is een Nederlands rapper.\nHij staat onder contract bij het platenlabel Noah's Ark.",
+          "genre": "Rap"
+        }
+      ],
+      "stage": {
+        "name": "Stage 4",
+        "capacity": 250
+      },
+      "beginTime": "20:10",
+      "endTime": "21:10",
+      "getShowDescription": "De een (Leafs) haalt zijn vocals graag door Autotune, de ander (Jacin Trill) mag je gerust Nederlands bekendste mumble rapper noemen (als in: loom, bijna onverstaanbaar mompelend praat-rappen). \nBeiden zijn jong. \nMet zijn toen vijftien jaar was Leafs in 2016 de jongste artiest die ooit bij Noah\u2019s Ark tekende. \nJacin Trill, twintig inmiddels, bracht in 2017 zijn mixtape Happyland uit. \nZe bekijken de wereld graag zonnig. Jacin: \u2018No more bad vibes.\n\u2019Leafs: \u2018Altijd blijven flexen.\u2019 \nZe sprongen al vaak bij elkaar op het podium, Leafs vorig jaar nog bij Jacins show op Lowlands. \nNu werken ze samen aan een album en doen een serie gezamenlijke optredens. \nPinkpop is de première.",
+      "genre": "Rap",
+      "expectedPopularity": 250
+    },
+    {
+      "name": "Elbow",
+      "artists": [
+        {
+          "name": "Elbow",
+          "description": "Elbow is een Britse muziekgroep, afkomstig uit Manchester.\nDe band bestaat uit zanger Guy Garvey, toetsenist Craig Potter, bassist Pete Turner en gitarist Mark Potter.",
+          "genre": "Soul"
+        }
+      ],
+      "stage": {
+        "name": "IBA Parkstad Stage",
+        "capacity": 500
+      },
+      "beginTime": "21:15",
+      "endTime": "22:15",
+      "getShowDescription": "Stilzitten is moeilijk, ook als je the mighty Elbow bent. \nLaatste meesterwerk Little Fictions en de goedgevulde Best Of zijn alweer van 2017, vorig jaar vierden de mannen uit Manchester het tienjarig jubileum van succesplaat The Seldom Seen Kid. \nEn nu? \nWel, de bijtjes zoemen en de vogeltjes fluiten, dus gaan Guy Garvey en co wederom vrolijk naar buiten. \nGewoon, omdat \u2019t kan. \nEn omdat Pinkpop ze graag voor de vierde keer ziet terugkeren naar Landgraaf, waar de grote vriendelijke reus het veld al zo vele malen muisstil kreeg.",
+      "genre": "Soul",
+      "expectedPopularity": 500
+    },
+    {
+      "name": "San Holo",
+      "artists": [
+        {
+          "name": "San Holo",
+          "description": "Sander van Dijck (Zoetermeer, 26 november 1990) is een Nederlandse muziekproducent van onder meer future bass.\nOnder de artiestennaam \"San Holo\" treedt hij op. \nHij geniet internationale bekendheid door zijn remix van Dr. \nDre's The Next Episode, welke nu meer dan 210 miljoen keer is bekeken.\nHij is sinds 2013 actief in de muziek en brak een jaar later door nadat hij zijn album \"Cosmos\" uitbracht. \nHij is lid van enkele labels, waaronder Spinnin' Records. \nHij bezit ook zijn eigen label genaamd Bitbird, waar enkele van zijn singles op uitgekomen zijn waaronder \"Still Looking\" en \"Light\". \nIn 2014 spande Walt Disney Pictures een rechtszaak aan, omdat zijn artiestennaam te veel lijkt op de naam van het Star Wars-personage Han Solo. \nHet bedrijf eiste naar schatting 5 tot 10 miljoen euro voor het inbreuk maken van het imago van het bedrijf.",
+          "genre": "Dance"
+        }
+      ],
+      "stage": {
+        "name": "Brightlands Stage",
+        "capacity": 500
+      },
+      "beginTime": "21:15",
+      "endTime": "22:15",
+      "getShowDescription": "Ja, je leest het goed. \nWant Han Solo, dat was héél iemand anders (iets met Star Wars en Harrison Ford). \nSan Holo heet eigenlijk Sander van Dijck. \nProducer, dj, remixer en \u2013 vooral \u2013 dancevernieuwer. Eentje die de eentonigheid in \u2018de scene\u2019 meer dan zat was en dus zijn eigen dansmuziek ging uitvinden. \nalbum1, eind vorig jaar verschenen, laat horen hoe dat klinkt: als toegankelijke EDM (electronic dance music), maar dan vol onverwachte twists en citaten uit de (indie)pop. \nWaardoor er zomaar ineens een Coldplay-achtige gitaarlick, Bon Iver-sfeertje of vioolpartij tussen de dwingende stuiterbassen kan zitten.",
+      "genre": "Dance",
+      "expectedPopularity": 387
+    },
+    {
+      "name": "Mumford & sons",
+      "artists": [
+        {
+          "name": "Mumford & sons",
+          "description": "Mumford & Sons is een Britse folkrockband, afkomstig uit Londen.\nDe band werd eind 2007 opgericht door Marcus Mumford, Winston Marshall, Ben Lovett en Ted Dwane.\nZe speelden daarvoor als collectief achter de zangeres Laura Marling.",
+          "genre": "Pop"
+        }
+      ],
+      "stage": {
+        "name": "Mainstage",
+        "capacity": 1000
+      },
+      "beginTime": "22:30",
+      "endTime": "23:59",
+      "getShowDescription": "Mumford & Sons breekt in 2009 door met \u201cSigh No More\u201d met daarop de hitsingles \u2018Little Lion Man\u2019 en \u2018The Cave\u2019. \nDit debuutalbum wordt drie jaar later gevolgd door het evenzo succesvolle \u201cBabel\u201d met daarop o.a. de hit \u2018I Will Wait\u2019. \nOp 16 november jl. is het nieuwe album \u201cDelta\u201d uitgekomen. \nNet als voorganger \u201cWilder Mind\u201d klinkt ook \u201cDelta\u201d groots, dynamisch en extatisch, maar ditmaal ook weer intiem en ingetogen. \nHet is deze combinatie die Mumford & Sons deed uitgroeien tot een van de grootste bands van de afgelopen jaren. \nIn mei 2019 staat de band eerst nog in een uitverkochte Ziggo Dome, daarna als dagafsluiter op Pinkpop. \nZeven jaar geleden stond Mumford & Sons voor het laatst op Pinkpop en werd toen door Bruce Springsteen nog gevraagd een nummer mee te spelen.  ",
+      "genre": "Pop",
+      "expectedPopularity": 1000
+    }
+  ],
+  "artists": [
+    {
+      "name": "Mumford & sons",
+      "description": "Mumford & Sons is een Britse folkrockband, afkomstig uit Londen.\nDe band werd eind 2007 opgericht door Marcus Mumford, Winston Marshall, Ben Lovett en Ted Dwane.\nZe speelden daarvoor als collectief achter de zangeres Laura Marling.",
+      "genre": "Pop"
+    },
+    {
+      "name": "JAMIROQUAI",
+      "description": "Jamiroquai is een Britse band onder leiding van zanger Jay Kay. \nDe band begon in het acid jazz-genre, maar ontwikkelde gaandeweg een eigen geluid met diverse invloeden. \nDit mede door de interesse van Jay Kay in funk- en discomuziek uit de jaren zeventig en tachtig.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Elbow",
+      "description": "Elbow is een Britse muziekgroep, afkomstig uit Manchester.\nDe band bestaat uit zanger Guy Garvey, toetsenist Craig Potter, bassist Pete Turner en gitarist Mark Potter.",
+      "genre": "Soul"
+    },
+    {
+      "name": "George Ezra",
+      "description": "George Ezra Barnett (born 7 June 1993) is an English singer, songwriter and guitarist. \nAfter releasing two EPs, Did You Hear the Rain? in November 2013 and Cassy O' in March 2014, Ezra rose to prominence with the release of his hit single, \"Budapest\", which reached number one in several countries. \nHis debut studio album, Wanted on Voyage, was released in June 2014, reaching number one in the UK and the top ten in seven other countries. \nIt was also the third best-selling album of 2014 in the UK. \nHis second studio album, Staying at Tamara's, was released in March 2018, and reached number one in the UK and the top ten in eight other countries.\nThe second single from the album, \"Paradise\", reached number two in the UK, while the next single, \"Shotgun\", reached number one, becoming Ezra's first chart-topping single in the UK, Ireland, and Australia.\n In February 2019, he won the Brit Award for British Male Solo Artist. ",
+      "genre": "Pop"
+    },
+    {
+      "name": "Anouk",
+      "description": "Anouk Teeuwe, kortweg Anouk, (Den Haag, 8 april 1975) is een Nederlands zangeres. \nAnouk wordt gezien als de populairste rockzangeres van Nederland.\nZe brak in 1997 door met de single 'Nobody's Wife' en stond sindsdien met verscheidene nummers in de Nederlandse en Belgische hitlijsten.\nEnkele van haar andere hits zijn 'R U Kiddin' Me', 'Michel', 'Girl', 'Lost', 'Modern World', 'Three Days in a Row' en 'Woman'.\nAnouk bracht tot en met 2016 tien studioalbums uit.\nZe behaalde voor Nederland de negende plaats op het Eurovisiesongfestival 2013 met het nummer 'Birds'. ",
+      "genre": "Rock"
+    },
+    {
+      "name": "Bazart",
+      "description": "Bazart is een indie-popgroep uit België.\nDe band maakt Nederlandstalige muziek.\nBazart werd opgericht door zanger Mathieu Terryn en zanger/gitarist Simon Nuytten.\nNaar eigen zeggen probeert de band kleinkunst in de Vlaamse betekenis populair te maken onder het Belgische publiek.\nBazart won vijf MIA's in 2016, uitgereikt op 2 februari 2017, en nog eens twee in 2017, uitgereikt op 30 januari 2018.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Jacob Banks",
+      "description": "Jacob Banks (born 24 July 1991) is a British singer and songwriter from Birmingham.\nJacob Banks won the 2012 MOBO UnSung regional competition in Birmingham and the Adidas \"Are You In\" music competition.\nHis music is influenced by a range of genres including soul, R&B and hip hop.\nBanks is currently signed with American label Interscope Records.",
+      "genre": "Alternative rock"
+    },
+    {
+      "name": "Cage the elephant",
+      "description": "Cage the Elephant is een Amerikaanse rockband, opgericht in 2006, die in 2009 zijn gelijknamige debuutalbum uitbracht.\nHet tweede album, Thank You, Happy Birthday, kwam in 2011 op 2 binnen in de Billboard 200.\nBeide albums werden geproduceerd door Jay Joyce van Jive Records.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Golden earring",
+      "description": "Golden Earring (tot in 1969 The Golden Earrings) is een Nederlandse rockband.\nDe groep werd opgericht in 1961 en is daarmee (samen met de ook in 1961 opgerichte band Bintangs) de oudste nog bestaande rockband van Nederland en een van de langst bestaande bands ter wereld.\nGolden Earring heeft internationaal succes gehad met hun hits Radar Love, Twilight Zone en When the Lady Smiles, en hun albums Moontan en Cut. ",
+      "genre": "Pop"
+    },
+    {
+      "name": "SYML",
+      "description": "SYML is de solo-onderneming van Brian Fennell, die eerder deel uitmaakte van de indieband Barcelona. SYML bracht zijn gelijknamige debuutalbum op 3 mei 2019 uit via Nettwerk Records.",
+      "genre": "Pop"
+    },
+    {
+      "name": "San Holo",
+      "description": "Sander van Dijck (Zoetermeer, 26 november 1990) is een Nederlandse muziekproducent van onder meer future bass.\nOnder de artiestennaam \"San Holo\" treedt hij op. \nHij geniet internationale bekendheid door zijn remix van Dr. \nDre's The Next Episode, welke nu meer dan 210 miljoen keer is bekeken.\nHij is sinds 2013 actief in de muziek en brak een jaar later door nadat hij zijn album \"Cosmos\" uitbracht. \nHij is lid van enkele labels, waaronder Spinnin' Records. \nHij bezit ook zijn eigen label genaamd Bitbird, waar enkele van zijn singles op uitgekomen zijn waaronder \"Still Looking\" en \"Light\". \nIn 2014 spande Walt Disney Pictures een rechtszaak aan, omdat zijn artiestennaam te veel lijkt op de naam van het Star Wars-personage Han Solo. \nHet bedrijf eiste naar schatting 5 tot 10 miljoen euro voor het inbreuk maken van het imago van het bedrijf.",
+      "genre": "Dance"
+    },
+    {
+      "name": "Halestorm",
+      "description": "Halestorm is een Amerikaanse rockband uit Red Lion, Pennsylvania. \nDe band bestaat uit zanger en gitarist Elizabeth \"Lzzy\" Hale, haar broer drummer en percussionist Arejay Hale, gitarist Joe Hottinger en bassist Josh Smith. \nHet debuutalbum Halestorm werd uitgebracht op 28 april 2009 bij Atlantic Records.",
+      "genre": "Rock"
+    },
+    {
+      "name": "Davina Michelle",
+      "description": "Michelle Davina Hoogendoorn (Rotterdam, 12 november 1995), bekend onder haar artiestennaam Davina Michelle, is een Nederlands zangeres en youtuber.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Yungblud",
+      "description": "Dominic Harrison is een Britse rockmuzikant die optreedt onder de artiestennaam YUNGBLUD. \nYUNGBLUD begon op vierjarige leeftijd met gitaar spelen, waarin hij aangemoedigd werd door zijn vader die een gitaarwinkel had. \nZijn grootvader heeft nog opgetreden met T. Rex in de jaren 70.",
+      "genre": "Punk rock"
+    },
+    {
+      "name": "Jacin Trill & Leafs",
+      "description": "Jacin Koot (Hoorn, 12 juli 1998), beter bekend onder zijn artiestennaam Jacin Trill, is een Nederlands rapper. \nHij staat onder contract bij platenlabel Sony Music en verwierf bekendheid met zijn hit Kspreyopjebytch. \nAndere bekende hits zijn rozeswoesh en Nikes, waarop Bokoesam ook te horen is.\nJahmil Dapaloe (Almere, 3 oktober 2001), beter bekend onder zijn artiestennaam Leafs, is een Nederlands rapper.\nHij staat onder contract bij het platenlabel Noah's Ark.",
+      "genre": "Rap"
+    },
+    {
+      "name": "Hippo campus",
+      "description": "Vertaald uit het Engels-Hippo Campus is een indierockband uit St. Paul, Minnesota.\nZe zijn getekend bij Grand Jury Records in de Verenigde Staten en Transgressive Records in het VK. \nDe band heeft opgetreden in South by Southwest, Lollapalooza, Bonnaroo, Summerfest en Reading en Leeds Festivals, maar ook op Conan.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Badflower",
+      "description": "Badflower is een Amerikaanse rockband opgericht in Los Angeles, Californië. \nDe band bestaat uit zanger / gitarist Josh Katz, hoofdgitarist Joey Morrow, basgitarist Alex Espiritu en drummer Anthony Sonetti.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Grace Carter",
+      "description": "Grace Carter is een Britse zanger en songwriter uit Londen, Engeland. \nZe verhuisde met haar moeder op achtjarige leeftijd naar Brighton, maar woont nu in Londen. \nZe bracht haar debuutsingle \"Silence\" uit in mei 2017",
+      "genre": "Pop"
+    },
+    {
+      "name": "Soham De",
+      "description": "'It's been (it still is) a process of trying to find what I want from music and what kind of music makes me happy, in terms of writing and performing.\" Soham wrote his first song at 10 years old and this was the beginning of a love for music and creative writing.\nAs the songwriting flourished throughout the years, he would also regularly perform to close friends. \nNow, as a 21 year old singer-songwriter from Kings Lynn, Soham is about to release his debut 4-track EP. \nThe accompanying 4 videos all shot in the studio whilst the recording session was in full flow go some way to translating the emotion and intensity to his words and music.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Mt. Atlas",
+      "description": "Mt. Atlas schrijft songs over het gelijknamige dorpje. \nDe band is een samensmelting van The Ten Bells, Recession Youth en Sugar Plum Fairy. \nDe mannen maken stoner, grunge en garage-rock, a la Queens of the Stone Age, System of a Down en Nirvana. \nDe band bestaat uit Sven Vek (zang), Martin Jacobs (gitaar), Lars Ickenroth (gitaar), Jeffrey Hanssen (bas) en Wesley Ferfers (drums).",
+      "genre": "Metal"
+    },
+    {
+      "name": "Suprise act",
+      "description": "Het is iedere dag een verrassing wie er gaat spelen.",
+      "genre": "Pop"
+    },
+    {
+      "name": "Eefje de Visser",
+      "description": "Nederlandse sing and song writer, geboren in amsterdam.\nHier heeft ze haar muzikale talent ontdekt.",
+      "genre": "Pop"
+    }
+  ],
+  "stages": [
+    {
+      "name": "Mainstage",
+      "capacity": 1000
+    },
+    {
+      "name": "IBA Parkstad Stage",
+      "capacity": 500
+    },
+    {
+      "name": "Brightlands Stage",
+      "capacity": 500
+    },
+    {
+      "name": "Stage 4",
+      "capacity": 250
+    },
+    {
+      "name": "Garden of Love",
+      "capacity": 250
+    }
+  ]
+}

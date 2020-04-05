@@ -1,22 +1,58 @@
 package GUILogic;
 
+import Enumerators.Genres;
+import PlannerData.Artist;
 import PlannerData.Planner;
-import com.google.gson.Gson;
+import PlannerData.Show;
+import PlannerData.Stage;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 import static PlannerData.Planner.saveFileName;
 
+/**
+ * Reads the Json file and converts it into the instance of Planner
+ * Also controls public accessible data for the clock and settings
+ */
 public class DataController {
 
-    private static Planner planner;
+    private Planner planner;
+    private Clock clock;
+    private Settings settings;
 
-    public DataController() {
+    private static DataController instance;
+
+    public static DataController getInstance() {
+        if (instance == null) {
+            instance = new DataController();
+        }
+
+        return instance;
+    }
+
+    /**
+     * The constructor for the data controller
+     */
+    private DataController() {
+        settings = new Settings();
+        readSettings();
         planner = new Planner();
-        Gson gson = new Gson();
+        clock = new Clock();
+
+        try {
+            clock.setSimulatorSpeed((settings.getSimulatorSpeed()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             File file = new File(saveFileName);
@@ -24,8 +60,46 @@ public class DataController {
                 file.createNewFile();
             } else {
                 try (Reader reader = new FileReader(saveFileName)) {
-                    if (file.length() != 0)
-                        planner = gson.fromJson(reader, Planner.class);
+                    if (file.length() != 0) {
+                        JsonReader jsonReader = Json.createReader(reader);
+                        JsonObject plannerJsonObject = jsonReader.readObject();
+                        JsonArray shows = plannerJsonObject.getJsonArray("shows");
+                        JsonArray artists = plannerJsonObject.getJsonArray("artists");
+                        JsonArray stages = plannerJsonObject.getJsonArray("stages");
+
+                        for (JsonObject stage : stages.getValuesAs(JsonObject.class)) {
+                            String name = stage.getString("name");
+                            int capacity = stage.getInt("capacity");
+                            planner.getStages().add(new Stage(capacity, name));
+                        }
+
+                        for (JsonObject artist : artists.getValuesAs(JsonObject.class)) {
+                            String name = artist.getString("name");
+                            String description = artist.getString("description");
+                            Genres genre = Genres.getGenre(artist.getString("genre"));
+                            planner.getArtists().add(new Artist(name, genre, description));
+                        }
+
+                        for (JsonObject show : shows.getValuesAs(JsonObject.class)) {
+                            JsonArray showArtists = show.getJsonArray("artists");
+                            JsonObject stage = show.getJsonObject("stage");
+
+                            ArrayList<Artist> artistsInShow = new ArrayList<>();
+                            for (JsonObject artist : showArtists.getValuesAs(JsonObject.class)) {
+                                artistsInShow.add(new Artist(artist.getString("name"), Genres.getGenre(artist.getString("genre")), artist.getString("description")));
+                            }
+
+                            Stage stageInShow = new Stage(stage.getInt("capacity"), stage.getString("name"));
+                            String name = show.getString("name");
+                            Genres genre = Genres.getGenre(show.getString("genre"));
+                            String description = show.getString("getShowDescription");
+                            int expectedPopularity = show.getInt("expectedPopularity");
+                            LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
+                            LocalTime endTime = stringToLocalTime(show.getString("endTime"));
+                            Show readShow = new Show(beginTime, endTime, artistsInShow, name, stageInShow, description, genre, expectedPopularity);
+                            planner.getShows().add(readShow);
+                        }
+                    }
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");
                     e.printStackTrace();
@@ -35,30 +109,91 @@ public class DataController {
             System.out.println("Was not able to gather data from " + saveFileName + " due to: ");
             e.printStackTrace();
         }
-
-//        Artist lars = new Artist("Lars", Genres.BLUES, "Gekke man");
-//        Stage stage = new Stage(100, "Main stage");
-//        ArrayList<Genres> genres = new ArrayList<>();
-//        genres.add(Genres.DANCE);
-//        genres.add(Genres.NIGHTCORE);
-//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusHours(1), lars, "De ochtendshow van Lars", stage, "Lars die jamt", genres, 100000));
-//        planner.savePlanner();
-
-//        ArrayList<Artist> artists = new ArrayList<>();
-//        artists.add(new Artist("Arne de Beer", Genres.BLUES, "Smoking hot"));
-//        artists.add(new Artist("Lars Giskes", Genres.PUNK_ROCK, "The legend of Spoderman"));
-//        artists.add(new Artist("Henk", Genres.METAL, "Dit is Henk"));
-//
-//        ArrayList<Stage> stages = new ArrayList<>();
-//        stages.add(new Stage(500, "Main Stage"));
-//        stages.add(new Stage(100, "Second Stage"));
-//
-//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(0), artists.get(0), 400));
-//        planner.addShow(new Show(LocalTime.now().plusMinutes(45), LocalTime.now().plusHours(2), stages.get(0), artists.get(1), 400));
-//        planner.addShow(new Show(LocalTime.now(), LocalTime.now().plusMinutes(30), stages.get(1), artists.get(2), 75));
     }
 
-    static Planner getPlanner() {
+    /**
+     * The getter for the planner
+     *
+     * @return Planner
+     */
+    public Planner getPlanner() {
         return planner;
+    }
+
+    /**
+     * Converts a String to a LocalTime
+     *
+     * @param time the string indicating a time
+     * @return the time in LocalTime
+     */
+    private LocalTime stringToLocalTime(String time) {
+        int hours = Integer.parseInt(time.charAt(0) + "") * 10 + Integer.parseInt(time.charAt(1) + "");
+        int minutes = Integer.parseInt(time.charAt(3) + "") * 10 + Integer.parseInt(time.charAt(4) + "");
+
+        LocalTime localTime = LocalTime.MIN;
+        localTime = localTime.plusHours(hours);
+        localTime = localTime.plusMinutes(minutes);
+
+        return localTime;
+    }
+
+    /**
+     * reads the settings file and sets the attributes of the Settings class accordingly
+     */
+    public void readSettings() {
+        try {
+            File file = new File(settings.getSaveFileName());
+            if (!file.exists()) {
+                file.createNewFile();
+                setDefaultSettings();
+            } else {
+                try (Reader reader = new FileReader(settings.getSaveFileName())) {
+                    if (file.length() != 0) {
+                        JsonReader jsonReader = Json.createReader(reader);
+                        JsonObject settingsJson = jsonReader.readObject();
+                        settings.setSimulatorSpeed((Double.parseDouble(settingsJson.getString("Simulator Speed"))));
+                        settings.setVisitors(settingsJson.getInt("Visitors per NPC"));
+                        settings.setUsingPredictedPerson(settingsJson.getBoolean("Is Using Prediction"));
+                        settings.setBeginHours(settingsJson.getInt("Begin hours"));
+                        settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
+                        settings.setOverwriteStartTime(settingsJson.getBoolean("Use overwrite time"));
+                    } else setDefaultSettings();
+                } catch (Exception e) {
+                    System.out.println("Error loading data due to: ");
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Was not able to gather data from " + settings.getSaveFileName() + " due to: ");
+            e.printStackTrace();
+        }
+    }
+
+    private void setDefaultSettings() {
+        settings.setSimulatorSpeed(1);
+        settings.setVisitors(100);
+        settings.setUsingPredictedPerson(false);
+        settings.setBeginHours(9);
+        settings.setBeginMinutes(0);
+        settings.setOverwriteStartTime(false);
+    }
+
+    /**
+     * The getter for the clock
+     *
+     * @return The clock
+     */
+    public Clock getClock() {
+        return clock;
+    }
+
+    /**
+     * The getter for the settings
+     *
+     * @return The settings
+     */
+    public Settings getSettings() {
+        return settings;
     }
 }
