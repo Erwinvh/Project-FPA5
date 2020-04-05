@@ -19,6 +19,7 @@ public class Person {
     private PersonLogic personLogic;
     private String name;
     private boolean isArtist;
+    private boolean despawn;
 
     /**
      * A constructor of NPCLogic.Person
@@ -32,6 +33,7 @@ public class Person {
         this.isArtist = isArtist;
         genrePicker(genreChanceList);
         this.personLogic = new PersonLogic(position, speed, this);
+        this.despawn = false;
     }
 
     /**
@@ -174,5 +176,22 @@ public class Person {
      */
     public boolean isArtist() {
         return isArtist;
+    }
+
+    /**
+     * the setter for if this person needs to be despawned
+     *
+     * @param despawn boolean if true it is going to be despawned
+     */
+    public void setDespawn(boolean despawn) {
+        this.despawn = despawn;
+    }
+
+    /**
+     * simple getter for variable despawn
+     * @return boolean
+     */
+    public boolean isDespawn() {
+        return despawn;
     }
 }
