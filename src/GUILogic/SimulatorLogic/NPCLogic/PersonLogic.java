@@ -180,9 +180,9 @@ public class PersonLogic {
      */
     void update() {
         //check if the person is out of bound and if he is he is set to despawn
-        if (position.getX()<0||position.getX()>MapDataController.getMapWidth()*MapDataController.getTileSize()||
-            position.getY()<0||position.getY()>MapDataController.getMapHeight()*MapDataController.getTileSize()){
-                person.setDespawn(true);
+        if (position.getX() < 0 || position.getX() > MapDataController.getMapWidth() * MapDataController.getTileSize() ||
+                position.getY() < 0 || position.getY() > MapDataController.getMapHeight() * MapDataController.getTileSize()) {
+            person.setDespawn(true);
         }
 
         if (hasArrivedAtDestination()) {
