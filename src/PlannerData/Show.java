@@ -257,7 +257,7 @@ public class Show implements Serializable, Comparable<Show> {
     /**
      * A method to get the genre fancy name of this show
      */
-    public String getGenreFancyName(){
+    public String getGenreFancyName() {
         return this.genre.getFancyName();
     }
 }
