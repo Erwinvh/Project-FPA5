@@ -19,6 +19,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Simulator {
@@ -149,7 +150,12 @@ public class Simulator {
         if (people.size() < peopleAmount)
             spawnPerson();
 
-        for (Person person : people) {
+        //iterated for loop so we can remove people if their despawn is set true
+        for (Iterator<Person> iterator = people.iterator(); iterator.hasNext(); ) {
+            Person person = iterator.next();
+            if (person.isDespawn()) {
+                iterator.remove();
+            }
             person.setSpeed(speed * deltaTime);
             person.update(people);
         }
