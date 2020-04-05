@@ -65,7 +65,7 @@ public class Simulator {
         this.people = new ArrayList<>();
         this.artists = new ArrayList<>();
         peopleAmount = settingsReference.getVisitors();
-        peopleAmount = Math.max(1,peopleAmount);
+        peopleAmount = Math.max(1, peopleAmount);
         prediction = new ArrayList<>();
         createPredictions();
         predictedGuests = settingsReference.isUsingPredictedPerson();
@@ -138,9 +138,9 @@ public class Simulator {
             artists = plannerReference.getArtists();
         }
 
-        if(this.artistPersons.size() < artists.size()){
-            for(Artist artist : this.artists){
-                if(!hasSpawnArtist(artist)){
+        if (this.artistPersons.size() < artists.size()) {
+            for (Artist artist : this.artists) {
+                if (!hasSpawnArtist(artist)) {
                     spawnArtist(artist.getName());
                     break;
                 }
@@ -164,7 +164,7 @@ public class Simulator {
     /**
      * Spawns on either of the 2 spawn locations, randomly chosen.
      */
-    private void spawnPerson(Person person ) {
+    private void spawnPerson(Person person) {
         Point2D spawnLocation1 = new Point2D.Double(2 * 32, 20 * 32);
         Point2D spawnLocation2 = new Point2D.Double(31 * 32, 99 * 32);
 
@@ -187,9 +187,9 @@ public class Simulator {
 
 
             //if all the artists have been spawned then we spawn visitors
-            if (person.isArtist()){
+            if (person.isArtist()) {
                 this.artistPersons.add(person);
-                this.peopleAmount ++;
+                this.peopleAmount++;
             }
             people.add(person);
             person.getPersonLogic().setPosition(p2d);
@@ -200,18 +200,19 @@ public class Simulator {
 
     /**
      * Spawns an artist at a random entrance
+     *
      * @param artistName the name of a the artist
      */
-    private void spawnArtist( String artistName){
-        Person artist = new Person(null,this.prediction, artistName, clockReference.getSimulatorSpeed(), true);
+    private void spawnArtist(String artistName) {
+        Person artist = new Person(null, this.prediction, artistName, clockReference.getSimulatorSpeed(), true);
         spawnPerson(artist);
     }
 
     /**
      * Spawns a person at a random entrance
      */
-    private void spawnPerson(){
-        Person person = new Person(null,this.prediction, clockReference.getSimulatorSpeed(),false);
+    private void spawnPerson() {
+        Person person = new Person(null, this.prediction, clockReference.getSimulatorSpeed(), false);
         spawnPerson(person);
     }
 
@@ -364,12 +365,13 @@ public class Simulator {
 
     /**
      * Checks if a certain artist has been spawned yet
-     * @param artist the aritist to check if he has spawned
+     *
+     * @param artist the artist to check if he has spawned
      * @return true if he has been spawned, false if not
      */
-    public boolean hasSpawnArtist(Artist artist){
-        for(Person artistPerson : this.artistPersons){
-            if(artistPerson.getName().equals(artist.getName())){
+    private boolean hasSpawnArtist(Artist artist) {
+        for (Person artistPerson : this.artistPersons) {
+            if (artistPerson.getName().equals(artist.getName())) {
                 return true;
             }
         }
