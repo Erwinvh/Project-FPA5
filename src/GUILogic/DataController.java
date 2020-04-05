@@ -6,7 +6,6 @@ import PlannerData.Planner;
 import PlannerData.Show;
 import PlannerData.Stage;
 
-
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -22,16 +21,38 @@ import static PlannerData.Planner.saveFileName;
 
 /**
  * Reads the Json file and converts it into the instance of Planner
+ * Also controls public accessible data for the clock and settings
  */
 public class DataController {
 
-    private static Planner planner;
+    private Planner planner;
+    private Clock clock;
+    private Settings settings;
+
+    private static DataController instance;
+
+    public static DataController getInstance() {
+        if (instance == null) {
+            instance = new DataController();
+        }
+
+        return instance;
+    }
 
     /**
-     * Reads the Json file and creates an instance of Planner
+     * The constructor for the data controller
      */
-    public DataController() {
+    private DataController() {
+        settings = new Settings();
+        readSettings();
         planner = new Planner();
+        clock = new Clock();
+
+        try {
+            clock.setSimulatorSpeed((settings.getSimulatorSpeed()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             File file = new File(saveFileName);
@@ -39,47 +60,46 @@ public class DataController {
                 file.createNewFile();
             } else {
                 try (Reader reader = new FileReader(saveFileName)) {
-                    if (file.length() != 0){
+                    if (file.length() != 0) {
                         JsonReader jsonReader = Json.createReader(reader);
-                        JsonObject planner = jsonReader.readObject();
-                        JsonArray shows = planner.getJsonArray("shows");
-                        JsonArray artists = planner.getJsonArray("artists");
-                        JsonArray stages = planner.getJsonArray("stages");
-                        for(JsonObject stage : stages.getValuesAs(JsonObject.class)){
+                        JsonObject plannerJsonObject = jsonReader.readObject();
+                        JsonArray shows = plannerJsonObject.getJsonArray("shows");
+                        JsonArray artists = plannerJsonObject.getJsonArray("artists");
+                        JsonArray stages = plannerJsonObject.getJsonArray("stages");
+
+                        for (JsonObject stage : stages.getValuesAs(JsonObject.class)) {
                             String name = stage.getString("name");
                             int capacity = stage.getInt("capacity");
-                            this.planner.getStages().add(new Stage( capacity,name));
+                            planner.getStages().add(new Stage(capacity, name));
                         }
-                        for(JsonObject artist : artists.getValuesAs(JsonObject.class)){
+
+                        for (JsonObject artist : artists.getValuesAs(JsonObject.class)) {
                             String name = artist.getString("name");
-                            String description = artist.getString("getShowDescription");
-                            Genres genre = stringToGenre(artist.getString("genre"));
-                            this.planner.getArtists().add(new Artist(name, genre, description));
+                            String description = artist.getString("description");
+                            Genres genre = Genres.getGenre(artist.getString("genre"));
+                            planner.getArtists().add(new Artist(name, genre, description));
                         }
-                        for(JsonObject show : shows.getValuesAs(JsonObject.class)){
+
+                        for (JsonObject show : shows.getValuesAs(JsonObject.class)) {
                             JsonArray showArtists = show.getJsonArray("artists");
                             JsonObject stage = show.getJsonObject("stage");
 
                             ArrayList<Artist> artistsInShow = new ArrayList<>();
-                            for(JsonObject artist : showArtists.getValuesAs(JsonObject.class)){
-                                artistsInShow.add(new Artist(artist.getString("name"),stringToGenre(artist.getString("genre")),artist.getString("getShowDescription")));
+                            for (JsonObject artist : showArtists.getValuesAs(JsonObject.class)) {
+                                artistsInShow.add(new Artist(artist.getString("name"), Genres.getGenre(artist.getString("genre")), artist.getString("description")));
                             }
 
-                            Stage stageInShow = new Stage(stage.getInt("capacity"),stage.getString("name"));
+                            Stage stageInShow = new Stage(stage.getInt("capacity"), stage.getString("name"));
                             String name = show.getString("name");
-                            Genres genre = stringToGenre( show.getString("genre"));
+                            Genres genre = Genres.getGenre(show.getString("genre"));
                             String description = show.getString("getShowDescription");
                             int expectedPopularity = show.getInt("expectedPopularity");
                             LocalTime beginTime = stringToLocalTime(show.getString("beginTime"));
                             LocalTime endTime = stringToLocalTime(show.getString("endTime"));
-                            Show readShow = new Show(beginTime,endTime,artistsInShow,name,stageInShow,description,genre,expectedPopularity);
-                            this.planner.getShows().add(readShow);
+                            Show readShow = new Show(beginTime, endTime, artistsInShow, name, stageInShow, description, genre, expectedPopularity);
+                            planner.getShows().add(readShow);
                         }
                     }
-                    else{
-
-                    }
-
                 } catch (Exception e) {
                     System.out.println("error loading data due to: ");
                     e.printStackTrace();
@@ -91,35 +111,89 @@ public class DataController {
         }
     }
 
-    public static Planner getPlanner() {
+    /**
+     * The getter for the planner
+     *
+     * @return Planner
+     */
+    public Planner getPlanner() {
         return planner;
     }
 
     /**
      * Converts a String to a LocalTime
+     *
      * @param time the string indicating a time
      * @return the time in LocalTime
      */
-    private LocalTime stringToLocalTime(String time){
-        int hours = Integer.parseInt( time.charAt(0) + "") * 10 + Integer.parseInt( time.charAt(1)+"");
-        int minutes = Integer.parseInt( time.charAt(3) + "") * 10 + Integer.parseInt( time.charAt(4)+"");
+    private LocalTime stringToLocalTime(String time) {
+        int hours = Integer.parseInt(time.charAt(0) + "") * 10 + Integer.parseInt(time.charAt(1) + "");
+        int minutes = Integer.parseInt(time.charAt(3) + "") * 10 + Integer.parseInt(time.charAt(4) + "");
+
         LocalTime localTime = LocalTime.MIN;
         localTime = localTime.plusHours(hours);
         localTime = localTime.plusMinutes(minutes);
-        return  localTime;
+
+        return localTime;
     }
 
     /**
-     * Converts a String to a Fancy name Genre
-     * @param text the String value of a Genre
-     * @return the genre in the instance of Genres
+     * reads the settings file and sets the attributes of the Settings class accordingly
      */
-    private Genres stringToGenre(String text){
-        for(Genres genre : Genres.values()){
-            if( text.equals(genre.getFancyName())){
-                return genre;
+    public void readSettings() {
+        try {
+            File file = new File(settings.getSaveFileName());
+            if (!file.exists()) {
+                file.createNewFile();
+                setDefaultSettings();
+            } else {
+                try (Reader reader = new FileReader(settings.getSaveFileName())) {
+                    if (file.length() != 0) {
+                        JsonReader jsonReader = Json.createReader(reader);
+                        JsonObject settingsJson = jsonReader.readObject();
+                        settings.setSimulatorSpeed((Double.parseDouble(settingsJson.getString("Simulator Speed"))));
+                        settings.setVisitors(settingsJson.getInt("Visitors per NPC"));
+                        settings.setUsingPredictedPerson(settingsJson.getBoolean("Is Using Prediction"));
+                        settings.setBeginHours(settingsJson.getInt("Begin hours"));
+                        settings.setBeginMinutes(settingsJson.getInt("Begin minutes"));
+                        settings.setOverwriteStartTime(settingsJson.getBoolean("Use overwrite time"));
+                    } else setDefaultSettings();
+                } catch (Exception e) {
+                    System.out.println("Error loading data due to: ");
+                    e.printStackTrace();
+                }
             }
+
+        } catch (IOException e) {
+            System.out.println("Was not able to gather data from " + settings.getSaveFileName() + " due to: ");
+            e.printStackTrace();
         }
-        return null;
+    }
+
+    private void setDefaultSettings() {
+        settings.setSimulatorSpeed(1);
+        settings.setVisitors(100);
+        settings.setUsingPredictedPerson(false);
+        settings.setBeginHours(9);
+        settings.setBeginMinutes(0);
+        settings.setOverwriteStartTime(false);
+    }
+
+    /**
+     * The getter for the clock
+     *
+     * @return The clock
+     */
+    public Clock getClock() {
+        return clock;
+    }
+
+    /**
+     * The getter for the settings
+     *
+     * @return The settings
+     */
+    public Settings getSettings() {
+        return settings;
     }
 }

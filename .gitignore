@@ -98,3 +98,7 @@ fabric.properties
 proftaak fp.iml
 
 *.iml
+
+resources/saveFile.json
+
+resources/settings.json

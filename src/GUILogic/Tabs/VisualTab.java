@@ -1,6 +1,6 @@
-package GUILogic;
+package GUILogic.Tabs;
 
-import Enumerators.Genres;
+import GUILogic.DataController;
 import PlannerData.Artist;
 import PlannerData.Planner;
 import PlannerData.Show;
@@ -15,11 +15,11 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.RoundRectangle2D;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-class VisualTab {
+public class VisualTab {
 
+    private final ScrollPane scrollPane;
     private Tab visualTab;
     private Canvas canvas;
     private Canvas canvasStages;
@@ -34,18 +34,21 @@ class VisualTab {
     private static final Color BACKGROUND_COLOR = Color.decode("#d9e2ea");
     private static final Color SECONDARY_COLOR = Color.decode("#b5c2d2");
 
-    VisualTab() {
-        this.planner = DataController.getPlanner();
+    /**
+     * The constructor for the visual tab
+     */
+    public VisualTab() {
+        this.planner = DataController.getInstance().getPlanner();
 
         this.visualTab = new Tab("Visual");
         this.canvas = new Canvas(CANVAS_WIDTH - 6, CANVAS_HEIGHT);
         this.canvasStages = new Canvas(CANVAS_WIDTH, STAGE_HEIGHT);
 
-        ScrollPane scrollPane = new ScrollPane(this.canvas);
+        scrollPane = new ScrollPane(this.canvas);
         scrollPane.setPrefSize(CANVAS_WIDTH, 680);
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVvalue(LocalTime.now().getHour() / 24f);
+        scrollPane.setVvalue(DataController.getInstance().getClock().getHours() / 24f);
 
         VBox vBox = new VBox(this.canvasStages, scrollPane);
         this.visualTab.setContent(vBox);
@@ -55,9 +58,12 @@ class VisualTab {
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
     }
 
+    /**
+     * This method draws the stages at their correct position at the top bar
+     */
     private void drawStages(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
-        graphics.setBackground(Color.WHITE);
+        graphics.setBackground(BACKGROUND_COLOR);
         graphics.clearRect(0, 0, (int) this.canvasStages.getWidth(), (int) this.canvasStages.getHeight());
         graphics.translate(TIME_COLUMN_WIDTH, STAGE_HEIGHT);
 
@@ -73,9 +79,12 @@ class VisualTab {
         }
     }
 
+    /**
+     * This is the method that draws all the lines to better visually separate all shows and stages
+     */
     private void drawLayout(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
-        graphics.setBackground(Color.WHITE);
+        graphics.setBackground(BACKGROUND_COLOR);
         graphics.clearRect(0, 0, (int) this.canvas.getWidth(), (int) this.canvas.getHeight());
         graphics.translate(TIME_COLUMN_WIDTH, 0);
 
@@ -96,6 +105,9 @@ class VisualTab {
         graphics.setStroke(new BasicStroke(1f));
     }
 
+    /**
+     * This method draws all shows under the correct stage, it also fills in the information of each show
+     */
     private void drawPlanning(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.translate(TIME_COLUMN_WIDTH, 0);
@@ -105,38 +117,49 @@ class VisualTab {
                 if (show.getStage().getName().equals(stage.getName()) && show.getStage().getCapacity() == stage.getCapacity()) {
                     double timeDecimalBeginTime = show.getBeginTime().getHour() + (show.getBeginTime().getMinute() / 60.0);
                     double timeDecimalEndTime = show.getEndTime().getHour() + (show.getEndTime().getMinute() / 60.0);
+
                     // Draw the box around the show
                     Shape rectangle = new RoundRectangle2D.Double(((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 5, timeDecimalBeginTime * (this.canvas.getHeight() / 24.0), this.columnWidth - 10, (timeDecimalEndTime - timeDecimalBeginTime) * (this.canvas.getHeight() / 24.0), 25, 10);
                     graphics.draw(rectangle);
-                    graphics.setColor(Color.WHITE);
+                    graphics.setColor(SECONDARY_COLOR);
                     graphics.fill(rectangle);
                     graphics.setColor(Color.BLACK);
-                    String artists = "";
+                    StringBuilder artists = new StringBuilder();
                     for (Artist artist : show.getArtists()) {
-                        artists += artist.getName() + ", ";
+                        artists.append(artist.getName()).append(", ");
                     }
 
-                    artists = artists.substring(0, artists.length() - 2);
+                    artists = new StringBuilder(artists.substring(0, artists.length() - 2));
 
-                    String genres = "";
-                    if (show.getGenre()!=null) {
+                    String genres;
+                    if (show.getGenre() != null) {
                         genres = show.getGenre().getFancyName();
                     } else {
-                        genres += "No specified genre";
+                        genres = "No specified genre";
                     }
 
                     // Draw the info of the show
-                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " " + genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
+                    graphics.drawString(show.getBeginTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + show.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" + artists + " | " + genres, ((this.planner.getStages().indexOf(stage)) * this.columnWidth) + 10, (int) (timeDecimalBeginTime * (this.canvas.getHeight() / 24) + 20));
                 }
             }
         }
     }
 
-    Tab getVisualTab() {
+    /**
+     * The getter of the visual tab
+     *
+     * @return The visual tab
+     */
+    public Tab getVisualTab() {
         return visualTab;
     }
 
-    void update() {
+    /**
+     * The update function that updates the visual tab.
+     */
+    public void update() {
+        scrollPane.setVvalue(DataController.getInstance().getClock().getHours() / 24.0);
+
         drawStages(new FXGraphics2D(this.canvasStages.getGraphicsContext2D()));
         drawLayout(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
         drawPlanning(new FXGraphics2D(this.canvas.getGraphicsContext2D()));

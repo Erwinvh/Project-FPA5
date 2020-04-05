@@ -1,6 +1,8 @@
 package PlannerData;
 
 import Enumerators.Genres;
+import GUILogic.Clock;
+import GUILogic.DataController;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -9,6 +11,7 @@ import javax.json.JsonWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +25,9 @@ public class Planner implements Serializable {
 
     public final static String saveFileName = "Resources/saveFile.json";
 
+    /**
+     * The constructor of the planner
+     */
     public Planner() {
         this.shows = new ArrayList<>();
         this.stages = new ArrayList<>();
@@ -80,7 +86,7 @@ public class Planner implements Serializable {
      * @param artist the artist to be deleted
      * @return true if the deletion is successful, false if not
      */
-    public boolean deleteArtist(Artist artist) {
+    private boolean deleteArtist(Artist artist) {
         return this.artists.remove(artist);
     }
 
@@ -106,7 +112,7 @@ public class Planner implements Serializable {
      * @param stage the stage to be deleted
      * @return true if the deletion is successful, false if not
      */
-    public boolean deleteStage(Stage stage) {
+    private boolean deleteStage(Stage stage) {
         return this.stages.remove(stage);
     }
 
@@ -114,7 +120,7 @@ public class Planner implements Serializable {
      * Deletes a stage
      *
      * @param stageName the name of the stage to be deleted
-     * @return true if the deletion is succesful, false if not
+     * @return true if the deletion is successful, false if not
      */
     public boolean deleteStage(String stageName) {
         for (Stage stage : this.stages) {
@@ -126,16 +132,20 @@ public class Planner implements Serializable {
         return false;
     }
 
-    public ArrayList<Show> getShows() {
-        return this.shows;
+    /**
+     * A method to clear all planned shows out of the planner
+     */
+    public void deleteShows() {
+        shows.clear();
     }
 
-    public ArrayList<Stage> getStages() {
-        return this.stages;
-    }
-
-    public ArrayList<Artist> getArtists() {
-        return this.artists;
+    /**
+     * A method to clear all data in the planner
+     */
+    public void deleteAll() {
+        shows.clear();
+        artists.clear();
+        stages.clear();
     }
 
     /**
@@ -161,7 +171,7 @@ public class Planner implements Serializable {
             for (Artist artist : this.getArtists()) {
                 JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                 artistBuilder.add("name", artist.getName());
-                artistBuilder.add("getShowDescription", artist.getDescription());
+                artistBuilder.add("description", artist.getDescription());
                 artistBuilder.add("genre", artist.getGenre().getFancyName());
                 artistsBuilder.add(artistBuilder);
             }
@@ -176,10 +186,11 @@ public class Planner implements Serializable {
                 for (Artist artist : show.getArtists()) {
                     JsonObjectBuilder artistBuilder = Json.createObjectBuilder();
                     artistBuilder.add("name", artist.getName());
-                    artistBuilder.add("getShowDescription", artist.getDescription());
+                    artistBuilder.add("description", artist.getDescription());
                     artistBuilder.add("genre", artist.getGenre().getFancyName());
                     showArtistsBuilder.add(artistBuilder);
                 }
+
                 Stage stage = show.getStage();
                 stageBuilder.add("name", stage.getName());
                 stageBuilder.add("capacity", stage.getCapacity());
@@ -205,6 +216,86 @@ public class Planner implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * The getter for the ArrayList of shows
+     *
+     * @return ArrayList of all shows currently added
+     */
+    public ArrayList<Show> getShows() {
+        return this.shows;
+    }
+
+    /**
+     * A getter for the active shows
+     *
+     * @return an ArrayList containing all active shows
+     */
+    public ArrayList<Show> getActiveShows() {
+        LocalTime currentTime = LocalTime.MIDNIGHT;
+        currentTime = currentTime.plusHours(DataController.getInstance().getClock().getHours());
+        currentTime = currentTime.plusMinutes(DataController.getInstance().getClock().getMinutes());
+
+        ArrayList<Show> activeShows = new ArrayList<>();
+        for (Show show : getShows()) {
+            if ((currentTime.equals(show.getBeginTime())) || (currentTime.isAfter(show.getBeginTime()) && currentTime.isBefore(show.getEndTime()))) {
+                activeShows.add(show);
+            }
+        }
+
+        return activeShows;
+    }
+
+    /**
+     * The getter for the ArrayList of stages
+     *
+     * @return ArrayList of all stages that are currently added
+     */
+    public ArrayList<Stage> getStages() {
+        return this.stages;
+    }
+
+    /**
+     * The getter for a stage by name
+     *
+     * @param stageName Searched stage name
+     * @return Searched stage if found, else Null.
+     */
+    public Stage getStage(String stageName) {
+        if (stageName == null || stageName.isEmpty())
+            throw new NullPointerException("Planner.getStage: stageName cannot be null");
+
+        for (Stage stage : getStages()) {
+            if (stageName.equals(stage.getName())) return stage;
+        }
+
+        return null;
+    }
+
+    /**
+     * The getter for the ArrayList of artists
+     *
+     * @return ArrayList of all artists that are currently added
+     */
+    public ArrayList<Artist> getArtists() {
+        return this.artists;
+    }
+
+    /**
+     * The getter for an artist by name
+     *
+     * @param artistName Searched artist name
+     * @return Searched artist if found else Null.
+     */
+    public Artist getArtist(String artistName) {
+        for (Artist artist : DataController.getInstance().getPlanner().getArtists()) {
+            if (artistName.equals(artist.getName())) {
+                return artist;
+            }
+        }
+
+        return null;
     }
 
     @Override

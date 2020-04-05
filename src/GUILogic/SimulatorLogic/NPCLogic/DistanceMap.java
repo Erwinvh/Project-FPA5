@@ -1,7 +1,7 @@
-package NPCLogic;
+package GUILogic.SimulatorLogic.NPCLogic;
 
-import MapData.TargetArea;
-import MapData.WalkableMap;
+import GUILogic.SimulatorLogic.MapData.MapDataController;
+import GUILogic.SimulatorLogic.MapData.TargetArea;
 
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
@@ -10,66 +10,47 @@ import java.util.Queue;
 public class DistanceMap {
     private String mapName;
     private int[][] map;
-    private Queue<Point2D> queue;
-    private boolean[][] visited;
-    private boolean[][] walkableMap;
     private TargetArea target;
-
-    private final int size = 100;
-
-    public TargetArea getTarget() {
-        return target;
-    }
-
-    public boolean[][] getWalkableMap() {
-        return walkableMap;
-    }
 
     /**
      * Makes a distanceMap which can be used to find the shortest path
      *
-     * @param mapName     The name of the map
-     * @param targetArea  The point from which the DistanceMap starts (the 0 point)
-     * @param walkableMap A map used to know if the surface is walkable for the NPC's
+     * @param mapName    The name of the map
+     * @param targetArea The point from which the DistanceMap starts (the 0 point)
      */
-    public DistanceMap(String mapName, TargetArea targetArea, WalkableMap walkableMap) {
+    public DistanceMap(String mapName, TargetArea targetArea) {
         this.mapName = mapName;
 
-        int mapWidth = walkableMap.getMap().length;
-        int mapHeight = walkableMap.getMap()[0].length;
+        boolean[][] walkableMap = MapDataController.getWalkableMap();
 
+        int mapWidth = walkableMap.length;
+        int mapHeight = walkableMap[0].length;
+
+        int total = mapWidth * mapHeight;
         this.map = new int[mapWidth][mapHeight];
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                this.map[i][j] = size * size;
+        boolean[][] visited = new boolean[mapWidth][mapHeight];
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapHeight; j++) {
+                this.map[i][j] = total;
+                visited[i][j] = false;
             }
         }
 
-        this.visited = new boolean[mapWidth][mapHeight];
-        this.walkableMap = walkableMap.getMap();
         this.target = targetArea;
 
-        this.queue = new LinkedList<>();
-        this.queue.offer(targetArea.getMiddlePoint());
+        Queue<Point2D> queue = new LinkedList<>();
+        queue.offer(targetArea.getMiddlePoint());
         this.map[(int) targetArea.getMiddlePoint().getX()][(int) targetArea.getMiddlePoint().getY()] = 0;
+        visited[(int) targetArea.getMiddlePoint().getX()][(int) targetArea.getMiddlePoint().getY()] = true;
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                this.visited[i][j] = false;
-            }
-        }
-
-        this.visited[(int) targetArea.getMiddlePoint().getX()][(int) targetArea.getMiddlePoint().getY()] = true;
-
-        /**
+        /*
          * The Breadth-First Search Algorithm
          * Loops trough every accessible point in the map and gives it the corresponding distance value
          */
         // Whilst there is still something to look through
-        while (!this.queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             // Retrieve the next center point to look around from
-            Point2D currentPoint = this.queue.poll();
+            Point2D currentPoint = queue.poll();
 
             int currentX = (int) currentPoint.getX();
             int currentY = (int) currentPoint.getY();
@@ -88,59 +69,34 @@ public class DistanceMap {
                     if (checkingX > -1 && checkingX < mapWidth && checkingY > -1 && checkingY < mapHeight) {
 
                         // If the spot to check hasn't been visited before and it is walkable as well
-                        if (!this.visited[checkingX][checkingY] && this.walkableMap[checkingX][checkingY]) {
+                        if (!visited[checkingX][checkingY] && walkableMap[checkingX][checkingY]) {
                             this.map[checkingX][checkingY] = this.map[currentX][currentY] + 1;
-                            this.queue.offer(new Point2D.Double(checkingX, checkingY));
-                            this.visited[checkingX][checkingY] = true;
+                            queue.offer(new Point2D.Double(checkingX, checkingY));
+                            visited[checkingX][checkingY] = true;
                         }
                     }
                 }
             }
-
-//            //north
-//            try {
-//                if (!this.visited[currentX][currentY + 1] && this.walkableMap[currentX][currentY + 1]) {
-//                    this.map[currentX][currentY + 1] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX, currentY + 1));
-//                    this.visited[currentX][currentY + 1] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
-//            //east
-//            try {
-//                if (!this.visited[currentX + 1][currentY] && this.walkableMap[currentX + 1][currentY]) {
-//                    this.map[currentX + 1][currentY] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX + 1, currentY));
-//                    this.visited[currentX + 1][currentY] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
-//            //south
-//            try {
-//                if (!this.visited[currentX][currentY - 1] && this.walkableMap[currentX][currentY - 1]) {
-//                    this.map[currentX][currentY - 1] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX, currentY - 1));
-//                    this.visited[currentX][currentY - 1] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
-//            //west
-//            try {
-//                if (!this.visited[currentX - 1][currentY] && this.walkableMap[currentX - 1][currentY]) {
-//                    this.map[currentX - 1][currentY] = this.map[currentX][currentY] + 1;
-//                    this.queue.offer(new Point2D.Double(currentX - 1, currentY));
-//                    this.visited[currentX - 1][currentY] = true;
-//                }
-//            } catch (Exception Ignore) {
-//            }
         }
     }
 
+    /**
+     * @return The map as a 2D int array, each index containing the distance from the target in this DistanceMap
+     */
     public int[][] getMap() {
         return map;
     }
 
+    /**
+     * The getter for the map name
+     *
+     * @return The map name
+     */
     public String getMapName() {
         return mapName;
+    }
+
+    public TargetArea getTarget() {
+        return target;
     }
 }
