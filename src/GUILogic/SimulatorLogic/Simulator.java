@@ -356,6 +356,11 @@ public class Simulator {
         return simulatorLayout;
     }
 
+    /**
+     * Checks if a certain artist has been spawned yet
+     * @param artist the aritist to check if he has spawned
+     * @return true if he has been spawned, false if not
+     */
     public boolean hasSpawnArtist(Artist artist){
         for(Person artistPerson : this.artistPersons){
             if(artistPerson.getName().equals(artist.getName())){

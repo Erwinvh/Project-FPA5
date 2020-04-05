@@ -224,7 +224,6 @@ public class Show implements Serializable, Comparable<Show> {
      */
     public int compareToTime(Show otherShow) {
         return this.beginTime.compareTo(otherShow.beginTime);
-        //return this.beginTime - otherShow.beginTime;
     }
 
     /**

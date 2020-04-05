@@ -87,15 +87,10 @@ public class DistanceMap {
         return map;
     }
 
-    /**
-     * The getter for the map name
-     *
-     * @return The map name
-     */
-    public String getMapName() {
-        return mapName;
-    }
 
+    /**
+     * @return the target area where the map is pointing to
+     */
     public TargetArea getTarget() {
         return target;
     }
