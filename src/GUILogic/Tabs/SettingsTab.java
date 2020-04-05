@@ -98,7 +98,7 @@ public class SettingsTab {
         prediction.setText("Predicted types of guests");
         prediction.setTooltip(new Tooltip("This feature creates a more realistic view \n of the type of visitor the festival will attract.\n When it is turned off the simulator will spawn\n random types of visitors. \n If on it will spawn the predicted visitors."));
         //Simulator speed slider
-        speedSlider.setMax(2);
+        speedSlider.setMax(1.5);
         speedSlider.setMin(0);
         speedSlider.setShowTickLabels(true);
         speedSlider.setShowTickMarks(true);
@@ -114,7 +114,7 @@ public class SettingsTab {
 
         //NPC amount slider
         NPCAmountSlider.setMin(1);
-        NPCAmountSlider.setMax(300);
+        NPCAmountSlider.setMax(250);
         NPCAmountSlider.setShowTickLabels(true);
         NPCAmountSlider.setShowTickMarks(true);
         NPCAmountSlider.setMajorTickUnit(50);
